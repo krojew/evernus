@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <chrono>
+
 #include <QtGlobal>
 
 namespace Evernus
@@ -57,5 +59,13 @@ namespace Evernus
                                     FacilityType facilityType,
                                     SecurityStatus securityStatus,
                                     RigType rigType);
+
+        std::chrono::seconds getProductionTime(uint runs,
+                                               std::chrono::seconds baseProductionTime,
+                                               uint timeEfficiency,
+                                               FacilityType facilityType,
+                                               SecurityStatus securityStatus,
+                                               Size facilitySize,
+                                               RigType rigType);
     }
 }

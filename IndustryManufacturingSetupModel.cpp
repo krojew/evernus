@@ -21,6 +21,8 @@
 
 #include "IndustryManufacturingSetupModel.h"
 
+using namespace std::chrono_literals;
+
 namespace Evernus
 {
     IndustryManufacturingSetupModel::TreeItem::TreeItem(IndustryManufacturingSetupModel &model,
@@ -88,7 +90,7 @@ namespace Evernus
                                                   mParent->getMaterialEfficiency(),
                                                   mModel.mFacilityType,
                                                   mModel.mSecurityStatus,
-                                                  mModel.mRigType);
+                                                  mModel.mMaterialRigType);
     }
 
     void IndustryManufacturingSetupModel::TreeItem::setQuantityRequired(uint value) noexcept
@@ -125,6 +127,22 @@ namespace Evernus
     void IndustryManufacturingSetupModel::TreeItem::setRuns(uint value) noexcept
     {
         mRuns = value;
+    }
+
+    std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getEffectiveTime() const
+    {
+        if (Q_UNLIKELY(isOutput()))
+            return getTimeToManufacture();
+
+        const auto &settings = mSetup.getTypeSettings(mTypeId);
+        if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
+            settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
+        {
+            return getTimeToManufacture();
+        }
+
+        // we're buying this stuff
+        return 0s;
     }
 
     std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getTime() const noexcept
@@ -192,9 +210,32 @@ namespace Evernus
         return settings.mMaterialEfficiency;
     }
 
+    uint IndustryManufacturingSetupModel::TreeItem::getTimeEfficiency() const
+    {
+        if (Q_UNLIKELY(isOutput()))
+        {
+            const auto &settings = mSetup.getOutputSettings(mTypeId);
+            return settings.mTimeEfficiency;
+        }
+
+        const auto &settings = mSetup.getTypeSettings(mTypeId);
+        return settings.mTimeEfficiency;
+    }
+
     bool IndustryManufacturingSetupModel::TreeItem::isOutput() const
     {
         return mQuantityRequired == 0 || mParent == nullptr;
+    }
+
+    std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getTimeToManufacture() const
+    {
+        return IndustryUtils::getProductionTime(getEffectiveRuns(),
+                                                mTime,
+                                                getTimeEfficiency(),
+                                                mModel.mFacilityType,
+                                                mModel.mSecurityStatus,
+                                                mModel.mFacilitySize,
+                                                mModel.mTimeRigType);
     }
 
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
@@ -237,8 +278,11 @@ namespace Evernus
                 return static_cast<int>(mSetup.getTypeSettings(item->getTypeId()).mSource);
             case TimeRole:
                 {
-                    const qulonglong time = item->getTime().count();
-                    return QStringLiteral("%1:%2:%3").arg(time / 3600, 2, 10, QLatin1Char('0')).arg((time / 60) % 60, 2, 10, QLatin1Char('0')).arg(time % 60, 2, 10, QLatin1Char('0'));
+                    const qulonglong time = std::chrono::duration_cast<std::chrono::seconds>(item->getEffectiveTime()).count();
+                    return QStringLiteral("%1:%2:%3")
+                        .arg(time / 3600, 2, 10, QLatin1Char('0'))
+                        .arg((time / 60) % 60, 2, 10, QLatin1Char('0'))
+                        .arg(time % 60, 2, 10, QLatin1Char('0'));
                 }
             case RunsRole:
                 return item->getRuns();
@@ -428,7 +472,7 @@ namespace Evernus
     void IndustryManufacturingSetupModel::setTimeEfficiency(EveType::IdType id, uint value)
     {
         mSetup.setTimeEfficiency(id, value);
-        roleAndQuantityChange(id, { QuantityRequiredRole }); // note: don't change efficiency role because of binding loop
+        signalTimeChange(id);
     }
 
     void IndustryManufacturingSetupModel::setCharacter(Character::IdType id)
@@ -458,10 +502,22 @@ namespace Evernus
         signalQuantityChange();
     }
 
-    void IndustryManufacturingSetupModel::setRigType(IndustryUtils::RigType type)
+    void IndustryManufacturingSetupModel::setMaterialRigType(IndustryUtils::RigType type)
     {
-        mRigType = type;
+        mMaterialRigType = type;
         signalQuantityChange();
+    }
+
+    void IndustryManufacturingSetupModel::setTimeRigType(IndustryUtils::RigType type)
+    {
+        mTimeRigType = type;
+        signalTimeChange();
+    }
+
+    void IndustryManufacturingSetupModel::setFacilitySize(IndustryUtils::Size size)
+    {
+        mFacilitySize = size;
+        signalTimeChange();
     }
 
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)
@@ -531,6 +587,22 @@ namespace Evernus
 
     void IndustryManufacturingSetupModel::signalQuantityChange(EveType::IdType typeId)
     {
+        signalRoleChange(typeId, { RunsRole, QuantityRequiredRole });
+    }
+
+    void IndustryManufacturingSetupModel::signalTimeChange(EveType::IdType typeId)
+    {
+        signalRoleChange(typeId, { TimeRole });
+    }
+
+    void IndustryManufacturingSetupModel::signalRoleChange(const QVector<int> &roles)
+    {
+        for (const auto &item : mTypeItemMap)
+            signalRoleChange(item.second.get(), roles);
+    }
+
+    void IndustryManufacturingSetupModel::signalRoleChange(EveType::IdType typeId, const QVector<int> &roles)
+    {
         std::unordered_set<EveType::IdType> remaining{typeId}, inspected;
 
         do {
@@ -552,20 +624,24 @@ namespace Evernus
 
             const auto items = mTypeItemMap.equal_range(nextId);
             for (auto item = items.first; item != items.second; ++item)
-                signalQuantityChange(item->second.get());
+                signalRoleChange(item->second.get(), roles);
         } while (!remaining.empty());
     }
 
     void IndustryManufacturingSetupModel::signalQuantityChange()
     {
-        for (const auto &item : mTypeItemMap)
-            signalQuantityChange(item.second.get());
+        signalRoleChange({ RunsRole, QuantityRequiredRole });
     }
 
-    void IndustryManufacturingSetupModel::signalQuantityChange(TreeItem &item)
+    void IndustryManufacturingSetupModel::signalTimeChange()
+    {
+        signalRoleChange({ TimeRole });
+    }
+
+    void IndustryManufacturingSetupModel::signalRoleChange(TreeItem &item, const QVector<int> &roles)
     {
         const auto idx = createIndex(item.getRow(), 0, &item);
-        emit dataChanged(idx, idx, { RunsRole, QuantityRequiredRole });
+        emit dataChanged(idx, idx, roles);
     }
 
     void IndustryManufacturingSetupModel::roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles)

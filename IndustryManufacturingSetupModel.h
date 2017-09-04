@@ -64,7 +64,9 @@ namespace Evernus
         void setCharacter(Character::IdType id);
         void setFacilityType(IndustryUtils::FacilityType type);
         void setSecurityStatus(IndustryUtils::SecurityStatus status);
-        void setRigType(IndustryUtils::RigType type);
+        void setMaterialRigType(IndustryUtils::RigType type);
+        void setTimeRigType(IndustryUtils::RigType type);
+        void setFacilitySize(IndustryUtils::Size size);
 
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;
@@ -111,6 +113,7 @@ namespace Evernus
             uint getRuns() const noexcept;
             void setRuns(uint value) noexcept;
 
+            std::chrono::seconds getEffectiveTime() const;
             std::chrono::seconds getTime() const noexcept;
             void setTime(std::chrono::seconds value) noexcept;
 
@@ -156,8 +159,11 @@ namespace Evernus
             std::vector<TreeItemPtr> mChildItems;
 
             uint getMaterialEfficiency() const;
+            uint getTimeEfficiency() const;
 
             bool isOutput() const;
+
+            std::chrono::seconds getTimeToManufacture() const;
         };
 
         struct AssetQuantity
@@ -180,7 +186,9 @@ namespace Evernus
 
         IndustryUtils::FacilityType mFacilityType = IndustryUtils::FacilityType::Station;
         IndustryUtils::SecurityStatus mSecurityStatus = IndustryUtils::SecurityStatus::HighSec;
-        IndustryUtils::RigType mRigType = IndustryUtils::RigType::None;
+        IndustryUtils::RigType mMaterialRigType = IndustryUtils::RigType::None;
+        IndustryUtils::RigType mTimeRigType = IndustryUtils::RigType::None;
+        IndustryUtils::Size mFacilitySize = IndustryUtils::Size::Medium;
 
         void fillChildren(TreeItem &item);
 
@@ -194,8 +202,12 @@ namespace Evernus
         quint64 takeAssets(EveType::IdType typeId, quint64 max);
 
         void signalQuantityChange(EveType::IdType typeId);
+        void signalTimeChange(EveType::IdType typeId);
+        void signalRoleChange(const QVector<int> &roles);
+        void signalRoleChange(EveType::IdType typeId, const QVector<int> &roles);
         void signalQuantityChange();
-        void signalQuantityChange(TreeItem &item);
+        void signalTimeChange();
+        void signalRoleChange(TreeItem &item, const QVector<int> &roles);
         void roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles);
     };
 }

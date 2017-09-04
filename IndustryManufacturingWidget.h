@@ -87,8 +87,10 @@ namespace Evernus
         RegionComboBox *mDestRegionCombo = nullptr;
 
         QComboBox *mFacilityTypeCombo = nullptr;
+        QComboBox *mFacilitySizeCombo = nullptr;
         QComboBox *mSecurityStatusCombo = nullptr;
         QComboBox *mMaterialRigCombo = nullptr;
+        QComboBox *mTimeRigCombo = nullptr;
 
         TradeableTypesTreeView *mTypeView = nullptr;
 
@@ -107,6 +109,7 @@ namespace Evernus
 
         void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
 
-        bool shouldEnableRigCombo() const;
+        void toggleFacilityCombos();
+        bool shouldEnableFacilityCombos() const;
     };
 }
