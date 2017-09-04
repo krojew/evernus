@@ -130,7 +130,7 @@ namespace Evernus
         toolBarLayout->addWidget(new QLabel{tr("Structure size:"), this});
 
         mFacilitySizeCombo = new QComboBox{this};
-        toolBarLayout->addWidget(mFacilityTypeCombo);
+        toolBarLayout->addWidget(mFacilitySizeCombo);
         mFacilitySizeCombo->addItem(tr("Medium"), static_cast<int>(IndustryUtils::Size::Medium));
         mFacilitySizeCombo->addItem(tr("Large"), static_cast<int>(IndustryUtils::Size::Large));
         mFacilitySizeCombo->addItem(tr("X-Large"), static_cast<int>(IndustryUtils::Size::XLarge));
