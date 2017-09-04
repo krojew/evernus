@@ -77,6 +77,32 @@ namespace Evernus
             int mVeldsparProcessing = 0;
         };
 
+        struct IndustrySkills
+        {
+            int mIndustry = 0;
+            int mAdvancedIndustry = 0;
+            int mAdvancedSmallShipConstruction = 0;
+            int mAdvancedMediumShipConstruction = 0;
+            int mAdvancedLargeShipConstruction = 0;
+            int mAvancedIndustrialShipConstruction = 0;
+            int mAmarrStarshipEngineering = 0;
+            int mCaldariStarshipEngineering = 0;
+            int mGallenteStarshipEngineering = 0;
+            int mMinmatarStarshipEngineering = 0;
+            int mElectromagneticPhysics = 0;
+            int mElectronicEngineering = 0;
+            int mGravitonPhysics = 0;
+            int mHighEnergyPhysics = 0;
+            int mHydromagneticPhysics = 0;
+            int mLaserPhysics = 0;
+            int mMechanicalEngineering = 0;
+            int mMolecularEngineering = 0;
+            int mNuclearPhysics = 0;
+            int mPlasmaPhysics = 0;
+            int mQuantumPhysics = 0;
+            int mRocketScience = 0;
+        };
+
         QString mName;
         QString mCorporationName;
         quint64 mCorporationId = 0;
@@ -97,5 +123,6 @@ namespace Evernus
         FeeSkills mFeeSkills;
         ContractSkills mContractSkills;
         ReprocessingSkills mReprocessingSkills;
+        IndustrySkills mIndustrySkills;
     };
 }

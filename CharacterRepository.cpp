@@ -98,6 +98,30 @@ namespace Evernus
         reprocessingSkills.mSpodumainProcessing = record.value(QStringLiteral("spodumain_processing")).toInt();
         reprocessingSkills.mVeldsparProcessing = record.value(QStringLiteral("veldspar_processing")).toInt();
 
+        CharacterData::IndustrySkills industrySkills;
+        industrySkills.mIndustry = record.value(QStringLiteral("industry")).toInt();
+        industrySkills.mAdvancedIndustry = record.value(QStringLiteral("advanced_industry")).toInt();
+        industrySkills.mAdvancedSmallShipConstruction = record.value(QStringLiteral("advanced_small_ship_construction")).toInt();
+        industrySkills.mAdvancedMediumShipConstruction = record.value(QStringLiteral("advanced_medium_ship_construction")).toInt();
+        industrySkills.mAdvancedLargeShipConstruction = record.value(QStringLiteral("advanced_large_ship_construction")).toInt();
+        industrySkills.mAvancedIndustrialShipConstruction = record.value(QStringLiteral("avanced_industrial_ship_construction")).toInt();
+        industrySkills.mAmarrStarshipEngineering = record.value(QStringLiteral("amarr_starship_engineering")).toInt();
+        industrySkills.mCaldariStarshipEngineering = record.value(QStringLiteral("caldari_starship_engineering")).toInt();
+        industrySkills.mGallenteStarshipEngineering = record.value(QStringLiteral("gallente_starship_engineering")).toInt();
+        industrySkills.mMinmatarStarshipEngineering = record.value(QStringLiteral("minmatar_starship_engineering")).toInt();
+        industrySkills.mElectromagneticPhysics = record.value(QStringLiteral("electromagnetic_physics")).toInt();
+        industrySkills.mElectronicEngineering = record.value(QStringLiteral("electronic_engineering")).toInt();
+        industrySkills.mGravitonPhysics = record.value(QStringLiteral("graviton_physics")).toInt();
+        industrySkills.mHighEnergyPhysics = record.value(QStringLiteral("high_energy_physics")).toInt();
+        industrySkills.mHydromagneticPhysics = record.value(QStringLiteral("hydromagnetic_physics")).toInt();
+        industrySkills.mLaserPhysics = record.value(QStringLiteral("laser_physics")).toInt();
+        industrySkills.mMechanicalEngineering = record.value(QStringLiteral("mechanical_engineering")).toInt();
+        industrySkills.mMolecularEngineering = record.value(QStringLiteral("molecular_engineering")).toInt();
+        industrySkills.mNuclearPhysics = record.value(QStringLiteral("nuclear_physics")).toInt();
+        industrySkills.mPlasmaPhysics = record.value(QStringLiteral("plasma_physics")).toInt();
+        industrySkills.mQuantumPhysics = record.value(QStringLiteral("quantum_physics")).toInt();
+        industrySkills.mRocketScience = record.value(QStringLiteral("rocket_science")).toInt();
+
         character->setOrderAmountSkills(std::move(orderAmountSkills));
         character->setTradeRangeSkills(std::move(tradeRangeSkills));
         character->setFeeSkills(std::move(feeSkills));
@@ -308,7 +332,29 @@ namespace Evernus
             "scrapmetal_processing TINYINT NOT NULL,"
             "spodumain_processing TINYINT NOT NULL,"
             "veldspar_processing TINYINT NOT NULL,"
-            "manufacturing_time_implant_bonus FLOAT NOT NULL"
+            "manufacturing_time_implant_bonus FLOAT NOT NULL,"
+            "industry TINYINT NOT NULL,"
+            "advanced_industry TINYINT NOT NULL,"
+            "advanced_small_ship_construction TINYINT NOT NULL,"
+            "advanced_medium_ship_construction TINYINT NOT NULL,"
+            "advanced_large_ship_construction TINYINT NOT NULL,"
+            "avanced_industrial_ship_construction TINYINT NOT NULL,"
+            "amarr_starship_engineering TINYINT NOT NULL,"
+            "caldari_starship_engineering TINYINT NOT NULL,"
+            "gallente_starship_engineering TINYINT NOT NULL,"
+            "minmatar_starship_engineering TINYINT NOT NULL,"
+            "electromagnetic_physics TINYINT NOT NULL,"
+            "electronic_engineering TINYINT NOT NULL,"
+            "graviton_physics TINYINT NOT NULL,"
+            "high_energy_physics TINYINT NOT NULL,"
+            "hydromagnetic_physics TINYINT NOT NULL,"
+            "laser_physics TINYINT NOT NULL,"
+            "mechanical_engineering TINYINT NOT NULL,"
+            "molecular_engineering TINYINT NOT NULL,"
+            "nuclear_physics TINYINT NOT NULL,"
+            "plasma_physics TINYINT NOT NULL,"
+            "quantum_physics TINYINT NOT NULL,"
+            "rocket_science TINYINT NOT NULL"
         ")").arg(getTableName()).arg(keyRepository.getTableName());
     }
 
@@ -365,6 +411,28 @@ namespace Evernus
             QStringLiteral("spodumain_processing"),
             QStringLiteral("veldspar_processing"),
             QStringLiteral("manufacturing_time_implant_bonus"),
+            QStringLiteral("industry"),
+            QStringLiteral("advanced_industry"),
+            QStringLiteral("advanced_small_ship_construction"),
+            QStringLiteral("advanced_medium_ship_construction"),
+            QStringLiteral("advanced_large_ship_construction"),
+            QStringLiteral("avanced_industrial_ship_construction"),
+            QStringLiteral("amarr_starship_engineering"),
+            QStringLiteral("caldari_starship_engineering"),
+            QStringLiteral("gallente_starship_engineering"),
+            QStringLiteral("minmatar_starship_engineering"),
+            QStringLiteral("electromagnetic_physics"),
+            QStringLiteral("electronic_engineering"),
+            QStringLiteral("graviton_physics"),
+            QStringLiteral("high_energy_physics"),
+            QStringLiteral("hydromagnetic_physics"),
+            QStringLiteral("laser_physics"),
+            QStringLiteral("mechanical_engineering"),
+            QStringLiteral("molecular_engineering"),
+            QStringLiteral("nuclear_physics"),
+            QStringLiteral("plasma_physics"),
+            QStringLiteral("quantum_physics"),
+            QStringLiteral("rocket_science"),
         };
     }
 
@@ -377,6 +445,7 @@ namespace Evernus
         const auto feeSkills = entity.getFeeSkills();
         const auto contractSkills = entity.getContractSkills();
         const auto reprocessingSkills = entity.getReprocessingSkills();
+        const auto industrySkills = entity.getIndustrySkills();
 
         if (entity.getId() != Character::invalidId)
             query.bindValue(QStringLiteral(":id"), entity.getId());
@@ -430,6 +499,28 @@ namespace Evernus
         query.bindValue(QStringLiteral(":spodumain_processing"), reprocessingSkills.mSpodumainProcessing);
         query.bindValue(QStringLiteral(":veldspar_processing"), reprocessingSkills.mVeldsparProcessing);
         query.bindValue(QStringLiteral(":manufacturing_time_implant_bonus"), entity.getManufacturingTimeImplantBonus());
+        query.bindValue(QStringLiteral(":industry"), industrySkills.mIndustry);
+        query.bindValue(QStringLiteral(":advanced_industry"), industrySkills.mAdvancedIndustry);
+        query.bindValue(QStringLiteral(":advanced_small_ship_construction"), industrySkills.mAdvancedSmallShipConstruction);
+        query.bindValue(QStringLiteral(":advanced_medium_ship_construction"), industrySkills.mAdvancedMediumShipConstruction);
+        query.bindValue(QStringLiteral(":advanced_large_ship_construction"), industrySkills.mAdvancedLargeShipConstruction);
+        query.bindValue(QStringLiteral(":avanced_industrial_ship_construction"), industrySkills.mAvancedIndustrialShipConstruction);
+        query.bindValue(QStringLiteral(":amarr_starship_engineering"), industrySkills.mAmarrStarshipEngineering);
+        query.bindValue(QStringLiteral(":caldari_starship_engineering"), industrySkills.mCaldariStarshipEngineering);
+        query.bindValue(QStringLiteral(":gallente_starship_engineering"), industrySkills.mGallenteStarshipEngineering);
+        query.bindValue(QStringLiteral(":minmatar_starship_engineering"), industrySkills.mMinmatarStarshipEngineering);
+        query.bindValue(QStringLiteral(":electromagnetic_physics"), industrySkills.mElectromagneticPhysics);
+        query.bindValue(QStringLiteral(":electronic_engineering"), industrySkills.mElectronicEngineering);
+        query.bindValue(QStringLiteral(":graviton_physics"), industrySkills.mGravitonPhysics);
+        query.bindValue(QStringLiteral(":high_energy_physics"), industrySkills.mHighEnergyPhysics);
+        query.bindValue(QStringLiteral(":hydromagnetic_physics"), industrySkills.mHydromagneticPhysics);
+        query.bindValue(QStringLiteral(":laser_physics"), industrySkills.mLaserPhysics);
+        query.bindValue(QStringLiteral(":mechanical_engineering"), industrySkills.mMechanicalEngineering);
+        query.bindValue(QStringLiteral(":molecular_engineering"), industrySkills.mMolecularEngineering);
+        query.bindValue(QStringLiteral(":nuclear_physics"), industrySkills.mNuclearPhysics);
+        query.bindValue(QStringLiteral(":plasma_physics"), industrySkills.mPlasmaPhysics);
+        query.bindValue(QStringLiteral(":quantum_physics"), industrySkills.mQuantumPhysics);
+        query.bindValue(QStringLiteral(":rocket_science"), industrySkills.mRocketScience);
     }
 
     void CharacterRepository::bindPositionalValues(const Character &entity, QSqlQuery &query) const
@@ -441,6 +532,7 @@ namespace Evernus
         const auto feeSkills = entity.getFeeSkills();
         const auto contractSkills = entity.getContractSkills();
         const auto reprocessingSkills = entity.getReprocessingSkills();
+        const auto industrySkills = entity.getIndustrySkills();
 
         if (entity.getId() != Character::invalidId)
             query.addBindValue(entity.getId());
@@ -494,5 +586,27 @@ namespace Evernus
         query.addBindValue(reprocessingSkills.mSpodumainProcessing);
         query.addBindValue(reprocessingSkills.mVeldsparProcessing);
         query.addBindValue(entity.getManufacturingTimeImplantBonus());
+        query.addBindValue(industrySkills.mIndustry);
+        query.addBindValue(industrySkills.mAdvancedIndustry);
+        query.addBindValue(industrySkills.mAdvancedSmallShipConstruction);
+        query.addBindValue(industrySkills.mAdvancedMediumShipConstruction);
+        query.addBindValue(industrySkills.mAdvancedLargeShipConstruction);
+        query.addBindValue(industrySkills.mAvancedIndustrialShipConstruction);
+        query.addBindValue(industrySkills.mAmarrStarshipEngineering);
+        query.addBindValue(industrySkills.mCaldariStarshipEngineering);
+        query.addBindValue(industrySkills.mGallenteStarshipEngineering);
+        query.addBindValue(industrySkills.mMinmatarStarshipEngineering);
+        query.addBindValue(industrySkills.mElectromagneticPhysics);
+        query.addBindValue(industrySkills.mElectronicEngineering);
+        query.addBindValue(industrySkills.mGravitonPhysics);
+        query.addBindValue(industrySkills.mHighEnergyPhysics);
+        query.addBindValue(industrySkills.mHydromagneticPhysics);
+        query.addBindValue(industrySkills.mLaserPhysics);
+        query.addBindValue(industrySkills.mMechanicalEngineering);
+        query.addBindValue(industrySkills.mMolecularEngineering);
+        query.addBindValue(industrySkills.mNuclearPhysics);
+        query.addBindValue(industrySkills.mPlasmaPhysics);
+        query.addBindValue(industrySkills.mQuantumPhysics);
+        query.addBindValue(industrySkills.mRocketScience);
     }
 }

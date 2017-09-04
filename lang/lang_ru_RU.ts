@@ -7639,7 +7639,7 @@ Do you wish to launch the updater?</source>
         <location filename="../Updater.cpp" line="436"/>
         <location filename="../Updater.cpp" line="507"/>
         <location filename="../Updater.cpp" line="534"/>
-        <location filename="../Updater.cpp" line="602"/>
+        <location filename="../Updater.cpp" line="633"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7676,7 +7676,7 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="602"/>
+        <location filename="../Updater.cpp" line="633"/>
         <source>This update requires re-importing wallet journal.</source>
         <translation type="unfinished"></translation>
     </message>

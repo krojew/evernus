@@ -311,6 +311,21 @@ namespace Evernus
         mData.mReprocessingSkills = std::move(skills);
     }
 
+    CharacterData::IndustrySkills Character::getIndustrySkills() const noexcept
+    {
+        return mData.mIndustrySkills;
+    }
+
+    void Character::setIndustrySkills(const CharacterData::IndustrySkills &skills) noexcept
+    {
+        mData.mIndustrySkills = skills;
+    }
+
+    void Character::setIndustrySkills(CharacterData::IndustrySkills &&skills) noexcept
+    {
+        mData.mIndustrySkills = std::move(skills);
+    }
+
     CharacterData Character::getCharacterData() const &
     {
         return mData;

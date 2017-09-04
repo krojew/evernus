@@ -114,6 +114,10 @@ namespace Evernus
         void setReprocessingSkills(const CharacterData::ReprocessingSkills &skills) noexcept;
         void setReprocessingSkills(CharacterData::ReprocessingSkills &&skills) noexcept;
 
+        CharacterData::IndustrySkills getIndustrySkills() const noexcept;
+        void setIndustrySkills(const CharacterData::IndustrySkills &skills) noexcept;
+        void setIndustrySkills(CharacterData::IndustrySkills &&skills) noexcept;
+
         CharacterData getCharacterData() const &;
         CharacterData &&getCharacterData() && noexcept;
         void setCharacterData(const CharacterData &data);

@@ -599,6 +599,37 @@ namespace Evernus
                             .arg(characterRepo.getTableName())
         );
 
+        const auto addSkillColumn = [&](const auto &name) {
+            safelyExecQuery(characterRepo,
+                            QStringLiteral("ALTER TABLE %1 ADD COLUMN %2 TINYINT NOT NULL DEFAULT 0")
+                                .arg(characterRepo.getTableName())
+                                .arg(name)
+            );
+        };
+
+        addSkillColumn(QStringLiteral("industry"));
+        addSkillColumn(QStringLiteral("advanced_industry"));
+        addSkillColumn(QStringLiteral("advanced_small_ship_construction"));
+        addSkillColumn(QStringLiteral("advanced_medium_ship_construction"));
+        addSkillColumn(QStringLiteral("advanced_large_ship_construction"));
+        addSkillColumn(QStringLiteral("avanced_industrial_ship_construction"));
+        addSkillColumn(QStringLiteral("amarr_starship_engineering"));
+        addSkillColumn(QStringLiteral("caldari_starship_engineering"));
+        addSkillColumn(QStringLiteral("gallente_starship_engineering"));
+        addSkillColumn(QStringLiteral("minmatar_starship_engineering"));
+        addSkillColumn(QStringLiteral("electromagnetic_physics"));
+        addSkillColumn(QStringLiteral("electronic_engineering"));
+        addSkillColumn(QStringLiteral("graviton_physics"));
+        addSkillColumn(QStringLiteral("high_energy_physics"));
+        addSkillColumn(QStringLiteral("hydromagnetic_physics"));
+        addSkillColumn(QStringLiteral("laser_physics"));
+        addSkillColumn(QStringLiteral("mechanical_engineering"));
+        addSkillColumn(QStringLiteral("molecular_engineering"));
+        addSkillColumn(QStringLiteral("nuclear_physics"));
+        addSkillColumn(QStringLiteral("plasma_physics"));
+        addSkillColumn(QStringLiteral("quantum_physics"));
+        addSkillColumn(QStringLiteral("rocket_science"));
+
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing wallet journal."));
     }
 
