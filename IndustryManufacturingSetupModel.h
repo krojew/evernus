@@ -103,21 +103,19 @@ namespace Evernus
 
             EveType::IdType getTypeId() const noexcept;
 
-            uint getQuantityProduced() const noexcept;
-            void setQuantityProduced(uint value) noexcept;
-
             quint64 getEffectiveQuantityRequired() const;
-            uint getQuantityRequired() const noexcept;
             quint64 getQuantityRequiredForParent() const;
+
+            uint getQuantityRequired() const noexcept;
             void setQuantityRequired(uint value) noexcept;
+
+            uint getQuantityProduced() const noexcept;
 
             uint getEffectiveRuns() const;
             uint getRuns() const noexcept;
             void setRuns(uint value) noexcept;
 
             std::chrono::seconds getEffectiveTime() const;
-            std::chrono::seconds getTime() const noexcept;
-            void setTime(std::chrono::seconds value) noexcept;
 
             TreeItem *getChild(int row) const;
             TreeItem *getParent() const noexcept;
@@ -154,10 +152,9 @@ namespace Evernus
             const IndustryManufacturingSetup &mSetup;
             TreeItem *mParent = nullptr;
             EveType::IdType mTypeId = EveType::invalidId;
-            uint mQuantityProduced = 0;
             uint mQuantityRequired = 0;
             uint mRuns = 1;
-            std::chrono::seconds mTime;
+            const Evernus::EveDataProvider::ManufacturingInfo mManufacturingInfo;
             std::vector<TreeItemPtr> mChildItems;
 
             uint getMaterialEfficiency() const;
@@ -165,7 +162,7 @@ namespace Evernus
 
             bool isOutput() const;
 
-            std::chrono::seconds getTimeToManufacture(uint runs) const;
+            std::chrono::seconds getTimeToManufacture() const;
         };
 
         struct AssetQuantity
@@ -182,6 +179,7 @@ namespace Evernus
         TreeItem mRoot{*this, mSetup};
 
         CharacterRepository::EntityPtr mCharacter;
+        std::unordered_map<uint, int> mCharacterManufacturingSkills;
 
         std::unordered_multimap<EveType::IdType, std::reference_wrapper<TreeItem>> mTypeItemMap;
 
@@ -192,6 +190,7 @@ namespace Evernus
         IndustryUtils::RigType mMaterialRigType = IndustryUtils::RigType::None;
         IndustryUtils::RigType mTimeRigType = IndustryUtils::RigType::None;
         IndustryUtils::Size mFacilitySize = IndustryUtils::Size::Medium;
+
 
         void fillChildren(TreeItem &item);
 

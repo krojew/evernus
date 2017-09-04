@@ -58,6 +58,7 @@ namespace Evernus
             uint mQuantity;
             std::chrono::seconds mTime;
             std::vector<MaterialInfo> mMaterials;
+            std::unordered_set<uint> mAdditionalsSkills;
         };
 
         struct MapTreeLocation
@@ -71,6 +72,9 @@ namespace Evernus
         using Station = std::pair<quint64, QString>;
         using ReprocessingMap = std::unordered_map<EveType::IdType, ReprocessingInfo>;
         using TypeList = std::unordered_set<EveType::IdType>;
+
+        static const uint industrySkillId = 3380;
+        static const uint advancedIndustrySkillId = 3388;
 
         using QObject::QObject;
         virtual ~EveDataProvider() = default;

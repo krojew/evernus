@@ -64,6 +64,7 @@ namespace Evernus
                                                std::chrono::seconds baseProductionTime,
                                                uint timeEfficiency,
                                                float implantBonus,
+                                               float skillModifier,
                                                FacilityType facilityType,
                                                SecurityStatus securityStatus,
                                                Size facilitySize,

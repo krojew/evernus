@@ -138,7 +138,7 @@ namespace Evernus
             settings.value(IndustrySettings::manufacturingFacilitySizeKey, IndustrySettings::manufacturingFacilitySizeDefault).toInt()));
         connect(mFacilitySizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=] {
             rememberSetting(mFacilitySizeCombo, IndustrySettings::manufacturingFacilitySizeKey);
-            mSetupModel.setFacilitySize(static_cast<IndustryUtils::Size>(mSecurityStatusCombo->currentData().toInt()));
+            mSetupModel.setFacilitySize(static_cast<IndustryUtils::Size>(mFacilitySizeCombo->currentData().toInt()));
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Security status:"), this});
@@ -193,7 +193,7 @@ namespace Evernus
         toggleFacilityCombos();
 
         mSetupModel.setFacilityType(static_cast<IndustryUtils::FacilityType>(mFacilityTypeCombo->currentData().toInt()));
-        mSetupModel.setFacilitySize(static_cast<IndustryUtils::Size>(mSecurityStatusCombo->currentData().toInt()));
+        mSetupModel.setFacilitySize(static_cast<IndustryUtils::Size>(mFacilitySizeCombo->currentData().toInt()));
         mSetupModel.setSecurityStatus(static_cast<IndustryUtils::SecurityStatus>(mSecurityStatusCombo->currentData().toInt()));
         mSetupModel.setMaterialRigType(static_cast<IndustryUtils::RigType>(mMaterialRigCombo->currentData().toInt()));
         mSetupModel.setTimeRigType(static_cast<IndustryUtils::RigType>(mTimeRigCombo->currentData().toInt()));
@@ -337,6 +337,7 @@ namespace Evernus
         mMaterialRigCombo->setEnabled(combosEnabled);
         mTimeRigCombo->setEnabled(combosEnabled);
         mFacilitySizeCombo->setEnabled(combosEnabled);
+        mSecurityStatusCombo->setEnabled(combosEnabled);
     }
 
     bool IndustryManufacturingWidget::shouldEnableFacilityCombos() const

@@ -1187,11 +1187,13 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         {
             QSqlQuery query{mEveDb};
             query.prepare(QStringLiteral(R"(
-SELECT m.materialTypeID, m.quantity, p.quantity, a.time FROM industryActivityMaterials m
+SELECT m.materialTypeID, m.quantity, p.quantity, a.time, s.skillID FROM industryActivityMaterials m
     INNER JOIN industryActivityProducts p
         ON m.typeID = p.typeID AND m.activityID = p.activityID AND p.productTypeID = ? AND p.activityID = ?
     INNER JOIN industryActivity a
         ON a.typeID = p.typeID AND a.activityID = m.activityID
+    INNER JOIN industryActivitySkills s
+        ON s.typeID = p.typeID AND s.activityID = m.activityID
             )"));
             query.addBindValue(typeId);
             query.addBindValue(mManufacturingActivityId);
@@ -1200,15 +1202,26 @@ SELECT m.materialTypeID, m.quantity, p.quantity, a.time FROM industryActivityMat
 
             DatabaseUtils::execQuery(query);
 
+            std::unordered_set<EveType::IdType> usedMaterials;
+
             while (query.next())
             {
+                const auto skillId = query.value(4).toUInt();
+                if (skillId != industrySkillId && skillId != advancedIndustrySkillId)
+                    info.mAdditionalsSkills.insert(skillId);
+
+                const auto materialId = query.value(0).value<EveType::IdType>();
+                if (usedMaterials.find(materialId) != std::end(usedMaterials))
+                    continue;
+
                 if (info.mQuantity == 0)
                 {
                     info.mQuantity = query.value(2).toUInt();
                     info.mTime = std::chrono::seconds{query.value(3).toUInt()};
                 }
 
-                info.mMaterials.emplace_back(MaterialInfo{query.value(0).value<EveType::IdType>(), query.value(1).toUInt()});
+                usedMaterials.emplace(materialId);
+                info.mMaterials.emplace_back(MaterialInfo{materialId, query.value(1).toUInt()});
             }
 
             it = mTypeManufacturingInfoCache.emplace(typeId, std::move(info)).first;

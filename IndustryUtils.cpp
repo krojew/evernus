@@ -69,6 +69,7 @@ namespace Evernus
                                                std::chrono::seconds baseProductionTime,
                                                uint timeEfficiency,
                                                float implantBonus,
+                                               float skillModifier,
                                                FacilityType facilityType,
                                                SecurityStatus securityStatus,
                                                Size facilitySize,
@@ -108,8 +109,9 @@ namespace Evernus
                               (100.f - (rigMods[static_cast<int>(rigType)] * securityMods[static_cast<int>(securityStatus)])) / 100.f;
             }
 
-            // TODO: skills & implants
-            return std::chrono::duration_cast<std::chrono::seconds>(baseProductionTime * runs * facilityMod * (1.f - implantBonus / 100.f));
+            return std::chrono::duration_cast<std::chrono::seconds>(
+                baseProductionTime * runs * facilityMod * (1.f - implantBonus / 100.f) * skillModifier * (1.f - timeEfficiency / 100.f)
+            );
         }
     }
 }

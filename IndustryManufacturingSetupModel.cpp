@@ -38,22 +38,13 @@ namespace Evernus
         : mModel{model}
         , mSetup{setup}
         , mTypeId{typeId}
+        , mManufacturingInfo{mSetup.getManufacturingInfo(mTypeId)}
     {
     }
 
     EveType::IdType IndustryManufacturingSetupModel::TreeItem::getTypeId() const noexcept
     {
         return mTypeId;
-    }
-
-    uint IndustryManufacturingSetupModel::TreeItem::getQuantityProduced() const noexcept
-    {
-        return mQuantityProduced;
-    }
-
-    void IndustryManufacturingSetupModel::TreeItem::setQuantityProduced(uint value) noexcept
-    {
-        mQuantityProduced = value;
     }
 
     quint64 IndustryManufacturingSetupModel::TreeItem::getEffectiveQuantityRequired() const
@@ -65,7 +56,7 @@ namespace Evernus
         if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
             settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
         {
-            return getEffectiveRuns() * mQuantityProduced;
+            return getEffectiveRuns() * mManufacturingInfo.mQuantity;
         }
 
         auto required = getQuantityRequiredForParent();
@@ -98,6 +89,11 @@ namespace Evernus
         mQuantityRequired = value;
     }
 
+    uint IndustryManufacturingSetupModel::TreeItem::getQuantityProduced() const noexcept
+    {
+        return mManufacturingInfo.mQuantity;
+    }
+
     uint IndustryManufacturingSetupModel::TreeItem::getEffectiveRuns() const
     {
         if (Q_UNLIKELY(isOutput()))
@@ -111,8 +107,8 @@ namespace Evernus
             if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
                 required -= mModel.takeAssets(mTypeId, required);
 
-            Q_ASSERT(mQuantityProduced > 0);
-            return std::ceil(required / mQuantityProduced);
+            Q_ASSERT(mManufacturingInfo.mQuantity > 0);
+            return std::ceil(required / mManufacturingInfo.mQuantity);
         }
 
         // we're buying this stuff, so no production
@@ -132,27 +128,17 @@ namespace Evernus
     std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getEffectiveTime() const
     {
         if (Q_UNLIKELY(isOutput()))
-            return getTimeToManufacture(1);
+            return getTimeToManufacture();
 
         const auto &settings = mSetup.getTypeSettings(mTypeId);
         if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
             settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
         {
-            return getTimeToManufacture(1);
+            return getTimeToManufacture();
         }
 
         // we're buying this stuff
         return 0s;
-    }
-
-    std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getTime() const noexcept
-    {
-        return mTime;
-    }
-
-    void IndustryManufacturingSetupModel::TreeItem::setTime(std::chrono::seconds value) noexcept
-    {
-        mTime = value;
     }
 
     IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getChild(int row) const
@@ -227,13 +213,21 @@ namespace Evernus
         return mQuantityRequired == 0 || mParent == nullptr;
     }
 
-    std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getTimeToManufacture(uint runs) const
+    std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getTimeToManufacture() const
     {
         Q_ASSERT(mModel.mCharacter);
-        return IndustryUtils::getProductionTime(runs,
-                                                mTime,
+
+        auto skillModifier = (1.f - mModel.mCharacterManufacturingSkills[EveDataProvider::industrySkillId] * 4 / 100.f) *
+                             (1.f - mModel.mCharacterManufacturingSkills[EveDataProvider::advancedIndustrySkillId] * 3 / 100.f);
+
+        for (const auto skillId : mManufacturingInfo.mAdditionalsSkills)
+            skillModifier *= (1.f - mModel.mCharacterManufacturingSkills[skillId] / 100.f);
+
+        return IndustryUtils::getProductionTime(1,
+                                                mManufacturingInfo.mTime,
                                                 getTimeEfficiency(),
                                                 mModel.mCharacter->getManufacturingTimeImplantBonus(),
+                                                skillModifier,
                                                 mModel.mFacilityType,
                                                 mModel.mSecurityStatus,
                                                 mModel.mFacilitySize,
@@ -493,6 +487,31 @@ namespace Evernus
         try
         {
             mCharacter = mCharacterRepo.find(id);
+            Q_ASSERT(mCharacter);
+
+            const auto industrySkills = mCharacter->getIndustrySkills();
+            mCharacterManufacturingSkills[EveDataProvider::industrySkillId] = industrySkills.mIndustry;
+            mCharacterManufacturingSkills[EveDataProvider::advancedIndustrySkillId] = industrySkills.mAdvancedIndustry;
+            mCharacterManufacturingSkills[3398] = industrySkills.mAdvancedLargeShipConstruction;
+            mCharacterManufacturingSkills[3397] = industrySkills.mAdvancedMediumShipConstruction;
+            mCharacterManufacturingSkills[3395] = industrySkills.mAdvancedSmallShipConstruction;
+            mCharacterManufacturingSkills[11444] = industrySkills.mAmarrStarshipEngineering;
+            mCharacterManufacturingSkills[3396] = industrySkills.mAvancedIndustrialShipConstruction;
+            mCharacterManufacturingSkills[11454] = industrySkills.mCaldariStarshipEngineering;
+            mCharacterManufacturingSkills[11448] = industrySkills.mElectromagneticPhysics;
+            mCharacterManufacturingSkills[11453] = industrySkills.mElectronicEngineering;
+            mCharacterManufacturingSkills[11450] = industrySkills.mGallenteStarshipEngineering;
+            mCharacterManufacturingSkills[11446] = industrySkills.mGravitonPhysics;
+            mCharacterManufacturingSkills[11433] = industrySkills.mHighEnergyPhysics;
+            mCharacterManufacturingSkills[11443] = industrySkills.mHydromagneticPhysics;
+            mCharacterManufacturingSkills[11447] = industrySkills.mLaserPhysics;
+            mCharacterManufacturingSkills[11452] = industrySkills.mMechanicalEngineering;
+            mCharacterManufacturingSkills[11445] = industrySkills.mMinmatarStarshipEngineering;
+            mCharacterManufacturingSkills[11529] = industrySkills.mMolecularEngineering;
+            mCharacterManufacturingSkills[11451] = industrySkills.mNuclearPhysics;
+            mCharacterManufacturingSkills[11441] = industrySkills.mPlasmaPhysics;
+            mCharacterManufacturingSkills[11455] = industrySkills.mQuantumPhysics;
+            mCharacterManufacturingSkills[11449] = industrySkills.mRocketScience;
         }
         catch (const CharacterRepository::NotFoundException &)
         {
@@ -506,13 +525,13 @@ namespace Evernus
     void IndustryManufacturingSetupModel::setFacilityType(IndustryUtils::FacilityType type)
     {
         mFacilityType = type;
-        signalQuantityChange();
+        signalRoleChange({ RunsRole, QuantityRequiredRole, TimeRole });
     }
 
     void IndustryManufacturingSetupModel::setSecurityStatus(IndustryUtils::SecurityStatus status)
     {
         mSecurityStatus = status;
-        signalQuantityChange();
+        signalRoleChange({ RunsRole, QuantityRequiredRole, TimeRole });
     }
 
     void IndustryManufacturingSetupModel::setMaterialRigType(IndustryUtils::RigType type)
@@ -524,7 +543,7 @@ namespace Evernus
     void IndustryManufacturingSetupModel::setTimeRigType(IndustryUtils::RigType type)
     {
         mTimeRigType = type;
-        signalTimeChange();
+        signalRoleChange({ RunsRole, QuantityRequiredRole, TimeRole });
     }
 
     void IndustryManufacturingSetupModel::setFacilitySize(IndustryUtils::Size size)
@@ -549,12 +568,8 @@ namespace Evernus
     IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel
     ::createOutputItem(EveType::IdType typeId, const IndustryManufacturingSetup::OutputSettings &settings)
     {
-        const auto &manufacturingInfo = mSetup.getManufacturingInfo(typeId);
-
         auto item = std::make_unique<TreeItem>(typeId, *this, mSetup);
-        item->setQuantityProduced(manufacturingInfo.mQuantity);
         item->setRuns(settings.mRuns);
-        item->setTime(manufacturingInfo.mTime);
 
         return item;
     }
@@ -562,12 +577,8 @@ namespace Evernus
     IndustryManufacturingSetupModel::TreeItemPtr IndustryManufacturingSetupModel
     ::createSourceItem(const EveDataProvider::MaterialInfo &materialInfo)
     {
-        const auto &manufacturingInfo = mSetup.getManufacturingInfo(materialInfo.mMaterialId);
-
         auto item = std::make_unique<TreeItem>(materialInfo.mMaterialId, *this, mSetup);
-        item->setQuantityProduced(manufacturingInfo.mQuantity);
         item->setQuantityRequired(materialInfo.mQuantity);
-        item->setTime(manufacturingInfo.mTime);
 
         return item;
     }
