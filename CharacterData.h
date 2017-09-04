@@ -90,6 +90,7 @@ namespace Evernus
         boost::optional<double> mBuyBrokersFee;
         boost::optional<double> mSellBrokersFee;
         float mReprocessingImplantBonus = 0.f;
+        float mManufacturingTimeImplantBonus = 0.f;
 
         OrderAmountSkills mOrderAmountSkills;
         TradeRangeSkills mTradeRangeSkills;

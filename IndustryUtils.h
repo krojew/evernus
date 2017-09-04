@@ -63,6 +63,7 @@ namespace Evernus
         std::chrono::seconds getProductionTime(uint runs,
                                                std::chrono::seconds baseProductionTime,
                                                uint timeEfficiency,
+                                               float implantBonus,
                                                FacilityType facilityType,
                                                SecurityStatus securityStatus,
                                                Size facilitySize,

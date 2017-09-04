@@ -57,7 +57,7 @@ namespace Evernus
         : QWidget{parent}
         , mDataProvider{dataProvider}
         , mTaskManager{taskManager}
-        , mSetupModel{mSetup, mDataProvider, assetProvider}
+        , mSetupModel{mSetup, mDataProvider, assetProvider, characterRepo}
         , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
     {
         const auto mainLayout = new QVBoxLayout{this};

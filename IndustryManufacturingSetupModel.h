@@ -23,6 +23,7 @@
 #include <QAbstractItemModel>
 
 #include "IndustryManufacturingSetup.h"
+#include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "IndustryUtils.h"
 #include "Character.h"
@@ -41,6 +42,7 @@ namespace Evernus
         IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                         const EveDataProvider &dataProvider,
                                         const AssetProvider &assetProvider,
+                                        const CharacterRepository &characterRepo,
                                         QObject *parent = nullptr);
         IndustryManufacturingSetupModel(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel(IndustryManufacturingSetupModel &&) = default;
@@ -175,10 +177,11 @@ namespace Evernus
         IndustryManufacturingSetup &mSetup;
         const EveDataProvider &mDataProvider;
         const AssetProvider &mAssetProvider;
+        const CharacterRepository &mCharacterRepo;
 
         TreeItem mRoot{*this, mSetup};
 
-        Character::IdType mCharacterId = Character::invalidId;
+        CharacterRepository::EntityPtr mCharacter;
 
         std::unordered_multimap<EveType::IdType, std::reference_wrapper<TreeItem>> mTypeItemMap;
 

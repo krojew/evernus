@@ -68,6 +68,7 @@ namespace Evernus
         std::chrono::seconds getProductionTime(uint runs,
                                                std::chrono::seconds baseProductionTime,
                                                uint timeEfficiency,
+                                               float implantBonus,
                                                FacilityType facilityType,
                                                SecurityStatus securityStatus,
                                                Size facilitySize,
@@ -108,7 +109,7 @@ namespace Evernus
             }
 
             // TODO: skills & implants
-            return std::chrono::duration_cast<std::chrono::seconds>(baseProductionTime * runs * facilityMod);
+            return std::chrono::duration_cast<std::chrono::seconds>(baseProductionTime * runs * facilityMod * (1.f - implantBonus / 100.f));
         }
     }
 }

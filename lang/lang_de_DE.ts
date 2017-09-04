@@ -1021,82 +1021,92 @@ Total: %7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="392"/>
+        <location filename="../CharacterWidget.cpp" line="353"/>
+        <source>Industry skills</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="358"/>
+        <source>Manufacturing time implant bonus:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="408"/>
         <source>never imported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="397"/>
+        <location filename="../CharacterWidget.cpp" line="413"/>
         <source>Character sheet: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="398"/>
+        <location filename="../CharacterWidget.cpp" line="414"/>
         <source>Asset list: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="399"/>
+        <location filename="../CharacterWidget.cpp" line="415"/>
         <source>Market orders: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="400"/>
+        <location filename="../CharacterWidget.cpp" line="416"/>
         <source>Wallet journal: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="401"/>
+        <location filename="../CharacterWidget.cpp" line="417"/>
         <source>Wallet transactions: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="404"/>
+        <location filename="../CharacterWidget.cpp" line="420"/>
         <source>Contracts: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="410"/>
+        <location filename="../CharacterWidget.cpp" line="426"/>
         <source>Corp. asset list: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="411"/>
+        <location filename="../CharacterWidget.cpp" line="427"/>
         <source>Corp. market orders: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="412"/>
+        <location filename="../CharacterWidget.cpp" line="428"/>
         <source>Corp. wallet journal: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="413"/>
+        <location filename="../CharacterWidget.cpp" line="429"/>
         <source>Corp. wallet transactions: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="416"/>
+        <location filename="../CharacterWidget.cpp" line="432"/>
         <source>Corp. contracts: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="673"/>
+        <location filename="../CharacterWidget.cpp" line="703"/>
         <source>Character error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="673"/>
+        <location filename="../CharacterWidget.cpp" line="703"/>
         <source>Character not found in DB. Refresh characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="759"/>
+        <location filename="../CharacterWidget.cpp" line="789"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="769"/>
+        <location filename="../CharacterWidget.cpp" line="799"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7627,7 +7637,7 @@ Do you wish to launch the updater?</source>
         <location filename="../Updater.cpp" line="436"/>
         <location filename="../Updater.cpp" line="507"/>
         <location filename="../Updater.cpp" line="534"/>
-        <location filename="../Updater.cpp" line="597"/>
+        <location filename="../Updater.cpp" line="602"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7664,7 +7674,7 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="597"/>
+        <location filename="../Updater.cpp" line="602"/>
         <source>This update requires re-importing wallet journal.</source>
         <translation type="unfinished"></translation>
     </message>

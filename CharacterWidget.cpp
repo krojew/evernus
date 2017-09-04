@@ -350,6 +350,22 @@ namespace Evernus
         reprocessingSkills4Layout->addRow(tr("Veldspar processing:"),
                                           createSkillEdit(mVeldsparProcessingSkillEdit, "veldspar_processing"));
 
+        const auto industrySkillsGroup = new QGroupBox{tr("Industry skills"), this};
+        mainLayout->addWidget(industrySkillsGroup);
+
+        const auto industrySkillsGroupLayout = new QHBoxLayout{industrySkillsGroup};
+
+        industrySkillsGroupLayout->addWidget(new QLabel{tr("Manufacturing time implant bonus:"), this});
+
+        mManufacturingTimeImplantBonusEdit = new QDoubleSpinBox{this};
+        industrySkillsGroupLayout->addWidget(mManufacturingTimeImplantBonusEdit);
+        mManufacturingTimeImplantBonusEdit->setRange(0., 100.);
+        mManufacturingTimeImplantBonusEdit->setSuffix(locale().percent());
+        connect(mManufacturingTimeImplantBonusEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+                this, &CharacterWidget::setManufacturingTimeImplantBonus);
+
+        industrySkillsGroupLayout->addStretch();
+
         mainLayout->addStretch();
 
         connect(&mUpdateTimer, &QTimer::timeout, this, &CharacterWidget::updateTimerList);
@@ -470,6 +486,16 @@ namespace Evernus
         emit characterDataChanged();
     }
 
+    void CharacterWidget::setManufacturingTimeImplantBonus(double value)
+    {
+        const auto id = getCharacterId();
+        Q_ASSERT(id != Character::invalidId);
+
+        mCharacterRepository.updateManufacturingTimeImplantBonus(id, value);
+
+        emit characterDataChanged();
+    }
+
     void CharacterWidget::setSkillLevel(int level)
     {
         const auto id = getCharacterId();
@@ -569,6 +595,8 @@ namespace Evernus
             mSpodumainProcessingSkillEdit->setValue(0);
             mVeldsparProcessingSkillEdit->setValue(0);
 
+            mManufacturingTimeImplantBonusEdit->setValue(0.);
+
             mPortrait->setPixmap(defaultPortrait);
         }
         else
@@ -652,6 +680,8 @@ namespace Evernus
                 mScrapmetalProcessingSkillEdit->setValue(reprocessingSkills.mScrapmetalProcessing);
                 mSpodumainProcessingSkillEdit->setValue(reprocessingSkills.mSpodumainProcessing);
                 mVeldsparProcessingSkillEdit->setValue(reprocessingSkills.mVeldsparProcessing);
+
+                mManufacturingTimeImplantBonusEdit->setValue(character->getManufacturingTimeImplantBonus());
 
                 QSettings settings;
                 if (settings.value(ImportSettings::importPortraitKey, ImportSettings::importPortraitDefault).toBool())

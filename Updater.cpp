@@ -594,6 +594,11 @@ namespace Evernus
         // ref type repo doesn't exist anymore...
         safelyExecQuery(walletJournalRepo, QStringLiteral("DROP TABLE IF EXISTS ref_types"));
 
+        safelyExecQuery(characterRepo,
+                        QStringLiteral("ALTER TABLE %1 ADD COLUMN manufacturing_time_implant_bonus FLOAT NOT NULL DEFAULT 0")
+                            .arg(characterRepo.getTableName())
+        );
+
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing wallet journal."));
     }
 

@@ -229,9 +229,11 @@ namespace Evernus
 
     std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getTimeToManufacture() const
     {
+        Q_ASSERT(mModel.mCharacter);
         return IndustryUtils::getProductionTime(getEffectiveRuns(),
                                                 mTime,
                                                 getTimeEfficiency(),
+                                                mModel.mCharacter->getManufacturingTimeImplantBonus(),
                                                 mModel.mFacilityType,
                                                 mModel.mSecurityStatus,
                                                 mModel.mFacilitySize,
@@ -241,11 +243,13 @@ namespace Evernus
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                                                      const EveDataProvider &dataProvider,
                                                                      const AssetProvider &assetProvider,
+                                                                     const CharacterRepository &characterRepo,
                                                                      QObject *parent)
         : QAbstractItemModel{parent}
         , mSetup{setup}
         , mDataProvider{dataProvider}
         , mAssetProvider{assetProvider}
+        , mCharacterRepo{characterRepo}
     {
     }
 
@@ -417,10 +421,13 @@ namespace Evernus
 
         mAssetQuantities.clear();
 
-        const auto assets = mAssetProvider.fetchAssetsForCharacter(mCharacterId);
-        Q_ASSERT(assets);
+        if (Q_LIKELY(mCharacter))
+        {
+            const auto assets = mAssetProvider.fetchAssetsForCharacter(mCharacter->getId());
+            Q_ASSERT(assets);
 
-        fillAssetList(std::begin(*assets), std::end(*assets));
+            fillAssetList(std::begin(*assets), std::end(*assets));
+        }
     }
 
     void IndustryManufacturingSetupModel
@@ -483,7 +490,13 @@ namespace Evernus
             this_->endResetModel();
         } BOOST_SCOPE_EXIT_END
 
-        mCharacterId = id;
+        try
+        {
+            mCharacter = mCharacterRepo.find(id);
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+        }
 
         mRoot.clearChildren();
         mTypeItemMap.clear();

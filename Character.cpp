@@ -226,6 +226,16 @@ namespace Evernus
         mData.mReprocessingImplantBonus = value;
     }
 
+    float Character::getManufacturingTimeImplantBonus() const noexcept
+    {
+        return mData.mManufacturingTimeImplantBonus;
+    }
+
+    void Character::setManufacturingTimeImplantBonus(float value) noexcept
+    {
+        mData.mManufacturingTimeImplantBonus = value;
+    }
+
     CharacterData::OrderAmountSkills Character::getOrderAmountSkills() const noexcept
     {
         return mData.mOrderAmountSkills;

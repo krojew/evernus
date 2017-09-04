@@ -60,6 +60,7 @@ namespace Evernus
         void setFactionStanding(double value);
         void setBrokersFee();
         void setReprocessingImplantBonus(double value);
+        void setManufacturingTimeImplantBonus(double value);
 
         void setSkillLevel(int level);
 
@@ -133,6 +134,7 @@ namespace Evernus
         QSpinBox *mScrapmetalProcessingSkillEdit = nullptr;
         QSpinBox *mSpodumainProcessingSkillEdit = nullptr;
         QSpinBox *mVeldsparProcessingSkillEdit = nullptr;
+        QDoubleSpinBox *mManufacturingTimeImplantBonusEdit = nullptr;
 
         QGroupBox *mUpdateTimersGroup = nullptr;
         QListWidget *mUpdateTimersList = nullptr;
