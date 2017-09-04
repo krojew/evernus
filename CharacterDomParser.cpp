@@ -56,6 +56,7 @@ namespace Evernus
                 CharacterData::FeeSkills feeSkills;
                 CharacterData::ContractSkills contractSkills;
                 CharacterData::ReprocessingSkills reprocessingSkills;
+                CharacterData::IndustrySkills industrySkills;
 
                 const auto skills = node.elementsByTagName("row");
                 for (auto i = 0; i < skills.count(); ++i)
@@ -154,6 +155,72 @@ namespace Evernus
                         break;
                     case 12195:
                         reprocessingSkills.mVeldsparProcessing = element.attribute("level").toInt();
+                        break;
+                    case 3380:
+                        industrySkills.mIndustry = element.attribute("level").toInt();
+                        break;
+                    case 3388:
+                        industrySkills.mAdvancedIndustry = element.attribute("level").toInt();
+                        break;
+                    case 3398:
+                        industrySkills.mAdvancedLargeShipConstruction = element.attribute("level").toInt();
+                        break;
+                    case 3397:
+                        industrySkills.mAdvancedMediumShipConstruction = element.attribute("level").toInt();
+                        break;
+                    case 3395:
+                        industrySkills.mAdvancedSmallShipConstruction = element.attribute("level").toInt();
+                        break;
+                    case 11444:
+                        industrySkills.mAmarrStarshipEngineering = element.attribute("level").toInt();
+                        break;
+                    case 3396:
+                        industrySkills.mAvancedIndustrialShipConstruction = element.attribute("level").toInt();
+                        break;
+                    case 11454:
+                        industrySkills.mCaldariStarshipEngineering = element.attribute("level").toInt();
+                        break;
+                    case 11448:
+                        industrySkills.mElectromagneticPhysics = element.attribute("level").toInt();
+                        break;
+                    case 11453:
+                        industrySkills.mElectronicEngineering = element.attribute("level").toInt();
+                        break;
+                    case 11450:
+                        industrySkills.mGallenteStarshipEngineering = element.attribute("level").toInt();
+                        break;
+                    case 11446:
+                        industrySkills.mGravitonPhysics = element.attribute("level").toInt();
+                        break;
+                    case 11433:
+                        industrySkills.mHighEnergyPhysics = element.attribute("level").toInt();
+                        break;
+                    case 11443:
+                        industrySkills.mHydromagneticPhysics = element.attribute("level").toInt();
+                        break;
+                    case 11447:
+                        industrySkills.mLaserPhysics = element.attribute("level").toInt();
+                        break;
+                    case 11452:
+                        industrySkills.mMechanicalEngineering = element.attribute("level").toInt();
+                        break;
+                    case 11445:
+                        industrySkills.mMinmatarStarshipEngineering = element.attribute("level").toInt();
+                        break;
+                    case 11529:
+                        industrySkills.mMolecularEngineering = element.attribute("level").toInt();
+                        break;
+                    case 11451:
+                        industrySkills.mNuclearPhysics = element.attribute("level").toInt();
+                        break;
+                    case 11441:
+                        industrySkills.mPlasmaPhysics = element.attribute("level").toInt();
+                        break;
+                    case 11455:
+                        industrySkills.mQuantumPhysics = element.attribute("level").toInt();
+                        break;
+                    case 11449:
+                        industrySkills.mRocketScience = element.attribute("level").toInt();
                     }
                 }
 
@@ -162,6 +229,7 @@ namespace Evernus
                 result.setFeeSkills(std::move(feeSkills));
                 result.setContractSkills(std::move(contractSkills));
                 result.setReprocessingSkills(std::move(reprocessingSkills));
+                result.setIndustrySkills(std::move(industrySkills));
             }
 
             return result;
