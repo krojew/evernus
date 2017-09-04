@@ -281,7 +281,7 @@ namespace Evernus
 
         const auto srcIt = srcHistory->find(id);
         const auto dstIt = dstHistory->find(id);
-        if (srcIt != std::end(*srcHistory) || dstIt != std::end(*dstHistory))
+        if (srcIt != std::end(*srcHistory) && dstIt != std::end(*dstHistory))
         {
             auto widget = new InterRegionTypeDetailsWidget{srcIt->second,
                                                            dstIt->second,
