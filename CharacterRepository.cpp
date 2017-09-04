@@ -127,6 +127,7 @@ namespace Evernus
         character->setFeeSkills(std::move(feeSkills));
         character->setContractSkills(std::move(contractSkills));
         character->setReprocessingSkills(std::move(reprocessingSkills));
+        character->setIndustrySkills(std::move(industrySkills));
         character->setNew(false);
 
         return character;
