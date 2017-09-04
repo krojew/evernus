@@ -303,6 +303,7 @@ namespace Evernus
                                     CharacterData::FeeSkills feeSkills;
                                     CharacterData::ContractSkills contractSkills;
                                     CharacterData::ReprocessingSkills reprocessingSkills;
+                                    CharacterData::IndustrySkills industrySkills;
 
                                     const auto skills = skillData.object().value(QStringLiteral("skills")).toArray();
                                     for (const auto &skill : skills)
@@ -401,6 +402,72 @@ namespace Evernus
                                             break;
                                         case 12195:
                                             reprocessingSkills.mVeldsparProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3380:
+                                            industrySkills.mIndustry = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3388:
+                                            industrySkills.mAdvancedIndustry = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3398:
+                                            industrySkills.mAdvancedLargeShipConstruction = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3397:
+                                            industrySkills.mAdvancedMediumShipConstruction = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3395:
+                                            industrySkills.mAdvancedSmallShipConstruction = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11444:
+                                            industrySkills.mAmarrStarshipEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 3396:
+                                            industrySkills.mAvancedIndustrialShipConstruction = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11454:
+                                            industrySkills.mCaldariStarshipEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11448:
+                                            industrySkills.mElectromagneticPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11453:
+                                            industrySkills.mElectronicEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11450:
+                                            industrySkills.mGallenteStarshipEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11446:
+                                            industrySkills.mGravitonPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11433:
+                                            industrySkills.mHighEnergyPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11443:
+                                            industrySkills.mHydromagneticPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11447:
+                                            industrySkills.mLaserPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11452:
+                                            industrySkills.mMechanicalEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11445:
+                                            industrySkills.mMinmatarStarshipEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11529:
+                                            industrySkills.mMolecularEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11451:
+                                            industrySkills.mNuclearPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11441:
+                                            industrySkills.mPlasmaPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11455:
+                                            industrySkills.mQuantumPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            break;
+                                        case 11449:
+                                            industrySkills.mRocketScience = skillObj.value(QStringLiteral("current_skill_level")).toInt();
                                         }
                                     }
 
@@ -409,6 +476,7 @@ namespace Evernus
                                     character.setFeeSkills(std::move(feeSkills));
                                     character.setContractSkills(std::move(contractSkills));
                                     character.setReprocessingSkills(std::move(reprocessingSkills));
+                                    character.setIndustrySkills(std::move(industrySkills));
 
                                     callback(std::move(character), {}, expires);
                             });
