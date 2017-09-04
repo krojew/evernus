@@ -165,7 +165,7 @@ namespace Evernus
 
             bool isOutput() const;
 
-            std::chrono::seconds getTimeToManufacture() const;
+            std::chrono::seconds getTimeToManufacture(uint runs) const;
         };
 
         struct AssetQuantity

@@ -132,13 +132,13 @@ namespace Evernus
     std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getEffectiveTime() const
     {
         if (Q_UNLIKELY(isOutput()))
-            return getTimeToManufacture();
+            return getTimeToManufacture(1);
 
         const auto &settings = mSetup.getTypeSettings(mTypeId);
         if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
             settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
         {
-            return getTimeToManufacture();
+            return getTimeToManufacture(1);
         }
 
         // we're buying this stuff
@@ -227,10 +227,10 @@ namespace Evernus
         return mQuantityRequired == 0 || mParent == nullptr;
     }
 
-    std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getTimeToManufacture() const
+    std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getTimeToManufacture(uint runs) const
     {
         Q_ASSERT(mModel.mCharacter);
-        return IndustryUtils::getProductionTime(getEffectiveRuns(),
+        return IndustryUtils::getProductionTime(runs,
                                                 mTime,
                                                 getTimeEfficiency(),
                                                 mModel.mCharacter->getManufacturingTimeImplantBonus(),
