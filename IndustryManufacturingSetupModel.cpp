@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <functional>
+#include <algorithm>
 #include <future>
 #include <cmath>
 
@@ -168,34 +169,39 @@ namespace Evernus
 
     double IndustryManufacturingSetupModel::TreeItem::getCost() const
     {
+        const auto childrenCost = std::accumulate(std::begin(mChildItems), std::end(mChildItems), 0., [](auto value, const auto &child) {
+            return value + child->getCost();
+        });
+
+        double thisCost = 0.;
+
         // TODO: implement
         if (Q_UNLIKELY(isOutput()))
         {
-            return 0.;
+        }
+        else
+        {
+            const auto &settings = mSetup.getTypeSettings(mTypeId);
+            switch (settings.mSource) {
+            case IndustryManufacturingSetup::InventorySource::AcquireForFree:
+                return 0.;
+            case IndustryManufacturingSetup::InventorySource::BuyAtCustomCost:
+            case IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyAtCustomCost:
+                Q_ASSERT(mModel.mCharacter);
+                thisCost = mModel.mCostProvider.fetchForCharacterAndType(mModel.mCharacter->getId(), mTypeId)->getAdjustedCost() *
+                           getEffectiveQuantityRequired();
+                break;
+            case IndustryManufacturingSetup::InventorySource::BuyFromSource:
+            case IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyFromSource:
+                thisCost = mModel.getSrcPrice(mTypeId, getEffectiveQuantityRequired());
+                break;
+            case IndustryManufacturingSetup::InventorySource::Manufacture:
+            case IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture:
+                break;
+            }
         }
 
-        const auto &settings = mSetup.getTypeSettings(mTypeId);
-        switch (settings.mSource) {
-        case IndustryManufacturingSetup::InventorySource::AcquireForFree:
-            return 0.;
-        case IndustryManufacturingSetup::InventorySource::BuyAtCustomCost:
-            Q_ASSERT(mModel.mCharacter);
-            return mModel.mCostProvider.fetchForCharacterAndType(mModel.mCharacter->getId(), mTypeId)->getAdjustedCost() *
-                   getEffectiveQuantityRequired();
-        case IndustryManufacturingSetup::InventorySource::BuyFromSource:
-            break;
-        case IndustryManufacturingSetup::InventorySource::Manufacture:
-            break;
-            break;
-        case IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyAtCustomCost:
-            break;
-        case IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyFromSource:
-            break;
-        case IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture:
-            break;
-        }
-
-        return 0.;
+        return childrenCost + thisCost;
     }
 
     IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getChild(int row) const
@@ -676,6 +682,8 @@ namespace Evernus
 
         srcFuture.get();
         dstFuture.get();
+
+        signalRoleChange({ CostRole });
     }
 
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)
@@ -862,6 +870,64 @@ namespace Evernus
                 signalQuantityChange(child->getTypeId());
             }
         }
+    }
+
+    double IndustryManufacturingSetupModel::getSrcPrice(EveType::IdType typeId, quint64 quantity) const
+    {
+        return (mSrcPrice == PriceType::Buy) ? (getSrcBuyPrice(typeId, quantity)) : (getSrcSellPrice(typeId, quantity));
+    }
+
+    double IndustryManufacturingSetupModel::getSrcBuyPrice(EveType::IdType typeId, quint64 quantity) const
+    {
+        const auto orders = mSrcBuyPrices.find(typeId);
+        return quantity * ((orders == std::end(mSrcBuyPrices)) ? (0.) : (orders->second + 0.01));
+    }
+
+    double IndustryManufacturingSetupModel::getSrcSellPrice(EveType::IdType typeId, quint64 quantity) const
+    {
+        const auto orders = mSrcSellOrders.find(typeId);
+        return (orders == std::end(mSrcSellOrders)) ? (0.) : (getPriceFromOrderList(orders->second, quantity));
+    }
+
+    double IndustryManufacturingSetupModel::getDstPrice(EveType::IdType typeId, quint64 quantity) const
+    {
+        return (mDstPrice == PriceType::Buy) ? (getDstBuyPrice(typeId, quantity)) : (getDstSellPrice(typeId, quantity));
+    }
+
+    double IndustryManufacturingSetupModel::getDstBuyPrice(EveType::IdType typeId, quint64 quantity) const
+    {
+        const auto orders = mDstBuyOrders.find(typeId);
+        return (orders == std::end(mDstBuyOrders)) ? (0.) : (getPriceFromOrderList(orders->second, quantity));
+    }
+
+    double IndustryManufacturingSetupModel::getDstSellPrice(EveType::IdType typeId, quint64 quantity) const
+    {
+        const auto orders = mDstSellPrices.find(typeId);
+        return quantity * ((orders == std::end(mDstSellPrices)) ? (0.) : (orders->second - 0.01));
+    }
+
+    template<class T>
+    double IndustryManufacturingSetupModel::getPriceFromOrderList(const T &orders, quint64 quantity)
+    {
+        auto order = std::begin(orders);
+        auto price = 0.;
+
+        while (order != std::end(orders) && quantity > 0)
+        {
+            const auto amount = std::min(quantity, static_cast<quint64>(order->getVolumeRemaining()));
+
+            price += amount * order->getPrice();
+            quantity -= amount;
+            ++order;
+        }
+
+        if (quantity > 0)
+        {
+            // not enough order to fulfill - estimate from best order
+            return (Q_UNLIKELY(orders.empty())) ? (0.) : (price + std::begin(orders)->getPrice() * quantity);
+        }
+
+        return price;
     }
 
     QString IndustryManufacturingSetupModel::formatDuration(std::chrono::seconds time)

@@ -244,6 +244,16 @@ namespace Evernus
         void signalRoleChange(TreeItem &item, const QVector<int> &roles);
         void roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles);
 
+        double getSrcPrice(EveType::IdType typeId, quint64 quantity) const;
+        double getSrcBuyPrice(EveType::IdType typeId, quint64 quantity) const;
+        double getSrcSellPrice(EveType::IdType typeId, quint64 quantity) const;
+        double getDstPrice(EveType::IdType typeId, quint64 quantity) const;
+        double getDstBuyPrice(EveType::IdType typeId, quint64 quantity) const;
+        double getDstSellPrice(EveType::IdType typeId, quint64 quantity) const;
+
+        template<class T>
+        static double getPriceFromOrderList(const T &orders, quint64 quantity);
+
         static QString formatDuration(std::chrono::seconds time);
     };
 }
