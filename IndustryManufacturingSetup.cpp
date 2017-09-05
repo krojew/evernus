@@ -32,8 +32,14 @@ namespace Evernus
         TypeSet usedTypes;
 
         // build source info
-        for (const auto &output : mOutputTypes)
-            fillManufacturingInfo(output.first, usedTypes);
+        for (auto output = std::begin(mOutputTypes); output != std::end(mOutputTypes);)
+        {
+            fillManufacturingInfo(output->first, usedTypes);
+            if (Q_UNLIKELY(mManufacturingInfo[output->first].mMaterials.empty()))
+                output = mOutputTypes.erase(output);
+            else
+                ++output;
+        }
 
         // clean setup of unused types; mTypeSettings now contains both new and old sources
         for (auto it = std::begin(mTypeSettings); it != std::end(mTypeSettings);)
