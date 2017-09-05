@@ -142,7 +142,7 @@ namespace Evernus
             return false;
         };
 
-        findInMap(mOutputTypes) && findInMap(mTypeSettings);
+        findInMap(mOutputTypes) || findInMap(mTypeSettings);
     }
 
     void IndustryManufacturingSetup::setTimeEfficiency(EveType::IdType id, uint value)
@@ -158,7 +158,7 @@ namespace Evernus
             return false;
         };
 
-        findInMap(mOutputTypes) && findInMap(mTypeSettings);
+        findInMap(mOutputTypes) || findInMap(mTypeSettings);
     }
 
     void IndustryManufacturingSetup::fillManufacturingInfo(EveType::IdType typeId, TypeSet &usedTypes)
