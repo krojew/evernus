@@ -252,17 +252,15 @@ Item {
 
                 Label {
                     id: quantityText
-                    text: qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(time)
+                    text: quantityProduced > 0 ? qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(time) : qsTr("Quantity produced: N/A")
                     color: "#cccccc"
-                    visible: isManufactured
                     Layout.fillWidth: true
                     Layout.columnSpan: 2
                 }
 
                 Label {
-                    visible: isManufactured
                     font.bold: true
-                    text: qsTr("Total production time: %1").arg(totalTime)
+                    text: isManufactured ? qsTr("Total production time: %1").arg(totalTime) : qsTr("Total production time: N/A")
                     color: "orange"
                     Layout.columnSpan: 2
                 }
