@@ -485,7 +485,7 @@ namespace Evernus
         mSetup.setSource(id, source);
         mAssetQuantities[id].mCurrentQuantity = mAssetQuantities[id].mInitialQuantity;
 
-        roleAndQuantityChange(id, { SourceRole, QuantityRequiredRole, TimeRole, TotalTimeRole });
+        roleAndQuantityChange(id, { SourceRole, QuantityRequiredRole, TimeRole, TotalTimeRole, CostRole });
     }
 
     void IndustryManufacturingSetupModel::setRuns(EveType::IdType id, uint runs)
@@ -506,9 +506,7 @@ namespace Evernus
                 item->setRuns(runs);
                 fillItemAssets();
 
-                // note: don't emit for runs role because of binding loop
-                const auto idx = createIndex(item->getRow(), 0, item.get());
-                emit dataChanged(idx, idx, { TotalTimeRole });
+                // note: don't emit manufacturing roles change, because this will propagate from children
 
                 for (const auto &child : *item)
                     signalManufacturingRolesChange(child->getTypeId());
@@ -523,7 +521,7 @@ namespace Evernus
     void IndustryManufacturingSetupModel::setMaterialEfficiency(EveType::IdType id, uint value)
     {
         mSetup.setMaterialEfficiency(id, value);
-        roleAndQuantityChange(id, { QuantityRequiredRole, TotalTimeRole }); // note: don't change efficiency role because of binding loop
+        roleAndQuantityChange(id, { QuantityRequiredRole, TotalTimeRole, CostRole }); // note: don't change efficiency role because of binding loop
     }
 
     void IndustryManufacturingSetupModel::setTimeEfficiency(EveType::IdType id, uint value)
@@ -760,7 +758,7 @@ namespace Evernus
 
     void IndustryManufacturingSetupModel::signalQuantityChange(EveType::IdType typeId)
     {
-        signalRoleChange(typeId, { RunsRole, QuantityRequiredRole, TotalTimeRole });
+        signalRoleChange(typeId, { RunsRole, QuantityRequiredRole, TotalTimeRole, CostRole });
     }
 
     void IndustryManufacturingSetupModel::signalTimeChange(EveType::IdType typeId)
@@ -834,12 +832,12 @@ namespace Evernus
     void IndustryManufacturingSetupModel::signalManufacturingRolesChange()
     {
         fillItemAssets();
-        signalRoleChange({ RunsRole, QuantityRequiredRole, TimeRole, TotalTimeRole });
+        signalRoleChange({ RunsRole, QuantityRequiredRole, TimeRole, TotalTimeRole, CostRole });
     }
 
     void IndustryManufacturingSetupModel::signalManufacturingRolesChange(EveType::IdType typeId)
     {
-        signalRoleChange(typeId, { RunsRole, QuantityRequiredRole, TimeRole, TotalTimeRole });
+        signalRoleChange(typeId, { RunsRole, QuantityRequiredRole, TimeRole, TotalTimeRole, CostRole });
     }
 
     void IndustryManufacturingSetupModel::signalRoleChange(TreeItem &item, const QVector<int> &roles)
