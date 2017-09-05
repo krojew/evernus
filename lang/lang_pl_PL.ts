@@ -1966,32 +1966,32 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="614"/>
+        <location filename="../ESIManager.cpp" line="682"/>
         <source>SSO Authentication for unknown character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="616"/>
+        <location filename="../ESIManager.cpp" line="684"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="632"/>
+        <location filename="../ESIManager.cpp" line="700"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="705"/>
+        <location filename="../ESIManager.cpp" line="773"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="941"/>
+        <location filename="../ESIManager.cpp" line="1009"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="975"/>
+        <location filename="../ESIManager.cpp" line="1043"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>

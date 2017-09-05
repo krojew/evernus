@@ -16,6 +16,9 @@
 
 namespace Evernus
 {
+    const uint EveDataProvider::industrySkillId;
+    const uint EveDataProvider::advancedIndustrySkillId;
+
     quint64 EveDataProvider::getStationIdFromPath(const QVariantList &path)
     {
         if (Q_UNLIKELY(path.size() != 4))

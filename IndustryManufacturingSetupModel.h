@@ -154,7 +154,7 @@ namespace Evernus
             EveType::IdType mTypeId = EveType::invalidId;
             uint mQuantityRequired = 0;
             uint mRuns = 1;
-            const Evernus::EveDataProvider::ManufacturingInfo mManufacturingInfo;
+            Evernus::EveDataProvider::ManufacturingInfo mManufacturingInfo;
             std::vector<TreeItemPtr> mChildItems;
 
             uint getMaterialEfficiency() const;

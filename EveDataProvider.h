@@ -73,8 +73,8 @@ namespace Evernus
         using ReprocessingMap = std::unordered_map<EveType::IdType, ReprocessingInfo>;
         using TypeList = std::unordered_set<EveType::IdType>;
 
-        static const uint industrySkillId = 3380;
-        static const uint advancedIndustrySkillId = 3388;
+        static const uint industrySkillId;
+        static const uint advancedIndustrySkillId;
 
         using QObject::QObject;
         virtual ~EveDataProvider() = default;
