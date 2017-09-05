@@ -75,8 +75,8 @@ namespace Evernus
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
 
-        mSourceRegionCombo = new RegionComboBox{mDataProvider, IndustrySettings::srcManufacturingRegionKey, this};
-        toolBarLayout->addWidget(mSourceRegionCombo);
+        mSrcRegionCombo = new RegionComboBox{mDataProvider, IndustrySettings::srcManufacturingRegionKey, this};
+        toolBarLayout->addWidget(mSrcRegionCombo);
 
         QSettings settings;
 
@@ -93,8 +93,8 @@ namespace Evernus
 
         toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});
 
-        mDestRegionCombo = new RegionComboBox{mDataProvider, IndustrySettings::dstManufacturingRegionKey, this};
-        toolBarLayout->addWidget(mDestRegionCombo);
+        mDstRegionCombo = new RegionComboBox{mDataProvider, IndustrySettings::dstManufacturingRegionKey, this};
+        toolBarLayout->addWidget(mDstRegionCombo);
 
         const auto dstStationBtn = new StationSelectButton{mDataProvider, dstStationPath, this};
         toolBarLayout->addWidget(dstStationBtn);
@@ -106,8 +106,8 @@ namespace Evernus
         toolBarLayout->addWidget(locationFavBtn);
         connect(locationFavBtn, &FavoriteLocationsButton::locationsChosen,
                 this, [=](const auto &srcRegions, auto srcStationId, const auto &dstRegions, auto dstStationId) {
-            mSourceRegionCombo->setSelectedRegionList(srcRegions);
-            mDestRegionCombo->setSelectedRegionList(dstRegions);
+            mSrcRegionCombo->setSelectedRegionList(srcRegions);
+            mDstRegionCombo->setSelectedRegionList(dstRegions);
 
             srcStationBtn->setSelectedStationId(srcStationId);
             dstStationBtn->setSelectedStationId(dstStationId);
@@ -306,8 +306,8 @@ namespace Evernus
     {
         const auto types = mSetup.getAllTypes();
 
-        auto regions = mSourceRegionCombo->getSelectedRegionList();
-        const auto dstRegions = mDestRegionCombo->getSelectedRegionList();
+        auto regions = mSrcRegionCombo->getSelectedRegionList();
+        const auto dstRegions = mDstRegionCombo->getSelectedRegionList();
 
         regions.insert(std::begin(dstRegions), std::end(dstRegions));
 
@@ -352,7 +352,7 @@ namespace Evernus
 
         if (error.isEmpty())
         {
-            mSetupModel.setOrders(*orders);
+            mSetupModel.setOrders(*orders, mSrcStation, mDstStation);
             if (!mDontSaveBtn->isChecked())
             {
                 mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(orders->size()));
@@ -375,6 +375,8 @@ namespace Evernus
     {
         QSettings settings;
         settings.setValue(settingName, path);
+
+        destination = EveDataProvider::getStationIdFromPath(path);
     }
 
     void IndustryManufacturingWidget::toggleFacilityCombos()

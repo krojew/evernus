@@ -19,12 +19,14 @@
 #include <vector>
 #include <memory>
 #include <chrono>
+#include <set>
 
 #include <QAbstractItemModel>
 
 #include "IndustryManufacturingSetup.h"
 #include "CharacterRepository.h"
 #include "EveDataProvider.h"
+#include "ExternalOrder.h"
 #include "IndustryUtils.h"
 #include "Character.h"
 #include "PriceType.h"
@@ -33,7 +35,6 @@
 namespace Evernus
 {
     class ItemCostProvider;
-    class ExternalOrder;
     class AssetProvider;
 
     class IndustryManufacturingSetupModel
@@ -75,7 +76,9 @@ namespace Evernus
         void setFacilitySize(IndustryUtils::Size size);
 
         void setPriceTypes(PriceType src, PriceType dst);
-        void setOrders(const std::vector<ExternalOrder> &orders);
+        void setOrders(const std::vector<ExternalOrder> &orders,
+                       quint64 srcStation,
+                       quint64 dstStation);
 
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;
@@ -186,6 +189,9 @@ namespace Evernus
             quint64 mCurrentQuantity = 0;
         };
 
+        template<class T>
+        using TypeMap = std::unordered_map<EveType::IdType, T>;
+
         IndustryManufacturingSetup &mSetup;
         const EveDataProvider &mDataProvider;
         const AssetProvider &mAssetProvider;
@@ -199,7 +205,7 @@ namespace Evernus
 
         std::unordered_multimap<EveType::IdType, std::reference_wrapper<TreeItem>> mTypeItemMap;
 
-        std::unordered_map<EveType::IdType, AssetQuantity> mAssetQuantities;
+        TypeMap<AssetQuantity> mAssetQuantities;
 
         IndustryUtils::FacilityType mFacilityType = IndustryUtils::FacilityType::Station;
         IndustryUtils::SecurityStatus mSecurityStatus = IndustryUtils::SecurityStatus::HighSec;
@@ -209,6 +215,11 @@ namespace Evernus
 
         PriceType mSrcPrice = PriceType::Buy;
         PriceType mDstPrice = PriceType::Sell;
+
+        TypeMap<std::multiset<ExternalOrder, ExternalOrder::LowToHigh>> mSrcSellOrders;
+        TypeMap<double> mSrcBuyPrices;
+        TypeMap<double> mDstSellPrices;
+        TypeMap<std::multiset<ExternalOrder, ExternalOrder::HighToLow>> mDstBuyOrders;
 
         void fillChildren(TreeItem &item);
 

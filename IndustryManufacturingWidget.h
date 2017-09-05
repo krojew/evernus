@@ -95,8 +95,8 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
 
-        RegionComboBox *mSourceRegionCombo = nullptr;
-        RegionComboBox *mDestRegionCombo = nullptr;
+        RegionComboBox *mSrcRegionCombo = nullptr;
+        RegionComboBox *mDstRegionCombo = nullptr;
 
         PriceTypeComboBox *mSrcPriceTypeCombo = nullptr;
         PriceTypeComboBox *mDstPriceTypeCombo = nullptr;

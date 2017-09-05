@@ -13,10 +13,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <functional>
+#include <future>
 #include <cmath>
 
 #include <boost/range/algorithm/max_element.hpp>
 #include <boost/range/adaptor/transformed.hpp>
+#include <boost/range/adaptor/filtered.hpp>
 #include <boost/scope_exit.hpp>
 
 #include "ItemCostProvider.h"
@@ -178,7 +180,8 @@ namespace Evernus
             return 0.;
         case IndustryManufacturingSetup::InventorySource::BuyAtCustomCost:
             Q_ASSERT(mModel.mCharacter);
-            return mModel.mCostProvider.fetchForCharacterAndType(mModel.mCharacter->getId(), mTypeId)->getAdjustedCost();
+            return mModel.mCostProvider.fetchForCharacterAndType(mModel.mCharacter->getId(), mTypeId)->getAdjustedCost() *
+                   getEffectiveQuantityRequired();
         case IndustryManufacturingSetup::InventorySource::BuyFromSource:
             break;
         case IndustryManufacturingSetup::InventorySource::Manufacture:
@@ -613,9 +616,68 @@ namespace Evernus
         signalRoleChange({ CostRole });
     }
 
-    void IndustryManufacturingSetupModel::setOrders(const std::vector<ExternalOrder> &orders)
+    void IndustryManufacturingSetupModel::setOrders(const std::vector<ExternalOrder> &orders,
+                                                    quint64 srcStation,
+                                                    quint64 dstStation)
     {
-        // TODO: implement
+        mSrcSellOrders.clear();
+        mDstBuyOrders.clear();
+
+        const auto srcRegionId = (srcStation == 0) ? (0u) : (mDataProvider.getStationRegionId(srcStation));
+        const auto dstRegionId = (dstStation == 0) ? (0u) : (mDataProvider.getStationRegionId(dstStation));
+
+        const auto srcOrderFilter = [=](const auto &order) {
+            const auto regionId = order.getRegionId();
+            const auto stationId = order.getStationId();
+
+            return srcRegionId == 0 || srcRegionId != regionId || stationId == srcStation;
+        };
+        const auto dstOrderFilter = [=](const auto &order) {
+            const auto regionId = order.getRegionId();
+            const auto stationId = order.getStationId();
+
+            return dstRegionId == 0 || dstRegionId != regionId || stationId == dstStation;
+        };
+
+        auto srcFuture = std::async(std::launch::async, [&, orders = orders | boost::adaptors::filtered(srcOrderFilter)] {
+            for (const auto &order : orders)
+            {
+                const auto typeId = order.getTypeId();
+
+                if (order.getType() == ExternalOrder::Type::Buy)
+                {
+                    const auto price = order.getPrice();
+
+                    if (price > mSrcBuyPrices[typeId])
+                        mSrcBuyPrices[typeId] = price;
+                }
+                else
+                {
+                    mSrcSellOrders[typeId].emplace(order);
+                }
+            }
+        });
+        auto dstFuture = std::async(std::launch::async, [&, orders = orders | boost::adaptors::filtered(dstOrderFilter)] {
+            for (const auto &order : orders)
+            {
+                const auto typeId = order.getTypeId();
+
+                if (order.getType() == ExternalOrder::Type::Sell)
+                {
+                    const auto price = order.getPrice();
+
+                    if (mDstSellPrices[typeId] == 0. || price < mDstSellPrices[typeId])
+                        mDstSellPrices[typeId] = price;
+                }
+                else
+                {
+                    mDstBuyOrders[typeId].emplace(order);
+                }
+            }
+        });
+
+        srcFuture.get();
+        dstFuture.get();
     }
 
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)
