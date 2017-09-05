@@ -41,6 +41,7 @@
 #include "IndustryUtils.h"
 #include "TaskManager.h"
 #include "FlowLayout.h"
+#include "UISettings.h"
 
 #include "IndustryManufacturingWidget.h"
 
@@ -233,20 +234,22 @@ namespace Evernus
         const auto contentSplitter = new QSplitter{this};
         mainLayout->addWidget(contentSplitter, 1);
 
-        const auto manufacturingView = new QQuickWidget{this};
-        contentSplitter->addWidget(manufacturingView);
-        manufacturingView->setClearColor(QColor{40, 40, 40});
-        manufacturingView->setResizeMode(QQuickWidget::SizeRootObjectToView);
-        manufacturingView->engine()->setNetworkAccessManagerFactory(new CachingNetworkAccessManagerFactory{this});
-        connect(manufacturingView, &QQuickWidget::sceneGraphError, this, &IndustryManufacturingWidget::showSceneGraphError);
+        mManufacturingView = new QQuickWidget{this};
+        contentSplitter->addWidget(mManufacturingView);
+        mManufacturingView->setClearColor(QColor{40, 40, 40});
+        mManufacturingView->setResizeMode(QQuickWidget::SizeRootObjectToView);
+        mManufacturingView->engine()->setNetworkAccessManagerFactory(new CachingNetworkAccessManagerFactory{this});
+        connect(mManufacturingView, &QQuickWidget::sceneGraphError, this, &IndustryManufacturingWidget::showSceneGraphError);
 
-        const auto ctxt = manufacturingView->rootContext();
+        const auto ctxt = mManufacturingView->rootContext();
         Q_ASSERT(ctxt != nullptr);
 
         ctxt->setContextProperty(QStringLiteral("setupModel"), &mSetupModel);
         ctxt->setContextProperty(QStringLiteral("SetupController"), &mSetupController);
 
-        manufacturingView->setSource(QUrl{QStringLiteral("qrc:/qml/Industry/Manufacturing/View.qml")});
+        setQmlSettings();
+
+        mManufacturingView->setSource(QUrl{QStringLiteral("qrc:/qml/Industry/Manufacturing/View.qml")});
 
         const auto typesGroup = new QGroupBox{tr("Output"), this};
         contentSplitter->addWidget(typesGroup);
@@ -285,6 +288,7 @@ namespace Evernus
     void IndustryManufacturingWidget::handleNewPreferences()
     {
         mDataFetcher.handleNewPreferences();
+        setQmlSettings();
     }
 
     void IndustryManufacturingWidget::setCharacter(Character::IdType id)
@@ -391,5 +395,16 @@ namespace Evernus
     bool IndustryManufacturingWidget::shouldEnableFacilityCombos() const
     {
         return static_cast<IndustryUtils::FacilityType>(mFacilityTypeCombo->currentData().toInt()) == IndustryUtils::FacilityType::EngineeringComplex;
+    }
+
+    void IndustryManufacturingWidget::setQmlSettings()
+    {
+        const auto ctxt = mManufacturingView->rootContext();
+        Q_ASSERT(ctxt != nullptr);
+
+        QSettings settings;
+        ctxt->setContextProperty(
+            QStringLiteral("omitCurrencySymbol"), settings.value(UISettings::omitCurrencySymbolKey, UISettings::omitCurrencySymbolDefault).toBool()
+        );
     }
 }

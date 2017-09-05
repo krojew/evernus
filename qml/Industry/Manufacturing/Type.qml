@@ -254,7 +254,7 @@ Item {
 
                 Label {
                     id: quantityText
-                    text: quantityProduced > 0 ? qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(time) : qsTr("Quantity produced: N/A")
+                    text: (quantityProduced > 0) ? (qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(time)) : (qsTr("Quantity produced: N/A"))
                     color: "#cccccc"
                     Layout.fillWidth: true
                     Layout.columnSpan: 2
@@ -262,7 +262,14 @@ Item {
 
                 Label {
                     font.bold: true
-                    text: isManufactured ? qsTr("Total production time: %1").arg(totalTime) : qsTr("Total production time: N/A")
+                    text: (isManufactured) ? (qsTr("Total production time: %1").arg(totalTime)) : (qsTr("Total production time: N/A"))
+                    color: "orange"
+                    Layout.columnSpan: 2
+                }
+
+                Label {
+                    font.bold: true
+                    text: qsTr("Total cost: %1").arg(cost.toLocaleCurrencyString(Qt.locale(), (omitCurrencySymbol) ? (" ") : (qsTr("ISK"))))
                     color: "orange"
                     Layout.columnSpan: 2
                 }

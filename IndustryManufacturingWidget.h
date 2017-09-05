@@ -28,6 +28,7 @@
 #include "TaskConstants.h"
 #include "Character.h"
 
+class QQuickWidget;
 class QByteArray;
 class QComboBox;
 
@@ -109,6 +110,8 @@ namespace Evernus
 
         DontSaveImportedOrdersCheckBox *mDontSaveBtn = nullptr;
 
+        QQuickWidget *mManufacturingView = nullptr;
+
         TradeableTypesTreeView *mTypeView = nullptr;
 
         quint64 mSrcStation = 0;
@@ -128,5 +131,7 @@ namespace Evernus
 
         void toggleFacilityCombos();
         bool shouldEnableFacilityCombos() const;
+
+        void setQmlSettings();
     };
 }
