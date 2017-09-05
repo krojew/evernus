@@ -120,6 +120,8 @@ namespace Evernus
 
             uint getQuantityProduced() const noexcept;
 
+            void setAssetQuantity(quint64 value) noexcept;
+
             uint getEffectiveRuns() const;
             uint getRuns() const noexcept;
             void setRuns(uint value) noexcept;
@@ -165,6 +167,7 @@ namespace Evernus
             TreeItem *mParent = nullptr;
             EveType::IdType mTypeId = EveType::invalidId;
             uint mQuantityRequired = 0;
+            quint64 mAssetQuantity = 0;
             uint mRuns = 1;
             Evernus::EveDataProvider::ManufacturingInfo mManufacturingInfo;
             std::vector<TreeItemPtr> mChildItems;
@@ -217,6 +220,7 @@ namespace Evernus
         void fillAssetList(Iterator begin, Iterator end);
 
         quint64 takeAssets(EveType::IdType typeId, quint64 max);
+        void fillItemAssets();
 
         void signalQuantityChange(EveType::IdType typeId);
         void signalTimeChange(EveType::IdType typeId);

@@ -67,7 +67,7 @@ namespace Evernus
         if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyAtCustomCost ||
             settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyFromSource)
         {
-            required -= mModel.takeAssets(mTypeId, required);
+            required -= mAssetQuantity;
         }
 
         return required;
@@ -98,6 +98,11 @@ namespace Evernus
         return mManufacturingInfo.mQuantity;
     }
 
+    void IndustryManufacturingSetupModel::TreeItem::setAssetQuantity(quint64 value) noexcept
+    {
+        mAssetQuantity = value;
+    }
+
     uint IndustryManufacturingSetupModel::TreeItem::getEffectiveRuns() const
     {
         if (Q_UNLIKELY(isOutput()))
@@ -109,7 +114,7 @@ namespace Evernus
         {
             double required = getQuantityRequiredForParent();
             if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
-                required -= mModel.takeAssets(mTypeId, required);
+                required -= mAssetQuantity;
 
             Q_ASSERT(mManufacturingInfo.mQuantity > 0);
             return std::ceil(required / mManufacturingInfo.mQuantity);
@@ -434,16 +439,6 @@ namespace Evernus
         mRoot.clearChildren();
         mTypeItemMap.clear();
 
-        if (mAssetQuantities.empty())
-        {
-            refreshAssets();
-        }
-        else
-        {
-            for (auto &asset : mAssetQuantities)
-                asset.second.mCurrentQuantity = asset.second.mInitialQuantity;
-        }
-
         const auto &output = mSetup.getOutputTypes();
         for (const auto &outputType : output)
         {
@@ -453,6 +448,11 @@ namespace Evernus
             mTypeItemMap.emplace(outputType.first, std::ref(*child));
             mRoot.appendChild(std::move(child));
         }
+
+        if (mAssetQuantities.empty())
+            refreshAssets();
+        else
+            fillItemAssets();
     }
 
     void IndustryManufacturingSetupModel::refreshAssets()
@@ -472,6 +472,8 @@ namespace Evernus
 
             fillAssetList(std::begin(*assets), std::end(*assets));
         }
+
+        fillItemAssets();
     }
 
     void IndustryManufacturingSetupModel
@@ -499,6 +501,7 @@ namespace Evernus
                 Q_ASSERT(item);
 
                 item->setRuns(runs);
+                fillItemAssets();
 
                 // note: don't emit for runs role because of binding loop
                 const auto idx = createIndex(item->getRow(), 0, item.get());
@@ -672,6 +675,20 @@ namespace Evernus
         return quantityTaken;
     }
 
+    void IndustryManufacturingSetupModel::fillItemAssets()
+    {
+        for (auto &asset : mAssetQuantities)
+            asset.second.mCurrentQuantity = asset.second.mInitialQuantity;
+
+        for (const auto &item : mTypeItemMap)
+        {
+            if (mAssetQuantities[item.first].mCurrentQuantity == 0)
+                continue;
+
+            item.second.get().setAssetQuantity(takeAssets(item.first, item.second.get().getQuantityRequiredForParent()));
+        }
+    }
+
     void IndustryManufacturingSetupModel::signalQuantityChange(EveType::IdType typeId)
     {
         signalRoleChange(typeId, { RunsRole, QuantityRequiredRole, TotalTimeRole });
@@ -744,6 +761,7 @@ namespace Evernus
 
     void IndustryManufacturingSetupModel::signalManufacturingRolesChange()
     {
+        fillItemAssets();
         signalRoleChange({ RunsRole, QuantityRequiredRole, TimeRole, TotalTimeRole });
     }
 
@@ -760,6 +778,8 @@ namespace Evernus
 
     void IndustryManufacturingSetupModel::roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles)
     {
+        fillItemAssets();
+
         const auto items = mTypeItemMap.equal_range(typeId);
         for (auto item = items.first; item != items.second; ++item)
         {
