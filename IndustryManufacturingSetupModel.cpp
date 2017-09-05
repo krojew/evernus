@@ -682,10 +682,17 @@ namespace Evernus
 
         for (const auto &item : mTypeItemMap)
         {
-            if (mAssetQuantities[item.first].mCurrentQuantity == 0)
+            auto &realItem = item.second.get();
+            if (realItem.getParent() == &mRoot || mAssetQuantities[item.first].mCurrentQuantity == 0)
                 continue;
 
-            item.second.get().setAssetQuantity(takeAssets(item.first, item.second.get().getQuantityRequiredForParent()));
+            const auto &settings = mSetup.getTypeSettings(realItem.getTypeId());
+            if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyAtCustomCost ||
+                settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyFromSource ||
+                settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
+            {
+                realItem.setAssetQuantity(takeAssets(item.first, realItem.getQuantityRequiredForParent()));
+            }
         }
     }
 
