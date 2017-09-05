@@ -778,7 +778,7 @@ namespace Evernus
     {
         std::unordered_set<EveType::IdType> remaining{typeId}, inspected;
 
-        const auto parentTotalTimeChanged =
+        auto parentTotalTimeChanged =
             roles.contains(TimeEfficiencyRole) ||
             roles.contains(QuantityRequiredRole) ||
             roles.contains(SourceRole) ||
@@ -810,6 +810,9 @@ namespace Evernus
                 if (parentTotalTimeChanged)
                     signalParentDependentRolesChange(item->second.get());
             }
+
+            // we've notified parents of the original type ids, so now we're only notifying our children
+            parentTotalTimeChanged = false;
         } while (!remaining.empty());
     }
 
