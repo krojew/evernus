@@ -27,10 +27,13 @@
 #include "EveDataProvider.h"
 #include "IndustryUtils.h"
 #include "Character.h"
+#include "PriceType.h"
 #include "EveType.h"
 
 namespace Evernus
 {
+    class ItemCostProvider;
+    class ExternalOrder;
     class AssetProvider;
 
     class IndustryManufacturingSetupModel
@@ -42,6 +45,7 @@ namespace Evernus
         IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                         const EveDataProvider &dataProvider,
                                         const AssetProvider &assetProvider,
+                                        const ItemCostProvider &costProvider,
                                         const CharacterRepository &characterRepo,
                                         QObject *parent = nullptr);
         IndustryManufacturingSetupModel(const IndustryManufacturingSetupModel &) = default;
@@ -70,6 +74,9 @@ namespace Evernus
         void setTimeRigType(IndustryUtils::RigType type);
         void setFacilitySize(IndustryUtils::Size size);
 
+        void setPriceTypes(PriceType src, PriceType dst);
+        void setOrders(const std::vector<ExternalOrder> &orders);
+
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;
 
@@ -86,6 +93,7 @@ namespace Evernus
             MaterialEfficiencyRole,
             TimeEfficiencyRole,
             TotalTimeRole,
+            CostRole,
         };
 
         class TreeItem;
@@ -118,6 +126,8 @@ namespace Evernus
 
             std::chrono::seconds getEffectiveTime() const;
             std::chrono::seconds getEffectiveTotalTime() const;
+
+            double getCost() const;
 
             TreeItem *getChild(int row) const;
             TreeItem *getParent() const noexcept;
@@ -176,6 +186,7 @@ namespace Evernus
         IndustryManufacturingSetup &mSetup;
         const EveDataProvider &mDataProvider;
         const AssetProvider &mAssetProvider;
+        const ItemCostProvider &mCostProvider;
         const CharacterRepository &mCharacterRepo;
 
         TreeItem mRoot{*this, mSetup};
@@ -193,6 +204,8 @@ namespace Evernus
         IndustryUtils::RigType mTimeRigType = IndustryUtils::RigType::None;
         IndustryUtils::Size mFacilitySize = IndustryUtils::Size::Medium;
 
+        PriceType mSrcPrice = PriceType::Buy;
+        PriceType mDstPrice = PriceType::Sell;
 
         void fillChildren(TreeItem &item);
 
@@ -210,7 +223,7 @@ namespace Evernus
         void signalRoleChange(const QVector<int> &roles);
         void signalRoleChange(EveType::IdType typeId, const QVector<int> &roles);
         void signalTimeChange();
-        void signalParentTotalTimeChange(const TreeItem &item);
+        void signalParentDependentRolesChange(const TreeItem &item);
         void signalManufacturingRolesChange();
         void signalManufacturingRolesChange(EveType::IdType typeId);
         void signalRoleChange(TreeItem &item, const QVector<int> &roles);

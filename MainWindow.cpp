@@ -983,6 +983,7 @@ namespace Evernus
                                                     mRepositoryProvider.getCharacterRepository(),
                                                     taskManager,
                                                     charAssetProvider,
+                                                    mItemCostProvider,
                                                     clientId,
                                                     clientSecret,
                                                     this};
@@ -990,7 +991,6 @@ namespace Evernus
         connect(industryTab, &IndustryWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         connect(this, &MainWindow::preferencesChanged, industryTab, &IndustryWidget::handleNewPreferences);
         connect(this, &MainWindow::characterAssetsChanged, industryTab, &IndustryWidget::refreshAssets);
-        connect(this, &MainWindow::externalOrdersChanged, industryTab, &IndustryWidget::refreshPrices);
 
         QSettings settings;
 

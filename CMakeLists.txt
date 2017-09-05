@@ -287,6 +287,8 @@ add_executable(
     Defines.h
     DeviationSourceWidget.cpp
     DeviationSourceWidget.h
+    DontSaveImportedOrdersCheckBox.cpp
+    DontSaveImportedOrdersCheckBox.h
     DoubleTypeAggregatedDetailsWidget.cpp
     DoubleTypeAggregatedDetailsWidget.h
     DoubleTypeCompareWidget.cpp
@@ -565,6 +567,8 @@ add_executable(
     PricePreferencesWidget.h
     PriceSettings.h
     PriceType.h
+    PriceTypeComboBox.cpp
+    PriceTypeComboBox.h
     PriceUtils.cpp
     PriceUtils.h
     ProgressiveCounter.cpp

@@ -30,6 +30,7 @@ namespace Evernus
     class MarketGroupRepository;
     class CharacterRepository;
     class EveTypeRepository;
+    class ItemCostProvider;
     class EveDataProvider;
     class RegionComboBox;
     class AssetProvider;
@@ -49,6 +50,7 @@ namespace Evernus
                        const CharacterRepository &characterRepo,
                        TaskManager &taskManager,
                        const AssetProvider &assetProvider,
+                       const ItemCostProvider &costProvider,
                        QByteArray clientId,
                        QByteArray clientSecret,
                        QWidget *parent = nullptr);
@@ -67,7 +69,6 @@ namespace Evernus
         void setCharacter(Character::IdType id);
 
         void refreshAssets();
-        void refreshPrices();
 
     private:
         IndustryManufacturingWidget *mManufacturingWidget = nullptr;

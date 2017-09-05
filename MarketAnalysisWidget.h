@@ -30,6 +30,7 @@ namespace Evernus
 {
     class ScrapmetalReprocessingArbitrageWidget;
     class OreReprocessingArbitrageWidget;
+    class DontSaveImportedOrdersCheckBox;
     class RegionStationPresetRepository;
     class RegionTypePresetRepository;
     class InterRegionAnalysisWidget;
@@ -38,6 +39,7 @@ namespace Evernus
     class MarketGroupRepository;
     class RegionAnalysisWidget;
     class CharacterRepository;
+    class PriceTypeComboBox;
     class EveTypeRepository;
     class EveDataProvider;
     class TaskManager;
@@ -105,10 +107,10 @@ namespace Evernus
         OreReprocessingArbitrageWidget *mOreReprocessingArbitrageWidget = nullptr;
         ScrapmetalReprocessingArbitrageWidget *mScrapmetalReprocessingArbitrageWidget = nullptr;
 
-        QCheckBox *mDontSaveBtn = nullptr;
+        DontSaveImportedOrdersCheckBox *mDontSaveBtn = nullptr;
         QCheckBox *mIgnoreExistingOrdersBtn = nullptr;
-        QComboBox *mSrcPriceTypeCombo = nullptr;
-        QComboBox *mDstPriceTypeCombo = nullptr;
+        PriceTypeComboBox *mSrcPriceTypeCombo = nullptr;
+        PriceTypeComboBox *mDstPriceTypeCombo = nullptr;
 
         uint mOrderSubtask = TaskConstants::invalidTask;
         uint mHistorySubtask = TaskConstants::invalidTask;
@@ -122,7 +124,5 @@ namespace Evernus
 
         void checkCompletion();
         void recalculateAllData();
-
-        static PriceType getPriceType(const QComboBox &combo);
     };
 }

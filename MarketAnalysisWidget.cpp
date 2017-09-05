@@ -25,6 +25,7 @@
 
 #include "ScrapmetalReprocessingArbitrageWidget.h"
 #include "OreReprocessingArbitrageWidget.h"
+#include "DontSaveImportedOrdersCheckBox.h"
 #include "InterRegionAnalysisWidget.h"
 #include "ImportingAnalysisWidget.h"
 #include "RegionTypeSelectDialog.h"
@@ -32,6 +33,7 @@
 #include "MarketOrderRepository.h"
 #include "RegionAnalysisWidget.h"
 #include "CharacterRepository.h"
+#include "PriceTypeComboBox.h"
 #include "EveDataProvider.h"
 #include "ImportSettings.h"
 #include "SSOMessageBox.h"
@@ -95,9 +97,8 @@ namespace Evernus
 
         QSettings settings;
 
-        mDontSaveBtn = new QCheckBox{tr("Don't save imported orders (huge performance gain)"), this};
+        mDontSaveBtn = new DontSaveImportedOrdersCheckBox{this};
         toolBarLayout->addWidget(mDontSaveBtn);
-        mDontSaveBtn->setToolTip(tr("Saving orders makes them available to other parts of the application, even across restarts."));
         mDontSaveBtn->setChecked(
             settings.value(MarketAnalysisSettings::dontSaveLargeOrdersKey, MarketAnalysisSettings::dontSaveLargeOrdersDefault).toBool());
         connect(mDontSaveBtn, &QCheckBox::toggled, [](auto checked) {
@@ -156,14 +157,12 @@ namespace Evernus
         });
 
         auto createPriceTypeCombo = [=](auto &combo) {
-            combo = new QComboBox{this};
+            combo = new PriceTypeComboBox{this};
             toolBarLayout->addWidget(combo);
-            combo->addItem(tr("Sell"), static_cast<int>(PriceType::Sell));
-            combo->addItem(tr("Buy"), static_cast<int>(PriceType::Buy));
 
             connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=] {
-                const auto src = getPriceType(*mSrcPriceTypeCombo);
-                const auto dst = getPriceType(*mDstPriceTypeCombo);
+                const auto src = mSrcPriceTypeCombo->getPriceType();
+                const auto dst = mDstPriceTypeCombo->getPriceType();
 
                 mRegionAnalysisWidget->setPriceTypes(src, dst);
                 mInterRegionAnalysisWidget->setPriceTypes(src, dst);
@@ -198,8 +197,8 @@ namespace Evernus
         auto tabs = new QTabWidget{this};
         mainLayout->addWidget(tabs);
 
-        const auto src = getPriceType(*mSrcPriceTypeCombo);
-        const auto dst = getPriceType(*mDstPriceTypeCombo);
+        const auto src = mSrcPriceTypeCombo->getPriceType();
+        const auto dst = mDstPriceTypeCombo->getPriceType();
 
         mRegionAnalysisWidget = new RegionAnalysisWidget{clientId, clientSecret, mDataProvider, *this, tabs};
         connect(mRegionAnalysisWidget, &RegionAnalysisWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
@@ -413,10 +412,5 @@ namespace Evernus
         mImportingAnalysisWidget->recalculateData();
         mOreReprocessingArbitrageWidget->recalculateData();
         mScrapmetalReprocessingArbitrageWidget->recalculateData();
-    }
-
-    PriceType MarketAnalysisWidget::getPriceType(const QComboBox &combo)
-    {
-        return static_cast<PriceType>(combo.currentData().toInt());
     }
 }

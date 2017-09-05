@@ -19,6 +19,7 @@
 #include <boost/range/adaptor/transformed.hpp>
 #include <boost/scope_exit.hpp>
 
+#include "ItemCostProvider.h"
 #include "AssetProvider.h"
 #include "AssetList.h"
 
@@ -158,6 +159,37 @@ namespace Evernus
         return getEffectiveRuns() * getEffectiveTime() + childTime;
     }
 
+    double IndustryManufacturingSetupModel::TreeItem::getCost() const
+    {
+        // TODO: implement
+        if (Q_UNLIKELY(isOutput()))
+        {
+            return 0.;
+        }
+
+        const auto &settings = mSetup.getTypeSettings(mTypeId);
+        switch (settings.mSource) {
+        case IndustryManufacturingSetup::InventorySource::AcquireForFree:
+            return 0.;
+        case IndustryManufacturingSetup::InventorySource::BuyAtCustomCost:
+            Q_ASSERT(mModel.mCharacter);
+            return mModel.mCostProvider.fetchForCharacterAndType(mModel.mCharacter->getId(), mTypeId)->getAdjustedCost();
+        case IndustryManufacturingSetup::InventorySource::BuyFromSource:
+            break;
+        case IndustryManufacturingSetup::InventorySource::Manufacture:
+            break;
+            break;
+        case IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyAtCustomCost:
+            break;
+        case IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyFromSource:
+            break;
+        case IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture:
+            break;
+        }
+
+        return 0.;
+    }
+
     IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getChild(int row) const
     {
         return (row >= static_cast<int>(mChildItems.size())) ? (nullptr) : (mChildItems[row].get());
@@ -253,12 +285,14 @@ namespace Evernus
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                                                      const EveDataProvider &dataProvider,
                                                                      const AssetProvider &assetProvider,
+                                                                     const ItemCostProvider &costProvider,
                                                                      const CharacterRepository &characterRepo,
                                                                      QObject *parent)
         : QAbstractItemModel{parent}
         , mSetup{setup}
         , mDataProvider{dataProvider}
         , mAssetProvider{assetProvider}
+        , mCostProvider{costProvider}
         , mCharacterRepo{characterRepo}
     {
     }
@@ -312,6 +346,8 @@ namespace Evernus
                 }
             case TotalTimeRole:
                 return formatDuration(item->getEffectiveTotalTime());
+            case CostRole:
+                return item->getCost();
             }
         }
         catch (const IndustryManufacturingSetup::NotSourceTypeException &e)
@@ -369,6 +405,7 @@ namespace Evernus
             { MaterialEfficiencyRole, QByteArrayLiteral("materialEfficiency") },
             { TimeEfficiencyRole, QByteArrayLiteral("timeEfficiency") },
             { TotalTimeRole, QByteArrayLiteral("totalTime") },
+            { CostRole, QByteArrayLiteral("cost") },
         };
     }
 
@@ -565,6 +602,19 @@ namespace Evernus
         signalTimeChange();
     }
 
+    void IndustryManufacturingSetupModel::setPriceTypes(PriceType src, PriceType dst)
+    {
+        mSrcPrice = src;
+        mDstPrice = dst;
+
+        signalRoleChange({ CostRole });
+    }
+
+    void IndustryManufacturingSetupModel::setOrders(const std::vector<ExternalOrder> &orders)
+    {
+        // TODO: implement
+    }
+
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)
     {
         const auto &info = mSetup.getManufacturingInfo(item.getTypeId());
@@ -646,6 +696,7 @@ namespace Evernus
             roles.contains(TimeEfficiencyRole) ||
             roles.contains(QuantityRequiredRole) ||
             roles.contains(SourceRole) ||
+            roles.contains(CostRole) ||
             roles.contains(TimeRole) ||
             roles.contains(TotalTimeRole);
 
@@ -671,7 +722,7 @@ namespace Evernus
             {
                 signalRoleChange(item->second.get(), roles);
                 if (parentTotalTimeChanged)
-                    signalParentTotalTimeChange(item->second.get());
+                    signalParentDependentRolesChange(item->second.get());
             }
         } while (!remaining.empty());
     }
@@ -681,12 +732,12 @@ namespace Evernus
         signalRoleChange({ TimeRole, TotalTimeRole });
     }
 
-    void IndustryManufacturingSetupModel::signalParentTotalTimeChange(const TreeItem &item)
+    void IndustryManufacturingSetupModel::signalParentDependentRolesChange(const TreeItem &item)
     {
         auto parent = item.getParent();
         while (parent != nullptr && parent != &mRoot)
         {
-            signalRoleChange(*parent, { TotalTimeRole });
+            signalRoleChange(*parent, { TotalTimeRole, CostRole });
             parent = parent->getParent();
         }
     }

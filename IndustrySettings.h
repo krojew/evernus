@@ -27,6 +27,7 @@ namespace Evernus
         const auto manufacturingMaterialRigDefault = static_cast<int>(IndustryUtils::RigType::None);
         const auto manufacturingTimeRigDefault = static_cast<int>(IndustryUtils::RigType::None);
         const auto manufacturingFacilitySizeDefault = static_cast<int>(IndustryUtils::Size::Medium);
+        const auto dontSaveLargeOrdersDefault = true;
 
         const auto srcManufacturingRegionKey = QStringLiteral("industry/manufacturing/srcRegion");
         const auto dstManufacturingRegionKey = QStringLiteral("industry/manufacturing/dstRegion");
@@ -38,5 +39,6 @@ namespace Evernus
         const auto manufacturingMaterialRigKey = QStringLiteral("industry/manufacturing/materialRig");
         const auto manufacturingTimeRigKey = QStringLiteral("industry/manufacturing/timeRig");
         const auto manufacturingFacilitySizeKey = QStringLiteral("industry/manufacturing/facilitySize");
+        const auto dontSaveLargeOrdersKey = QStringLiteral("industry/dontSaveOrders");
     }
 }

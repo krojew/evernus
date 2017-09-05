@@ -1867,6 +1867,19 @@ Total: %7</source>
     </message>
 </context>
 <context>
+    <name>Evernus::DontSaveImportedOrdersCheckBox</name>
+    <message>
+        <location filename="../DontSaveImportedOrdersCheckBox.cpp" line="20"/>
+        <source>Don&apos;t save imported orders (huge performance gain)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DontSaveImportedOrdersCheckBox.cpp" line="22"/>
+        <source>Saving orders makes them available to other parts of the application, even across restarts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::DoubleTypeCompareWidget</name>
     <message>
         <location filename="../DoubleTypeCompareWidget.cpp" line="52"/>
@@ -3225,150 +3238,170 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryManufacturingWidget</name>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="68"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="71"/>
         <source>Import data for current setup </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="73"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="76"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="91"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="94"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="113"/>
-        <source>Facility type:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="122"/>
-        <source>Station</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="123"/>
-        <source>Engineering Complex</source>
+        <source>Source price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="124"/>
-        <source>Assembly Array</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="125"/>
-        <source>Thukker Component Array</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="126"/>
-        <source>Rapid Assembly Array</source>
+        <location filename="../IndustryManufacturingWidget.cpp" line="128"/>
+        <source>Type of orders used for buying items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="130"/>
-        <source>Structure size:</source>
+        <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="134"/>
-        <source>Medium</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="135"/>
-        <source>Large</source>
+        <location filename="../IndustryManufacturingWidget.cpp" line="132"/>
+        <source>Type of orders used for selling items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="136"/>
-        <source>X-Large</source>
+        <source>Facility type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="144"/>
-        <source>Security status:</source>
+        <location filename="../IndustryManufacturingWidget.cpp" line="145"/>
+        <source>Station</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="146"/>
+        <source>Engineering Complex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="147"/>
+        <source>Assembly Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="148"/>
-        <source>High sec</source>
+        <source>Thukker Component Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="149"/>
-        <source>Low sec</source>
+        <source>Rapid Assembly Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="150"/>
-        <source>Null sec/WH</source>
+        <location filename="../IndustryManufacturingWidget.cpp" line="153"/>
+        <source>Structure size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="157"/>
+        <source>Medium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="158"/>
-        <source>Material rig:</source>
+        <source>Large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="162"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="176"/>
-        <source>None</source>
+        <location filename="../IndustryManufacturingWidget.cpp" line="159"/>
+        <source>X-Large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="163"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="177"/>
-        <source>T1</source>
+        <location filename="../IndustryManufacturingWidget.cpp" line="167"/>
+        <source>Security status:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="164"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="178"/>
-        <source>T2</source>
+        <location filename="../IndustryManufacturingWidget.cpp" line="171"/>
+        <source>High sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="172"/>
+        <source>Low sec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="173"/>
+        <source>Null sec/WH</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="181"/>
+        <source>Material rig:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="185"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="199"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="186"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="200"/>
+        <source>T1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="187"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="201"/>
+        <source>T2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="195"/>
         <source>Time rig:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="219"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="251"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="300"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="327"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="302"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="329"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="303"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="330"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="314"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="341"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="314"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="341"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="328"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="358"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3376,7 +3409,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryWidget</name>
     <message>
-        <location filename="../IndustryWidget.cpp" line="51"/>
+        <location filename="../IndustryWidget.cpp" line="53"/>
         <source>Manufacturing analysis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4149,7 +4182,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="989"/>
+        <location filename="../MainWindow.cpp" line="990"/>
         <source>Industry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4182,132 +4215,112 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::MarketAnalysisWidget</name>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="91"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="93"/>
         <source>Import data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="98"/>
-        <source>Don&apos;t save imported orders (huge performance gain)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="100"/>
-        <source>Saving orders makes them available to other parts of the application, even across restarts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="108"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="109"/>
         <source>Ignore types with existing orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="110"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="111"/>
         <source>Ignore item types which have active market orders.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="120"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="121"/>
         <source>Discard bogus orders (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="123"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="124"/>
         <source>Use heuristics based on average price to determine if a given order is legit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="135"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="136"/>
         <source>Bogus order threshold:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="147"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="148"/>
         <source>How much a price can deviate from the average price to consider it legit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="161"/>
-        <source>Sell</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="162"/>
-        <source>Buy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="176"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="175"/>
         <source>Source price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="181"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="180"/>
         <source>Type of orders used for buying items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="183"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="182"/>
         <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="185"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="184"/>
         <source>Type of orders used for selling items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="187"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="186"/>
         <source>Use skills and taxes for difference calculation (causes recalculation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="242"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="241"/>
         <source>Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="243"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="242"/>
         <source>Inter-Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="244"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="243"/>
         <source>Importing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="245"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="244"/>
         <source>Ore reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="246"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="245"/>
         <source>Scrapmetal reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="307"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="306"/>
         <source>Importing data for analysis...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="309"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="308"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="310"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="309"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="313"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="312"/>
         <source>Making %1 ESI history requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="368"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="367"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5916,6 +5929,19 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../PricePreferencesWidget.cpp" line="199"/>
         <source>Fast Price Copy allows you to update your orders in a very fast manner. Simply assign a keyboard shortcut, select an order in any market order view and press the shortcut to copy the updated price and automatically jump to the next order on the list. You can do this even when Evernus doesn&apos;t have the input focus - the keyboard shortcut works system-wide. You can use this to update your prices without ever leaving Eve client.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::PriceTypeComboBox</name>
+    <message>
+        <location filename="../PriceTypeComboBox.cpp" line="22"/>
+        <source>Sell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PriceTypeComboBox.cpp" line="23"/>
+        <source>Buy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -28,6 +28,7 @@ namespace Evernus
                                    const CharacterRepository &characterRepo,
                                    TaskManager &taskManager,
                                    const AssetProvider &assetProvider,
+                                   const ItemCostProvider &costProvider,
                                    QByteArray clientId,
                                    QByteArray clientSecret,
                                    QWidget *parent)
@@ -45,6 +46,7 @@ namespace Evernus
                                                                characterRepo,
                                                                taskManager,
                                                                assetProvider,
+                                                               costProvider,
                                                                std::move(clientId),
                                                                std::move(clientSecret),
                                                                this};
@@ -66,10 +68,5 @@ namespace Evernus
     void IndustryWidget::refreshAssets()
     {
         mManufacturingWidget->refreshAssets();
-    }
-
-    void IndustryWidget::refreshPrices()
-    {
-        mManufacturingWidget->refreshPrices();
     }
 }

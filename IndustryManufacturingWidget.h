@@ -33,11 +33,14 @@ class QComboBox;
 
 namespace Evernus
 {
+    class DontSaveImportedOrdersCheckBox;
     class RegionStationPresetRepository;
     class TradeableTypesTreeView;
     class MarketGroupRepository;
     class CharacterRepository;
     class EveTypeRepository;
+    class PriceTypeComboBox;
+    class ItemCostProvider;
     class EveDataProvider;
     class RegionComboBox;
     class AssetProvider;
@@ -57,6 +60,7 @@ namespace Evernus
                                     const CharacterRepository &characterRepo,
                                     TaskManager &taskManager,
                                     const AssetProvider &assetProvider,
+                                    const ItemCostProvider &costProvider,
                                     QByteArray clientId,
                                     QByteArray clientSecret,
                                     QWidget *parent = nullptr);
@@ -65,7 +69,6 @@ namespace Evernus
         virtual ~IndustryManufacturingWidget() = default;
 
         void refreshAssets();
-        void refreshPrices();
 
         IndustryManufacturingWidget &operator =(const IndustryManufacturingWidget &) = default;
         IndustryManufacturingWidget &operator =(IndustryManufacturingWidget &&) = default;
@@ -86,6 +89,8 @@ namespace Evernus
         void updateOrderTask(const QString &text);
         void endOrderTask(const MarketOrderDataFetcher::OrderResultType &orders, const QString &error);
 
+        void setPriceTypes();
+
     private:
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
@@ -93,11 +98,16 @@ namespace Evernus
         RegionComboBox *mSourceRegionCombo = nullptr;
         RegionComboBox *mDestRegionCombo = nullptr;
 
+        PriceTypeComboBox *mSrcPriceTypeCombo = nullptr;
+        PriceTypeComboBox *mDstPriceTypeCombo = nullptr;
+
         QComboBox *mFacilityTypeCombo = nullptr;
         QComboBox *mFacilitySizeCombo = nullptr;
         QComboBox *mSecurityStatusCombo = nullptr;
         QComboBox *mMaterialRigCombo = nullptr;
         QComboBox *mTimeRigCombo = nullptr;
+
+        DontSaveImportedOrdersCheckBox *mDontSaveBtn = nullptr;
 
         TradeableTypesTreeView *mTypeView = nullptr;
 

@@ -27,10 +27,12 @@
 #include <QLabel>
 
 #include "CachingNetworkAccessManagerFactory.h"
+#include "DontSaveImportedOrdersCheckBox.h"
 #include "FavoriteLocationsButton.h"
 #include "TradeableTypesTreeView.h"
 #include "StationSelectButton.h"
 #include "TypeLocationPairs.h"
+#include "PriceTypeComboBox.h"
 #include "IndustrySettings.h"
 #include "EveDataProvider.h"
 #include "RegionComboBox.h"
@@ -51,13 +53,14 @@ namespace Evernus
                                                              const CharacterRepository &characterRepo,
                                                              TaskManager &taskManager,
                                                              const AssetProvider &assetProvider,
+                                                             const ItemCostProvider &costProvider,
                                                              QByteArray clientId,
                                                              QByteArray clientSecret,
                                                              QWidget *parent)
         : QWidget{parent}
         , mDataProvider{dataProvider}
         , mTaskManager{taskManager}
-        , mSetupModel{mSetup, mDataProvider, assetProvider, characterRepo}
+        , mSetupModel{mSetup, mDataProvider, assetProvider, costProvider, characterRepo}
         , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
     {
         const auto mainLayout = new QVBoxLayout{this};
@@ -109,6 +112,26 @@ namespace Evernus
             srcStationBtn->setSelectedStationId(srcStationId);
             dstStationBtn->setSelectedStationId(dstStationId);
         });
+
+        auto createPriceTypeCombo = [=](auto &combo) {
+            combo = new PriceTypeComboBox{this};
+            toolBarLayout->addWidget(combo);
+
+            connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &IndustryManufacturingWidget::setPriceTypes);
+        };
+
+        toolBarLayout->addWidget(new QLabel{tr("Source price:"), this});
+        createPriceTypeCombo(mSrcPriceTypeCombo);
+        mSrcPriceTypeCombo->blockSignals(true);
+        mSrcPriceTypeCombo->setCurrentIndex(1);
+        mSrcPriceTypeCombo->blockSignals(false);
+        mSrcPriceTypeCombo->setToolTip(tr("Type of orders used for buying items."));
+
+        toolBarLayout->addWidget(new QLabel{tr("Destination price:"), this});
+        createPriceTypeCombo(mDstPriceTypeCombo);
+        mDstPriceTypeCombo->setToolTip(tr("Type of orders used for selling items."));
+
+        setPriceTypes();
 
         toolBarLayout->addWidget(new QLabel{tr("Facility type:"), this});
 
@@ -192,6 +215,15 @@ namespace Evernus
 
         toggleFacilityCombos();
 
+        mDontSaveBtn = new DontSaveImportedOrdersCheckBox{this};
+        toolBarLayout->addWidget(mDontSaveBtn);
+        mDontSaveBtn->setChecked(
+            settings.value(IndustrySettings::dontSaveLargeOrdersKey, IndustrySettings::dontSaveLargeOrdersDefault).toBool());
+        connect(mDontSaveBtn, &QCheckBox::toggled, [](auto checked) {
+            QSettings settings;
+            settings.setValue(IndustrySettings::dontSaveLargeOrdersKey, checked);
+        });
+
         mSetupModel.setFacilityType(static_cast<IndustryUtils::FacilityType>(mFacilityTypeCombo->currentData().toInt()));
         mSetupModel.setFacilitySize(static_cast<IndustryUtils::Size>(mFacilitySizeCombo->currentData().toInt()));
         mSetupModel.setSecurityStatus(static_cast<IndustryUtils::SecurityStatus>(mSecurityStatusCombo->currentData().toInt()));
@@ -248,11 +280,6 @@ namespace Evernus
     void IndustryManufacturingWidget::refreshAssets()
     {
         mSetupModel.refreshAssets();
-    }
-
-    void IndustryManufacturingWidget::refreshPrices()
-    {
-
     }
 
     void IndustryManufacturingWidget::handleNewPreferences()
@@ -325,11 +352,23 @@ namespace Evernus
 
         if (error.isEmpty())
         {
-            mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(orders->size()));
-            emit updateExternalOrders(*orders);
+            mSetupModel.setOrders(*orders);
+            if (!mDontSaveBtn->isChecked())
+            {
+                mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(orders->size()));
+                emit updateExternalOrders(*orders);
+            }
         }
 
         mTaskManager.endTask(mOrderSubtask, error);
+    }
+
+    void IndustryManufacturingWidget::setPriceTypes()
+    {
+        const auto src = mSrcPriceTypeCombo->getPriceType();
+        const auto dst = mDstPriceTypeCombo->getPriceType();
+
+        mSetupModel.setPriceTypes(src, dst);
     }
 
     void IndustryManufacturingWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)
