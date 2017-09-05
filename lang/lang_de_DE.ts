@@ -3043,103 +3043,103 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingAnalysisWidget</name>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="61"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="62"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="76"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="77"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="92"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="93"/>
         <source>Analysis period:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="97"/>
-        <location filename="../ImportingAnalysisWidget.cpp" line="107"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="98"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="108"/>
         <source> days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="98"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="99"/>
         <source>The number of days going back from today, to use for analysis. If the destination has been in use for shorter time, be sure to adjust this accordingly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="102"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="103"/>
         <source>Aggregate over:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="108"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="109"/>
         <source>The number of days to aggregate movement over. This should reflect how fast you want your stock to sell.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="112"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="113"/>
         <source>Price per m³:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="118"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="119"/>
         <source>Addtional cost added to buy price. This is multiplied by item size and desired volume to move (which in turn is based on aggregation days).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="121"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="122"/>
         <source>Collateral:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="127"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="128"/>
         <source>Addtional cost added to buy price. This is the percetange of the base price.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="133"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="134"/>
         <source>buy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="137"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="138"/>
         <source>sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="141"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="142"/>
         <source>Hide empty source sell orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="143"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="144"/>
         <source>Hide item types which have 0 source orders when source price type is set to &quot;Sell&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="147"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="148"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="151"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="152"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="174"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="175"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="324"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="329"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="324"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="329"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3379,47 +3379,47 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::InterRegionAnalysisWidget</name>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="81"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="82"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="91"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="92"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="114"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="115"/>
         <source>Volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="132"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="133"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="150"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="151"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="154"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="155"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="177"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="178"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="318"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="323"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="318"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="323"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7538,6 +7538,19 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../MarginToolDialog.cpp" line="830"/>
         <source>Could not start watching market log path. Make sure the path exists (eg. export some logs) and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MarketAnalysisUtils</name>
+    <message>
+        <location filename="../MarketAnalysisUtils.cpp" line="27"/>
+        <source>Missing history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MarketAnalysisUtils.cpp" line="28"/>
+        <source>Some item types are missing their history. Probably Eve servers have not returned one.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

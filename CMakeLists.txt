@@ -467,6 +467,8 @@ add_executable(
     MarketAnalysisDataFetcher.cpp
     MarketAnalysisDataFetcher.h
     MarketAnalysisSettings.h
+    MarketAnalysisUtils.cpp
+    MarketAnalysisUtils.h
     MarketAnalysisWidget.h
     MarketAnalysisWidget.cpp
     MarketBrowserWidget.cpp

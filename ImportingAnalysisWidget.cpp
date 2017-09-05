@@ -34,6 +34,7 @@
 #include "CalculatingDataWidget.h"
 #include "StationSelectButton.h"
 #include "AdjustableTableView.h"
+#include "MarketAnalysisUtils.h"
 #include "MarketDataProvider.h"
 #include "LookupActionGroup.h"
 #include "EveDataProvider.h"
@@ -297,6 +298,10 @@ namespace Evernus
             widget->show();
             connect(this, &ImportingAnalysisWidget::preferencesChanged,
                     widget, &InterRegionTypeDetailsWidget::handleNewPreferences);
+        }
+        else
+        {
+            MarketAnalysisUtils::showMissingHistoryMessage(this);
         }
     }
 
