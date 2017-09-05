@@ -213,6 +213,7 @@ Item {
                         value: materialEfficiency
                         to: 10
                         editable: true
+                        enabled: isManufactured
 
                         onValueChanged: SetupController.setMaterialEfficiency(typeId, value)
 
@@ -236,6 +237,7 @@ Item {
                         value: timeEfficiency
                         to: 20
                         editable: true
+                        enabled: isManufactured
 
                         onValueChanged: SetupController.setTimeEfficiency(typeId, value)
 
