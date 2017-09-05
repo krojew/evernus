@@ -85,6 +85,7 @@ namespace Evernus
             RunsRole,
             MaterialEfficiencyRole,
             TimeEfficiencyRole,
+            TotalTimeRole,
         };
 
         class TreeItem;
@@ -116,6 +117,7 @@ namespace Evernus
             void setRuns(uint value) noexcept;
 
             std::chrono::seconds getEffectiveTime() const;
+            std::chrono::seconds getEffectiveTotalTime() const;
 
             TreeItem *getChild(int row) const;
             TreeItem *getParent() const noexcept;
@@ -207,9 +209,13 @@ namespace Evernus
         void signalTimeChange(EveType::IdType typeId);
         void signalRoleChange(const QVector<int> &roles);
         void signalRoleChange(EveType::IdType typeId, const QVector<int> &roles);
-        void signalQuantityChange();
         void signalTimeChange();
+        void signalParentTotalTimeChange(const TreeItem &item);
+        void signalManufacturingRolesChange();
+        void signalManufacturingRolesChange(EveType::IdType typeId);
         void signalRoleChange(TreeItem &item, const QVector<int> &roles);
         void roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles);
+
+        static QString formatDuration(std::chrono::seconds time);
     };
 }

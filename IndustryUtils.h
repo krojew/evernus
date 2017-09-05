@@ -60,8 +60,7 @@ namespace Evernus
                                     SecurityStatus securityStatus,
                                     RigType rigType);
 
-        std::chrono::seconds getProductionTime(uint runs,
-                                               std::chrono::seconds baseProductionTime,
+        std::chrono::seconds getProductionTime(std::chrono::seconds baseProductionTime,
                                                uint timeEfficiency,
                                                float implantBonus,
                                                float skillModifier,

@@ -21,6 +21,7 @@ import QtQml 2.2
 
 Item {
     property bool isOutput: false
+    property bool isManufactured: isOutput || source === 1 || source === 5
 
     readonly property int contentPadding: 10
 
@@ -138,15 +139,6 @@ Item {
                 columns: 2
 
                 Label {
-                    id: quantityText
-                    text: qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(time)
-                    color: "#cccccc"
-                    visible: quantityProduced > 0
-                    Layout.fillWidth: true
-                    Layout.columnSpan: 2
-                }
-
-                Label {
                     visible: !isOutput
                     id: sourceText
                     text: qsTr("Source:")
@@ -256,6 +248,23 @@ Item {
                             }
                         }
                     }
+                }
+
+                Label {
+                    id: quantityText
+                    text: qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(time)
+                    color: "#cccccc"
+                    visible: isManufactured
+                    Layout.fillWidth: true
+                    Layout.columnSpan: 2
+                }
+
+                Label {
+                    visible: isManufactured
+                    font.bold: true
+                    text: qsTr("Total production time: %1").arg(totalTime)
+                    color: "orange"
+                    Layout.columnSpan: 2
                 }
             }
 

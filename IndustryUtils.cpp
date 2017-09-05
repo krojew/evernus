@@ -65,8 +65,7 @@ namespace Evernus
             return std::max(static_cast<float>(runs), std::ceil(runs * baseQuantity * materialModifier * facilityMod));
         }
 
-        std::chrono::seconds getProductionTime(uint runs,
-                                               std::chrono::seconds baseProductionTime,
+        std::chrono::seconds getProductionTime(std::chrono::seconds baseProductionTime,
                                                uint timeEfficiency,
                                                float implantBonus,
                                                float skillModifier,
@@ -110,7 +109,7 @@ namespace Evernus
             }
 
             return std::chrono::duration_cast<std::chrono::seconds>(
-                baseProductionTime * runs * facilityMod * (1.f - implantBonus / 100.f) * skillModifier * (1.f - timeEfficiency / 100.f)
+                baseProductionTime * facilityMod * (1.f - implantBonus / 100.f) * skillModifier * (1.f - timeEfficiency / 100.f)
             );
         }
     }

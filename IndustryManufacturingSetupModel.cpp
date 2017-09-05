@@ -12,8 +12,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <functional>
 #include <cmath>
 
+#include <boost/range/algorithm/max_element.hpp>
+#include <boost/range/adaptor/transformed.hpp>
 #include <boost/scope_exit.hpp>
 
 #include "AssetProvider.h"
@@ -103,7 +106,7 @@ namespace Evernus
         if (settings.mSource == IndustryManufacturingSetup::InventorySource::Manufacture ||
             settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
         {
-            auto required = getQuantityRequiredForParent();
+            double required = getQuantityRequiredForParent();
             if (settings.mSource == IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
                 required -= mModel.takeAssets(mTypeId, required);
 
@@ -139,6 +142,20 @@ namespace Evernus
 
         // we're buying this stuff
         return 0s;
+    }
+
+    std::chrono::seconds IndustryManufacturingSetupModel::TreeItem::getEffectiveTotalTime() const
+    {
+        const std::function<std::chrono::seconds (const TreeItemPtr &)> transform{[](const auto &child) {
+            Q_ASSERT(child);
+            return child->getEffectiveTotalTime();
+        }};
+        const auto maxChildTime = boost::max_element<boost::range_return_value::return_found_end>(
+            mChildItems | boost::adaptors::transformed(transform)
+        );
+        const auto childTime = (maxChildTime.empty()) ? (0s) : (maxChildTime.front());
+
+        return getEffectiveRuns() * getEffectiveTime() + childTime;
     }
 
     IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getChild(int row) const
@@ -223,8 +240,7 @@ namespace Evernus
         for (const auto skillId : mManufacturingInfo.mAdditionalsSkills)
             skillModifier *= (1.f - mModel.mCharacterManufacturingSkills[skillId] / 100.f);
 
-        return IndustryUtils::getProductionTime(1,
-                                                mManufacturingInfo.mTime,
+        return IndustryUtils::getProductionTime(mManufacturingInfo.mTime,
                                                 getTimeEfficiency(),
                                                 mModel.mCharacter->getManufacturingTimeImplantBonus(),
                                                 skillModifier,
@@ -275,13 +291,7 @@ namespace Evernus
             case SourceRole:
                 return static_cast<int>(mSetup.getTypeSettings(item->getTypeId()).mSource);
             case TimeRole:
-                {
-                    const qulonglong time = std::chrono::duration_cast<std::chrono::seconds>(item->getEffectiveTime()).count();
-                    return QStringLiteral("%1:%2:%3")
-                        .arg(time / 3600, 2, 10, QLatin1Char('0'))
-                        .arg((time / 60) % 60, 2, 10, QLatin1Char('0'))
-                        .arg(time % 60, 2, 10, QLatin1Char('0'));
-                }
+                return formatDuration(item->getEffectiveTime());
             case RunsRole:
                 return item->getRuns();
             case MaterialEfficiencyRole:
@@ -300,6 +310,8 @@ namespace Evernus
 
                     return mSetup.getTypeSettings(id).mTimeEfficiency;
                 }
+            case TotalTimeRole:
+                return formatDuration(item->getEffectiveTotalTime());
             }
         }
         catch (const IndustryManufacturingSetup::NotSourceTypeException &e)
@@ -356,6 +368,7 @@ namespace Evernus
             { RunsRole, QByteArrayLiteral("runs") },
             { MaterialEfficiencyRole, QByteArrayLiteral("materialEfficiency") },
             { TimeEfficiencyRole, QByteArrayLiteral("timeEfficiency") },
+            { TotalTimeRole, QByteArrayLiteral("totalTime") },
         };
     }
 
@@ -430,7 +443,7 @@ namespace Evernus
         mSetup.setSource(id, source);
         mAssetQuantities[id].mCurrentQuantity = mAssetQuantities[id].mInitialQuantity;
 
-        roleAndQuantityChange(id, { SourceRole, QuantityRequiredRole });
+        roleAndQuantityChange(id, { SourceRole, QuantityRequiredRole, TimeRole, TotalTimeRole });
     }
 
     void IndustryManufacturingSetupModel::setRuns(EveType::IdType id, uint runs)
@@ -451,11 +464,11 @@ namespace Evernus
                 item->setRuns(runs);
 
                 // note: don't emit for runs role because of binding loop
-//                const auto idx = createIndex(item->getRow(), 0, item.get());
-//                emit dataChanged(idx, idx, { RunsRole });
+                const auto idx = createIndex(item->getRow(), 0, item.get());
+                emit dataChanged(idx, idx, { TotalTimeRole });
 
                 for (const auto &child : *item)
-                    signalQuantityChange(child->getTypeId());
+                    signalManufacturingRolesChange(child->getTypeId());
             }
         }
         catch (const IndustryManufacturingSetup::NotOutputTypeException &)
@@ -467,7 +480,7 @@ namespace Evernus
     void IndustryManufacturingSetupModel::setMaterialEfficiency(EveType::IdType id, uint value)
     {
         mSetup.setMaterialEfficiency(id, value);
-        roleAndQuantityChange(id, { QuantityRequiredRole }); // note: don't change efficiency role because of binding loop
+        roleAndQuantityChange(id, { QuantityRequiredRole, TotalTimeRole }); // note: don't change efficiency role because of binding loop
     }
 
     void IndustryManufacturingSetupModel::setTimeEfficiency(EveType::IdType id, uint value)
@@ -525,25 +538,25 @@ namespace Evernus
     void IndustryManufacturingSetupModel::setFacilityType(IndustryUtils::FacilityType type)
     {
         mFacilityType = type;
-        signalRoleChange({ RunsRole, QuantityRequiredRole, TimeRole });
+        signalManufacturingRolesChange();
     }
 
     void IndustryManufacturingSetupModel::setSecurityStatus(IndustryUtils::SecurityStatus status)
     {
         mSecurityStatus = status;
-        signalRoleChange({ RunsRole, QuantityRequiredRole, TimeRole });
+        signalManufacturingRolesChange();
     }
 
     void IndustryManufacturingSetupModel::setMaterialRigType(IndustryUtils::RigType type)
     {
         mMaterialRigType = type;
-        signalQuantityChange();
+        signalManufacturingRolesChange();
     }
 
     void IndustryManufacturingSetupModel::setTimeRigType(IndustryUtils::RigType type)
     {
         mTimeRigType = type;
-        signalRoleChange({ RunsRole, QuantityRequiredRole, TimeRole });
+        signalRoleChange({ TimeRole, TotalTimeRole });
     }
 
     void IndustryManufacturingSetupModel::setFacilitySize(IndustryUtils::Size size)
@@ -611,12 +624,12 @@ namespace Evernus
 
     void IndustryManufacturingSetupModel::signalQuantityChange(EveType::IdType typeId)
     {
-        signalRoleChange(typeId, { RunsRole, QuantityRequiredRole });
+        signalRoleChange(typeId, { RunsRole, QuantityRequiredRole, TotalTimeRole });
     }
 
     void IndustryManufacturingSetupModel::signalTimeChange(EveType::IdType typeId)
     {
-        signalRoleChange(typeId, { TimeRole });
+        signalRoleChange(typeId, { TimeRole, TotalTimeRole });
     }
 
     void IndustryManufacturingSetupModel::signalRoleChange(const QVector<int> &roles)
@@ -628,6 +641,13 @@ namespace Evernus
     void IndustryManufacturingSetupModel::signalRoleChange(EveType::IdType typeId, const QVector<int> &roles)
     {
         std::unordered_set<EveType::IdType> remaining{typeId}, inspected;
+
+        const auto parentTotalTimeChanged =
+            roles.contains(TimeEfficiencyRole) ||
+            roles.contains(QuantityRequiredRole) ||
+            roles.contains(SourceRole) ||
+            roles.contains(TimeRole) ||
+            roles.contains(TotalTimeRole);
 
         do {
             const auto nextId = *std::begin(remaining);
@@ -648,18 +668,37 @@ namespace Evernus
 
             const auto items = mTypeItemMap.equal_range(nextId);
             for (auto item = items.first; item != items.second; ++item)
+            {
                 signalRoleChange(item->second.get(), roles);
+                if (parentTotalTimeChanged)
+                    signalParentTotalTimeChange(item->second.get());
+            }
         } while (!remaining.empty());
-    }
-
-    void IndustryManufacturingSetupModel::signalQuantityChange()
-    {
-        signalRoleChange({ RunsRole, QuantityRequiredRole });
     }
 
     void IndustryManufacturingSetupModel::signalTimeChange()
     {
-        signalRoleChange({ TimeRole });
+        signalRoleChange({ TimeRole, TotalTimeRole });
+    }
+
+    void IndustryManufacturingSetupModel::signalParentTotalTimeChange(const TreeItem &item)
+    {
+        auto parent = item.getParent();
+        while (parent != nullptr && parent != &mRoot)
+        {
+            signalRoleChange(*parent, { TotalTimeRole });
+            parent = parent->getParent();
+        }
+    }
+
+    void IndustryManufacturingSetupModel::signalManufacturingRolesChange()
+    {
+        signalRoleChange({ RunsRole, QuantityRequiredRole, TimeRole, TotalTimeRole });
+    }
+
+    void IndustryManufacturingSetupModel::signalManufacturingRolesChange(EveType::IdType typeId)
+    {
+        signalRoleChange(typeId, { RunsRole, QuantityRequiredRole, TimeRole, TotalTimeRole });
     }
 
     void IndustryManufacturingSetupModel::signalRoleChange(TreeItem &item, const QVector<int> &roles)
@@ -682,5 +721,14 @@ namespace Evernus
                 signalQuantityChange(child->getTypeId());
             }
         }
+    }
+
+    QString IndustryManufacturingSetupModel::formatDuration(std::chrono::seconds time)
+    {
+        const qulonglong timeCount = time.count();
+        return QStringLiteral("%1:%2:%3")
+            .arg(timeCount / 3600, 2, 10, QLatin1Char('0'))
+            .arg((timeCount / 60) % 60, 2, 10, QLatin1Char('0'))
+            .arg(timeCount % 60, 2, 10, QLatin1Char('0'));
     }
 }

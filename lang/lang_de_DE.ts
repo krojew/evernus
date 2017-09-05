@@ -3338,32 +3338,32 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="218"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="219"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="294"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="295"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="296"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="297"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="297"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="298"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="308"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="309"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="308"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="309"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7628,63 +7628,68 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Type</name>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="142"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="255"/>
         <source>Quantity produced: %L1 / %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="152"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="144"/>
         <source>Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="162"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="154"/>
         <source>Buy from source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="163"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="155"/>
         <source>Acquire for free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="164"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="156"/>
         <source>Buy at custom cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="165"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="157"/>
         <source>Take assets then buy from source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="166"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="158"/>
         <source>Take assets then buy at custom cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="179"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="171"/>
         <source>Manufacture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="180"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="172"/>
         <source>Take assets then manufacture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="199"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="191"/>
         <source>Runs:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="214"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="206"/>
         <source>ME:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="238"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="230"/>
         <source>TE:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="265"/>
+        <source>Total production time: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
