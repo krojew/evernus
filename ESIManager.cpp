@@ -747,6 +747,7 @@ namespace Evernus
 
                             if (error == "invalid_token" || error == "invalid_client" || error == "invalid_grant")
                             {
+                                mRefreshTokens.erase(charId);
                                 fetchToken(charId);
                             }
                             else
