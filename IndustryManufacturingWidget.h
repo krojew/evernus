@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <QQuickWindow>
 #include <QVariant>
 #include <QWidget>
@@ -39,6 +41,7 @@ namespace Evernus
     class EveDataProvider;
     class RegionComboBox;
     class AssetProvider;
+    class ExternalOrder;
     class TaskManager;
 
     class IndustryManufacturingWidget
@@ -62,9 +65,13 @@ namespace Evernus
         virtual ~IndustryManufacturingWidget() = default;
 
         void refreshAssets();
+        void refreshPrices();
 
         IndustryManufacturingWidget &operator =(const IndustryManufacturingWidget &) = default;
         IndustryManufacturingWidget &operator =(IndustryManufacturingWidget &&) = default;
+
+    signals:
+        void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
     public slots:
         void handleNewPreferences();

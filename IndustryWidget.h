@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <QWidget>
 
 #include "Character.h"
@@ -31,6 +33,7 @@ namespace Evernus
     class EveDataProvider;
     class RegionComboBox;
     class AssetProvider;
+    class ExternalOrder;
     class TaskManager;
 
     class IndustryWidget
@@ -56,11 +59,15 @@ namespace Evernus
         IndustryWidget &operator =(const IndustryWidget &) = default;
         IndustryWidget &operator =(IndustryWidget &&) = default;
 
+    signals:
+        void updateExternalOrders(const std::vector<ExternalOrder> &orders);
+
     public slots:
         void handleNewPreferences();
         void setCharacter(Character::IdType id);
 
         void refreshAssets();
+        void refreshPrices();
 
     private:
         IndustryManufacturingWidget *mManufacturingWidget = nullptr;

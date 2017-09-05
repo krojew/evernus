@@ -250,6 +250,11 @@ namespace Evernus
         mSetupModel.refreshAssets();
     }
 
+    void IndustryManufacturingWidget::refreshPrices()
+    {
+
+    }
+
     void IndustryManufacturingWidget::handleNewPreferences()
     {
         mDataFetcher.handleNewPreferences();
@@ -320,7 +325,8 @@ namespace Evernus
 
         if (error.isEmpty())
         {
-            // TODO: process
+            mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(orders->size()));
+            emit updateExternalOrders(*orders);
         }
 
         mTaskManager.endTask(mOrderSubtask, error);

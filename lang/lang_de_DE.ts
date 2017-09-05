@@ -3343,28 +3343,33 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="295"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="300"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="297"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="302"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="298"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="303"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="309"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="314"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="309"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="314"/>
         <source>There was an error initializing the manufacturing view: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="328"/>
+        <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4149,12 +4154,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1012"/>
+        <location filename="../MainWindow.cpp" line="1014"/>
         <source>Toggle character tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1018"/>
+        <location filename="../MainWindow.cpp" line="1020"/>
         <source>Toggle corporation tabs</source>
         <translation type="unfinished"></translation>
     </message>

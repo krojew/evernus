@@ -49,6 +49,8 @@ namespace Evernus
                                                                std::move(clientSecret),
                                                                this};
         tabs->addTab(mManufacturingWidget, tr("Manufacturing analysis"));
+        connect(mManufacturingWidget, &IndustryManufacturingWidget::updateExternalOrders,
+                this, &IndustryWidget::updateExternalOrders);
     }
 
     void IndustryWidget::handleNewPreferences()
@@ -64,5 +66,10 @@ namespace Evernus
     void IndustryWidget::refreshAssets()
     {
         mManufacturingWidget->refreshAssets();
+    }
+
+    void IndustryWidget::refreshPrices()
+    {
+        mManufacturingWidget->refreshPrices();
     }
 }
