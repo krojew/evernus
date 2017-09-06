@@ -624,7 +624,7 @@ namespace Evernus
             for (const auto &price : prices)
             {
                 const auto priceObj = price.toObject();
-                result.emplace(priceObj.value(QStringLiteral("type_id")).toDouble(), TypePriceData{
+                result.emplace(static_cast<EveType::IdType>(priceObj.value(QStringLiteral("type_id")).toDouble()), TypePriceData{
                     priceObj.value(QStringLiteral("adjusted_price")).toDouble(),
                     priceObj.value(QStringLiteral("average_price")).toDouble()
                 });
@@ -650,7 +650,7 @@ namespace Evernus
 
             std::mutex resultMutex;
 
-            static const QHash<QString, IndustryCostIndex::Activity> activityNameMap = {
+            const QHash<QString, IndustryCostIndex::Activity> activityNameMap = {
                 { QStringLiteral("none"), IndustryCostIndex::Activity::None },
                 { QStringLiteral("manufacturing"), IndustryCostIndex::Activity::Manufacturing },
                 { QStringLiteral("researching_technology"), IndustryCostIndex::Activity::ResearchingTechnology },
@@ -668,7 +668,7 @@ namespace Evernus
                     const auto indexObj = index.toObject();
                     const auto costs = indexObj.value(QStringLiteral("cost_indices")).toArray();
 
-                    const auto systemId = indexObj.value(QStringLiteral("solar_system_id")).toDouble();
+                    const uint systemId = indexObj.value(QStringLiteral("solar_system_id")).toDouble();
 
                     IndustryCostIndex::ActivityCostIndices indices;
                     indices.reserve(costs.size());
@@ -678,8 +678,9 @@ namespace Evernus
                         const auto costObj = cost.toObject();
                         const auto activityStr = costObj.value(QStringLiteral("activity")).toString();
                         const auto value = costObj.value(QStringLiteral("cost_index")).toDouble();
+                        const auto activity = activityNameMap.value(activityStr, IndustryCostIndex::Activity::None);
 
-                        indices.emplace(activityNameMap.value(activityStr, IndustryCostIndex::Activity::None), value);
+                        indices.emplace(activity, value);
                     }
 
                     std::lock_guard<std::mutex> lock{resultMutex};
