@@ -882,19 +882,7 @@ namespace Evernus
     void IndustryManufacturingSetupModel::roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles)
     {
         fillItemAssets();
-
-        const auto items = mTypeItemMap.equal_range(typeId);
-        for (auto item = items.first; item != items.second; ++item)
-        {
-            const auto idx = createIndex(item->second.get().getRow(), 0, &item->second.get());
-            emit dataChanged(idx, idx, roles);
-
-            for (const auto &child : item->second.get())
-            {
-                Q_ASSERT(child);
-                signalQuantityChange(child->getTypeId());
-            }
-        }
+        signalRoleChange(typeId, roles);
     }
 
     double IndustryManufacturingSetupModel::getSrcPrice(EveType::IdType typeId, quint64 quantity) const
