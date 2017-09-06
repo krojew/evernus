@@ -23,6 +23,7 @@
 #include <QSplitter>
 #include <QGroupBox>
 #include <QSettings>
+#include <QPixmap>
 #include <QDebug>
 #include <QLabel>
 
@@ -88,8 +89,15 @@ namespace Evernus
 
         const auto srcStationBtn = new StationSelectButton{mDataProvider, srcStationPath, this};
         toolBarLayout->addWidget(srcStationBtn);
+
+        const auto srcStationWarning = new QLabel{this};
+        toolBarLayout->addWidget(srcStationWarning);
+        srcStationWarning->setPixmap(QPixmap{QStringLiteral(":/images/error.png")});
+        srcStationWarning->setVisible(srcStationBtn->getSelectedStationId() == 0);
+        srcStationWarning->setToolTip(tr("Leaving source station empty will cause costs to not include job installation."));
         connect(srcStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
             changeStation(mSrcStation, path, IndustrySettings::srcManufacturingStationKey);
+            srcStationWarning->setVisible(srcStationBtn->getSelectedStationId() == 0);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});
