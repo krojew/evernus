@@ -175,9 +175,9 @@ namespace Evernus
 
         double thisCost = 0.;
 
-        // TODO: implement
         if (Q_UNLIKELY(isOutput()))
         {
+            thisCost = getManufacturingCost();
         }
         else
         {
