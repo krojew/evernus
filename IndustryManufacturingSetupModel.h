@@ -79,6 +79,7 @@ namespace Evernus
         void setFacilitySize(IndustryUtils::Size size);
 
         void setPriceTypes(PriceType src, PriceType dst);
+        void setFacilityTax(double value);
         void setOrders(const std::vector<ExternalOrder> &orders,
                        const RegionList &srcRegions,
                        const RegionList &dstRegions,
@@ -220,6 +221,8 @@ namespace Evernus
 
         PriceType mSrcPrice = PriceType::Buy;
         PriceType mDstPrice = PriceType::Sell;
+
+        double mFacilityTax = 10.;
 
         TypeMap<std::multiset<ExternalOrder, ExternalOrder::LowToHigh>> mSrcSellOrders;
         TypeMap<double> mSrcBuyPrices;

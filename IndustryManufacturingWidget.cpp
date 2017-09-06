@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QDoubleSpinBox>
 #include <QQuickWidget>
 #include <QQmlContext>
 #include <QMessageBox>
@@ -223,6 +224,21 @@ namespace Evernus
         });
 
         toggleFacilityCombos();
+
+        toolBarLayout->addWidget(new QLabel{tr("Facility tax:"), this});
+
+        const auto facilityTaxEdit = new QDoubleSpinBox{this};
+        toolBarLayout->addWidget(facilityTaxEdit);
+        facilityTaxEdit->setValue(
+            settings.value(IndustrySettings::manufacturingFacilityTaxKey, IndustrySettings::manufacturingFacilityTaxDefault).toDouble()
+        );
+        facilityTaxEdit->setSuffix(locale().percent());
+        connect(facilityTaxEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [=](auto value) {
+            QSettings settings;
+            settings.setValue(IndustrySettings::manufacturingFacilityTaxKey, value);
+
+            mSetupModel.setFacilityTax(value);
+        });
 
         mDontSaveBtn = new DontSaveImportedOrdersCheckBox{this};
         toolBarLayout->addWidget(mDontSaveBtn);

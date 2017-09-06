@@ -620,6 +620,12 @@ namespace Evernus
         signalRoleChange({ CostRole });
     }
 
+    void IndustryManufacturingSetupModel::setFacilityTax(double value)
+    {
+        mFacilityTax = value;
+        signalRoleChange({ CostRole });
+    }
+
     void IndustryManufacturingSetupModel::setOrders(const std::vector<ExternalOrder> &orders,
                                                     const RegionList &srcRegions,
                                                     const RegionList &dstRegions,
