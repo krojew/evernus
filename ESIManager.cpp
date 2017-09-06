@@ -606,6 +606,33 @@ namespace Evernus
         });
     }
 
+    void ESIManager::fetchMarketPrices(const PesistentDataCallback<MarketPrices> &callback) const
+    {
+        selectNextInterface().fetchMarketPrices([=](auto &&data, const auto &error) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error);
+                return;
+            }
+
+            const auto prices = data.array();
+
+            MarketPrices result;
+            result.reserve(prices.size());
+
+            for (const auto &price : prices)
+            {
+                const auto priceObj = price.toObject();
+                result.emplace(priceObj.value(QStringLiteral("type_id")).toDouble(), TypePriceData{
+                    priceObj.value(QStringLiteral("adjusted_price")).toDouble(),
+                    priceObj.value(QStringLiteral("average_price")).toDouble()
+                });
+            }
+
+            callback(std::move(result), {});
+        });
+    }
+
     void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
     {
         selectNextInterface().openMarketDetails(typeId, charId, [=](const auto &errorText) {

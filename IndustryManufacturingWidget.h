@@ -26,6 +26,7 @@
 #include "IndustryManufacturingSetup.h"
 #include "MarketOrderDataFetcher.h"
 #include "TaskConstants.h"
+#include "ESIManager.h"
 #include "Character.h"
 
 class QQuickWidget;
@@ -124,8 +125,10 @@ namespace Evernus
         IndustryManufacturingSetupController mSetupController{mSetupModel};
 
         MarketOrderDataFetcher mDataFetcher;
+        ESIManager mESIManager;
 
         uint mOrderSubtask = TaskConstants::invalidTask;
+        uint mMarketPricesSubtask = TaskConstants::invalidTask;
 
         void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
 

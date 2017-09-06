@@ -40,11 +40,14 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        template<class T>
+        using PersistentCallback = std::function<void (T &&data, const QString &error)>;
         using JsonCallback = std::function<void (QJsonDocument &&data, const QString &error, const QDateTime &expires)>;
         using PaginatedCallback = std::function<void (QJsonDocument &&data, bool atEnd, const QString &error, const QDateTime &expires)>;
         using ErrorCallback = std::function<void (const QString &error)>;
         using StringCallback = std::function<void (QString &&data, const QString &error, const QDateTime &expires)>;  // https://bugreports.qt.io/browse/QTBUG-62502
-        using PersistentStringCallback = std::function<void (QString &&data, const QString &error)>;
+        using PersistentStringCallback = PersistentCallback<QString>;
+        using PersistentJsonCallback = PersistentCallback<QJsonDocument>;
 
         using QObject::QObject;
         ESIInterface() = default;
@@ -71,6 +74,7 @@ namespace Evernus
                                               const boost::optional<WalletTransaction::IdType> &fromId,
                                               const JsonCallback &callback) const;
         void fetchGenericName(quint64 id, const PersistentStringCallback &callback) const;
+        void fetchMarketPrices(const PersistentJsonCallback &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const;
 

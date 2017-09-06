@@ -37,6 +37,7 @@
 #include "WalletJournal.h"
 #include "ESIInterface.h"
 #include "MarketOrders.h"
+#include "MarketPrices.h"
 #include "SimpleCrypt.h"
 #include "MarketOrder.h"
 #include "Character.h"
@@ -99,6 +100,7 @@ namespace Evernus
                                               WalletTransaction::IdType tillId,
                                               const Callback<WalletTransactions> &callback) const;
         void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
+        void fetchMarketPrices(const PesistentDataCallback<MarketPrices> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 

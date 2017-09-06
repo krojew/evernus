@@ -29,6 +29,7 @@
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
 #include "IndustryUtils.h"
+#include "MarketPrices.h"
 #include "Character.h"
 #include "PriceType.h"
 #include "EveType.h"
@@ -85,6 +86,7 @@ namespace Evernus
                        const RegionList &dstRegions,
                        quint64 srcStation,
                        quint64 dstStation);
+        void setMarketPrices(MarketPrices prices);
 
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;
@@ -187,6 +189,8 @@ namespace Evernus
             bool isOutput() const;
 
             std::chrono::seconds getTimeToManufacture() const;
+
+            double getManufacturingCost() const;
         };
 
         struct AssetQuantity
@@ -228,6 +232,8 @@ namespace Evernus
         TypeMap<double> mSrcBuyPrices;
         TypeMap<double> mDstSellPrices;
         TypeMap<std::multiset<ExternalOrder, ExternalOrder::HighToLow>> mDstBuyOrders;
+
+        MarketPrices mMarketPrices;
 
         void fillChildren(TreeItem &item);
 

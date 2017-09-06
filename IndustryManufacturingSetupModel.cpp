@@ -197,7 +197,7 @@ namespace Evernus
                 break;
             case IndustryManufacturingSetup::InventorySource::Manufacture:
             case IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture:
-                break;
+                thisCost = getManufacturingCost() * getEffectiveRuns();
             }
         }
 
@@ -294,6 +294,12 @@ namespace Evernus
                                                 mModel.mSecurityStatus,
                                                 mModel.mFacilitySize,
                                                 mModel.mTimeRigType);
+    }
+
+    double IndustryManufacturingSetupModel::TreeItem::getManufacturingCost() const
+    {
+        // TODO: implement
+        return 0.;
     }
 
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
@@ -695,6 +701,12 @@ namespace Evernus
         srcFuture.get();
         dstFuture.get();
 
+        signalRoleChange({ CostRole });
+    }
+
+    void IndustryManufacturingSetupModel::setMarketPrices(MarketPrices prices)
+    {
+        mMarketPrices = std::move(prices);
         signalRoleChange({ CostRole });
     }
 

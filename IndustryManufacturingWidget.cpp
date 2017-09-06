@@ -64,7 +64,8 @@ namespace Evernus
         , mDataProvider{dataProvider}
         , mTaskManager{taskManager}
         , mSetupModel{mSetup, mDataProvider, assetProvider, costProvider, characterRepo}
-        , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
+        , mDataFetcher{clientId, clientSecret, mDataProvider, characterRepo}
+        , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
@@ -346,7 +347,10 @@ namespace Evernus
                 pairs.emplace(std::make_pair(type, region));
         }
 
-        if (!mDataFetcher.hasPendingOrderRequests())
+        const auto importingOrders = mDataFetcher.hasPendingOrderRequests();
+        const auto importingMarketPrices = mMarketPricesSubtask != TaskConstants::invalidTask;
+
+        if (!importingOrders && !importingMarketPrices)
         {
             QSettings settings;
             const auto webImporter = static_cast<ImportSettings::WebImporterType>(
@@ -358,9 +362,18 @@ namespace Evernus
                                   (tr("Making %1 ESI order requests..."));
 
             mOrderSubtask = mTaskManager.startTask(mainTask, infoText.arg(pairs.size()));
+            mMarketPricesSubtask = mTaskManager.startTask(mainTask, tr("Importing industry market prices..."));
         }
 
         mDataFetcher.importData(pairs, mCharacterId);
+
+        mESIManager.fetchMarketPrices([=](auto &&data, const auto &error) {
+            if (Q_LIKELY(error.isEmpty()))
+                mSetupModel.setMarketPrices(std::move(data));
+
+            mTaskManager.endTask(mMarketPricesSubtask, error);
+            mMarketPricesSubtask = TaskConstants::invalidTask;
+        });
     }
 
     void IndustryManufacturingWidget::showSceneGraphError(QQuickWindow::SceneGraphError error, const QString &message)
