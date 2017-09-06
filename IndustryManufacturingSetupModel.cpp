@@ -24,6 +24,7 @@
 
 #include "ItemCostProvider.h"
 #include "AssetProvider.h"
+#include "PriceUtils.h"
 #include "AssetList.h"
 
 #include "IndustryManufacturingSetupModel.h"
@@ -917,14 +918,17 @@ namespace Evernus
 
     double IndustryManufacturingSetupModel::getSrcBuyPrice(EveType::IdType typeId, quint64 quantity) const
     {
+        Q_ASSERT(mCharacter);
+
         const auto orders = mSrcBuyPrices.find(typeId);
-        return quantity * ((orders == std::end(mSrcBuyPrices)) ? (0.) : (orders->second + 0.01));
+        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        return quantity * ((orders == std::end(mSrcBuyPrices)) ? (0.) : (PriceUtils::getBuyPrice(orders->second + 0.01, taxes, false)));
     }
 
     double IndustryManufacturingSetupModel::getSrcSellPrice(EveType::IdType typeId, quint64 quantity) const
     {
         const auto orders = mSrcSellOrders.find(typeId);
-        return (orders == std::end(mSrcSellOrders)) ? (0.) : (getPriceFromOrderList(orders->second, quantity));
+        return (orders == std::end(mSrcSellOrders)) ? (0.) : (getSrcPriceFromOrderList(orders->second, quantity));
     }
 
     double IndustryManufacturingSetupModel::getDstPrice(EveType::IdType typeId, quint64 quantity) const
@@ -934,27 +938,37 @@ namespace Evernus
 
     double IndustryManufacturingSetupModel::getDstBuyPrice(EveType::IdType typeId, quint64 quantity) const
     {
+        Q_ASSERT(mCharacter);
+
         const auto orders = mDstBuyOrders.find(typeId);
-        return (orders == std::end(mDstBuyOrders)) ? (0.) : (getPriceFromOrderList(orders->second, quantity));
+        return (orders == std::end(mDstBuyOrders)) ? (0.) : (getDstPriceFromOrderList(orders->second, quantity));
     }
 
     double IndustryManufacturingSetupModel::getDstSellPrice(EveType::IdType typeId, quint64 quantity) const
     {
+        Q_ASSERT(mCharacter);
+
         const auto orders = mDstSellPrices.find(typeId);
-        return quantity * ((orders == std::end(mDstSellPrices)) ? (0.) : (orders->second - 0.01));
+        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        return quantity * ((orders == std::end(mDstSellPrices)) ? (0.) : (PriceUtils::getSellPrice(orders->second - 0.01, taxes, true)));
     }
 
     template<class T>
-    double IndustryManufacturingSetupModel::getPriceFromOrderList(const T &orders, quint64 quantity)
+    double IndustryManufacturingSetupModel::getSrcPriceFromOrderList(const T &orders, quint64 quantity) const
     {
+        Q_ASSERT(mCharacter);
+
         auto order = std::begin(orders);
         auto price = 0.;
+
+        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        const auto limit = mSrcPrice == PriceType::Buy;
 
         while (order != std::end(orders) && quantity > 0)
         {
             const auto amount = std::min(quantity, static_cast<quint64>(order->getVolumeRemaining()));
 
-            price += amount * order->getPrice();
+            price += amount * PriceUtils::getBuyPrice(order->getPrice(), taxes, limit);
             quantity -= amount;
             ++order;
         }
@@ -962,7 +976,36 @@ namespace Evernus
         if (quantity > 0)
         {
             // not enough order to fulfill - estimate from best order
-            return (Q_UNLIKELY(orders.empty())) ? (0.) : (price + std::begin(orders)->getPrice() * quantity);
+            return (Q_UNLIKELY(orders.empty())) ? (0.) : (price + PriceUtils::getBuyPrice(std::begin(orders)->getPrice(), taxes, limit) * quantity);
+        }
+
+        return price;
+    }
+
+    template<class T>
+    double IndustryManufacturingSetupModel::getDstPriceFromOrderList(const T &orders, quint64 quantity) const
+    {
+        Q_ASSERT(mCharacter);
+
+        auto order = std::begin(orders);
+        auto price = 0.;
+
+        const auto taxes = PriceUtils::calculateTaxes(*mCharacter);
+        const auto limit = mDstPrice == PriceType::Sell;
+
+        while (order != std::end(orders) && quantity > 0)
+        {
+            const auto amount = std::min(quantity, static_cast<quint64>(order->getVolumeRemaining()));
+
+            price += amount * PriceUtils::getSellPrice(order->getPrice(), taxes, limit);
+            quantity -= amount;
+            ++order;
+        }
+
+        if (quantity > 0)
+        {
+            // not enough order to fulfill - estimate from best order
+            return (Q_UNLIKELY(orders.empty())) ? (0.) : (price + PriceUtils::getSellPrice(std::begin(orders)->getPrice(), taxes, limit) * quantity);
         }
 
         return price;

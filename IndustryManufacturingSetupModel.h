@@ -273,6 +273,8 @@ namespace Evernus
         double getDstSellPrice(EveType::IdType typeId, quint64 quantity) const;
 
         template<class T>
-        static double getPriceFromOrderList(const T &orders, quint64 quantity);
+        double getSrcPriceFromOrderList(const T &orders, quint64 quantity) const;
+        template<class T>
+        double getDstPriceFromOrderList(const T &orders, quint64 quantity) const;
     };
 }
