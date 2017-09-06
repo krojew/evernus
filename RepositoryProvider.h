@@ -17,6 +17,7 @@
 namespace Evernus
 {
     class CorpMarketOrderValueSnapshotRepository;
+    class IndustryManufacturingSetupRepository;
     class MarketOrderValueSnapshotRepository;
     class CorpAssetValueSnapshotRepository;
     class RegionStationPresetRepository;
@@ -80,5 +81,6 @@ namespace Evernus
         virtual const RegionTypePresetRepository &getRegionTypePresetRepository() const noexcept = 0;
         virtual const ItemRepository &getCorpItemRepository() const noexcept = 0;
         virtual const RegionStationPresetRepository &getRegionStationPresetRepository() const noexcept = 0;
+        virtual const IndustryManufacturingSetupRepository &getIndustryManufacturingSetupRepository() const noexcept = 0;
     };
 }

@@ -22,6 +22,8 @@
 #include "EveDataProvider.h"
 #include "EveType.h"
 
+class QDataStream;
+
 namespace Evernus
 {
     class EveDataProvider;
@@ -95,6 +97,8 @@ namespace Evernus
         IndustryManufacturingSetup &operator =(IndustryManufacturingSetup &&) = default;
 
     private:
+        static const int dataStreamVersion = 1;
+
         const EveDataProvider &mDataProvider;
 
         std::unordered_map<EveType::IdType, TypeSettings> mTypeSettings;
@@ -103,5 +107,8 @@ namespace Evernus
         OutputTypeMap mOutputTypes;
 
         void fillManufacturingInfo(EveType::IdType typeId, TypeSet &usedTypes);
+
+        friend QDataStream &operator >>(QDataStream &stream, IndustryManufacturingSetup &setup);
+        friend QDataStream &operator <<(QDataStream &stream, const IndustryManufacturingSetup &setup);
     };
 }

@@ -380,8 +380,12 @@ add_executable(
     IndustryManufacturingSetup.h
     IndustryManufacturingSetupController.cpp
     IndustryManufacturingSetupController.h
+    IndustryManufacturingSetupEntity.cpp
+    IndustryManufacturingSetupEntity.h
     IndustryManufacturingSetupModel.cpp
     IndustryManufacturingSetupModel.h
+    IndustryManufacturingSetupRepository.cpp
+    IndustryManufacturingSetupRepository.h
     IndustryManufacturingWidget.cpp
     IndustryManufacturingWidget.h
     IndustrySettings.h
@@ -579,6 +583,7 @@ add_executable(
     ProxyWebExternalOrderImporter.h
     qcustomplot.cpp
     qcustomplot.h
+    QDataStreamUtils.h
     qdropbox2.cpp
     qdropbox2.h
     qdropbox2account.cpp

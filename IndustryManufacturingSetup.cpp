@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "QDataStreamUtils.h"
+
 #include "IndustryManufacturingSetup.h"
 
 namespace Evernus
@@ -182,5 +184,66 @@ namespace Evernus
             usedTypes.insert(source.mMaterialId);
             fillManufacturingInfo(source.mMaterialId, usedTypes);
         }
+    }
+
+    QDataStream &operator >>(QDataStream &stream, IndustryManufacturingSetup::TypeSettings &settings)
+    {
+        auto source = static_cast<int>(IndustryManufacturingSetup::InventorySource::BuyFromSource);
+        stream
+            >> source
+            >> settings.mMaterialEfficiency
+            >> settings.mTimeEfficiency;
+
+        settings.mSource = static_cast<IndustryManufacturingSetup::InventorySource>(source);
+        return stream;
+    }
+
+    QDataStream &operator <<(QDataStream &stream, const IndustryManufacturingSetup::TypeSettings &settings)
+    {
+        return stream
+            << static_cast<int>(settings.mSource)
+            << settings.mMaterialEfficiency
+            << settings.mTimeEfficiency;
+    }
+
+    QDataStream &operator >>(QDataStream &stream, IndustryManufacturingSetup::OutputSettings &settings)
+    {
+        return stream
+            >> settings.mMaterialEfficiency
+            >> settings.mTimeEfficiency
+            >> settings.mRuns;
+    }
+
+    QDataStream &operator <<(QDataStream &stream, const IndustryManufacturingSetup::OutputSettings &settings)
+    {
+        return stream
+            << settings.mMaterialEfficiency
+            << settings.mTimeEfficiency
+            << settings.mRuns;
+    }
+
+    QDataStream &operator >>(QDataStream &stream, IndustryManufacturingSetup &setup)
+    {
+        auto version = IndustryManufacturingSetup::dataStreamVersion;
+        stream
+            >> version
+            >> setup.mTypeSettings
+            >> setup.mOutputTypes;
+
+        setup.mManufacturingInfo.clear();
+
+        IndustryManufacturingSetup::TypeSet usedTypes;
+        for (const auto &output : setup.mOutputTypes)
+            setup.fillManufacturingInfo(output.first, usedTypes);
+
+        return stream;
+    }
+
+    QDataStream &operator <<(QDataStream &stream, const IndustryManufacturingSetup &setup)
+    {
+        return stream
+            << IndustryManufacturingSetup::dataStreamVersion
+            << setup.mTypeSettings
+            << setup.mOutputTypes;
     }
 }
