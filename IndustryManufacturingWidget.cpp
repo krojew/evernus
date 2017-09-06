@@ -356,7 +356,12 @@ namespace Evernus
 
         if (error.isEmpty())
         {
-            mSetupModel.setOrders(*orders, mSrcStation, mDstStation);
+            mSetupModel.setOrders(*orders,
+                                  mSrcRegionCombo->getSelectedRegionList(),
+                                  mDstRegionCombo->getSelectedRegionList(),
+                                  mSrcStation,
+                                  mDstStation);
+
             if (!mDontSaveBtn->isChecked())
             {
                 mTaskManager.updateTask(mOrderSubtask, tr("Saving %1 imported orders...").arg(orders->size()));

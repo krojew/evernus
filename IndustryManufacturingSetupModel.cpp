@@ -621,6 +621,8 @@ namespace Evernus
     }
 
     void IndustryManufacturingSetupModel::setOrders(const std::vector<ExternalOrder> &orders,
+                                                    const RegionList &srcRegions,
+                                                    const RegionList &dstRegions,
                                                     quint64 srcStation,
                                                     quint64 dstStation)
     {
@@ -630,16 +632,20 @@ namespace Evernus
         const auto srcRegionId = (srcStation == 0) ? (0u) : (mDataProvider.getStationRegionId(srcStation));
         const auto dstRegionId = (dstStation == 0) ? (0u) : (mDataProvider.getStationRegionId(dstStation));
 
-        const auto srcOrderFilter = [=](const auto &order) {
+        const auto srcOrderFilter = [=, &srcRegions](const auto &order) {
             const auto regionId = order.getRegionId();
-            const auto stationId = order.getStationId();
+            if (srcRegions.find(regionId) == std::end(srcRegions))
+                return false;
 
+            const auto stationId = order.getStationId();
             return srcRegionId == 0 || srcRegionId != regionId || stationId == srcStation;
         };
-        const auto dstOrderFilter = [=](const auto &order) {
+        const auto dstOrderFilter = [=, &dstRegions](const auto &order) {
             const auto regionId = order.getRegionId();
-            const auto stationId = order.getStationId();
+            if (dstRegions.find(regionId) == std::end(dstRegions))
+                return false;
 
+            const auto stationId = order.getStationId();
             return dstRegionId == 0 || dstRegionId != regionId || stationId == dstStation;
         };
 

@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include <functional>
 #include <vector>
 #include <memory>
@@ -43,6 +44,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        using RegionList = std::unordered_set<uint>;
+
         IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                         const EveDataProvider &dataProvider,
                                         const AssetProvider &assetProvider,
@@ -77,6 +80,8 @@ namespace Evernus
 
         void setPriceTypes(PriceType src, PriceType dst);
         void setOrders(const std::vector<ExternalOrder> &orders,
+                       const RegionList &srcRegions,
+                       const RegionList &dstRegions,
                        quint64 srcStation,
                        quint64 dstStation);
 
