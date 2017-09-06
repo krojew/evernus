@@ -31,7 +31,7 @@ namespace Evernus
     IndustryManufacturingSetupRepository::EntityPtr IndustryManufacturingSetupRepository::populate(const QSqlRecord &record) const
     {
         auto setup = std::make_shared<IndustryManufacturingSetupEntity>(record.value(getIdColumn()).value<IndustryManufacturingSetupEntity::IdType>());
-        setup->setSetup(record.value(QStringLiteral("data")).toByteArray());
+        setup->setSerializedSetup(record.value(QStringLiteral("data")).toByteArray());
         setup->setNew(false);
 
         return setup;
@@ -69,7 +69,7 @@ namespace Evernus
         if (entity.getId() != IndustryManufacturingSetupEntity::invalidId)
             query.bindValue(QStringLiteral(":") + getIdColumn(), entity.getId());
 
-        query.bindValue(QStringLiteral(":data"), entity.getSetup());
+        query.bindValue(QStringLiteral(":data"), entity.getSerializedSetup());
     }
 
     void IndustryManufacturingSetupRepository::bindPositionalValues(const IndustryManufacturingSetupEntity &entity, QSqlQuery &query) const
@@ -77,6 +77,6 @@ namespace Evernus
         if (entity.getId() != IndustryManufacturingSetupEntity::invalidId)
             query.addBindValue(entity.getId());
 
-        query.addBindValue(entity.getSetup());
+        query.addBindValue(entity.getSerializedSetup());
     }
 }

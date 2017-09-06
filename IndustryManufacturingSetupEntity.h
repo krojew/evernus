@@ -30,14 +30,14 @@ namespace Evernus
         IndustryManufacturingSetupEntity(IndustryManufacturingSetupEntity &&) = default;
         virtual ~IndustryManufacturingSetupEntity() = default;
 
-        const QByteArray &getSetup() const &;
-        QByteArray &&getSetup() && noexcept;
-        void setSetup(QByteArray setup);
+        const QByteArray &getSerializedSetup() const &;
+        QByteArray &&getSerializedSetup() && noexcept;
+        void setSerializedSetup(QByteArray setup);
 
         IndustryManufacturingSetupEntity &operator =(const IndustryManufacturingSetupEntity &) = default;
         IndustryManufacturingSetupEntity &operator =(IndustryManufacturingSetupEntity &&) = default;
 
     private:
-        QByteArray mSetup;
+        QByteArray mSerializedSetup;
     };
 }

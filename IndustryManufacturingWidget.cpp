@@ -14,11 +14,13 @@
  */
 #include <QDoubleSpinBox>
 #include <QQuickWidget>
+#include <QInputDialog>
 #include <QQmlContext>
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QDataStream>
 #include <QQmlEngine>
 #include <QComboBox>
 #include <QSplitter>
@@ -28,7 +30,9 @@
 #include <QDebug>
 #include <QLabel>
 
+#include "IndustryManufacturingSetupRepository.h"
 #include "CachingNetworkAccessManagerFactory.h"
+#include "IndustryManufacturingSetupEntity.h"
 #include "DontSaveImportedOrdersCheckBox.h"
 #include "FavoriteLocationsButton.h"
 #include "TradeableTypesTreeView.h"
@@ -54,6 +58,7 @@ namespace Evernus
                                                              const EveTypeRepository &typeRepo,
                                                              const MarketGroupRepository &groupRepo,
                                                              const CharacterRepository &characterRepo,
+                                                             const IndustryManufacturingSetupRepository &setupRepo,
                                                              TaskManager &taskManager,
                                                              const AssetProvider &assetProvider,
                                                              const ItemCostProvider &costProvider,
@@ -63,6 +68,7 @@ namespace Evernus
         : QWidget{parent}
         , mDataProvider{dataProvider}
         , mTaskManager{taskManager}
+        , mSetupRepo{setupRepo}
         , mSetupModel{mSetup, mDataProvider, assetProvider, costProvider, characterRepo}
         , mDataFetcher{clientId, clientSecret, mDataProvider, characterRepo}
         , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
@@ -76,6 +82,16 @@ namespace Evernus
         toolBarLayout->addWidget(importFromWeb);
         importFromWeb->setFlat(true);
         connect(importFromWeb, &QPushButton::clicked, this, &IndustryManufacturingWidget::importData);
+
+        const auto loadSetup = new QPushButton{QIcon{":/images/arrow_refresh.png"}, tr("Load setup..."), this};
+        toolBarLayout->addWidget(loadSetup);
+        loadSetup->setFlat(true);
+        connect(loadSetup, &QPushButton::clicked, this, &IndustryManufacturingWidget::loadSetup);
+
+        const auto saveSetup = new QPushButton{QIcon{":/images/disk.png"}, tr("Save setup..."), this};
+        toolBarLayout->addWidget(saveSetup);
+        saveSetup->setFlat(true);
+        connect(saveSetup, &QPushButton::clicked, this, &IndustryManufacturingWidget::saveSetup);
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
 
@@ -424,6 +440,52 @@ namespace Evernus
         const auto dst = mDstPriceTypeCombo->getPriceType();
 
         mSetupModel.setPriceTypes(src, dst);
+    }
+
+    void IndustryManufacturingWidget::loadSetup()
+    {
+        const auto name
+            = QInputDialog::getItem(this, tr("Load setup"), tr("Select setup:"), mSetupRepo.getAllNames(), 0, false);
+        if (!name.isEmpty())
+        {
+            try
+            {
+                const auto setup = mSetupRepo.find(name);
+                Q_ASSERT(setup);
+
+                QDataStream stream{setup->getSerializedSetup()};
+                stream >> mSetup;
+
+                mSetupModel.refreshData();
+
+                mLastLoadedSetup = name;
+            }
+            catch (const IndustryManufacturingSetupRepository::NotFoundException &)
+            {
+                qWarning() << "Cannot find chosen setup:" << name;
+            }
+        }
+    }
+
+    void IndustryManufacturingWidget::saveSetup()
+    {
+        const auto savedSetups = mSetupRepo.getAllNames();
+        const auto name
+            = QInputDialog::getItem(this, tr("Save setup"), tr("Enter setup name:"), savedSetups, savedSetups.indexOf(mLastLoadedSetup));
+        if (!name.isEmpty())
+        {
+            QByteArray data;
+
+            QDataStream stream{&data, QIODevice::WriteOnly};
+            stream << mSetup;
+
+            IndustryManufacturingSetupEntity setup{name};
+            setup.setSerializedSetup(std::move(data));
+
+            mSetupRepo.store(setup);
+
+            mLastLoadedSetup = name;
+        }
     }
 
     void IndustryManufacturingWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)

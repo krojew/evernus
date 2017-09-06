@@ -24,6 +24,7 @@ class QByteArray;
 
 namespace Evernus
 {
+    class IndustryManufacturingSetupRepository;
     class RegionStationPresetRepository;
     class IndustryManufacturingWidget;
     class TradeableTypesTreeView;
@@ -48,6 +49,7 @@ namespace Evernus
                        const EveTypeRepository &typeRepo,
                        const MarketGroupRepository &groupRepo,
                        const CharacterRepository &characterRepo,
+                       const IndustryManufacturingSetupRepository &setupRepo,
                        TaskManager &taskManager,
                        const AssetProvider &assetProvider,
                        const ItemCostProvider &costProvider,

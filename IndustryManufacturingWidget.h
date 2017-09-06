@@ -35,6 +35,7 @@ class QComboBox;
 
 namespace Evernus
 {
+    class IndustryManufacturingSetupRepository;
     class DontSaveImportedOrdersCheckBox;
     class RegionStationPresetRepository;
     class TradeableTypesTreeView;
@@ -60,6 +61,7 @@ namespace Evernus
                                     const EveTypeRepository &typeRepo,
                                     const MarketGroupRepository &groupRepo,
                                     const CharacterRepository &characterRepo,
+                                    const IndustryManufacturingSetupRepository &setupRepo,
                                     TaskManager &taskManager,
                                     const AssetProvider &assetProvider,
                                     const ItemCostProvider &costProvider,
@@ -93,9 +95,13 @@ namespace Evernus
 
         void setPriceTypes();
 
+        void loadSetup();
+        void saveSetup();
+
     private:
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
+        const IndustryManufacturingSetupRepository &mSetupRepo;
 
         RegionComboBox *mSrcRegionCombo = nullptr;
         RegionComboBox *mDstRegionCombo = nullptr;
@@ -130,6 +136,8 @@ namespace Evernus
         uint mOrderSubtask = TaskConstants::invalidTask;
         uint mMarketPricesSubtask = TaskConstants::invalidTask;
         uint mCostIndicesSubtask = TaskConstants::invalidTask;
+
+        QString mLastLoadedSetup;
 
         void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
 

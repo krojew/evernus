@@ -23,6 +23,7 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QSettings>
+#include <QDebug>
 
 #include "RegionTypePresetRepository.h"
 #include "TradeableTypesTreeView.h"
@@ -219,6 +220,7 @@ namespace Evernus
             }
             catch (const RegionTypePresetRepository::NotFoundException &)
             {
+                qWarning() << "Cannot find chosen preset:" << name;
             }
         }
     }

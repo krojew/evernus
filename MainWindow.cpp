@@ -981,6 +981,7 @@ namespace Evernus
                                                     mRepositoryProvider.getEveTypeRepository(),
                                                     mRepositoryProvider.getMarketGroupRepository(),
                                                     mRepositoryProvider.getCharacterRepository(),
+                                                    mRepositoryProvider.getIndustryManufacturingSetupRepository(),
                                                     taskManager,
                                                     charAssetProvider,
                                                     mItemCostProvider,

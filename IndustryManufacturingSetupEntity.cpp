@@ -16,18 +16,18 @@
 
 namespace Evernus
 {
-    const QByteArray &IndustryManufacturingSetupEntity::getSetup() const &
+    const QByteArray &IndustryManufacturingSetupEntity::getSerializedSetup() const &
     {
-        return mSetup;
+        return mSerializedSetup;
     }
 
-    QByteArray &&IndustryManufacturingSetupEntity::getSetup() && noexcept
+    QByteArray &&IndustryManufacturingSetupEntity::getSerializedSetup() && noexcept
     {
-        return std::move(mSetup);
+        return std::move(mSerializedSetup);
     }
 
-    void IndustryManufacturingSetupEntity::setSetup(QByteArray setup)
+    void IndustryManufacturingSetupEntity::setSerializedSetup(QByteArray setup)
     {
-        mSetup = std::move(setup);
+        mSerializedSetup = std::move(setup);
     }
 }
