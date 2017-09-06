@@ -26,7 +26,7 @@ namespace Evernus
                       (dataProvider.getLocationName(EveDataProvider::getStationIdFromPath(initialStationPath))) :
                       (tr("- any station -")), parent}
         , mDataProvider{dataProvider}
-        , mStationPath{std::move(initialStationPath)}
+        , mStationPath(std::move(initialStationPath))
     {
         connect(this, &StationSelectButton::clicked, this, &StationSelectButton::selectStation);
     }
