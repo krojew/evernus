@@ -288,6 +288,20 @@ Item {
                     color: "orange"
                     Layout.columnSpan: 2
                 }
+
+                Label {
+                    font.bold: true
+                    text: qsTr("Profit from selling: %1").arg((profit - cost).toLocaleCurrencyString(Qt.locale(), (omitCurrencySymbol) ? (" ") : (qsTr("ISK"))))
+                    color: ((profit - cost) <= 0) ? ("red") : ("green")
+                    Layout.columnSpan: 2
+                }
+
+                Label {
+                    font.bold: true
+                    text: qsTr("ISK/h: %1").arg((totalTime > 0) ? (((profit - cost) * 3600 / totalTime).toLocaleCurrencyString(Qt.locale(), (omitCurrencySymbol) ? (" ") : (qsTr("ISK")))) : ("N/A"))
+                    color: ((profit - cost) <= 0) ? ("red") : ("green")
+                    Layout.columnSpan: 2
+                }
             }
 
             Label {

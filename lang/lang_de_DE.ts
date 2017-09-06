@@ -7760,7 +7760,19 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../qml/Industry/Manufacturing/Type.qml" line="287"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="294"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="301"/>
         <source>ISK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="294"/>
+        <source>Profit from selling: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="301"/>
+        <source>ISK/h: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

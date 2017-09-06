@@ -204,6 +204,11 @@ namespace Evernus
         return childrenCost + thisCost;
     }
 
+    double IndustryManufacturingSetupModel::TreeItem::getProfit() const
+    {
+        return mModel.getDstPrice(mTypeId, (isOutput()) ? (mRuns * getQuantityProduced()) : (getEffectiveQuantityRequired()));
+    }
+
     IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getChild(int row) const
     {
         return (row >= static_cast<int>(mChildItems.size())) ? (nullptr) : (mChildItems[row].get());
@@ -381,6 +386,8 @@ namespace Evernus
                 return static_cast<uint>(item->getEffectiveTotalTime().count());
             case CostRole:
                 return item->getCost();
+            case ProfitRole:
+                return item->getProfit();
             }
         }
         catch (const IndustryManufacturingSetup::NotSourceTypeException &e)
@@ -439,6 +446,7 @@ namespace Evernus
             { TimeEfficiencyRole, QByteArrayLiteral("timeEfficiency") },
             { TotalTimeRole, QByteArrayLiteral("totalTime") },
             { CostRole, QByteArrayLiteral("cost") },
+            { ProfitRole, QByteArrayLiteral("profit") },
         };
     }
 
@@ -530,6 +538,8 @@ namespace Evernus
                 fillItemAssets();
 
                 // note: don't emit manufacturing roles change, because this will propagate from children
+                const auto idx = createIndex(item->getRow(), 0, item.get());
+                emit dataChanged(idx, idx, { ProfitRole });
 
                 for (const auto &child : *item)
                     signalManufacturingRolesChange(child->getTypeId());
@@ -634,7 +644,7 @@ namespace Evernus
         mSrcPrice = src;
         mDstPrice = dst;
 
-        signalRoleChange({ CostRole });
+        signalRoleChange({ CostRole, ProfitRole });
     }
 
     void IndustryManufacturingSetupModel::setFacilityTax(double value)
@@ -714,7 +724,7 @@ namespace Evernus
         srcFuture.get();
         dstFuture.get();
 
-        signalRoleChange({ CostRole });
+        signalRoleChange({ CostRole, ProfitRole });
     }
 
     void IndustryManufacturingSetupModel::setMarketPrices(MarketPrices prices)

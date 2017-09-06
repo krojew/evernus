@@ -107,6 +107,7 @@ namespace Evernus
             TimeEfficiencyRole,
             TotalTimeRole,
             CostRole,
+            ProfitRole,
         };
 
         class TreeItem;
@@ -143,6 +144,7 @@ namespace Evernus
             std::chrono::seconds getEffectiveTotalTime() const;
 
             double getCost() const;
+            double getProfit() const;
 
             TreeItem *getChild(int row) const;
             TreeItem *getParent() const noexcept;
