@@ -495,8 +495,6 @@ namespace Evernus
     ::setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source)
     {
         mSetup.setSource(id, source);
-        mAssetQuantities[id].mCurrentQuantity = mAssetQuantities[id].mInitialQuantity;
-
         roleAndQuantityChange(id, { SourceRole, QuantityRequiredRole, TimeRole, TotalTimeRole, CostRole });
     }
 
