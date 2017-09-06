@@ -29,8 +29,8 @@ namespace Evernus
 
         Taxes calculateTaxes(const Character &character);
 
-        double getCoS(double buyPrice, const Taxes &taxes, bool limitOrder = true);
-        double getRevenue(double sellPrice, const Taxes &taxes, bool limitOrder = true);
+        double getBuyPrice(double buyPrice, const Taxes &taxes, bool limitOrder = true);
+        double getSellPrice(double sellPrice, const Taxes &taxes, bool limitOrder = true);
         double getMargin(double cost, double price, const Taxes &taxes, bool limitOrder = true);
 
         double getPriceDelta();

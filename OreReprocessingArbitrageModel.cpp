@@ -205,7 +205,7 @@ namespace Evernus
                     break;
 
                 auto cost = std::accumulate(std::begin(bought), std::end(bought), 0., [&](auto total, const auto &order) {
-                    return order.mVolume * PriceUtils::getCoS(order.mPrice, taxes, false) + total;
+                    return order.mVolume * PriceUtils::getBuyPrice(order.mPrice, taxes, false) + total;
                 });
 
                 auto income = 0.;
@@ -226,7 +226,7 @@ namespace Evernus
                         continue;
 
                     income += std::accumulate(std::begin(sold), std::end(sold), 0., [&](auto total, const auto &order) {
-                        return order.mVolume * PriceUtils::getRevenue(order.mPrice, taxes, false) + total;
+                        return order.mVolume * PriceUtils::getSellPrice(order.mPrice, taxes, false) + total;
                     });
 
                     if (useStationTax)
@@ -322,7 +322,7 @@ namespace Evernus
                     break;
 
                 auto cost = std::accumulate(std::begin(bought), std::end(bought), 0., [&](auto total, const auto &order) {
-                    return order.mVolume * PriceUtils::getCoS(order.mPrice, taxes, false) + total;
+                    return order.mVolume * PriceUtils::getBuyPrice(order.mPrice, taxes, false) + total;
                 });
 
                 auto income = 0.;
@@ -342,7 +342,7 @@ namespace Evernus
 
                     const auto price = dstData.mPrice;
 
-                    income += PriceUtils::getRevenue(price, taxes) * amount;
+                    income += PriceUtils::getSellPrice(price, taxes) * amount;
 
                     if (useStationTax)
                         cost += stationTax * price * amount;

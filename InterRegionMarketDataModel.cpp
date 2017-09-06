@@ -339,8 +339,8 @@ namespace Evernus
 
                     if (useSkillsForDifference)
                     {
-                        realSellPrice = (mDstPriceType == PriceType::Buy) ? (PriceUtils::getRevenue(realSellPrice, taxes, false)) : (PriceUtils::getRevenue(realSellPrice, taxes));
-                        realBuyPrice = (mSrcPriceType == PriceType::Buy) ? (PriceUtils::getCoS(realBuyPrice, taxes)) : (PriceUtils::getCoS(realBuyPrice, taxes, false));
+                        realSellPrice = (mDstPriceType == PriceType::Buy) ? (PriceUtils::getSellPrice(realSellPrice, taxes, false)) : (PriceUtils::getSellPrice(realSellPrice, taxes));
+                        realBuyPrice = (mSrcPriceType == PriceType::Buy) ? (PriceUtils::getBuyPrice(realBuyPrice, taxes)) : (PriceUtils::getBuyPrice(realBuyPrice, taxes, false));
                     }
 
                     data.mDifference = realSellPrice - realBuyPrice;

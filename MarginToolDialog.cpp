@@ -732,7 +732,7 @@ namespace Evernus
                     mBuyPrice = buy + priceDelta;
 
                     mBestBuyEdit->setText(curLocale.toString(mBuyPrice, 'f', 2));
-                    mCostOfSalesLabel->setText(TextUtils::currencyToString(PriceUtils::getCoS(mBuyPrice, taxes), curLocale));
+                    mCostOfSalesLabel->setText(TextUtils::currencyToString(PriceUtils::getBuyPrice(mBuyPrice, taxes), curLocale));
 
                     if (mCopyBuyBtn->isChecked())
                         QApplication::clipboard()->setText(QString::number(mBuyPrice, 'f', 2));
@@ -752,7 +752,7 @@ namespace Evernus
                     mSellPrice = sell - priceDelta;
 
                     mBestSellEdit->setText(curLocale.toString(mSellPrice, 'f', 2));
-                    mRevenueLabel->setText(TextUtils::currencyToString(PriceUtils::getRevenue(mSellPrice, taxes), curLocale));
+                    mRevenueLabel->setText(TextUtils::currencyToString(PriceUtils::getSellPrice(mSellPrice, taxes), curLocale));
 
                     if (mCopySellBtn->isChecked())
                         QApplication::clipboard()->setText(QString::number(mSellPrice, 'f', 2));
@@ -773,8 +773,8 @@ namespace Evernus
                     mSellPrice = bestSell - priceDelta;
                     mBuyPrice = bestBuy + priceDelta;
 
-                    const auto revenue = PriceUtils::getRevenue(mSellPrice, taxes);
-                    const auto cos = PriceUtils::getCoS(mBuyPrice, taxes);
+                    const auto revenue = PriceUtils::getSellPrice(mSellPrice, taxes);
+                    const auto cos = PriceUtils::getBuyPrice(mBuyPrice, taxes);
                     const auto margin = 100. * (revenue - cos) / revenue;
                     const auto markup = 100. * (revenue - cos) / cos;
 

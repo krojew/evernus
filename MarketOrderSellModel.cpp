@@ -592,7 +592,7 @@ namespace Evernus
                 {
                     const auto character = mCharacters.find(order->getCharacterId());
                     const auto taxes = PriceUtils::calculateTaxes(*character->second);
-                    const auto realCost = PriceUtils::getCoS(cost->getAdjustedCost(), taxes);
+                    const auto realCost = PriceUtils::getBuyPrice(cost->getAdjustedCost(), taxes);
 
                     if (info.mTargetPrice < realCost)
                         info.mTargetPrice = realCost;
@@ -688,8 +688,8 @@ namespace Evernus
 
             const auto cost = mItemCostProvider.fetchForCharacterAndType(characterId, order->getTypeId());
 
-            mTotalCost += order->getVolumeEntered() * PriceUtils::getCoS(cost->getAdjustedCost(), taxes);
-            mTotalIncome += order->getVolumeEntered() * PriceUtils::getRevenue(order->getPrice(), taxes);
+            mTotalCost += order->getVolumeEntered() * PriceUtils::getBuyPrice(cost->getAdjustedCost(), taxes);
+            mTotalIncome += order->getVolumeEntered() * PriceUtils::getSellPrice(order->getPrice(), taxes);
         }
 
         return orders;
@@ -789,8 +789,8 @@ namespace Evernus
     {
         const auto taxes = PriceUtils::calculateTaxes(character);
         const auto cost = mItemCostProvider.fetchForCharacterAndType(character.getId(), order.getTypeId());
-        const auto realCost = PriceUtils::getCoS(cost->getAdjustedCost(), taxes);
-        const auto realPrice = PriceUtils::getRevenue(order.getPrice(), taxes);
+        const auto realCost = PriceUtils::getBuyPrice(cost->getAdjustedCost(), taxes);
+        const auto realPrice = PriceUtils::getSellPrice(order.getPrice(), taxes);
         return volume * (realPrice - realCost);
     }
 }

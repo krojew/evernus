@@ -468,11 +468,11 @@ namespace Evernus
             if (useSkillsForDifference)
             {
                 data.mDstPrice = (dstPriceType == PriceType::Sell) ?
-                                 (PriceUtils::getRevenue(type.second.mDstPrice, taxes)) :
-                                 (PriceUtils::getRevenue(type.second.mDstPrice, taxes, false));
+                                 (PriceUtils::getSellPrice(type.second.mDstPrice, taxes)) :
+                                 (PriceUtils::getSellPrice(type.second.mDstPrice, taxes, false));
                 data.mSrcPrice = (srcPriceType == PriceType::Buy) ?
-                                 (PriceUtils::getCoS(type.second.mSrcPrice, taxes)) :
-                                 (PriceUtils::getCoS(type.second.mSrcPrice, taxes, false));
+                                 (PriceUtils::getBuyPrice(type.second.mSrcPrice, taxes)) :
+                                 (PriceUtils::getBuyPrice(type.second.mSrcPrice, taxes, false));
             }
             else
             {

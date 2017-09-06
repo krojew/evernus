@@ -39,12 +39,12 @@ namespace Evernus
             return Taxes{calcBrokersFee(character.getBuyBrokersFee()), calcBrokersFee(character.getSellBrokersFee()), salesTax};
         }
 
-        double getCoS(double buyPrice, const Taxes &taxes, bool limitOrder)
+        double getBuyPrice(double buyPrice, const Taxes &taxes, bool limitOrder)
         {
             return (limitOrder) ? (buyPrice + buyPrice * taxes.mBuyBrokerFee) : (buyPrice);
         }
 
-        double getRevenue(double sellPrice, const Taxes &taxes, bool limitOrder)
+        double getSellPrice(double sellPrice, const Taxes &taxes, bool limitOrder)
         {
             const auto taxedRevenue = sellPrice * (1. - taxes.mSalesTax);
             return (limitOrder) ? (taxedRevenue - sellPrice * taxes.mSellBrokerFee) : (taxedRevenue);
@@ -52,8 +52,8 @@ namespace Evernus
 
         double getMargin(double cost, double price, const Taxes &taxes, bool limitOrder)
         {
-            const auto realCost = getCoS(cost, taxes, limitOrder);
-            const auto realPrice = getRevenue(price, taxes, limitOrder);
+            const auto realCost = getBuyPrice(cost, taxes, limitOrder);
+            const auto realPrice = getSellPrice(price, taxes, limitOrder);
             return 100. * (realPrice - realCost) / realPrice;
         }
 
