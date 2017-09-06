@@ -71,6 +71,21 @@ Item {
         }
     }
 
+    function formatDuration(duration) {
+        var hours   = Math.floor(duration / 3600);
+        var minutes = Math.floor((duration / 60) % 60);
+        var seconds = duration % 60;
+
+        if (hours < 10)
+            hours   = "0" + hours;
+        if (minutes < 10)
+            minutes = "0" + minutes;
+        if (seconds < 10)
+            seconds = "0" + seconds;
+
+        return "%1:%2:%3".arg(hours).arg(minutes).arg(seconds);
+    }
+
     RectangularGlow {
         id: glow
         anchors.fill: parent
@@ -254,7 +269,7 @@ Item {
 
                 Label {
                     id: quantityText
-                    text: (quantityProduced > 0) ? (qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(time)) : (qsTr("Quantity produced: N/A"))
+                    text: (quantityProduced > 0) ? (qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(formatDuration(time))) : (qsTr("Quantity produced: N/A"))
                     color: "#cccccc"
                     Layout.fillWidth: true
                     Layout.columnSpan: 2
@@ -262,7 +277,7 @@ Item {
 
                 Label {
                     font.bold: true
-                    text: (isManufactured) ? (qsTr("Total production time: %1").arg(totalTime)) : (qsTr("Total production time: N/A"))
+                    text: (isManufactured) ? (qsTr("Total production time: %1").arg(formatDuration(totalTime))) : (qsTr("Total production time: N/A"))
                     color: "orange"
                     Layout.columnSpan: 2
                 }

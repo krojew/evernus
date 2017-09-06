@@ -272,7 +272,5 @@ namespace Evernus
 
         template<class T>
         static double getPriceFromOrderList(const T &orders, quint64 quantity);
-
-        static QString formatDuration(std::chrono::seconds time);
     };
 }

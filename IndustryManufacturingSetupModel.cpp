@@ -358,7 +358,7 @@ namespace Evernus
             case SourceRole:
                 return static_cast<int>(mSetup.getTypeSettings(item->getTypeId()).mSource);
             case TimeRole:
-                return formatDuration(item->getEffectiveTime());
+                return static_cast<uint>(item->getEffectiveTime().count());
             case RunsRole:
                 return item->getRuns();
             case MaterialEfficiencyRole:
@@ -378,7 +378,7 @@ namespace Evernus
                     return mSetup.getTypeSettings(id).mTimeEfficiency;
                 }
             case TotalTimeRole:
-                return formatDuration(item->getEffectiveTotalTime());
+                return static_cast<uint>(item->getEffectiveTotalTime().count());
             case CostRole:
                 return item->getCost();
             }
@@ -956,14 +956,5 @@ namespace Evernus
         }
 
         return price;
-    }
-
-    QString IndustryManufacturingSetupModel::formatDuration(std::chrono::seconds time)
-    {
-        const qulonglong timeCount = time.count();
-        return QStringLiteral("%1:%2:%3")
-            .arg(timeCount / 3600, 2, 10, QLatin1Char('0'))
-            .arg((timeCount / 60) % 60, 2, 10, QLatin1Char('0'))
-            .arg(timeCount % 60, 2, 10, QLatin1Char('0'));
     }
 }
