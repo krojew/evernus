@@ -812,7 +812,7 @@ namespace Evernus
     {
         std::unordered_set<EveType::IdType> remaining{typeId}, inspected;
 
-        auto parentTotalTimeChanged =
+        auto parentDependentRolesChanged =
             roles.contains(TimeEfficiencyRole) ||
             roles.contains(QuantityRequiredRole) ||
             roles.contains(SourceRole) ||
@@ -827,9 +827,6 @@ namespace Evernus
             Q_ASSERT(inspected.find(nextId) == std::end(inspected));
             inspected.emplace(nextId);
 
-            auto &quantities = mAssetQuantities[nextId];
-            quantities.mCurrentQuantity = quantities.mInitialQuantity;
-
             const auto &manufacturingInfo = mSetup.getManufacturingInfo(nextId);
             for (const auto &source : manufacturingInfo.mMaterials)
             {
@@ -841,12 +838,12 @@ namespace Evernus
             for (auto item = items.first; item != items.second; ++item)
             {
                 signalRoleChange(item->second.get(), roles);
-                if (parentTotalTimeChanged)
+                if (parentDependentRolesChanged)
                     signalParentDependentRolesChange(item->second.get());
             }
 
             // we've notified parents of the original type ids, so now we're only notifying our children
-            parentTotalTimeChanged = false;
+            parentDependentRolesChanged = false;
         } while (!remaining.empty());
     }
 
