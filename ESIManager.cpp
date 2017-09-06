@@ -32,6 +32,7 @@
 #include <QUrlQuery>
 #include <QSettings>
 #include <QDebug>
+#include <QHash>
 
 #include <boost/scope_exit.hpp>
 
@@ -628,6 +629,63 @@ namespace Evernus
                     priceObj.value(QStringLiteral("average_price")).toDouble()
                 });
             }
+
+            callback(std::move(result), {});
+        });
+    }
+
+    void ESIManager::fetchIndustryCostIndices(const PesistentDataCallback<IndustryCostIndices> &callback) const
+    {
+        selectNextInterface().fetchIndustryCostIndices([=](auto &&data, const auto &error) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error);
+                return;
+            }
+
+            const auto prices = data.array();
+
+            IndustryCostIndices result;
+            result.reserve(prices.size());
+
+            std::mutex resultMutex;
+
+            static const QHash<QString, IndustryCostIndex::Activity> activityNameMap = {
+                { QStringLiteral("none"), IndustryCostIndex::Activity::None },
+                { QStringLiteral("manufacturing"), IndustryCostIndex::Activity::Manufacturing },
+                { QStringLiteral("researching_technology"), IndustryCostIndex::Activity::ResearchingTechnology },
+                { QStringLiteral("researching_time_efficiency"), IndustryCostIndex::Activity::ResearchingTimeEfficiency },
+                { QStringLiteral("researching_material_efficiency"), IndustryCostIndex::Activity::ResearchingMaterialEfficiency },
+                { QStringLiteral("copying"), IndustryCostIndex::Activity::Copying },
+                { QStringLiteral("duplicating"), IndustryCostIndex::Activity::Duplicating },
+                { QStringLiteral("invention"), IndustryCostIndex::Activity::Invention },
+                { QStringLiteral("reverse_engineering"), IndustryCostIndex::Activity::ReverseEngineering },
+            };
+
+            QtConcurrent::blockingMap(
+                prices,
+                std::function<void (const QJsonValue &)>{[&](const auto &index) {
+                    const auto indexObj = index.toObject();
+                    const auto costs = indexObj.value(QStringLiteral("cost_indices")).toArray();
+
+                    const auto systemId = indexObj.value(QStringLiteral("solar_system_id")).toDouble();
+
+                    IndustryCostIndex::ActivityCostIndices indices;
+                    indices.reserve(costs.size());
+
+                    for (const auto &cost : costs)
+                    {
+                        const auto costObj = cost.toObject();
+                        const auto activityStr = costObj.value(QStringLiteral("activity")).toString();
+                        const auto value = costObj.value(QStringLiteral("cost_index")).toDouble();
+
+                        indices.emplace(activityNameMap.value(activityStr, IndustryCostIndex::Activity::None), value);
+                    }
+
+                    std::lock_guard<std::mutex> lock{resultMutex};
+                    result.emplace(systemId, std::move(indices));
+                }}
+            );
 
             callback(std::move(result), {});
         });

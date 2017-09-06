@@ -286,6 +286,15 @@ namespace Evernus
         }, getNumRetries());
     }
 
+    void ESIInterface::fetchIndustryCostIndices(const PersistentJsonCallback &callback) const
+    {
+        qDebug() << "Fetching industry cost indices.";
+        asyncGet(QStringLiteral("/v1/industry/systems/"), {}, [=](auto &&data, const auto &error, const auto &expires) {
+            Q_UNUSED(expires);
+            callback(std::move(data), error);
+        }, getNumRetries());
+    }
+
     void ESIInterface::openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const
     {
         qDebug() << "Opening market details for" << typeId;

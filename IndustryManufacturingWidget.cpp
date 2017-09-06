@@ -349,8 +349,9 @@ namespace Evernus
 
         const auto importingOrders = mDataFetcher.hasPendingOrderRequests();
         const auto importingMarketPrices = mMarketPricesSubtask != TaskConstants::invalidTask;
+        const auto importingCostIndices = mCostIndicesSubtask != TaskConstants::invalidTask;
 
-        if (!importingOrders && !importingMarketPrices)
+        if (!importingOrders && !importingMarketPrices && !importingCostIndices)
         {
             QSettings settings;
             const auto webImporter = static_cast<ImportSettings::WebImporterType>(
@@ -363,6 +364,7 @@ namespace Evernus
 
             mOrderSubtask = mTaskManager.startTask(mainTask, infoText.arg(pairs.size()));
             mMarketPricesSubtask = mTaskManager.startTask(mainTask, tr("Importing industry market prices..."));
+            mCostIndicesSubtask = mTaskManager.startTask(mainTask, tr("Importing system cost indices..."));
         }
 
         mDataFetcher.importData(pairs, mCharacterId);
@@ -373,6 +375,13 @@ namespace Evernus
 
             mTaskManager.endTask(mMarketPricesSubtask, error);
             mMarketPricesSubtask = TaskConstants::invalidTask;
+        });
+        mESIManager.fetchIndustryCostIndices([=](auto &&data, const auto &error) {
+            if (Q_LIKELY(error.isEmpty()))
+                mSetupModel.setCostIndices(std::move(data));
+
+            mTaskManager.endTask(mCostIndicesSubtask, error);
+            mCostIndicesSubtask = TaskConstants::invalidTask;
         });
     }
 

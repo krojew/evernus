@@ -710,6 +710,12 @@ namespace Evernus
         signalRoleChange({ CostRole });
     }
 
+    void IndustryManufacturingSetupModel::setCostIndices(IndustryCostIndices indices)
+    {
+        mCostIndices = std::move(indices);
+        signalRoleChange({ CostRole });
+    }
+
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)
     {
         const auto &info = mSetup.getManufacturingInfo(item.getTypeId());

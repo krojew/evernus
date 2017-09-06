@@ -29,6 +29,7 @@
 #include <QString>
 #include <QDate>
 
+#include "IndustryCostIndices.h"
 #include "MarketHistoryEntry.h"
 #include "WalletJournalEntry.h"
 #include "WalletTransactions.h"
@@ -101,6 +102,7 @@ namespace Evernus
                                               const Callback<WalletTransactions> &callback) const;
         void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
         void fetchMarketPrices(const PesistentDataCallback<MarketPrices> &callback) const;
+        void fetchIndustryCostIndices(const PesistentDataCallback<IndustryCostIndices> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 

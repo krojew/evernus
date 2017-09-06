@@ -1959,7 +1959,7 @@ Total: %7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="295"/>
+        <location filename="../ESIInterface.cpp" line="304"/>
         <source>Cannot open market window for invalid character. Check if there&apos;s a character associated with the item you wish to view.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1967,44 +1967,44 @@ Total: %7</source>
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="184"/>
+        <location filename="../ESIManager.cpp" line="185"/>
         <source>Citadel order import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="184"/>
+        <location filename="../ESIManager.cpp" line="185"/>
         <source>Seems like you are importing citadel orders for the first time. CCP only allows importing orders from citadels you have access to. This means you need to authenticate yourself with Eve SSO, if you haven&apos;t done that already (please wait for the SSO window to open).
 
 Also, please note that due to large numbers of citadels in some regions, the import might take much longer. Remember you can toggle citadel import in the Preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="709"/>
+        <location filename="../ESIManager.cpp" line="767"/>
         <source>SSO Authentication for unknown character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="711"/>
+        <location filename="../ESIManager.cpp" line="769"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="727"/>
+        <location filename="../ESIManager.cpp" line="785"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="801"/>
+        <location filename="../ESIManager.cpp" line="859"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1037"/>
+        <location filename="../ESIManager.cpp" line="1095"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1071"/>
+        <location filename="../ESIManager.cpp" line="1129"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3386,37 +3386,42 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="359"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="360"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="361"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="362"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="362"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="363"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="365"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="366"/>
         <source>Importing industry market prices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="382"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="367"/>
+        <source>Importing system cost indices...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="391"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="382"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="391"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="404"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="413"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>

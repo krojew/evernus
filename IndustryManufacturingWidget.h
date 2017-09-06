@@ -129,6 +129,7 @@ namespace Evernus
 
         uint mOrderSubtask = TaskConstants::invalidTask;
         uint mMarketPricesSubtask = TaskConstants::invalidTask;
+        uint mCostIndicesSubtask = TaskConstants::invalidTask;
 
         void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
 

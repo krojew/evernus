@@ -25,6 +25,7 @@
 #include <QAbstractItemModel>
 
 #include "IndustryManufacturingSetup.h"
+#include "IndustryCostIndices.h"
 #include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "ExternalOrder.h"
@@ -87,6 +88,7 @@ namespace Evernus
                        quint64 srcStation,
                        quint64 dstStation);
         void setMarketPrices(MarketPrices prices);
+        void setCostIndices(IndustryCostIndices indices);
 
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;
@@ -234,6 +236,7 @@ namespace Evernus
         TypeMap<std::multiset<ExternalOrder, ExternalOrder::HighToLow>> mDstBuyOrders;
 
         MarketPrices mMarketPrices;
+        IndustryCostIndices mCostIndices;
 
         void fillChildren(TreeItem &item);
 
