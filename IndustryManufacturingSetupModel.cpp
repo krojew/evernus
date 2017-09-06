@@ -197,7 +197,7 @@ namespace Evernus
                 break;
             case IndustryManufacturingSetup::InventorySource::Manufacture:
             case IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture:
-                thisCost = getManufacturingCost() * getEffectiveRuns();
+                thisCost = getManufacturingCost();
             }
         }
 
@@ -298,8 +298,21 @@ namespace Evernus
 
     double IndustryManufacturingSetupModel::TreeItem::getManufacturingCost() const
     {
-        // TODO: implement
-        return 0.;
+        const auto baseJobCost = std::accumulate(
+            std::begin(mManufacturingInfo.mMaterials),
+            std::end(mManufacturingInfo.mMaterials),
+            0.,
+            [=](auto value, const auto &material) {
+                return value + mModel.mMarketPrices[material.mMaterialId].mAdjustedPrice * material.mQuantity;
+            }
+        );
+
+        const auto systemCostIndex = (mModel.mSrcSystemId == 0) ?
+                                     (1.) :
+                                     (mModel.mCostIndices[mModel.mSrcSystemId][IndustryCostIndex::Activity::Manufacturing]);
+
+        const auto jobFee = baseJobCost * systemCostIndex * getEffectiveRuns();
+        return jobFee * (1. + mModel.mFacilityTax / 100.);
     }
 
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
@@ -638,6 +651,8 @@ namespace Evernus
     {
         mSrcSellOrders.clear();
         mDstBuyOrders.clear();
+
+        mSrcSystemId = mDataProvider.getStationSolarSystemId(srcStation);
 
         const auto srcRegionId = (srcStation == 0) ? (0u) : (mDataProvider.getStationRegionId(srcStation));
         const auto dstRegionId = (dstStation == 0) ? (0u) : (mDataProvider.getStationRegionId(dstStation));

@@ -235,6 +235,8 @@ namespace Evernus
         TypeMap<double> mDstSellPrices;
         TypeMap<std::multiset<ExternalOrder, ExternalOrder::HighToLow>> mDstBuyOrders;
 
+        uint mSrcSystemId = 0;
+
         MarketPrices mMarketPrices;
         IndustryCostIndices mCostIndices;
 
