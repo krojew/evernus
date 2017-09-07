@@ -99,6 +99,8 @@ namespace Evernus
         void loadSetup();
         void saveSetup();
 
+        void showBoM();
+
     private:
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;

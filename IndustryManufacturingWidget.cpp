@@ -12,11 +12,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <unordered_map>
+#include <deque>
+
 #include <QCoreApplication>
+#include <QTableWidgetItem>
 #include <QDoubleSpinBox>
 #include <QQuickWidget>
 #include <QInputDialog>
 #include <QProgressBar>
+#include <QTableWidget>
 #include <QQmlContext>
 #include <QMessageBox>
 #include <QHBoxLayout>
@@ -94,6 +99,11 @@ namespace Evernus
         toolBarLayout->addWidget(saveSetup);
         saveSetup->setFlat(true);
         connect(saveSetup, &QPushButton::clicked, this, &IndustryManufacturingWidget::saveSetup);
+
+        const auto showBoM = new QPushButton{QIcon{":/images/page_white_text.png"}, tr("Show bill of materials"), this};
+        toolBarLayout->addWidget(showBoM);
+        showBoM->setFlat(true);
+        connect(showBoM, &QPushButton::clicked, this, &IndustryManufacturingWidget::showBoM);
 
         toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
 
@@ -537,6 +547,48 @@ namespace Evernus
 
             mLastLoadedSetup = name;
         }
+    }
+
+    void IndustryManufacturingWidget::showBoM()
+    {
+        std::unordered_map<EveType::IdType, quint64> materials;
+
+        std::deque<QModelIndex> indices{QModelIndex{}};
+        do {
+            const auto index = indices.front();
+            indices.pop_front();
+
+            const auto quantity =  mSetupModel.data(index, IndustryManufacturingSetupModel::QuantityRequiredRole).toULongLong();
+            if (quantity != 0)
+            {
+                const auto typeId = mSetupModel.data(index, IndustryManufacturingSetupModel::TypeIdRole).value<EveType::IdType>();
+                materials[typeId] += quantity;
+            }
+
+            const auto childCount = mSetupModel.rowCount(index);
+            for (auto i = 0; i< childCount; ++i)
+                indices.emplace_back(mSetupModel.index(i, 0, index));
+        } while (!indices.empty());
+
+        const auto table = new QTableWidget{static_cast<int>(materials.size()), 2, this};
+        table->setWindowFlags(Qt::Window);
+        table->setHorizontalHeaderLabels({ QStringLiteral("Name"), QStringLiteral("Quatity") });
+        table->setWindowTitle(tr("Bill of materials"));
+
+        const auto curLocale = locale();
+
+        auto row = 0;
+        for (const auto &material : materials)
+        {
+            table->setItem(row, 0, new QTableWidgetItem{mDataProvider.getTypeName(material.first)});
+            table->setItem(row, 1, new QTableWidgetItem{curLocale.toString(material.second)});
+
+            ++row;
+        }
+
+        table->sortItems(0);
+        table->move(rect().center() - table->rect().center());
+        table->show();
     }
 
     void IndustryManufacturingWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)

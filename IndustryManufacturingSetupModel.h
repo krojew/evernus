@@ -48,6 +48,22 @@ namespace Evernus
     public:
         using RegionList = std::unordered_set<uint>;
 
+        enum
+        {
+            NameRole = Qt::UserRole,
+            TypeIdRole,
+            QuantityProducedRole,
+            QuantityRequiredRole,
+            SourceRole,
+            TimeRole,
+            RunsRole,
+            MaterialEfficiencyRole,
+            TimeEfficiencyRole,
+            TotalTimeRole,
+            CostRole,
+            ProfitRole,
+        };
+
         IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                         const EveDataProvider &dataProvider,
                                         const AssetProvider &assetProvider,
@@ -95,22 +111,6 @@ namespace Evernus
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;
 
     private:
-        enum
-        {
-            NameRole = Qt::UserRole,
-            TypeIdRole,
-            QuantityProducedRole,
-            QuantityRequiredRole,
-            SourceRole,
-            TimeRole,
-            RunsRole,
-            MaterialEfficiencyRole,
-            TimeEfficiencyRole,
-            TotalTimeRole,
-            CostRole,
-            ProfitRole,
-        };
-
         class TreeItem;
 
         using TreeItemPtr = std::unique_ptr<TreeItem>;
