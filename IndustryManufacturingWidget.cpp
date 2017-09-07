@@ -107,15 +107,28 @@ namespace Evernus
 
         const auto srcStationBtn = new StationSelectButton{mDataProvider, srcStationPath, this};
         toolBarLayout->addWidget(srcStationBtn);
-
-        const auto srcStationWarning = new QLabel{this};
-        toolBarLayout->addWidget(srcStationWarning);
-        srcStationWarning->setPixmap(QPixmap{QStringLiteral(":/images/error.png")});
-        srcStationWarning->setVisible(srcStationBtn->getSelectedStationId() == 0);
-        srcStationWarning->setToolTip(tr("Leaving source station empty will cause costs to not include job installation."));
         connect(srcStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
             changeStation(mSrcStation, path, IndustrySettings::srcManufacturingStationKey);
-            srcStationWarning->setVisible(srcStationBtn->getSelectedStationId() == 0);
+        });
+
+        toolBarLayout->addWidget(new QLabel{tr("Manufacturing station:"), this});
+
+        const auto manufacturingStationPath = settings.value(IndustrySettings::facilityManufacturingStationKey).toList();
+
+        const auto manufacturingStationBtn = new StationSelectButton{mDataProvider, manufacturingStationPath, this};
+        toolBarLayout->addWidget(manufacturingStationBtn);
+
+        const auto manufacturingStationWarning = new QLabel{this};
+        toolBarLayout->addWidget(manufacturingStationWarning);
+        manufacturingStationWarning->setPixmap(QPixmap{QStringLiteral(":/images/error.png")});
+        manufacturingStationWarning->setVisible(manufacturingStationBtn->getSelectedStationId() == 0);
+        manufacturingStationWarning->setToolTip(tr("Leaving manufacturing station empty will cause costs to not include system cost index."));
+        connect(manufacturingStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+            quint64 station = 0;
+            changeStation(station, path, IndustrySettings::facilityManufacturingStationKey);
+
+            manufacturingStationWarning->setVisible(station == 0);
+            mSetupModel.setManufacturingStation(station);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});

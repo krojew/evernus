@@ -34,6 +34,7 @@ namespace Evernus
         const auto dstManufacturingRegionKey = QStringLiteral("industry/manufacturing/dstRegion");
         const auto srcManufacturingStationKey = QStringLiteral("industry/manufacturing/srcStation");
         const auto dstManufacturingStationKey = QStringLiteral("industry/manufacturing/dstStation");
+        const auto facilityManufacturingStationKey = QStringLiteral("industry/manufacturing/facilityStation");
         const auto manufacturingTypesKey = QStringLiteral("industry/manufacturing/types");
         const auto manufacturingFacilityTypeKey = QStringLiteral("industry/manufacturing/facilityType");
         const auto manufacturingSecurityStatusKey = QStringLiteral("industry/manufacturing/securityStatus");

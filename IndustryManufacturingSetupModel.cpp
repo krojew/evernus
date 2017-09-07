@@ -663,8 +663,6 @@ namespace Evernus
         mSrcSellOrders.clear();
         mDstBuyOrders.clear();
 
-        mSrcSystemId = mDataProvider.getStationSolarSystemId(srcStation);
-
         const auto srcRegionId = (srcStation == 0) ? (0u) : (mDataProvider.getStationRegionId(srcStation));
         const auto dstRegionId = (dstStation == 0) ? (0u) : (mDataProvider.getStationRegionId(dstStation));
 
@@ -737,6 +735,12 @@ namespace Evernus
     void IndustryManufacturingSetupModel::setCostIndices(IndustryCostIndices indices)
     {
         mCostIndices = std::move(indices);
+        signalRoleChange({ CostRole });
+    }
+
+    void IndustryManufacturingSetupModel::setManufacturingStation(quint64 stationId)
+    {
+        mSrcSystemId = mDataProvider.getStationSolarSystemId(stationId);
         signalRoleChange({ CostRole });
     }
 

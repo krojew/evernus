@@ -89,6 +89,7 @@ namespace Evernus
                        quint64 dstStation);
         void setMarketPrices(MarketPrices prices);
         void setCostIndices(IndustryCostIndices indices);
+        void setManufacturingStation(quint64 stationId);
 
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;
