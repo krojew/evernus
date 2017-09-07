@@ -397,7 +397,7 @@ namespace Evernus
 
         mSetup.setOutputTypes(std::move(selected));
 
-        const auto outputSize = mSetup.getOutputSize();
+        const auto outputSize = static_cast<int>(mSetup.getOutputSize());
         if (outputSize != 0)
         {
             mViewResetProgress->reset();
