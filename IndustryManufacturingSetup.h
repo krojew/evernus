@@ -80,6 +80,8 @@ namespace Evernus
         void setOutputTypes(TypeSet types);
         const OutputTypeMap &getOutputTypes() const;
 
+        OutputTypeMap::size_type getOutputSize() const noexcept;
+
         const EveDataProvider::ManufacturingInfo &getManufacturingInfo(EveType::IdType typeId) const;
         const TypeSettings &getTypeSettings(EveType::IdType typeId) const;
         const OutputSettings &getOutputSettings(EveType::IdType typeId) const;

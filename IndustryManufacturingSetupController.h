@@ -50,6 +50,7 @@ namespace Evernus
         void sourceChanged(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
         void materialEfficiencyChanged(EveType::IdType id, uint value);
         void timeEfficiencyChanged(EveType::IdType id, uint value);
+        void outputViewCreated();
 
     private:
         IndustryManufacturingSetupModel &mModel;

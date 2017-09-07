@@ -27,6 +27,8 @@ ScrollView {
             model: TypeDelegateModel {
                 model: setupModel
                 isOutput: true
+
+                Component.onCompleted: onCreated.connect(setupController.outputViewCreated)
             }
         }
     }

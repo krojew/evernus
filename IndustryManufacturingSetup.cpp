@@ -67,6 +67,11 @@ namespace Evernus
         return mOutputTypes;
     }
 
+    IndustryManufacturingSetup::OutputTypeMap::size_type IndustryManufacturingSetup::getOutputSize() const noexcept
+    {
+        return mOutputTypes.size();
+    }
+
     const EveDataProvider::ManufacturingInfo &IndustryManufacturingSetup::getManufacturingInfo(EveType::IdType typeId) const
     {
         const auto it = mManufacturingInfo.find(typeId);

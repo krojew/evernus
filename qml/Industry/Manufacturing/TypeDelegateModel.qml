@@ -22,6 +22,8 @@ import "qrc:/qml/Industry/Manufacturing"
 DelegateModel {
     property bool isOutput: false
 
+    signal created()
+
     id: mainModel
 
     delegate: RowLayout {
@@ -66,17 +68,25 @@ BezierCurve {
         }
 
         Timer {
-            id: childrenDelayTimer
+            id: queueTimer
             interval: 0
-
-            onTriggered: materials.model = childrenLoader.item
         }
 
         Loader {
             id: childrenLoader
             asynchronous: true
 
-            onLoaded: childrenDelayTimer.running = true
+            signal created()
+
+            onLoaded: {
+                queueTimer.triggered.connect(function() {
+                    materials.model = childrenLoader.item;
+                    childrenLoader.created();
+                });
+                queueTimer.start();
+            }
+
+            Component.onCompleted: created.connect(mainModel.created)
         }
 
         Component.onCompleted: {
@@ -85,6 +95,9 @@ BezierCurve {
                     "model": mainModel.model,
                     "rootIndex": mainModel.modelIndex(index)
                 });
+            } else {
+                queueTimer.triggered.connect(mainModel.created);
+                queueTimer.start();
             }
         }
     }

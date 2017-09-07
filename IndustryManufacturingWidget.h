@@ -30,6 +30,7 @@
 #include "Character.h"
 
 class QQuickWidget;
+class QProgressBar;
 class QByteArray;
 class QComboBox;
 
@@ -116,6 +117,8 @@ namespace Evernus
         QComboBox *mTimeRigCombo = nullptr;
 
         DontSaveImportedOrdersCheckBox *mDontSaveBtn = nullptr;
+
+        QProgressBar *mViewResetProgress = nullptr;
 
         QQuickWidget *mManufacturingView = nullptr;
 

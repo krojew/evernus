@@ -12,9 +12,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QCoreApplication>
 #include <QDoubleSpinBox>
 #include <QQuickWidget>
 #include <QInputDialog>
+#include <QProgressBar>
 #include <QQmlContext>
 #include <QMessageBox>
 #include <QHBoxLayout>
@@ -285,6 +287,19 @@ namespace Evernus
         mSetupModel.setMaterialRigType(static_cast<IndustryUtils::RigType>(mMaterialRigCombo->currentData().toInt()));
         mSetupModel.setTimeRigType(static_cast<IndustryUtils::RigType>(mTimeRigCombo->currentData().toInt()));
 
+        mViewResetProgress = new QProgressBar{this};
+        mainLayout->addWidget(mViewResetProgress);
+        mViewResetProgress->setMinimum(0);
+        mViewResetProgress->hide();
+        connect(&mSetupController, &IndustryManufacturingSetupController::outputViewCreated,
+                this, [=] {
+            mViewResetProgress->setValue(mViewResetProgress->value() + 1);
+            if (mViewResetProgress->value() == mViewResetProgress->maximum())
+                mViewResetProgress->hide();
+
+            QCoreApplication::processEvents();
+        });
+
         const auto contentSplitter = new QSplitter{this};
         mainLayout->addWidget(contentSplitter, 1);
 
@@ -299,7 +314,7 @@ namespace Evernus
         Q_ASSERT(ctxt != nullptr);
 
         ctxt->setContextProperty(QStringLiteral("setupModel"), &mSetupModel);
-        ctxt->setContextProperty(QStringLiteral("SetupController"), &mSetupController);
+        ctxt->setContextProperty(QStringLiteral("setupController"), &mSetupController);
 
         setQmlSettings();
 
@@ -357,6 +372,15 @@ namespace Evernus
     void IndustryManufacturingWidget::refreshTypes()
     {
         mSetup.setOutputTypes(mTypeView->getSelectedTypes());
+
+        const auto outputSize = mSetup.getOutputSize();
+        if (outputSize != 0)
+        {
+            mViewResetProgress->reset();
+            mViewResetProgress->setMaximum(outputSize - 1);
+            mViewResetProgress->show();
+        }
+
         mSetupModel.refreshData();
     }
 

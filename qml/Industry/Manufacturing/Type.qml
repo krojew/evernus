@@ -175,7 +175,7 @@ Item {
 
                     onCurrentIndexChanged: {
                         if (!isOutput)
-                            SetupController.setSource(typeId, model.get(currentIndex).value);
+                            setupController.setSource(typeId, model.get(currentIndex).value);
                     }
 
                     Component.onCompleted: {
@@ -192,7 +192,7 @@ Item {
                     }
 
                     Connections {
-                        target: SetupController
+                        target: setupController
                         enabled: !isOutput
 
                         onSourceChanged: {
@@ -214,7 +214,7 @@ Item {
                     editable: true
                     visible: isOutput
 
-                    onValueChanged: SetupController.setRuns(typeId, value)
+                    onValueChanged: setupController.setRuns(typeId, value)
                 }
 
                 Label {
@@ -230,10 +230,10 @@ Item {
                         editable: true
                         enabled: isManufactured
 
-                        onValueChanged: SetupController.setMaterialEfficiency(typeId, value)
+                        onValueChanged: setupController.setMaterialEfficiency(typeId, value)
 
                         Connections {
-                            target: SetupController
+                            target: setupController
 
                             onMaterialEfficiencyChanged: {
                                 if (id == typeId)
@@ -254,10 +254,10 @@ Item {
                         editable: true
                         enabled: isManufactured
 
-                        onValueChanged: SetupController.setTimeEfficiency(typeId, value)
+                        onValueChanged: setupController.setTimeEfficiency(typeId, value)
 
                         Connections {
-                            target: SetupController
+                            target: setupController
 
                             onTimeEfficiencyChanged: {
                                 if (id == typeId)
@@ -315,7 +315,7 @@ Item {
     }
 
     Connections {
-        target: SetupController
+        target: setupController
         onTypeSelected: {
             if (id == typeId)
                 root.state = "selected";
@@ -325,6 +325,6 @@ Item {
     }
 
     Component.onCompleted: {
-        root.selected.connect(SetupController.typeSelected);
+        root.selected.connect(setupController.typeSelected);
     }
 }
