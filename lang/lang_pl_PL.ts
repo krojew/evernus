@@ -3401,62 +3401,72 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="413"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="381"/>
+        <source>Large setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="382"/>
+        <source>Adding many output item types may take long time to process. Are you sure you want to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="427"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="415"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="429"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="416"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="430"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="419"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="433"/>
         <source>Importing industry market prices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="420"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="434"/>
         <source>Importing system cost indices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="444"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="458"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="444"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="458"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="466"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="480"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="485"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="499"/>
         <source>Load setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="485"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="499"/>
         <source>Select setup:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="511"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="525"/>
         <source>Save setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="511"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="525"/>
         <source>Enter setup name:</source>
         <translation type="unfinished"></translation>
     </message>

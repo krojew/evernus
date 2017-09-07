@@ -371,7 +371,21 @@ namespace Evernus
 
     void IndustryManufacturingWidget::refreshTypes()
     {
-        mSetup.setOutputTypes(mTypeView->getSelectedTypes());
+        const auto warningThreshold = 50u;
+
+        auto selected = mTypeView->getSelectedTypes();
+        if (selected.size() > warningThreshold)
+        {
+            const auto ret = QMessageBox::question(
+                this,
+                tr("Large setup"),
+                tr("Adding many output item types may take long time to process. Are you sure you want to proceed?")
+            );
+            if (ret == QMessageBox::No)
+                return;
+        }
+
+        mSetup.setOutputTypes(std::move(selected));
 
         const auto outputSize = mSetup.getOutputSize();
         if (outputSize != 0)
