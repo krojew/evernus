@@ -15,6 +15,7 @@
 import QtQuick.Layouts 1.3
 import QtQml.Models 2.2
 import QtQuick 2.7
+import QtQml 2.2
 
 import "qrc:/qml/Industry/Manufacturing"
 
@@ -64,11 +65,18 @@ BezierCurve {
             isOutput: mainModel.isOutput
         }
 
+        Timer {
+            id: childrenDelayTimer
+            interval: 0
+
+            onTriggered: materials.model = childrenLoader.item
+        }
+
         Loader {
             id: childrenLoader
             asynchronous: true
 
-            onLoaded: materials.model = item
+            onLoaded: childrenDelayTimer.running = true
         }
 
         Component.onCompleted: {
