@@ -3264,7 +3264,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="125"/>
-        <source>Leaving source station empty will cause costs to not include job installation.</source>
+        <source>Leaving manufacturing station empty will cause costs to not include system cost index.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

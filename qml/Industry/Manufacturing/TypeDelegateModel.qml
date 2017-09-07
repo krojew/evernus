@@ -64,42 +64,19 @@ BezierCurve {
             isOutput: mainModel.isOutput
         }
 
+        Loader {
+            id: childrenLoader
+            asynchronous: true
+
+            onLoaded: materials.model = item
+        }
+
         Component.onCompleted: {
             if (model && model.hasModelChildren) {
-                var component = Qt.createComponent("TypeDelegateModel.qml");
-
-                function finishCreation() {
-                    function finishObject(object) {
-                        materials.model = object;
-                    }
-
-                    if (component.status === Component.Ready) {
-                        var incubator = component.incubateObject(materials, {
-                            "model": mainModel.model,
-                            "rootIndex": mainModel.modelIndex(index)
-                        }, Qt.Asynchronous);
-
-                        if (incubator.status !== Component.Ready) {
-                            incubator.onStatusChanged = function(status) {
-                                if (status === Component.Ready)
-                                    finishObject(incubator.object);
-                                else
-                                    console.error("Error creating source object:", status);
-                            };
-                        } else {
-                            finishObject(incubator.object);
-                        }
-                    } else if (component.status === Component.Error) {
-                        console.error("Error loading component:", component.errorString());
-                    }
-                }
-
-                if (component.status === Component.Ready)
-                    finishCreation();
-                else if (component.status === Component.Error)
-                    console.error("Error loading component:", component.errorString());
-                else
-                    component.statusChanged.connect(finishCreation);
+                childrenLoader.setSource("TypeDelegateModel.qml", {
+                    "model": mainModel.model,
+                    "rootIndex": mainModel.modelIndex(index)
+                });
             }
         }
     }
