@@ -896,7 +896,6 @@ namespace Evernus
                                                  WalletJournalEntry::IdType tillId,
                                                  const Callback<WalletJournal> &callback) const
     {
-        // TODO: finish when properly implemented in ESI
         selectNextInterface().fetchCharacterWalletJournal(charId, fromId, [=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
