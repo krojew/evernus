@@ -85,12 +85,14 @@ namespace Evernus
 
         mFirstTimeCitadelOrderImport = settings.value(firstTimeCitadelOrderImportKey, mFirstTimeCitadelOrderImport).toBool();
 
-        createInterfaces();
-
         connect(this, &ESIManager::tokenError, this, [=](auto charId, const auto &errorInfo) {
             Q_UNUSED(charId);
             emit error(errorInfo);
         });
+
+        connect(&mInterfaceManager, &ESIInterfaceManager::tokenRequested, this, &ESIManager::fetchToken);
+        connect(this, &ESIManager::acquiredToken, &mInterfaceManager, &ESIInterfaceManager::acquiredToken);
+        connect(this, &ESIManager::tokenError, &mInterfaceManager, &ESIInterfaceManager::tokenError);
     }
 
     void ESIManager::fetchMarketOrders(uint regionId,
@@ -771,14 +773,14 @@ namespace Evernus
 
                 mAuthView->setWindowModality(Qt::ApplicationModal);
                 mAuthView->adjustSize();
-                mAuthView->move(QApplication::desktop()->screenGeometry(mAuthView.data()).center() -
+                mAuthView->move(QApplication::desktop()->screenGeometry(mAuthView.get()).center() -
                                 mAuthView->rect().center());
                 mAuthView->show();
 
-                connect(mAuthView.data(), &SSOAuthWidget::acquiredCode, this, [=](const auto &code) {
+                connect(mAuthView.get(), &SSOAuthWidget::acquiredCode, this, [=](const auto &code) {
                     processAuthorizationCode(charId, code);
                 });
-                connect(mAuthView.data(), &SSOAuthWidget::aboutToClose, this, [=] {
+                connect(mAuthView.get(), &SSOAuthWidget::aboutToClose, this, [=] {
                     mPendingTokenRefresh.erase(charId);
                     mFetchingToken = false;
 
@@ -883,12 +885,7 @@ namespace Evernus
 
     void ESIManager::handleNewPreferences()
     {
-        for (auto iface : mInterfaces)
-            iface->deleteLater();
-
-        mInterfaces.clear();
-
-        createInterfaces();
+        mInterfaceManager.handleNewPreferences();
     }
 
     void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
@@ -1221,30 +1218,6 @@ namespace Evernus
         };
     }
 
-    void ESIManager::createInterfaces()
-    {
-        QSettings settings;
-
-        // IO bound
-        const auto maxInterfaces = std::max(
-            settings.value(NetworkSettings::maxESIThreadsKey, NetworkSettings::maxESIThreadsDefault).toUInt(),
-            1u
-        );
-
-        mInterfaces.reserve(maxInterfaces);
-
-        for (auto i = 0u; i < maxInterfaces; ++i)
-        {
-            const auto interface = new ESIInterface{this};
-
-            mInterfaces.emplace_back(interface);
-
-            connect(interface, &ESIInterface::tokenRequested, this, &ESIManager::fetchToken, Qt::QueuedConnection);
-            connect(this, &ESIManager::acquiredToken, interface, &ESIInterface::updateTokenAndContinue);
-            connect(this, &ESIManager::tokenError, interface, &ESIInterface::handleTokenError);
-        }
-    }
-
     void ESIManager::scheduleNextTokenFetch()
     {
         if (mPendingTokenRefresh.empty())
@@ -1258,10 +1231,7 @@ namespace Evernus
 
     const ESIInterface &ESIManager::selectNextInterface() const
     {
-        const auto &interface = *mInterfaces[mCurrentInterface];
-        mCurrentInterface = (mCurrentInterface + 1) % mInterfaces.size();
-
-        return interface;
+        return mInterfaceManager.selectNextInterface();
     }
 
     MarketOrder::State ESIManager::getStateFromString(const QString &state)

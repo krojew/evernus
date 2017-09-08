@@ -300,6 +300,8 @@ add_executable(
     ESIIndividualExternalOrderImporter.h
     ESIInterface.cpp
     ESIInterface.h
+    ESIInterfaceManager.cpp
+    ESIInterfaceManager.h
     ESIManager.h
     ESIManager.cpp
     ESIWholeExternalOrderImporter.cpp
@@ -599,6 +601,7 @@ add_executable(
     qdropbox2global.h
     qhttpheader.cpp
     qhttpheader.h
+    QObjectDeleteLaterDeleter.h
     QtScriptSyntaxHighlighter.cpp
     QtScriptSyntaxHighlighter.h
     qxtabstracthttpconnector.cpp

@@ -24,12 +24,13 @@
 #include <boost/optional.hpp>
 
 #include <QNetworkAccessManager>
-#include <QScopedPointer>
 #include <QDateTime>
 #include <QString>
 #include <QDate>
 
+#include "QObjectDeleteLaterDeleter.h"
 #include "IndustryCostIndices.h"
+#include "ESIInterfaceManager.h"
 #include "MarketHistoryEntry.h"
 #include "WalletJournalEntry.h"
 #include "WalletTransactions.h"
@@ -142,12 +143,11 @@ namespace Evernus
 
         SimpleCrypt mCrypt;
 
-        std::vector<ESIInterface *> mInterfaces;
-        mutable std::size_t mCurrentInterface = 0;
+        ESIInterfaceManager mInterfaceManager;
 
         QNetworkAccessManager mNetworkManager;
 
-        QScopedPointer<SSOAuthWidget, QScopedPointerDeleteLater> mAuthView;
+        std::unique_ptr<SSOAuthWidget, QObjectDeleteLaterDeleter> mAuthView;
 
         std::unordered_set<Character::IdType> mPendingTokenRefresh;
 
@@ -168,7 +168,6 @@ namespace Evernus
         ExternalOrder getExternalOrderFromJson(const QJsonObject &object, uint regionId) const;
         ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
 
-        void createInterfaces();
         void scheduleNextTokenFetch();
 
         const ESIInterface &selectNextInterface() const;

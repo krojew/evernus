@@ -1967,44 +1967,44 @@ Total: %7</source>
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="185"/>
+        <location filename="../ESIManager.cpp" line="187"/>
         <source>Citadel order import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="185"/>
+        <location filename="../ESIManager.cpp" line="187"/>
         <source>Seems like you are importing citadel orders for the first time. CCP only allows importing orders from citadels you have access to. This means you need to authenticate yourself with Eve SSO, if you haven&apos;t done that already (please wait for the SSO window to open).
 
 Also, please note that due to large numbers of citadels in some regions, the import might take much longer. Remember you can toggle citadel import in the Preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="768"/>
+        <location filename="../ESIManager.cpp" line="770"/>
         <source>SSO Authentication for unknown character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="770"/>
+        <location filename="../ESIManager.cpp" line="772"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="786"/>
+        <location filename="../ESIManager.cpp" line="788"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="860"/>
+        <location filename="../ESIManager.cpp" line="862"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1096"/>
+        <location filename="../ESIManager.cpp" line="1092"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1130"/>
+        <location filename="../ESIManager.cpp" line="1126"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
