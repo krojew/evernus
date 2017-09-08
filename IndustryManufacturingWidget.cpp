@@ -562,7 +562,19 @@ namespace Evernus
             if (quantity != 0)
             {
                 const auto typeId = mSetupModel.data(index, IndustryManufacturingSetupModel::TypeIdRole).value<EveType::IdType>();
-                materials[typeId] += quantity;
+
+                try
+                {
+                    const auto &settings = mSetup.getTypeSettings(typeId);
+                    if (settings.mSource != IndustryManufacturingSetup::InventorySource::Manufacture &&
+                        settings.mSource != IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
+                    {
+                        materials[typeId] += quantity;
+                    }
+                }
+                catch (const IndustryManufacturingSetup::NotSourceTypeException &)
+                {
+                }
             }
 
             const auto childCount = mSetupModel.rowCount(index);
