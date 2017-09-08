@@ -39,6 +39,8 @@ namespace Evernus
         quint64 getSelectedStationId() const;
         void setSelectedStationId(quint64 id);
 
+        QVariantList getSelectedStationPath() const;
+
         StationSelectButton &operator =(const StationSelectButton &) = default;
         StationSelectButton &operator =(StationSelectButton &&) = default;
 

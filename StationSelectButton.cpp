@@ -48,6 +48,10 @@ namespace Evernus
         if (id == 0)
         {
             setText(tr("- any station -"));
+
+            mStationPath.clear();
+            emit stationChanged(mStationPath);
+
             return;
         }
 
@@ -65,6 +69,11 @@ namespace Evernus
         setStationNameText(id);
 
         emit stationChanged(mStationPath);
+    }
+
+    QVariantList StationSelectButton::getSelectedStationPath() const
+    {
+        return mStationPath;
     }
 
     void StationSelectButton::selectStation()

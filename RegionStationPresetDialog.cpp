@@ -103,6 +103,8 @@ namespace Evernus
         mainLayout->addWidget(btnBox);
         connect(btnBox, &QDialogButtonBox::accepted, this, &RegionStationPresetDialog::accept);
         connect(btnBox, &QDialogButtonBox::rejected, this, &RegionStationPresetDialog::reject);
+
+        setWindowTitle(tr("Region/station presets"));
     }
 
     RegionStationPresetDialog::RegionList RegionStationPresetDialog::getSrcRegions() const

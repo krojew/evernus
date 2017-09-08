@@ -80,6 +80,8 @@ namespace Evernus
 
         void selectInterRegionType(const QItemSelection &selected);
 
+        void changeStations(const QVariantList &srcPath, const QVariantList &dstPath);
+
     private:
         static const auto waitingLabelIndex = 0;
 

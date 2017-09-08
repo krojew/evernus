@@ -68,12 +68,8 @@ namespace Evernus
                                                           regionStationPresetRepository,
                                                           this};
         toolBarLayout->addWidget(mSelectWidget);
-        connect(mSelectWidget, &SourceDestinationSelectWidget::srcStationChanged, this, [=](const auto &path) {
-            changeStation(mSrcStation, path, MarketAnalysisSettings::reprocessingSrcStationKey);
-        });
-        connect(mSelectWidget, &SourceDestinationSelectWidget::dstStationChanged, this, [=](const auto &path) {
-            changeStation(mDstStation, path, MarketAnalysisSettings::reprocessingDstStationKey);
-        });
+        connect(mSelectWidget, &SourceDestinationSelectWidget::stationsChanged,
+                this, &ReprocessingArbitrageWidget::changeStations);
 
         toolBarLayout->addWidget(new QLabel{tr("Base yield:"), this});
 
@@ -266,6 +262,17 @@ namespace Evernus
         mLookupGroup->setEnabled(enabled);
     }
 
+    void ReprocessingArbitrageWidget::changeStations(const QVariantList &srcPath, const QVariantList &dstPath)
+    {
+        changeStation(mSrcStation, srcPath, MarketAnalysisSettings::reprocessingSrcStationKey);
+        changeStation(mDstStation, dstPath, MarketAnalysisSettings::reprocessingDstStationKey);
+
+        if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::No)
+            return;
+
+        recalculateData();
+    }
+
     void ReprocessingArbitrageWidget::setSourceModel(ReprocessingArbitrageModel *model)
     {
         mDataModel = model;
@@ -278,10 +285,5 @@ namespace Evernus
         settings.setValue(settingName, path);
 
         destination = EveDataProvider::getStationIdFromPath(path);
-
-        if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::No)
-            return;
-
-        recalculateData();
     }
 }

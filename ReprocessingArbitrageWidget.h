@@ -72,6 +72,8 @@ namespace Evernus
     private slots:
         void selectType(const QItemSelection &selected);
 
+        void changeStations(const QVariantList &srcPath, const QVariantList &dstPath);
+
     protected:
         void setSourceModel(ReprocessingArbitrageModel *model);
 

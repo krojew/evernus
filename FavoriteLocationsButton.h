@@ -42,8 +42,8 @@ namespace Evernus
         FavoriteLocationsButton &operator =(FavoriteLocationsButton &&) = default;
 
     signals:
-        void locationsChosen(const RegionList &srcRegions, quint64 srcStationdId,
-                             const RegionList &dstRegions, quint64 dstStationdId);
+        void locationsChosen(const RegionList &srcRegions, quint64 srcStationId,
+                             const RegionList &dstRegions, quint64 dstStationId);
 
     private slots:
         void selectFavoriteLocations();

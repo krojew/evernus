@@ -22,6 +22,7 @@
 namespace Evernus
 {
     class RegionStationPresetRepository;
+    class StationSelectButton;
     class EveDataProvider;
 
     class SourceDestinationSelectWidget
@@ -50,11 +51,18 @@ namespace Evernus
         SourceDestinationSelectWidget &operator =(SourceDestinationSelectWidget &&) = default;
 
     signals:
-        void srcStationChanged(const QVariantList &path);
-        void dstStationChanged(const QVariantList &path);
+        void stationsChanged(const QVariantList &srcPath, const QVariantList &dstPath);
+
+    private slots:
+        void changeStations();
+        void changeLocations(const RegionList &srcRegions, quint64 srcStationId,
+                             const RegionList &dstRegions, quint64 dstStationId);
 
     private:
         RegionComboBox *mSrcRegionCombo = nullptr;
         RegionComboBox *mDstRegionCombo = nullptr;
+
+        StationSelectButton *mSrcStationBtn = nullptr;
+        StationSelectButton *mDstStationBtn = nullptr;
     };
 }

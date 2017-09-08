@@ -38,30 +38,24 @@ namespace Evernus
         mSrcRegionCombo = new RegionComboBox{dataProvider, srcRegionsSettingsKey, this};
         mainLayout->addWidget(mSrcRegionCombo);
 
-        const auto srcStationBtn = new StationSelectButton{dataProvider, srcStationPath, this};
-        mainLayout->addWidget(srcStationBtn);
-        connect(srcStationBtn, &StationSelectButton::stationChanged,
-                this, &SourceDestinationSelectWidget::srcStationChanged);
+        mSrcStationBtn = new StationSelectButton{dataProvider, srcStationPath, this};
+        mainLayout->addWidget(mSrcStationBtn);
+        connect(mSrcStationBtn, &StationSelectButton::stationChanged,
+                this, &SourceDestinationSelectWidget::changeStations);
 
         mainLayout->addWidget(new QLabel{tr("Destination:"), this});
         mDstRegionCombo = new RegionComboBox{dataProvider, dstRegionsSettingsKey, this};
         mainLayout->addWidget(mDstRegionCombo);
 
-        const auto dstStationBtn = new StationSelectButton{dataProvider, dstStationPath, this};
-        mainLayout->addWidget(dstStationBtn);
-        connect(dstStationBtn, &StationSelectButton::stationChanged,
-                this, &SourceDestinationSelectWidget::dstStationChanged);
+        mDstStationBtn = new StationSelectButton{dataProvider, dstStationPath, this};
+        mainLayout->addWidget(mDstStationBtn);
+        connect(mDstStationBtn, &StationSelectButton::stationChanged,
+                this, &SourceDestinationSelectWidget::changeStations);
 
         const auto locationFavBtn = new FavoriteLocationsButton{regionStationPresetRepository, dataProvider, this};
         mainLayout->addWidget(locationFavBtn);
         connect(locationFavBtn, &FavoriteLocationsButton::locationsChosen,
-                this, [=](const auto &srcRegions, auto srcStationId, const auto &dstRegions, auto dstStationId) {
-            mSrcRegionCombo->setSelectedRegionList(srcRegions);
-            mDstRegionCombo->setSelectedRegionList(dstRegions);
-
-            srcStationBtn->setSelectedStationId(srcStationId);
-            dstStationBtn->setSelectedStationId(dstStationId);
-        });
+                this, &SourceDestinationSelectWidget::changeLocations);
     }
 
     SourceDestinationSelectWidget::RegionList SourceDestinationSelectWidget::getSrcSelectedRegionList() const
@@ -72,5 +66,23 @@ namespace Evernus
     SourceDestinationSelectWidget::RegionList SourceDestinationSelectWidget::getDstSelectedRegionList() const
     {
         return mDstRegionCombo->getSelectedRegionList();
+    }
+
+    void SourceDestinationSelectWidget::changeStations()
+    {
+        emit stationsChanged(mSrcStationBtn->getSelectedStationPath(), mDstStationBtn->getSelectedStationPath());
+    }
+
+    void SourceDestinationSelectWidget::changeLocations(const RegionList &srcRegions, quint64 srcStationId,
+                                                        const RegionList &dstRegions, quint64 dstStationId)
+    {
+        mSrcRegionCombo->setSelectedRegionList(srcRegions);
+        mDstRegionCombo->setSelectedRegionList(dstRegions);
+
+        mSrcStationBtn->blockSignals(true); // prevent double signal
+        mSrcStationBtn->setSelectedStationId(srcStationId);
+        mSrcStationBtn->blockSignals(false);
+
+        mDstStationBtn->setSelectedStationId(dstStationId);
     }
 }

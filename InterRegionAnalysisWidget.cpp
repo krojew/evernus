@@ -85,12 +85,8 @@ namespace Evernus
                                                           regionStationPresetRepository,
                                                           this};
         toolBarLayout->addWidget(mSelectWidget);
-        connect(mSelectWidget, &SourceDestinationSelectWidget::srcStationChanged, this, [=](const auto &path) {
-            changeStation(mSrcStation, path, MarketAnalysisSettings::srcStationKey);
-        });
-        connect(mSelectWidget, &SourceDestinationSelectWidget::dstStationChanged, this, [=](const auto &path) {
-            changeStation(mDstStation, path, MarketAnalysisSettings::dstStationKey);
-        });
+        connect(mSelectWidget, &SourceDestinationSelectWidget::stationsChanged,
+                this, &InterRegionAnalysisWidget::changeStations);
 
         auto volumeValidator = new QIntValidator{this};
         volumeValidator->setBottom(0);
@@ -295,18 +291,24 @@ namespace Evernus
         mLookupGroup->setEnabled(enabled);
     }
 
-    void InterRegionAnalysisWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)
+    void InterRegionAnalysisWidget::changeStations(const QVariantList &srcPath, const QVariantList &dstPath)
     {
-        QSettings settings;
-        settings.setValue(settingName, path);
-
-        destination = EveDataProvider::getStationIdFromPath(path);
+        changeStation(mSrcStation, srcPath, MarketAnalysisSettings::srcStationKey);
+        changeStation(mDstStation, dstPath, MarketAnalysisSettings::dstStationKey);
 
         if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::No)
             return;
 
         recalculateInterRegionData();
         mInterRegionDataStack->setCurrentWidget(mInterRegionTypeDataView);
+    }
+
+    void InterRegionAnalysisWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)
+    {
+        QSettings settings;
+        settings.setValue(settingName, path);
+
+        destination = EveDataProvider::getStationIdFromPath(path);
     }
 
     void InterRegionAnalysisWidget::recalculateInterRegionData()
