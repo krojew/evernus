@@ -81,6 +81,8 @@ namespace Evernus
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
+        void setupRefreshChanged(bool started);
+
     public slots:
         void handleNewPreferences();
         void setCharacter(Character::IdType id);
@@ -150,5 +152,7 @@ namespace Evernus
         bool shouldEnableFacilityCombos() const;
 
         void setQmlSettings();
+
+        void connectToSetupRefresh(QWidget &widget);
     };
 }

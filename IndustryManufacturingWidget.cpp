@@ -109,6 +109,7 @@ namespace Evernus
 
         mSrcRegionCombo = new RegionComboBox{mDataProvider, IndustrySettings::srcManufacturingRegionKey, this};
         toolBarLayout->addWidget(mSrcRegionCombo);
+        connectToSetupRefresh(*mSrcRegionCombo);
 
         QSettings settings;
 
@@ -122,6 +123,7 @@ namespace Evernus
         connect(srcStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
             changeStation(mSrcStation, path, IndustrySettings::srcManufacturingStationKey);
         });
+        connectToSetupRefresh(*srcStationBtn);
 
         toolBarLayout->addWidget(new QLabel{tr("Manufacturing station:"), this});
 
@@ -147,12 +149,14 @@ namespace Evernus
 
         mDstRegionCombo = new RegionComboBox{mDataProvider, IndustrySettings::dstManufacturingRegionKey, this};
         toolBarLayout->addWidget(mDstRegionCombo);
+        connectToSetupRefresh(*mDstRegionCombo);
 
         const auto dstStationBtn = new StationSelectButton{mDataProvider, dstStationPath, this};
         toolBarLayout->addWidget(dstStationBtn);
         connect(dstStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
             changeStation(mDstStation, path, IndustrySettings::dstManufacturingStationKey);
         });
+        connectToSetupRefresh(*dstStationBtn);
 
         const auto locationFavBtn = new FavoriteLocationsButton{regionStationPresetRepository, mDataProvider, this};
         toolBarLayout->addWidget(locationFavBtn);
@@ -164,12 +168,14 @@ namespace Evernus
             srcStationBtn->setSelectedStationId(srcStationId);
             dstStationBtn->setSelectedStationId(dstStationId);
         });
+        connectToSetupRefresh(*locationFavBtn);
 
         auto createPriceTypeCombo = [=](auto &combo) {
             combo = new PriceTypeComboBox{this};
             toolBarLayout->addWidget(combo);
 
             connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &IndustryManufacturingWidget::setPriceTypes);
+            connectToSetupRefresh(*combo);
         };
 
         toolBarLayout->addWidget(new QLabel{tr("Source price:"), this});
@@ -201,6 +207,7 @@ namespace Evernus
         mFacilityTypeCombo->addItem(tr("Rapid Assembly Array"), static_cast<int>(IndustryUtils::FacilityType::RapidAssemblyArray));
         mFacilityTypeCombo->setCurrentIndex(mFacilityTypeCombo->findData(
             settings.value(IndustrySettings::manufacturingFacilityTypeKey, IndustrySettings::manufacturingFacilityTypeDefault).toInt()));
+        connectToSetupRefresh(*mFacilityTypeCombo);
 
         toolBarLayout->addWidget(new QLabel{tr("Structure size:"), this});
 
@@ -215,6 +222,7 @@ namespace Evernus
             rememberSetting(mFacilitySizeCombo, IndustrySettings::manufacturingFacilitySizeKey);
             mSetupModel.setFacilitySize(static_cast<IndustryUtils::Size>(mFacilitySizeCombo->currentData().toInt()));
         });
+        connectToSetupRefresh(*mFacilitySizeCombo);
 
         toolBarLayout->addWidget(new QLabel{tr("Security status:"), this});
 
@@ -229,6 +237,7 @@ namespace Evernus
             rememberSetting(mSecurityStatusCombo, IndustrySettings::manufacturingSecurityStatusKey);
             mSetupModel.setSecurityStatus(static_cast<IndustryUtils::SecurityStatus>(mSecurityStatusCombo->currentData().toInt()));
         });
+        connectToSetupRefresh(*mSecurityStatusCombo);
 
         toolBarLayout->addWidget(new QLabel{tr("Material rig:"), this});
 
@@ -243,6 +252,7 @@ namespace Evernus
             rememberSetting(mMaterialRigCombo, IndustrySettings::manufacturingMaterialRigKey);
             mSetupModel.setMaterialRigType(static_cast<IndustryUtils::RigType>(mMaterialRigCombo->currentData().toInt()));
         });
+        connectToSetupRefresh(*mMaterialRigCombo);
 
         toolBarLayout->addWidget(new QLabel{tr("Time rig:"), this});
 
@@ -257,6 +267,7 @@ namespace Evernus
             rememberSetting(mTimeRigCombo, IndustrySettings::manufacturingTimeRigKey);
             mSetupModel.setTimeRigType(static_cast<IndustryUtils::RigType>(mTimeRigCombo->currentData().toInt()));
         });
+        connectToSetupRefresh(*mTimeRigCombo);
 
         connect(mFacilityTypeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=] {
             rememberSetting(mFacilityTypeCombo, IndustrySettings::manufacturingFacilityTypeKey);
@@ -305,7 +316,10 @@ namespace Evernus
                 this, [=] {
             mViewResetProgress->setValue(mViewResetProgress->value() + 1);
             if (mViewResetProgress->value() == mViewResetProgress->maximum())
+            {
                 mViewResetProgress->hide();
+                emit setupRefreshChanged(false);
+            }
 
             QCoreApplication::processEvents();
         });
@@ -340,6 +354,7 @@ namespace Evernus
         mTypeView = new TradeableTypesTreeView{typeRepo, groupRepo, this};
         typesGroupLayout->addWidget(mTypeView);
         connect(mTypeView, &TradeableTypesTreeView::typesChanged, this, &IndustryManufacturingWidget::refreshTypes);
+        connectToSetupRefresh(*mTypeView);
 
         const auto selectedTypes = settings.value(IndustrySettings::manufacturingTypesKey).toList();
         TradeableTypesTreeView::TypeSet types;
@@ -395,6 +410,8 @@ namespace Evernus
                 return;
         }
 
+        emit setupRefreshChanged(true);
+
         mSetup.setOutputTypes(std::move(selected));
 
         const auto outputSize = static_cast<int>(mSetup.getOutputSize());
@@ -403,6 +420,7 @@ namespace Evernus
             mViewResetProgress->reset();
             mViewResetProgress->setMaximum(outputSize - 1);
             mViewResetProgress->show();
+
         }
 
         mSetupModel.refreshData();
@@ -634,5 +652,10 @@ namespace Evernus
         ctxt->setContextProperty(
             QStringLiteral("omitCurrencySymbol"), settings.value(UISettings::omitCurrencySymbolKey, UISettings::omitCurrencySymbolDefault).toBool()
         );
+    }
+
+    void IndustryManufacturingWidget::connectToSetupRefresh(QWidget &widget)
+    {
+        connect(this, &IndustryManufacturingWidget::setupRefreshChanged, &widget, &QWidget::setDisabled);
     }
 }

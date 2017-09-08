@@ -3263,220 +3263,220 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="126"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="128"/>
         <source>Manufacturing station:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="137"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="139"/>
         <source>Leaving manufacturing station empty will cause costs to not include system cost index.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="146"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="148"/>
         <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="175"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="181"/>
         <source>Source price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="180"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="186"/>
         <source>Type of orders used for buying items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="182"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="188"/>
         <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="184"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="190"/>
         <source>Type of orders used for selling items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="188"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="194"/>
         <source>Facility type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="197"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="203"/>
         <source>Station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="198"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="204"/>
         <source>Engineering Complex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="199"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="205"/>
         <source>Assembly Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="200"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="206"/>
         <source>Thukker Component Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="201"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="207"/>
         <source>Rapid Assembly Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="205"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="212"/>
         <source>Structure size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="209"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="216"/>
         <source>Medium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="210"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="217"/>
         <source>Large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="211"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="218"/>
         <source>X-Large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="219"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="227"/>
         <source>Security status:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="223"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="231"/>
         <source>High sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="224"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="232"/>
         <source>Low sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="225"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="233"/>
         <source>Null sec/WH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="233"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="242"/>
         <source>Material rig:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="237"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="251"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="246"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="261"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="238"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="252"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="247"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="262"/>
         <source>T1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="239"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="253"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="248"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="263"/>
         <source>T2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="247"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="257"/>
         <source>Time rig:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="270"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="281"/>
         <source>Facility tax:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="333"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="347"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="391"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="406"/>
         <source>Large setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="392"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="407"/>
         <source>Adding many output item types may take long time to process. Are you sure you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="437"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="455"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="439"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="457"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="440"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="458"/>
         <source>Making %1 ESI order requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="443"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="461"/>
         <source>Importing industry market prices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="444"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="462"/>
         <source>Importing system cost indices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="468"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="486"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="468"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="486"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="490"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="508"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="509"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="527"/>
         <source>Load setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="509"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="527"/>
         <source>Select setup:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="535"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="553"/>
         <source>Save setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="535"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="553"/>
         <source>Enter setup name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="588"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="606"/>
         <source>Bill of materials</source>
         <translation type="unfinished"></translation>
     </message>
