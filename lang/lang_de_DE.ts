@@ -3492,47 +3492,37 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::InterRegionAnalysisWidget</name>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="82"/>
-        <source>Source:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="92"/>
-        <source>Destination:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="115"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="97"/>
         <source>Volume:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="133"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="115"/>
         <source>Margin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="151"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="133"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="155"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="137"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="178"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="160"/>
         <source>Show details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="323"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="305"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="323"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="305"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6325,97 +6315,87 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::ReprocessingArbitrageWidget</name>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="67"/>
-        <source>Source:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="77"/>
-        <source>Destination:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="98"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="78"/>
         <source>Base yield:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="104"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="84"/>
         <source>The base yield of the station you are reprocessing in.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="113"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="93"/>
         <source>Volume limit selling with sell orders:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="119"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="99"/>
         <source>If you wish to sell using sell orders (not recommended due to fast nature of arbitrage and additional taxes), you should specify the percentage of current market volume you wish to sell. For example, using 100% means you wish to sell the exact amount of materials which is currently on the market. Using higher values will give more total profit, but assumes you can actually sell such amounts. Therefore you should set this percentage to a reasonable value, like 10%.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="133"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="113"/>
         <source>Include station tax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="143"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="123"/>
         <source>Ignore orders with min. volume &gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="145"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="125"/>
         <source>Ignore orders wich require minimum volume larger than 1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="154"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="134"/>
         <source>Only high-sec orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="164"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="144"/>
         <source>Custom station tax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="178"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="158"/>
         <source>When including station tax, use this value instead of cumputed one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="189"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="169"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="193"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="173"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="194"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="174"/>
         <source>If you wish to make the fastest trade as possible, be sure to set the correct &lt;b&gt;destination price type&lt;/b&gt;. &lt;b&gt;Buying always uses sell orders.&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="195"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="175"/>
         <source>Due to the fast nature of arbitrage, prices are not based on volume percentile.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="196"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="176"/>
         <source>Remember to import the source and resulting items to reprocess, otherwise you won&apos;t see any data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="302"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="282"/>
         <source>Station change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReprocessingArbitrageWidget.cpp" line="302"/>
+        <location filename="../ReprocessingArbitrageWidget.cpp" line="282"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6489,6 +6469,19 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     <message>
         <location filename="../SoundPreferencesWidget.cpp" line="38"/>
         <source>Fast Price Copy sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::SourceDestinationSelectWidget</name>
+    <message>
+        <location filename="../SourceDestinationSelectWidget.cpp" line="37"/>
+        <source>Source:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SourceDestinationSelectWidget.cpp" line="46"/>
+        <source>Destination:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

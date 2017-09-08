@@ -34,12 +34,12 @@ class QLineEdit;
 
 namespace Evernus
 {
+    class SourceDestinationSelectWidget;
     class RegionStationPresetRepository;
     class AdjustableTableView;
     class MarketDataProvider;
     class LookupActionGroup;
     class EveDataProvider;
-    class RegionComboBox;
 
     class InterRegionAnalysisWidget
         : public StandardModelProxyWidget
@@ -89,8 +89,7 @@ namespace Evernus
         QAction *mShowDetailsAct = nullptr;
         LookupActionGroup *mLookupGroup = nullptr;
 
-        RegionComboBox *mSourceRegionCombo = nullptr;
-        RegionComboBox *mDestRegionCombo = nullptr;
+        SourceDestinationSelectWidget *mSelectWidget = nullptr;
         QLineEdit *mMinInterRegionVolumeEdit = nullptr;
         QLineEdit *mMaxInterRegionVolumeEdit = nullptr;
         QLineEdit *mMinInterRegionMarginEdit = nullptr;

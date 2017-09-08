@@ -31,17 +31,15 @@
 #include <QLabel>
 #include <QDebug>
 
+#include "SourceDestinationSelectWidget.h"
 #include "InterRegionTypeDetailsWidget.h"
-#include "FavoriteLocationsButton.h"
 #include "MarketAnalysisSettings.h"
 #include "CalculatingDataWidget.h"
-#include "StationSelectButton.h"
 #include "AdjustableTableView.h"
 #include "MarketAnalysisUtils.h"
 #include "MarketDataProvider.h"
 #include "LookupActionGroup.h"
 #include "EveDataProvider.h"
-#include "RegionComboBox.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
 #include "SSOMessageBox.h"
@@ -79,35 +77,19 @@ namespace Evernus
         const auto dstStationPath = settings.value(MarketAnalysisSettings::dstStationKey).toList();
         mDstStation = EveDataProvider::getStationIdFromPath(dstStationPath);
 
-        toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
-        mSourceRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::srcRegionKey, this};
-        toolBarLayout->addWidget(mSourceRegionCombo);
-
-        const auto srcStationBtn = new StationSelectButton{mDataProvider, srcStationPath, this};
-        toolBarLayout->addWidget(srcStationBtn);
-        connect(srcStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+        mSelectWidget = new SourceDestinationSelectWidget{srcStationPath,
+                                                          dstStationPath,
+                                                          MarketAnalysisSettings::srcRegionKey,
+                                                          MarketAnalysisSettings::dstRegionKey,
+                                                          mDataProvider,
+                                                          regionStationPresetRepository,
+                                                          this};
+        toolBarLayout->addWidget(mSelectWidget);
+        connect(mSelectWidget, &SourceDestinationSelectWidget::srcStationChanged, this, [=](const auto &path) {
             changeStation(mSrcStation, path, MarketAnalysisSettings::srcStationKey);
         });
-
-        toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});
-        mDestRegionCombo = new RegionComboBox{mDataProvider, MarketAnalysisSettings::dstRegionKey, this};
-        toolBarLayout->addWidget(mDestRegionCombo);
-
-        const auto dstStationBtn = new StationSelectButton{mDataProvider, dstStationPath, this};
-        toolBarLayout->addWidget(dstStationBtn);
-        connect(dstStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+        connect(mSelectWidget, &SourceDestinationSelectWidget::dstStationChanged, this, [=](const auto &path) {
             changeStation(mDstStation, path, MarketAnalysisSettings::dstStationKey);
-        });
-
-        const auto locationFavBtn = new FavoriteLocationsButton{regionStationPresetRepository, mDataProvider, this};
-        toolBarLayout->addWidget(locationFavBtn);
-        connect(locationFavBtn, &FavoriteLocationsButton::locationsChosen,
-                this, [=](const auto &srcRegions, auto srcStationId, const auto &dstRegions, auto dstStationId) {
-            mSourceRegionCombo->setSelectedRegionList(srcRegions);
-            mDestRegionCombo->setSelectedRegionList(dstRegions);
-
-            srcStationBtn->setSelectedStationId(srcStationId);
-            dstStationBtn->setSelectedStationId(dstStationId);
         });
 
         auto volumeValidator = new QIntValidator{this};
@@ -232,8 +214,8 @@ namespace Evernus
 
     void InterRegionAnalysisWidget::applyInterRegionFilter()
     {
-        const auto srcRegions = mSourceRegionCombo->getSelectedRegionList();
-        const auto dstRegions = mDestRegionCombo->getSelectedRegionList();
+        const auto srcRegions = mSelectWidget->getSrcSelectedRegionList();
+        const auto dstRegions = mSelectWidget->getDstSelectedRegionList();
 
         if (!mRefreshedInterRegionData)
             recalculateInterRegionData();

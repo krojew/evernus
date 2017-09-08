@@ -698,6 +698,8 @@ add_executable(
     SoundPreferencesWidget.cpp
     SoundPreferencesWidget.h
     SoundSettings.h
+    SourceDestinationSelectWidget.cpp
+    SourceDestinationSelectWidget.h
     SSOAuthWidget.cpp
     SSOAuthWidget.h
     SSOMessageBox.cpp

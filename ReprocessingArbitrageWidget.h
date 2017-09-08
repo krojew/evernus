@@ -31,13 +31,13 @@ class QAction;
 
 namespace Evernus
 {
+    class SourceDestinationSelectWidget;
     class RegionStationPresetRepository;
     class ReprocessingArbitrageModel;
     class AdjustableTableView;
     class MarketDataProvider;
     class LookupActionGroup;
     class EveDataProvider;
-    class RegionComboBox;
     class Character;
 
     class ReprocessingArbitrageWidget
@@ -80,8 +80,7 @@ namespace Evernus
 
         const MarketDataProvider &mMarketDataProvider;
 
-        RegionComboBox *mSourceRegionCombo = nullptr;
-        RegionComboBox *mDestRegionCombo = nullptr;
+        SourceDestinationSelectWidget *mSelectWidget = nullptr;
         QDoubleSpinBox *mStationEfficiencyEdit = nullptr;
         QSpinBox *mSellVolumeLimitEdit = nullptr;
         QCheckBox *mCustomStationTaxBtn = nullptr;

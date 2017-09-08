@@ -25,16 +25,14 @@
 #include <QLabel>
 #include <QDebug>
 
+#include "SourceDestinationSelectWidget.h"
 #include "ReprocessingArbitrageModel.h"
-#include "FavoriteLocationsButton.h"
 #include "MarketAnalysisSettings.h"
 #include "CalculatingDataWidget.h"
 #include "AdjustableTableView.h"
-#include "StationSelectButton.h"
 #include "MarketDataProvider.h"
 #include "LookupActionGroup.h"
 #include "EveDataProvider.h"
-#include "RegionComboBox.h"
 #include "FlowLayout.h"
 
 #include "ReprocessingArbitrageWidget.h"
@@ -58,41 +56,23 @@ namespace Evernus
         QSettings settings;
 
         const auto srcStationPath = settings.value(MarketAnalysisSettings::reprocessingSrcStationKey).toList();
-        if (srcStationPath.size() == 4)
-            mSrcStation = srcStationPath[3].toULongLong();
+        mSrcStation = EveDataProvider::getStationIdFromPath(srcStationPath);
         const auto dstStationPath = settings.value(MarketAnalysisSettings::reprocessingDstStationKey).toList();
-        if (dstStationPath.size() == 4)
-            mDstStation = dstStationPath[3].toULongLong();
+        mDstStation = EveDataProvider::getStationIdFromPath(dstStationPath);
 
-        toolBarLayout->addWidget(new QLabel{tr("Source:"), this});
-        mSourceRegionCombo = new RegionComboBox{dataProvider, MarketAnalysisSettings::reprocessingSrcRegionKey, this};
-        toolBarLayout->addWidget(mSourceRegionCombo);
-
-        const auto srcStationBtn = new StationSelectButton{dataProvider, srcStationPath, this};
-        toolBarLayout->addWidget(srcStationBtn);
-        connect(srcStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+        mSelectWidget = new SourceDestinationSelectWidget{srcStationPath,
+                                                          dstStationPath,
+                                                          MarketAnalysisSettings::reprocessingSrcRegionKey,
+                                                          MarketAnalysisSettings::reprocessingDstRegionKey,
+                                                          dataProvider,
+                                                          regionStationPresetRepository,
+                                                          this};
+        toolBarLayout->addWidget(mSelectWidget);
+        connect(mSelectWidget, &SourceDestinationSelectWidget::srcStationChanged, this, [=](const auto &path) {
             changeStation(mSrcStation, path, MarketAnalysisSettings::reprocessingSrcStationKey);
         });
-
-        toolBarLayout->addWidget(new QLabel{tr("Destination:"), this});
-        mDestRegionCombo = new RegionComboBox{dataProvider, MarketAnalysisSettings::reprocessingDstRegionKey, this};
-        toolBarLayout->addWidget(mDestRegionCombo);
-
-        const auto dstStationBtn = new StationSelectButton{dataProvider, dstStationPath, this};
-        toolBarLayout->addWidget(dstStationBtn);
-        connect(dstStationBtn, &StationSelectButton::stationChanged, this, [=](const auto &path) {
+        connect(mSelectWidget, &SourceDestinationSelectWidget::dstStationChanged, this, [=](const auto &path) {
             changeStation(mDstStation, path, MarketAnalysisSettings::reprocessingDstStationKey);
-        });
-
-        const auto locationFavBtn = new FavoriteLocationsButton{regionStationPresetRepository, dataProvider, this};
-        toolBarLayout->addWidget(locationFavBtn);
-        connect(locationFavBtn, &FavoriteLocationsButton::locationsChosen,
-                this, [=](const auto &srcRegions, auto srcStationId, const auto &dstRegions, auto dstStationId) {
-            mSourceRegionCombo->setSelectedRegionList(srcRegions);
-            mDestRegionCombo->setSelectedRegionList(dstRegions);
-
-            srcStationBtn->setSelectedStationId(srcStationId);
-            dstStationBtn->setSelectedStationId(dstStationId);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Base yield:"), this});
@@ -263,8 +243,8 @@ namespace Evernus
         Q_ASSERT(mDataModel != nullptr);
         mDataModel->setOrderData(*orders,
                                  mDstPriceType,
-                                 mSourceRegionCombo->getSelectedRegionList(),
-                                 mDestRegionCombo->getSelectedRegionList(),
+                                 mSelectWidget->getSrcSelectedRegionList(),
+                                 mSelectWidget->getDstSelectedRegionList(),
                                  mSrcStation,
                                  mDstStation,
                                  mIncludeStationTaxBtn->isChecked(),
