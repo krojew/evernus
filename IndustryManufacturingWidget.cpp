@@ -424,6 +424,11 @@ namespace Evernus
         }
 
         mSetupModel.refreshData();
+
+        if (outputSize == 0)
+        {
+            emit setupRefreshChanged(false);
+        }
     }
 
     void IndustryManufacturingWidget::importData()
