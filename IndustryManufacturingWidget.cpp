@@ -307,6 +307,7 @@ namespace Evernus
         mSetupModel.setSecurityStatus(static_cast<IndustryUtils::SecurityStatus>(mSecurityStatusCombo->currentData().toInt()));
         mSetupModel.setMaterialRigType(static_cast<IndustryUtils::RigType>(mMaterialRigCombo->currentData().toInt()));
         mSetupModel.setTimeRigType(static_cast<IndustryUtils::RigType>(mTimeRigCombo->currentData().toInt()));
+        mSetupModel.setManufacturingStation(manufacturingStationBtn->getSelectedStationId());
 
         mViewResetProgress = new QProgressBar{this};
         mainLayout->addWidget(mViewResetProgress);
