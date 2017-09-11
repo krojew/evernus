@@ -134,6 +134,7 @@ namespace Evernus
         QLabel *mTotalCostLabel = nullptr;
         QLabel *mTotalProfitLabel = nullptr;
         QLabel *mMinTimeLabel = nullptr;
+        QLabel *mISKPerHLabel = nullptr;
         QLabel *mSystemCostIndexLabel = nullptr;
 
         quint64 mSrcStation = 0;

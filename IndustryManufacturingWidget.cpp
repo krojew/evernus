@@ -386,6 +386,9 @@ namespace Evernus
         mMinTimeLabel = new QLabel{this};
         summaryGroupLayout->addRow(tr("Min. manufacturing time:"), mMinTimeLabel);
 
+        mISKPerHLabel = new QLabel{this};
+        summaryGroupLayout->addRow(tr("Total ISK/h:"), mISKPerHLabel);
+
         mSystemCostIndexLabel = new QLabel{this};
         summaryGroupLayout->addRow(tr("System cost index:"), mSystemCostIndexLabel);
 
@@ -689,6 +692,7 @@ namespace Evernus
         mTotalCostLabel->setText(TextUtils::currencyToString(totalCost, curLocale));
         mTotalProfitLabel->setText(TextUtils::currencyToString(realProfit, curLocale));
         mMinTimeLabel->setText(TextUtils::durationToString(std::chrono::seconds{minTime}));
+        mISKPerHLabel->setText((minTime != 0) ? (TextUtils::currencyToString(realProfit * 3600 / minTime, curLocale)) : (tr("N/A")));
         mSystemCostIndexLabel->setText(curLocale.toString(mSetupModel.getSystemCostIndex()));
     }
 
