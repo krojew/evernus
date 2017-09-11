@@ -312,7 +312,7 @@ Item {
 
                             ToolTip.delay: 500
                             ToolTip.visible: containsMouse
-                            ToolTip.text: qsTr("Component cost: %1\nJob fee: %2\nJob tax: %3\nSystem cost index: %4")
+                            ToolTip.text: qsTr("Component cost: %1\nJob fee: %2\nJob tax: %3")
                                               .arg(formatCurrency(cost.children))
                                               .arg(formatCurrency(cost.jobFee))
                                               .arg(formatCurrency(cost.jobTax))
