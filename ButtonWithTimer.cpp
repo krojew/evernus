@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "TextUtils.h"
+
 #include "ButtonWithTimer.h"
 
 namespace Evernus
@@ -48,21 +50,10 @@ namespace Evernus
         else
         {
             const auto delta = curTime.secsTo(mEndTime);
-            if (delta < 3600)
-            {
-                setText(QStringLiteral("%1 (%2:%3)")
-                    .arg(mOrigText)
-                    .arg(delta / 60, 2, 10, QLatin1Char{'0'})
-                    .arg(delta % 60, 2, 10, QLatin1Char{'0'}));
-            }
-            else
-            {
-                setText(QStringLiteral("%1 (%4:%2:%3)")
-                    .arg(mOrigText)
-                    .arg((delta % 3600) / 60, 2, 10, QLatin1Char{'0'})
-                    .arg(delta % 60, 2, 10, QLatin1Char{'0'})
-                    .arg(delta / 3600, 2, 10, QLatin1Char{'0'}));
-            }
+            setText(QStringLiteral("%1 (%2)")
+                .arg(mOrigText)
+                .arg(TextUtils::durationToString(std::chrono::seconds{delta}))
+            );
         }
     }
 }

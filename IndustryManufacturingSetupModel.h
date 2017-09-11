@@ -64,6 +64,8 @@ namespace Evernus
             ProfitRole,
         };
 
+        static const QString totalCostKey;
+
         IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                         const EveDataProvider &dataProvider,
                                         const AssetProvider &assetProvider,
@@ -106,6 +108,8 @@ namespace Evernus
         void setMarketPrices(MarketPrices prices);
         void setCostIndices(IndustryCostIndices indices);
         void setManufacturingStation(quint64 stationId);
+
+        double getSystemCostIndex() const noexcept;
 
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;

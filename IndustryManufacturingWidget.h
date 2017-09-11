@@ -33,6 +33,7 @@ class QQuickWidget;
 class QProgressBar;
 class QByteArray;
 class QComboBox;
+class QLabel;
 
 namespace Evernus
 {
@@ -103,6 +104,8 @@ namespace Evernus
 
         void showBoM();
 
+        void updateSummary();
+
     private:
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
@@ -127,6 +130,11 @@ namespace Evernus
         QQuickWidget *mManufacturingView = nullptr;
 
         TradeableTypesTreeView *mTypeView = nullptr;
+
+        QLabel *mTotalCostLabel = nullptr;
+        QLabel *mTotalProfitLabel = nullptr;
+        QLabel *mMinTimeLabel = nullptr;
+        QLabel *mSystemCostIndexLabel = nullptr;
 
         quint64 mSrcStation = 0;
         quint64 mDstStation = 0;

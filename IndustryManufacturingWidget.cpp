@@ -27,6 +27,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QFormLayout>
 #include <QDataStream>
 #include <QQmlEngine>
 #include <QComboBox>
@@ -55,6 +56,7 @@
 #include "TaskManager.h"
 #include "FlowLayout.h"
 #include "UISettings.h"
+#include "TextUtils.h"
 
 #include "IndustryManufacturingWidget.h"
 
@@ -345,8 +347,13 @@ namespace Evernus
 
         mManufacturingView->setSource(QUrl{QStringLiteral("qrc:/qml/Industry/Manufacturing/View.qml")});
 
+        const auto rightPane = new QWidget{this};
+        contentSplitter->addWidget(rightPane);
+
+        const auto rightPaneLayout = new QVBoxLayout{rightPane};
+
         const auto typesGroup = new QGroupBox{tr("Output"), this};
-        contentSplitter->addWidget(typesGroup);
+        rightPaneLayout->addWidget(typesGroup, 1);
 
         contentSplitter->setStretchFactor(0, 1);
 
@@ -365,6 +372,23 @@ namespace Evernus
 
         mTypeView->selectTypes(types);
 
+        const auto summaryGroup = new QGroupBox{tr("Summary"), this};
+        rightPaneLayout->addWidget(summaryGroup);
+
+        const auto summaryGroupLayout = new QFormLayout{summaryGroup};
+
+        mTotalCostLabel = new QLabel{this};
+        summaryGroupLayout->addRow(tr("Total cost:"), mTotalCostLabel);
+
+        mTotalProfitLabel = new QLabel{this};
+        summaryGroupLayout->addRow(tr("Total profit:"), mTotalProfitLabel);
+
+        mMinTimeLabel = new QLabel{this};
+        summaryGroupLayout->addRow(tr("Min. manufacturing time:"), mMinTimeLabel);
+
+        mSystemCostIndexLabel = new QLabel{this};
+        summaryGroupLayout->addRow(tr("System cost index:"), mSystemCostIndexLabel);
+
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderStatusUpdated,
                 this, &IndustryManufacturingWidget::updateOrderTask);
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
@@ -372,6 +396,20 @@ namespace Evernus
         connect(&mDataFetcher, &MarketOrderDataFetcher::genericError,
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
+        });
+
+        connect(&mSetupModel, &IndustryManufacturingSetupModel::modelReset,
+                this, &IndustryManufacturingWidget::updateSummary);
+        connect(&mSetupModel, &IndustryManufacturingSetupModel::dataChanged,
+                this, [=](const auto &topLeft, const auto &bottomRight, const auto &roles) {
+            Q_UNUSED(topLeft);
+            Q_UNUSED(bottomRight);
+
+            if (roles.contains(IndustryManufacturingSetupModel::CostRole) ||
+                roles.contains(IndustryManufacturingSetupModel::TotalTimeRole))
+            {
+                updateSummary();
+            }
         });
     }
 
@@ -625,6 +663,32 @@ namespace Evernus
         table->sortItems(0);
         table->move(rect().center() - table->rect().center());
         table->show();
+    }
+
+    void IndustryManufacturingWidget::updateSummary()
+    {
+        auto totalCost = 0.;
+        auto totalProfit = 0.;
+        auto minTime = 0u;
+
+        const auto outputRows = mSetupModel.rowCount();
+        for (auto row = 0; row < outputRows; ++row)
+        {
+            const auto index = mSetupModel.index(row, 0);
+            const auto data = mSetupModel.data(index, IndustryManufacturingSetupModel::CostRole);
+            Q_ASSERT(data.type() == QVariant::Map);
+
+            totalCost += data.toMap().value(IndustryManufacturingSetupModel::totalCostKey).toDouble();
+            totalProfit += mSetupModel.data(index, IndustryManufacturingSetupModel::ProfitRole).toDouble();
+            minTime = std::max(minTime, mSetupModel.data(index, IndustryManufacturingSetupModel::TotalTimeRole).toUInt());
+        }
+
+        const auto curLocale = locale();
+
+        mTotalCostLabel->setText(TextUtils::currencyToString(totalCost, curLocale));
+        mTotalProfitLabel->setText(TextUtils::currencyToString(totalProfit, curLocale));
+        mMinTimeLabel->setText(TextUtils::durationToString(std::chrono::seconds{minTime}));
+        mSystemCostIndexLabel->setText(curLocale.toString(mSetupModel.getSystemCostIndex()));
     }
 
     void IndustryManufacturingWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)

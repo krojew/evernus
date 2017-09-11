@@ -33,6 +33,8 @@ using namespace std::chrono_literals;
 
 namespace Evernus
 {
+    const QString IndustryManufacturingSetupModel::totalCostKey = QStringLiteral("totalCost");
+
     IndustryManufacturingSetupModel::TreeItem::TreeItem(IndustryManufacturingSetupModel &model,
                                                         const IndustryManufacturingSetup &setup)
         : mModel{model}
@@ -215,7 +217,7 @@ namespace Evernus
             { QStringLiteral("children"), childrenCost },
             { QStringLiteral("jobFee"), jobFee },
             { QStringLiteral("jobTax"), jobTax },
-            { QStringLiteral("totalCost"), totalCost },
+            { totalCostKey, totalCost },
         };
     }
 
@@ -327,11 +329,7 @@ namespace Evernus
             }
         );
 
-        const auto systemCostIndex = (mModel.mSrcSystemId == 0) ?
-                                     (1.) :
-                                     (mModel.mCostIndices[mModel.mSrcSystemId][IndustryCostIndex::Activity::Manufacturing]);
-
-        return baseJobCost * systemCostIndex * getEffectiveRuns();
+        return baseJobCost * mModel.getSystemCostIndex() * getEffectiveRuns();
     }
 
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
@@ -750,6 +748,16 @@ namespace Evernus
     {
         mSrcSystemId = mDataProvider.getStationSolarSystemId(stationId);
         signalRoleChange({ CostRole });
+    }
+
+    double IndustryManufacturingSetupModel::getSystemCostIndex() const noexcept
+    {
+        const auto system = mCostIndices.find(mSrcSystemId);
+        if (system == std::end(mCostIndices))
+            return 1.;
+
+        const auto cost = system->second.find(IndustryCostIndex::Activity::Manufacturing);
+        return (cost == std::end(system->second)) ? (1.) : (cost->second);
     }
 
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)

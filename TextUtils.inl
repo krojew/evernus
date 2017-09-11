@@ -12,30 +12,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
-
-#include <chrono>
-
-#include <QString>
-
-class QDateTime;
-class QLocale;
-class QColor;
-
 namespace Evernus
 {
     namespace TextUtils
     {
-        QString secondsToString(const std::chrono::seconds &duration);
-        QString dateTimeToString(const QDateTime &dt, const QLocale &locale);
-        QString currencyToString(double value, const QLocale &locale);
-
         template<class Rep, class Period>
-        QString durationToString(std::chrono::duration<Rep, Period> time);
+        QString durationToString(std::chrono::duration<Rep, Period> time)
+        {
+            const auto secs = std::chrono::duration_cast<std::chrono::seconds>(time).count();
+            if (secs < 3600)
+                return QStringLiteral("%1:%2").arg(secs / 60, 2, 10, QLatin1Char{'0'}).arg(secs % 60, 2, 10, QLatin1Char{'0'});
 
-        QColor getMarginColor(double margin);
-        QString getMarginStyleSheet(double margin);
+            return QStringLiteral("%1:%2:%3")
+                .arg(secs / 3600, 2, 10, QLatin1Char{'0'})
+                .arg((secs % 3600) / 60, 2, 10, QLatin1Char{'0'})
+                .arg(secs % 60, 2, 10, QLatin1Char{'0'});
+        }
     }
 }
-
-#include "TextUtils.inl"
