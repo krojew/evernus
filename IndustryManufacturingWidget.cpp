@@ -684,9 +684,10 @@ namespace Evernus
         }
 
         const auto curLocale = locale();
+        const auto realProfit = totalProfit - totalCost;
 
         mTotalCostLabel->setText(TextUtils::currencyToString(totalCost, curLocale));
-        mTotalProfitLabel->setText(TextUtils::currencyToString(totalProfit, curLocale));
+        mTotalProfitLabel->setText(TextUtils::currencyToString(realProfit, curLocale));
         mMinTimeLabel->setText(TextUtils::durationToString(std::chrono::seconds{minTime}));
         mSystemCostIndexLabel->setText(curLocale.toString(mSetupModel.getSystemCostIndex()));
     }
