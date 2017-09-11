@@ -86,6 +86,10 @@ Item {
         return "%1:%2:%3".arg(hours).arg(minutes).arg(seconds);
     }
 
+    function formatCurrency(value) {
+        return value.toLocaleCurrencyString(Qt.locale(), (omitCurrencySymbol) ? (" ") : (qsTr("ISK")));
+    }
+
     RectangularGlow {
         id: glow
         anchors.fill: parent
@@ -282,24 +286,51 @@ Item {
                     Layout.columnSpan: 2
                 }
 
+                Item {
+                    width: childrenRect.width
+                    height: childrenRect.height
+                    Layout.columnSpan: 2
+
+                    Label {
+                        id: totalCosts
+                        font.bold: true
+                        text: qsTr("Total cost: %1").arg(formatCurrency(cost.totalCost))
+                        color: "orange"
+                    }
+
+                    Image {
+                        anchors.left: totalCosts.right
+                        anchors.verticalCenter: totalCosts.verticalCenter
+                        visible: isManufactured
+                        source: "qrc:///images/information.png"
+                        asynchronous: true
+
+                        MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.WhatsThisCursor
+
+                            ToolTip.delay: 500
+                            ToolTip.visible: containsMouse
+                            ToolTip.text: qsTr("Component cost: %1\nJob fee: %2\nJob tax: %3\nSystem cost index: %4")
+                                              .arg(formatCurrency(cost.children))
+                                              .arg(formatCurrency(cost.jobFee))
+                                              .arg(formatCurrency(cost.jobTax))
+                        }
+                    }
+                }
+
                 Label {
                     font.bold: true
-                    text: qsTr("Total cost: %1").arg(cost.toLocaleCurrencyString(Qt.locale(), (omitCurrencySymbol) ? (" ") : (qsTr("ISK"))))
-                    color: "orange"
+                    text: qsTr("Profit from selling: %1").arg(formatCurrency(profit - cost.totalCost))
+                    color: ((profit - cost.totalCost) <= 0) ? ("red") : ("green")
                     Layout.columnSpan: 2
                 }
 
                 Label {
                     font.bold: true
-                    text: qsTr("Profit from selling: %1").arg((profit - cost).toLocaleCurrencyString(Qt.locale(), (omitCurrencySymbol) ? (" ") : (qsTr("ISK"))))
-                    color: ((profit - cost) <= 0) ? ("red") : ("green")
-                    Layout.columnSpan: 2
-                }
-
-                Label {
-                    font.bold: true
-                    text: qsTr("ISK/h: %1").arg((totalTime > 0) ? (((profit - cost) * 3600 / totalTime).toLocaleCurrencyString(Qt.locale(), (omitCurrencySymbol) ? (" ") : (qsTr("ISK")))) : ("N/A"))
-                    color: ((profit - cost) <= 0) ? ("red") : ("green")
+                    text: qsTr("ISK/h: %1").arg((totalTime > 0) ? (formatCurrency((profit - cost.totalCost) * 3600 / totalTime)) : ("N/A"))
+                    color: ((profit - cost.totalCost) <= 0) ? ("red") : ("green")
                     Layout.columnSpan: 2
                 }
             }

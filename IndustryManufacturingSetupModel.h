@@ -144,7 +144,7 @@ namespace Evernus
             std::chrono::seconds getEffectiveTime() const;
             std::chrono::seconds getEffectiveTotalTime() const;
 
-            double getCost() const;
+            QVariantMap getCost() const;
             double getProfit() const;
 
             TreeItem *getChild(int row) const;
@@ -195,7 +195,7 @@ namespace Evernus
 
             std::chrono::seconds getTimeToManufacture() const;
 
-            double getManufacturingCost() const;
+            double getJobCost() const;
         };
 
         struct AssetQuantity
@@ -277,5 +277,7 @@ namespace Evernus
         double getSrcPriceFromOrderList(const T &orders, quint64 quantity) const;
         template<class T>
         double getDstPriceFromOrderList(const T &orders, quint64 quantity) const;
+
+        double getJobTax(double jobFee) const noexcept;
     };
 }

@@ -168,41 +168,55 @@ namespace Evernus
         return getEffectiveRuns() * getEffectiveTime() + childTime;
     }
 
-    double IndustryManufacturingSetupModel::TreeItem::getCost() const
+    QVariantMap IndustryManufacturingSetupModel::TreeItem::getCost() const
     {
-        const auto childrenCost = std::accumulate(std::begin(mChildItems), std::end(mChildItems), 0., [](auto value, const auto &child) {
-            return value + child->getCost();
-        });
+        double jobFee = 0.;
+        double jobTax = 0.;
+        double totalCost = 0.;
+        double childrenCost = 0.;
 
-        double thisCost = 0.;
+        const auto computeManufacturingCost = [&] {
+            childrenCost = std::accumulate(std::begin(mChildItems), std::end(mChildItems), 0., [](auto value, const auto &child) {
+                return value + child->getCost()[QStringLiteral("totalCost")].toDouble();
+            });
+
+            jobFee = getJobCost();
+            jobTax = mModel.getJobTax(jobFee);
+            totalCost = jobFee + jobTax + childrenCost;
+        };
 
         if (Q_UNLIKELY(isOutput()))
         {
-            thisCost = getManufacturingCost();
+            computeManufacturingCost();
         }
         else
         {
             const auto &settings = mSetup.getTypeSettings(mTypeId);
             switch (settings.mSource) {
             case IndustryManufacturingSetup::InventorySource::AcquireForFree:
-                return 0.;
+                break;
             case IndustryManufacturingSetup::InventorySource::BuyAtCustomCost:
             case IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyAtCustomCost:
                 Q_ASSERT(mModel.mCharacter);
-                thisCost = mModel.mCostProvider.fetchForCharacterAndType(mModel.mCharacter->getId(), mTypeId)->getAdjustedCost() *
-                           getEffectiveQuantityRequired();
+                totalCost = mModel.mCostProvider.fetchForCharacterAndType(mModel.mCharacter->getId(), mTypeId)->getAdjustedCost() *
+                            getEffectiveQuantityRequired();
                 break;
             case IndustryManufacturingSetup::InventorySource::BuyFromSource:
             case IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyFromSource:
-                thisCost = mModel.getSrcPrice(mTypeId, getEffectiveQuantityRequired());
+                totalCost = mModel.getSrcPrice(mTypeId, getEffectiveQuantityRequired());
                 break;
             case IndustryManufacturingSetup::InventorySource::Manufacture:
             case IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture:
-                thisCost = getManufacturingCost();
+                computeManufacturingCost();
             }
         }
 
-        return childrenCost + thisCost;
+        return {
+            { QStringLiteral("children"), childrenCost },
+            { QStringLiteral("jobFee"), jobFee },
+            { QStringLiteral("jobTax"), jobTax },
+            { QStringLiteral("totalCost"), totalCost },
+        };
     }
 
     double IndustryManufacturingSetupModel::TreeItem::getProfit() const
@@ -302,7 +316,7 @@ namespace Evernus
                                                 mModel.mTimeRigType);
     }
 
-    double IndustryManufacturingSetupModel::TreeItem::getManufacturingCost() const
+    double IndustryManufacturingSetupModel::TreeItem::getJobCost() const
     {
         const auto baseJobCost = std::accumulate(
             std::begin(mManufacturingInfo.mMaterials),
@@ -317,8 +331,7 @@ namespace Evernus
                                      (1.) :
                                      (mModel.mCostIndices[mModel.mSrcSystemId][IndustryCostIndex::Activity::Manufacturing]);
 
-        const auto jobFee = baseJobCost * systemCostIndex * getEffectiveRuns();
-        return jobFee * (1. + mModel.mFacilityTax / 100.);
+        return baseJobCost * systemCostIndex * getEffectiveRuns();
     }
 
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
@@ -1008,5 +1021,10 @@ namespace Evernus
         }
 
         return price;
+    }
+
+    double IndustryManufacturingSetupModel::getJobTax(double jobFee) const noexcept
+    {
+        return jobFee * mFacilityTax / 100.;
     }
 }
