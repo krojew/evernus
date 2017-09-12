@@ -1967,6 +1967,11 @@ Total: %7</source>
 <context>
     <name>Evernus::ESIManager</name>
     <message>
+        <location filename="../ESIManager.cpp" line="788"/>
+        <source>SSO authorization failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ESIManager.cpp" line="187"/>
         <source>Citadel order import</source>
         <translation type="unfinished"></translation>
@@ -1986,11 +1991,6 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     <message>
         <location filename="../ESIManager.cpp" line="772"/>
         <source>SSO Authentication for character: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ESIManager.cpp" line="788"/>
-        <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2151,18 +2151,6 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1011"/>
-        <location filename="../EvernusApplication.cpp" line="1036"/>
-        <source>Fetching wallet journal for character %1 (this may take a while)...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../EvernusApplication.cpp" line="1062"/>
-        <location filename="../EvernusApplication.cpp" line="1090"/>
-        <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../EvernusApplication.cpp" line="1112"/>
         <source>Fetching contracts for character %1...</source>
         <translation type="unfinished"></translation>
@@ -2173,8 +2161,20 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../EvernusApplication.cpp" line="1011"/>
+        <location filename="../EvernusApplication.cpp" line="1036"/>
+        <source>Fetching wallet journal for character %1 (this may take a while)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../EvernusApplication.cpp" line="1192"/>
         <source>Fetching wallet transactions for character %1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EvernusApplication.cpp" line="1062"/>
+        <location filename="../EvernusApplication.cpp" line="1090"/>
+        <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3512,12 +3512,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
-        <source>Quatity</source>
+        <source>Total cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
-        <source>Total cost</source>
+        <source>Quantity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7003,22 +7003,22 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     </message>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="133"/>
-        <source>Best source price</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="133"/>
         <source>5% volume source price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TypeAggregatedMarketDataModel.cpp" line="135"/>
-        <source>Best destination price</source>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="133"/>
+        <source>Best source price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../TypeAggregatedMarketDataModel.cpp" line="135"/>
         <source>5% volume destination price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TypeAggregatedMarketDataModel.cpp" line="135"/>
+        <source>Best destination price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7784,8 +7784,8 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Type</name>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="276"/>
-        <source>Quantity produced: %L1 / %2</source>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="90"/>
+        <source>ISK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7845,6 +7845,11 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../qml/Industry/Manufacturing/Type.qml" line="276"/>
+        <source>Quantity produced: %L1 / %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="276"/>
         <source>Quantity produced: N/A</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7864,11 +7869,6 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="90"/>
-        <source>ISK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qml/Industry/Manufacturing/Type.qml" line="316"/>
         <source>Component cost: %1
 Job fee: %2
@@ -7877,7 +7877,7 @@ Job tax: %3</source>
     </message>
     <message>
         <location filename="../qml/Industry/Manufacturing/Type.qml" line="336"/>
-        <source>All required volume is not avialable on the market. Assuming the rest will be bought at the best price.</source>
+        <source>All required volume is not available on the market. Assuming the rest will be bought at the best price.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

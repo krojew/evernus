@@ -673,7 +673,7 @@ namespace Evernus
 
         const auto table = new QTableWidget{static_cast<int>(materials.size()), 3, this};
         table->setWindowFlags(Qt::Window);
-        table->setHorizontalHeaderLabels({ tr("Name"), tr("Quatity"), tr("Total cost") });
+        table->setHorizontalHeaderLabels({ tr("Name"), tr("Quantity"), tr("Total cost") });
         table->setWindowTitle(tr("Bill of materials"));
 
         const auto curLocale = locale();

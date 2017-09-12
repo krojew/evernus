@@ -333,7 +333,7 @@ Item {
                             cursorShape: Qt.WhatsThisCursor
 
                             ToolTip.visible: containsMouse
-                            ToolTip.text: qsTr("All required volume is not avialable on the market. Assuming the rest will be bought at the best price.")
+                            ToolTip.text: qsTr("All required volume is not available on the market. Assuming the rest will be bought at the best price.")
                         }
                     }
                 }
