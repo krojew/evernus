@@ -623,6 +623,8 @@ namespace Evernus
             const auto index = indices.front();
             indices.pop_front();
 
+            auto inspectChildren = false;
+
             const auto quantity =  mSetupModel.data(index, IndustryManufacturingSetupModel::QuantityRequiredRole).toULongLong();
             if (quantity != 0)
             {
@@ -636,15 +638,27 @@ namespace Evernus
                     {
                         materials[typeId] += quantity;
                     }
+                    else
+                    {
+                        inspectChildren = true;
+                    }
                 }
                 catch (const IndustryManufacturingSetup::NotSourceTypeException &)
                 {
+                    inspectChildren = true;
                 }
             }
+            else
+            {
+                inspectChildren = !mSetupModel.parent(index).isValid();
+            }
 
-            const auto childCount = mSetupModel.rowCount(index);
-            for (auto i = 0; i< childCount; ++i)
-                indices.emplace_back(mSetupModel.index(i, 0, index));
+            if (inspectChildren)
+            {
+                const auto childCount = mSetupModel.rowCount(index);
+                for (auto i = 0; i< childCount; ++i)
+                    indices.emplace_back(mSetupModel.index(i, 0, index));
+            }
         } while (!indices.empty());
 
         const auto table = new QTableWidget{static_cast<int>(materials.size()), 2, this};

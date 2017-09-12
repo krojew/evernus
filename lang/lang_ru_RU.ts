@@ -3506,12 +3506,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="653"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="667"/>
         <source>Bill of materials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="695"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="709"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7849,16 +7849,15 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="315"/>
-        <source>Component cost: %1
-Job fee: %2
-Job tax: %3
-System cost index: %4</source>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="90"/>
+        <source>ISK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="90"/>
-        <source>ISK</source>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="315"/>
+        <source>Component cost: %1
+Job fee: %2
+Job tax: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
