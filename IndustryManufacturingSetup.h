@@ -77,7 +77,7 @@ namespace Evernus
         IndustryManufacturingSetup(IndustryManufacturingSetup &&) = default;
         ~IndustryManufacturingSetup() = default;
 
-        void setOutputTypes(TypeSet types);
+        void setOutputTypes(const TypeSet &types);
         const OutputTypeMap &getOutputTypes() const;
 
         OutputTypeMap::size_type getOutputSize() const noexcept;

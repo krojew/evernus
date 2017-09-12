@@ -23,24 +23,30 @@ namespace Evernus
     {
     }
 
-    void IndustryManufacturingSetup::setOutputTypes(TypeSet types)
+    void IndustryManufacturingSetup::setOutputTypes(const TypeSet &types)
     {
-        mOutputTypes.clear();
         mManufacturingInfo.clear();
 
         for (const auto type : types)
-            mOutputTypes.emplace(type, OutputSettings{});
+            mOutputTypes.insert(std::make_pair(type, OutputSettings{}));
 
         TypeSet usedTypes;
 
         // build source info
         for (auto output = std::begin(mOutputTypes); output != std::end(mOutputTypes);)
         {
-            fillManufacturingInfo(output->first, usedTypes);
-            if (Q_UNLIKELY(mManufacturingInfo[output->first].mMaterials.empty()))
+            if (types.find(output->first) == std::end(types))
+            {
                 output = mOutputTypes.erase(output);
+            }
             else
-                ++output;
+            {
+                fillManufacturingInfo(output->first, usedTypes);
+                if (Q_UNLIKELY(mManufacturingInfo[output->first].mMaterials.empty()))
+                    output = mOutputTypes.erase(output);
+                else
+                    ++output;
+            }
         }
 
         // clean setup of unused types; mTypeSettings now contains both new and old sources
