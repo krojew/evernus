@@ -65,6 +65,7 @@ namespace Evernus
         };
 
         static const QString totalCostKey;
+        static const QString valueKey;
 
         IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
                                         const EveDataProvider &dataProvider,
@@ -149,7 +150,7 @@ namespace Evernus
             std::chrono::seconds getEffectiveTotalTime() const;
 
             QVariantMap getCost() const;
-            double getProfit() const;
+            QVariantMap getProfit() const;
 
             TreeItem *getChild(int row) const;
             TreeItem *getParent() const noexcept;
@@ -206,6 +207,12 @@ namespace Evernus
         {
             quint64 mInitialQuantity = 0;
             quint64 mCurrentQuantity = 0;
+        };
+
+        struct MarketInfo
+        {
+            double mPrice;
+            bool mAllVolumeMoved;
         };
 
         template<class T>
@@ -270,17 +277,17 @@ namespace Evernus
         void signalRoleChange(TreeItem &item, const QVector<int> &roles);
         void roleAndQuantityChange(EveType::IdType typeId, const QVector<int> &roles);
 
-        double getSrcPrice(EveType::IdType typeId, quint64 quantity) const;
+        MarketInfo getSrcPrice(EveType::IdType typeId, quint64 quantity) const;
         double getSrcBuyPrice(EveType::IdType typeId, quint64 quantity) const;
-        double getSrcSellPrice(EveType::IdType typeId, quint64 quantity) const;
-        double getDstPrice(EveType::IdType typeId, quint64 quantity) const;
-        double getDstBuyPrice(EveType::IdType typeId, quint64 quantity) const;
+        MarketInfo getSrcSellPrice(EveType::IdType typeId, quint64 quantity) const;
+        MarketInfo getDstPrice(EveType::IdType typeId, quint64 quantity) const;
+        MarketInfo getDstBuyPrice(EveType::IdType typeId, quint64 quantity) const;
         double getDstSellPrice(EveType::IdType typeId, quint64 quantity) const;
 
         template<class T>
-        double getSrcPriceFromOrderList(const T &orders, quint64 quantity) const;
+        MarketInfo getSrcPriceFromOrderList(const T &orders, quint64 quantity) const;
         template<class T>
-        double getDstPriceFromOrderList(const T &orders, quint64 quantity) const;
+        MarketInfo getDstPriceFromOrderList(const T &orders, quint64 quantity) const;
 
         double getJobTax(double jobFee) const noexcept;
     };

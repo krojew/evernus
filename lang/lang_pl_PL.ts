@@ -7869,19 +7869,29 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="315"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="316"/>
         <source>Component cost: %1
 Job fee: %2
 Job tax: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="325"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="336"/>
+        <source>All required volume is not avialable on the market. Assuming the rest will be bought at the best price.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="349"/>
         <source>Profit from selling: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="332"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="367"/>
+        <source>All volume could not be sold on the market. Assuming the rest will be sold at the best price.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="374"/>
         <source>ISK/h: %1</source>
         <translation type="unfinished"></translation>
     </message>

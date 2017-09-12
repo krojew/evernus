@@ -34,6 +34,7 @@ using namespace std::chrono_literals;
 namespace Evernus
 {
     const QString IndustryManufacturingSetupModel::totalCostKey = QStringLiteral("totalCost");
+    const QString IndustryManufacturingSetupModel::valueKey = QStringLiteral("value");
 
     IndustryManufacturingSetupModel::TreeItem::TreeItem(IndustryManufacturingSetupModel &model,
                                                         const IndustryManufacturingSetup &setup)
@@ -174,7 +175,7 @@ namespace Evernus
     {
         double jobFee = 0.;
         double jobTax = 0.;
-        double totalCost = 0.;
+        MarketInfo totalCost{0., true};
         double childrenCost = 0.;
 
         const auto computeManufacturingCost = [&] {
@@ -184,7 +185,7 @@ namespace Evernus
 
             jobFee = getJobCost();
             jobTax = mModel.getJobTax(jobFee);
-            totalCost = jobFee + jobTax + childrenCost;
+            totalCost.mPrice = jobFee + jobTax + childrenCost;
         };
 
         if (Q_UNLIKELY(isOutput()))
@@ -200,8 +201,8 @@ namespace Evernus
             case IndustryManufacturingSetup::InventorySource::BuyAtCustomCost:
             case IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyAtCustomCost:
                 Q_ASSERT(mModel.mCharacter);
-                totalCost = mModel.mCostProvider.fetchForCharacterAndType(mModel.mCharacter->getId(), mTypeId)->getAdjustedCost() *
-                            getEffectiveQuantityRequired();
+                totalCost.mPrice = mModel.mCostProvider.fetchForCharacterAndType(mModel.mCharacter->getId(), mTypeId)->getAdjustedCost() *
+                                   getEffectiveQuantityRequired();
                 break;
             case IndustryManufacturingSetup::InventorySource::BuyFromSource:
             case IndustryManufacturingSetup::InventorySource::TakeAssetsThenBuyFromSource:
@@ -217,13 +218,18 @@ namespace Evernus
             { QStringLiteral("children"), childrenCost },
             { QStringLiteral("jobFee"), jobFee },
             { QStringLiteral("jobTax"), jobTax },
-            { totalCostKey, totalCost },
+            { QStringLiteral("totalVolumeBought"), totalCost.mAllVolumeMoved },
+            { totalCostKey, totalCost.mPrice },
         };
     }
 
-    double IndustryManufacturingSetupModel::TreeItem::getProfit() const
+    QVariantMap IndustryManufacturingSetupModel::TreeItem::getProfit() const
     {
-        return mModel.getDstPrice(mTypeId, (isOutput()) ? (mRuns * getQuantityProduced()) : (getEffectiveQuantityRequired()));
+        const auto result = mModel.getDstPrice(mTypeId, (isOutput()) ? (mRuns * getQuantityProduced()) : (getEffectiveQuantityRequired()));
+        return {
+            { QStringLiteral("totalVolumeSold"), result.mAllVolumeMoved },
+            { valueKey, result.mPrice },
+        };
     }
 
     IndustryManufacturingSetupModel::TreeItem *IndustryManufacturingSetupModel::TreeItem::getChild(int row) const
@@ -931,9 +937,12 @@ namespace Evernus
         signalRoleChange(typeId, roles);
     }
 
-    double IndustryManufacturingSetupModel::getSrcPrice(EveType::IdType typeId, quint64 quantity) const
+    IndustryManufacturingSetupModel::MarketInfo IndustryManufacturingSetupModel
+    ::getSrcPrice(EveType::IdType typeId, quint64 quantity) const
     {
-        return (mSrcPrice == PriceType::Buy) ? (getSrcBuyPrice(typeId, quantity)) : (getSrcSellPrice(typeId, quantity));
+        return (mSrcPrice == PriceType::Buy) ?
+               (MarketInfo{getSrcBuyPrice(typeId, quantity), true}) :
+               (getSrcSellPrice(typeId, quantity));
     }
 
     double IndustryManufacturingSetupModel::getSrcBuyPrice(EveType::IdType typeId, quint64 quantity) const
@@ -945,23 +954,32 @@ namespace Evernus
         return quantity * ((orders == std::end(mSrcBuyPrices)) ? (0.) : (PriceUtils::getBuyPrice(orders->second + 0.01, taxes, false)));
     }
 
-    double IndustryManufacturingSetupModel::getSrcSellPrice(EveType::IdType typeId, quint64 quantity) const
+    IndustryManufacturingSetupModel::MarketInfo IndustryManufacturingSetupModel
+    ::getSrcSellPrice(EveType::IdType typeId, quint64 quantity) const
     {
         const auto orders = mSrcSellOrders.find(typeId);
-        return (orders == std::end(mSrcSellOrders)) ? (0.) : (getSrcPriceFromOrderList(orders->second, quantity));
+        return (orders == std::end(mSrcSellOrders)) ?
+               (MarketInfo{0., false}) :
+               (getSrcPriceFromOrderList(orders->second, quantity));
     }
 
-    double IndustryManufacturingSetupModel::getDstPrice(EveType::IdType typeId, quint64 quantity) const
+    IndustryManufacturingSetupModel::MarketInfo IndustryManufacturingSetupModel
+    ::getDstPrice(EveType::IdType typeId, quint64 quantity) const
     {
-        return (mDstPrice == PriceType::Buy) ? (getDstBuyPrice(typeId, quantity)) : (getDstSellPrice(typeId, quantity));
+        return (mDstPrice == PriceType::Buy) ?
+               (getDstBuyPrice(typeId, quantity)) :
+               (MarketInfo{getDstSellPrice(typeId, quantity), true});
     }
 
-    double IndustryManufacturingSetupModel::getDstBuyPrice(EveType::IdType typeId, quint64 quantity) const
+    IndustryManufacturingSetupModel::MarketInfo IndustryManufacturingSetupModel
+    ::getDstBuyPrice(EveType::IdType typeId, quint64 quantity) const
     {
         Q_ASSERT(mCharacter);
 
         const auto orders = mDstBuyOrders.find(typeId);
-        return (orders == std::end(mDstBuyOrders)) ? (0.) : (getDstPriceFromOrderList(orders->second, quantity));
+        return (orders == std::end(mDstBuyOrders)) ?
+               (MarketInfo{0., false}) :
+               (getDstPriceFromOrderList(orders->second, quantity));
     }
 
     double IndustryManufacturingSetupModel::getDstSellPrice(EveType::IdType typeId, quint64 quantity) const
@@ -974,7 +992,8 @@ namespace Evernus
     }
 
     template<class T>
-    double IndustryManufacturingSetupModel::getSrcPriceFromOrderList(const T &orders, quint64 quantity) const
+    IndustryManufacturingSetupModel::MarketInfo IndustryManufacturingSetupModel
+    ::getSrcPriceFromOrderList(const T &orders, quint64 quantity) const
     {
         Q_ASSERT(mCharacter);
 
@@ -996,14 +1015,20 @@ namespace Evernus
         if (quantity > 0)
         {
             // not enough order to fulfill - estimate from best order
-            return (Q_UNLIKELY(orders.empty())) ? (0.) : (price + PriceUtils::getBuyPrice(std::begin(orders)->getPrice(), taxes, limit) * quantity);
+            return {
+                (Q_UNLIKELY(orders.empty())) ?
+                (0.) :
+                (price + PriceUtils::getBuyPrice(std::begin(orders)->getPrice(), taxes, limit) * quantity),
+                false
+            };
         }
 
-        return price;
+        return { price, true };
     }
 
     template<class T>
-    double IndustryManufacturingSetupModel::getDstPriceFromOrderList(const T &orders, quint64 quantity) const
+    IndustryManufacturingSetupModel::MarketInfo IndustryManufacturingSetupModel
+    ::getDstPriceFromOrderList(const T &orders, quint64 quantity) const
     {
         Q_ASSERT(mCharacter);
 
@@ -1025,10 +1050,15 @@ namespace Evernus
         if (quantity > 0)
         {
             // not enough order to fulfill - estimate from best order
-            return (Q_UNLIKELY(orders.empty())) ? (0.) : (price + PriceUtils::getSellPrice(std::begin(orders)->getPrice(), taxes, limit) * quantity);
+            return {
+                (Q_UNLIKELY(orders.empty())) ?
+                (0.) :
+                (price + PriceUtils::getSellPrice(std::begin(orders)->getPrice(), taxes, limit) * quantity),
+                false
+            };
         }
 
-        return price;
+        return { price, true };
     }
 
     double IndustryManufacturingSetupModel::getJobTax(double jobFee) const noexcept

@@ -214,7 +214,7 @@ Item {
 
                 SpinBox {
                     value: runs
-                    to: 1000000
+                    to: 1000000000
                     editable: true
                     visible: isOutput
 
@@ -299,6 +299,7 @@ Item {
                     }
 
                     Image {
+                        id: totalCostsInfo
                         anchors.left: totalCosts.right
                         anchors.verticalCenter: totalCosts.verticalCenter
                         visible: isManufactured
@@ -318,19 +319,60 @@ Item {
                                               .arg(formatCurrency(cost.jobTax))
                         }
                     }
+
+                    Image {
+                        anchors.left: totalCostsInfo.right
+                        anchors.verticalCenter: totalCostsInfo.verticalCenter
+                        visible: !cost.totalVolumeBought
+                        source: "qrc:///images/error.png"
+                        asynchronous: true
+
+                        MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.WhatsThisCursor
+
+                            ToolTip.visible: containsMouse
+                            ToolTip.text: qsTr("All required volume is not avialable on the market. Assuming the rest will be bought at the best price.")
+                        }
+                    }
                 }
 
-                Label {
-                    font.bold: true
-                    text: qsTr("Profit from selling: %1").arg(formatCurrency(profit - cost.totalCost))
-                    color: ((profit - cost.totalCost) <= 0) ? ("red") : ("green")
+                Item {
+                    width: childrenRect.width
+                    height: childrenRect.height
                     Layout.columnSpan: 2
+
+                    Label {
+                        id: profitInfo
+                        font.bold: true
+                        text: qsTr("Profit from selling: %1").arg(formatCurrency(profit.value - cost.totalCost))
+                        color: ((profit.value - cost.totalCost) <= 0) ? ("red") : ("green")
+                        Layout.columnSpan: 2
+                    }
+
+                    Image {
+                        anchors.left: profitInfo.right
+                        anchors.verticalCenter: profitInfo.verticalCenter
+                        visible: !profit.totalVolumeSold
+                        source: "qrc:///images/error.png"
+                        asynchronous: true
+
+                        MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.WhatsThisCursor
+
+                            ToolTip.visible: containsMouse
+                            ToolTip.text: qsTr("All volume could not be sold on the market. Assuming the rest will be sold at the best price.")
+                        }
+                    }
                 }
 
                 Label {
                     font.bold: true
-                    text: qsTr("ISK/h: %1").arg((totalTime > 0) ? (formatCurrency((profit - cost.totalCost) * 3600 / totalTime)) : ("N/A"))
-                    color: ((profit - cost.totalCost) <= 0) ? ("red") : ("green")
+                    text: qsTr("ISK/h: %1").arg((totalTime > 0) ? (formatCurrency((profit.value - cost.totalCost) * 3600 / totalTime)) : ("N/A"))
+                    color: ((profit.value - cost.totalCost) <= 0) ? ("red") : ("green")
                     Layout.columnSpan: 2
                 }
             }
