@@ -14,6 +14,8 @@
  */
 #include <stdexcept>
 
+#include <boost/throw_exception.hpp>
+
 #include <QNetworkReply>
 #include <QFileInfo>
 #include <QDir>
@@ -30,7 +32,7 @@ namespace Evernus
         QDir{}.mkpath(info.dir().path());
 
         if (!mOutput.open(QIODevice::WriteOnly | QIODevice::Truncate))
-            throw std::runtime_error(tr("Error creating file: %1").arg(dest).toStdString());
+            BOOST_THROW_EXCEPTION(std::runtime_error(tr("Error creating file: %1").arg(dest).toStdString()));
 
         auto reply = mNetworkManager.get(QNetworkRequest{addr});
         connect(reply, &QNetworkReply::readyRead, this, &FileDownload::process);

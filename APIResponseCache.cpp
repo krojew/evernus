@@ -14,6 +14,8 @@
  */
 #include <stdexcept>
 
+#include <boost/throw_exception.hpp>
+
 #include <QStringBuilder>
 #include <QStandardPaths>
 #include <QDataStream>
@@ -51,7 +53,7 @@ namespace Evernus
         mCacheDir.setPath(path);
 
         if (!mCacheDir.mkpath("."))
-            throw std::runtime_error{tr("Cannot create cache path.").toStdString()};
+            BOOST_THROW_EXCEPTION(std::runtime_error{tr("Cannot create cache path.").toStdString()});
     }
 
     qint64 APIResponseCache::cacheSize() const
@@ -261,7 +263,7 @@ namespace Evernus
         if (!file.open(QIODevice::ReadOnly))
         {
             qDebug() << "Error opening file.";
-            throw ErrorReadingCacheException{};
+            BOOST_THROW_EXCEPTION(ErrorReadingCacheException{});
         }
 
         QDataStream stream{&file};
@@ -276,7 +278,7 @@ namespace Evernus
         if (!item->mCacheTime.isValid() || item->mCacheTime < QDateTime::currentDateTimeUtc())
         {
             removeFileWithNonEmptyParent(mCacheDir.filePath(fileName));
-            throw ErrorReadingCacheException{};
+            BOOST_THROW_EXCEPTION(ErrorReadingCacheException{});
         }
 
         stream >> item->mMetaData >> item->mData;

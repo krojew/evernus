@@ -14,6 +14,8 @@
  */
 #include <stdexcept>
 
+#include <boost/throw_exception.hpp>
+
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -49,20 +51,20 @@ namespace Evernus
                 QJsonParseError error;
                 const auto doc = QJsonDocument::fromJson(response, &error);
                 if (doc.isNull())
-                    throw std::runtime_error{error.errorString().toStdString()};
+                    BOOST_THROW_EXCEPTION(std::runtime_error{error.errorString().toStdString()});
 
                 if (doc.isObject())
                 {
                     const auto obj = doc.object();
                     const auto error = obj.value("errorMsg");
                     if (!error.isUndefined())
-                        throw std::runtime_error{error.toString().toStdString()};
+                        BOOST_THROW_EXCEPTION(std::runtime_error{error.toString().toStdString()});
 
-                    throw std::runtime_error{tr("Unexpected object received!").toStdString()};
+                    BOOST_THROW_EXCEPTION(std::runtime_error{tr("Unexpected object received!").toStdString()});
                 }
 
                 if (!doc.isArray())
-                    throw std::runtime_error{tr("Expected task array!").toStdString()};
+                    BOOST_THROW_EXCEPTION(std::runtime_error{tr("Expected task array!").toStdString()});
 
                 const auto array = doc.array();
 
@@ -84,9 +86,9 @@ namespace Evernus
     void LMeveAPIManager::handlePotentialError(const QByteArray &response, const QString &error)
     {
         if (!error.isEmpty())
-            throw std::runtime_error{error.toStdString()};
+            BOOST_THROW_EXCEPTION(std::runtime_error{error.toStdString()});
 
         if (response.isEmpty())
-            throw std::runtime_error{tr("Empty response from server!").toStdString()};
+            BOOST_THROW_EXCEPTION(std::runtime_error{tr("Empty response from server!").toStdString()});
     }
 }

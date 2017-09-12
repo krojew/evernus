@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <boost/throw_exception.hpp>
+
 #include <QSqlRecord>
 #include <QSqlQuery>
 
@@ -57,7 +59,7 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
 
         if (!query.next())
-            throw NotFoundException{};
+            BOOST_THROW_EXCEPTION(NotFoundException{});
 
         return populate(query.record());
     }

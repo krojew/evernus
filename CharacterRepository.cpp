@@ -14,6 +14,8 @@
  */
 #include <QSqlQuery>
 
+#include <boost/throw_exception.hpp>
+
 #include "KeyRepository.h"
 
 #include "CharacterRepository.h"
@@ -256,7 +258,7 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
 
         if (!query.next())
-            throw NotFoundException{};
+            BOOST_THROW_EXCEPTION(NotFoundException{});
 
         return query.value(0).toULongLong();
     }
@@ -269,7 +271,7 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
 
         if (!query.next())
-            throw NotFoundException{};
+            BOOST_THROW_EXCEPTION(NotFoundException{});
 
         return query.value(0).toString();
     }

@@ -17,6 +17,8 @@
 #include <algorithm>
 #include <future>
 
+#include <boost/throw_exception.hpp>
+
 #include <QCommandLineParser>
 #include <QSslConfiguration>
 #include <QStandardPaths>
@@ -315,7 +317,7 @@ namespace Evernus
                 return QDateTime::currentDateTime();
             break;
         default:
-            throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
+            BOOST_THROW_EXCEPTION(std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()});
         }
 
         return it->second.toLocalTime();
@@ -364,7 +366,7 @@ namespace Evernus
             mLMeveUtcCacheTimes[id] = dt;
             break;
         default:
-            throw std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()};
+            BOOST_THROW_EXCEPTION(std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()});
         }
 
         if (type != TimerType::Character)
@@ -439,7 +441,7 @@ namespace Evernus
                 return QDateTime{};
             break;
         default:
-            throw std::logic_error{tr("Unknown update timer type: %1").arg(static_cast<int>(type)).toStdString()};
+            BOOST_THROW_EXCEPTION(std::logic_error{tr("Unknown update timer type: %1").arg(static_cast<int>(type)).toStdString()});
         }
 
         return it->second.toLocalTime();
@@ -1939,7 +1941,7 @@ namespace Evernus
         DatabaseUtils::createDb(mMainDb, "main.db");
 
         if (!mEveDb.isValid())
-            throw std::runtime_error{"Error crating Eve DB object!"};
+            BOOST_THROW_EXCEPTION(std::runtime_error{"Error crating Eve DB object!"});
 
         auto eveDbPath = applicationDirPath() + "/resources/eve.db";
         qDebug() << "Eve DB path:" << eveDbPath;
@@ -1950,14 +1952,14 @@ namespace Evernus
             qDebug() << "Eve DB path:" << eveDbPath;
 
             if (!QFile::exists(eveDbPath))
-                throw std::runtime_error{"Cannot find Eve DB!"};
+                BOOST_THROW_EXCEPTION(std::runtime_error{"Cannot find Eve DB!"});
         }
 
         mEveDb.setDatabaseName(eveDbPath);
         mEveDb.setConnectOptions("QSQLITE_OPEN_READONLY");
 
         if (!mEveDb.open())
-            throw std::runtime_error{"Error opening Eve DB!"};
+            BOOST_THROW_EXCEPTION(std::runtime_error{"Error opening Eve DB!"});
 
         // disable syncing changes to the disk between
         // each transaction. This means the database can become
@@ -2598,7 +2600,7 @@ namespace Evernus
             }
             else
             {
-                throw KeyRepository::NotFoundException{};
+                BOOST_THROW_EXCEPTION(KeyRepository::NotFoundException{});
             }
         }
         catch (const CharacterRepository::NotFoundException &)

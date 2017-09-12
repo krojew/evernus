@@ -14,6 +14,8 @@
  */
 #include <stdexcept>
 
+#include <boost/throw_exception.hpp>
+
 #include <QCoreApplication>
 #include <QJsonObject>
 #include <QJsonValue>
@@ -29,12 +31,12 @@ namespace Evernus
         : Entity{}
     {
         if (!json.isObject())
-            throw std::runtime_error{QCoreApplication::translate("LMeveTask", "Missing JSON object!").toStdString()};
+            BOOST_THROW_EXCEPTION(std::runtime_error{QCoreApplication::translate("LMeveTask", "Missing JSON object!").toStdString()});
 
         const auto obj = json.toObject();
         const auto set = [&obj](const auto &name, const auto &setter) {
             if (!obj.contains(name))
-                throw std::runtime_error{QCoreApplication::translate("LMeveTask", "Missing JSON value: %1").arg(name).toStdString()};
+                BOOST_THROW_EXCEPTION(std::runtime_error{QCoreApplication::translate("LMeveTask", "Missing JSON value: %1").arg(name).toStdString()});
 
             const auto value = obj.value(name);
             if (!value.isNull())

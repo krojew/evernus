@@ -14,6 +14,8 @@
  */
 #include <stdexcept>
 
+#include <boost/throw_exception.hpp>
+
 #include <QDesktopServices>
 #include <QCoreApplication>
 #include <QNetworkRequest>
@@ -95,7 +97,7 @@ namespace Evernus
 
         const auto error = db.lastError();
         if (error.isValid())
-            throw std::runtime_error{ tr("Error updating db version: %1").arg(error.text()).toStdString() };
+            BOOST_THROW_EXCEPTION(std::runtime_error{ tr("Error updating db version: %1").arg(error.text()).toStdString() });
 
         uint dbMajorVersion = 0;
         uint dbMinorVersion = 0;
@@ -109,13 +111,13 @@ namespace Evernus
 
             QSqlQuery query{ db };
             if (!query.prepare(QString{"REPLACE INTO %1 (major, minor) VALUES (? ,?)"}.arg(version::dbTableName())))
-                throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+                BOOST_THROW_EXCEPTION(std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()});
 
             query.bindValue(0, curCoreMajorVersion);
             query.bindValue(1, curCoreMinorVersion);
 
             if (!query.exec())
-                throw std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()};
+                BOOST_THROW_EXCEPTION(std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()});
         }
     }
 

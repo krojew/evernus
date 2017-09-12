@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <boost/exception/diagnostic_information.hpp>
+
 #include <QCommandLineParser>
 #include <QDesktopServices>
 #include <QStandardPaths>
@@ -444,19 +446,23 @@ int main(int argc, char *argv[])
 
             return app.exec();
         }
-        catch (const std::exception &e)
+        catch (...)
         {
-            qCritical() << e.what();
-            QMessageBox::critical(nullptr, QCoreApplication::translate("main", "Error"), e.what());
+            const auto info = boost::current_exception_diagnostic_information();
+
+            qCritical() << info.c_str();
+            QMessageBox::critical(nullptr, QCoreApplication::translate("main", "Error"), QString::fromStdString(info));
             return 1;
         }
     }
-    catch (const std::exception &e)
+    catch (...)
     {
-        qCritical() << e.what();
+        const auto info = boost::current_exception_diagnostic_information();
+
+        qCritical() << info.c_str();
 
         QApplication tempApp{argc, argv};
-        QMessageBox::critical(nullptr, QCoreApplication::translate("main", "Initialization error"), e.what());
+        QMessageBox::critical(nullptr, QCoreApplication::translate("main", "Initialization error"), QString::fromStdString(info));
         return 1;
     }
 

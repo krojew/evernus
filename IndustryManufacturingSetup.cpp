@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <boost/throw_exception.hpp>
+
 #include "QDataStreamUtils.h"
 
 #include "IndustryManufacturingSetup.h"
@@ -84,7 +86,7 @@ namespace Evernus
         if (Q_LIKELY(it != std::end(mManufacturingInfo)))
             return it->second;
 
-        throw NotSourceTypeException{"Missing manufacturing info for: " + std::to_string(typeId)};
+        BOOST_THROW_EXCEPTION(NotSourceTypeException{"Missing manufacturing info for: " + std::to_string(typeId)});
     }
 
     const IndustryManufacturingSetup::TypeSettings &IndustryManufacturingSetup::getTypeSettings(EveType::IdType typeId) const
@@ -93,7 +95,7 @@ namespace Evernus
         if (Q_LIKELY(it != std::end(mTypeSettings)))
             return it->second;
 
-        throw NotSourceTypeException{"Missing type settings for: " + std::to_string(typeId)};
+        BOOST_THROW_EXCEPTION(NotSourceTypeException{"Missing type settings for: " + std::to_string(typeId)});
     }
 
     const IndustryManufacturingSetup::OutputSettings &IndustryManufacturingSetup::getOutputSettings(EveType::IdType typeId) const
@@ -102,7 +104,7 @@ namespace Evernus
         if (Q_LIKELY(it != std::end(mOutputTypes)))
             return it->second;
 
-        throw NotOutputTypeException{"Missing output settings for: " + std::to_string(typeId)};
+        BOOST_THROW_EXCEPTION(NotOutputTypeException{"Missing output settings for: " + std::to_string(typeId)});
     }
 
     IndustryManufacturingSetup::TypeSet IndustryManufacturingSetup::getAllTypes() const
@@ -133,7 +135,7 @@ namespace Evernus
             return;
         }
 
-        throw NotSourceTypeException{"Missing type settings for: " + std::to_string(id)};
+        BOOST_THROW_EXCEPTION(NotSourceTypeException{"Missing type settings for: " + std::to_string(id)});
     }
 
     void IndustryManufacturingSetup::setRuns(EveType::IdType id, uint runs)
@@ -145,7 +147,7 @@ namespace Evernus
             return;
         }
 
-        throw NotOutputTypeException{"Missing output settings for: " + std::to_string(id)};
+        BOOST_THROW_EXCEPTION(NotOutputTypeException{"Missing output settings for: " + std::to_string(id)});
     }
 
     void IndustryManufacturingSetup::setMaterialEfficiency(EveType::IdType id, uint value)

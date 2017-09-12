@@ -14,6 +14,8 @@
  */
 #include <unordered_map>
 
+#include <boost/throw_exception.hpp>
+
 #include <QSqlRecord>
 #include <QSqlQuery>
 
@@ -66,7 +68,7 @@ namespace Evernus
 
         DatabaseUtils::execQuery(query);
         if (!query.next())
-            throw NotFoundException{};
+            BOOST_THROW_EXCEPTION(NotFoundException{});
 
         auto assets = populate(query.record());
 

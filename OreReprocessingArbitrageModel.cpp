@@ -19,6 +19,7 @@
 #include <set>
 
 #include <boost/range/adaptor/filtered.hpp>
+#include <boost/throw_exception.hpp>
 #include <boost/scope_exit.hpp>
 
 #include <QtConcurrent>
@@ -394,7 +395,7 @@ namespace Evernus
     {
         const auto groupId = mDataProvider.getGroupId(groupName);
         if (groupId == 0)
-            throw std::runtime_error{"Cannot find group id for: " + groupName.toStdString()};
+            BOOST_THROW_EXCEPTION(std::runtime_error{"Cannot find group id for: " + groupName.toStdString()});
 
         mReprocessingSkillMap[groupId] = skill;
     }

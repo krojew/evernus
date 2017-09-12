@@ -14,6 +14,8 @@
  */
 #include <thread>
 
+#include <boost/throw_exception.hpp>
+
 #include <QAbstractMessageHandler>
 #include <QDomDocument>
 #include <QXmlQuery>
@@ -606,7 +608,7 @@ namespace Evernus
         query.evaluateTo(&receiver);
 
         if (!error.isEmpty())
-            throw std::runtime_error{error.toStdString()};
+            BOOST_THROW_EXCEPTION(std::runtime_error{error.toStdString()});
 
         return result;
     }
@@ -616,7 +618,7 @@ namespace Evernus
     {
         QDomDocument document;
         if (!document.setContent(xml))
-            throw std::runtime_error{tr("Invalid XML document received!").toStdString()};
+            BOOST_THROW_EXCEPTION(std::runtime_error{tr("Invalid XML document received!").toStdString()});
 
         return APIDomParser::parse<T>(document.documentElement().firstChildElement("result"));
     }
@@ -636,13 +638,13 @@ namespace Evernus
     void APIManager::handlePotentialError(const QString &xml, const QString &error)
     {
         if (!error.isEmpty())
-            throw std::runtime_error{error.toStdString()};
+            BOOST_THROW_EXCEPTION(std::runtime_error{error.toStdString()});
 
         if (xml.isEmpty())
-            throw std::runtime_error{tr("No XML document received!").toStdString()};
+            BOOST_THROW_EXCEPTION(std::runtime_error{tr("No XML document received!").toStdString()});
 
         const auto errorText = queryPath("/eveapi/error/text()", xml);
         if (!errorText.isEmpty())
-            throw std::runtime_error{errorText.toStdString()};
+            BOOST_THROW_EXCEPTION(std::runtime_error{errorText.toStdString()});
     }
 }

@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <boost/throw_exception.hpp>
+
 #include <QSqlRecord>
 #include <QSqlQuery>
 
@@ -109,7 +111,7 @@ namespace Evernus
         Q_UNUSED(entity);
         Q_UNUSED(query);
 
-        throw std::logic_error{"Type repository is read-only."};
+        BOOST_THROW_EXCEPTION(std::logic_error{"Type repository is read-only."});
     }
 
     void EveTypeRepository::bindPositionalValues(const EveType &entity, QSqlQuery &query) const
@@ -117,6 +119,6 @@ namespace Evernus
         Q_UNUSED(entity);
         Q_UNUSED(query);
 
-        throw std::logic_error{"Type repository is read-only."};
+        BOOST_THROW_EXCEPTION(std::logic_error{"Type repository is read-only."});
     }
 }

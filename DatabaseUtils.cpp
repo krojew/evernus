@@ -14,6 +14,8 @@
  */
 #include <stdexcept>
 
+#include <boost/throw_exception.hpp>
+
 #include <QCoreApplication>
 #include <QStandardPaths>
 #include <QSqlDatabase>
@@ -37,18 +39,18 @@ namespace Evernus
         void createDb(QSqlDatabase &db, const QString &name)
         {
             if (!db.isValid())
-                throw std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error creating DB object!").toStdString()};
+                BOOST_THROW_EXCEPTION(std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error creating DB object!").toStdString()});
 
             const auto dbPath = getDbPath();
 
             qDebug() << "DB path: " << dbPath;
 
             if (!QDir{}.mkpath(dbPath))
-                throw std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error creating DB path!").toStdString()};
+                BOOST_THROW_EXCEPTION(std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error creating DB path!").toStdString()});
 
             db.setDatabaseName(dbPath + name);
             if (!db.open())
-                throw std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error opening DB!").toStdString()};
+                BOOST_THROW_EXCEPTION(std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error opening DB!").toStdString()});
 
             db.exec(QStringLiteral("PRAGMA foreign_keys = ON"));
         }
@@ -61,7 +63,7 @@ namespace Evernus
                 const auto error = query.lastError().text();
 
                 qCritical() << error;
-                throw std::runtime_error{error.toStdString()};
+                BOOST_THROW_EXCEPTION(std::runtime_error{error.toStdString()});
             }
         }
 
