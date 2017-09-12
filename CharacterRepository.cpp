@@ -228,7 +228,7 @@ namespace Evernus
 
     bool CharacterRepository::hasCharacters() const
     {
-        auto query = exec(QString{"SELECT COUNT(*) FROM %1"}.arg(getTableName()));
+        auto query = exec(QStringLiteral("SELECT COUNT(*) FROM %1").arg(getTableName()));
         query.next();
 
         return query.value(0).toUInt() != 0;
@@ -265,7 +265,7 @@ namespace Evernus
 
     QString CharacterRepository::getName(Character::IdType id) const
     {
-        auto query = prepare(QString{"SELECT name FROM %1 WHERE %2 = ?"}.arg(getTableName()).arg(getIdColumn()));
+        auto query = prepare(QStringLiteral("SELECT name FROM %1 WHERE %2 = ?").arg(getTableName()).arg(getIdColumn()));
         query.bindValue(0, id);
 
         DatabaseUtils::execQuery(query);
