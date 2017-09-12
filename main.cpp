@@ -256,11 +256,11 @@ int main(int argc, char *argv[])
 
         const auto evernusQmlUri = "com.evernus.qmlcomponents";
 
-        qmlRegisterType<Evernus::BezierCurve>(evernusQmlUri, version::major(), version::minor(), "BezierCurve");
+        qmlRegisterType<Evernus::BezierCurve>(evernusQmlUri, 2, 6, "BezierCurve");
         qmlRegisterUncreatableType<Evernus::IndustryManufacturingSetupController>(
             evernusQmlUri,
-            version::major(),
-            version::minor(),
+            2,
+            6,
             "IndustryManufacturingSetupController",
             QStringLiteral("Type reserved.")
         );
