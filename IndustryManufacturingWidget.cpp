@@ -616,7 +616,13 @@ namespace Evernus
 
     void IndustryManufacturingWidget::showBoM()
     {
-        std::unordered_map<EveType::IdType, quint64> materials;
+        struct MaterialInfo
+        {
+            quint64 mQuantity = 0;
+            double mTotalCost = 0.;
+        };
+
+        std::unordered_map<EveType::IdType, MaterialInfo> materials;
 
         std::deque<QModelIndex> indices{QModelIndex{}};
         do {
@@ -636,7 +642,11 @@ namespace Evernus
                     if (settings.mSource != IndustryManufacturingSetup::InventorySource::Manufacture &&
                         settings.mSource != IndustryManufacturingSetup::InventorySource::TakeAssetsThenManufacture)
                     {
-                        materials[typeId] += quantity;
+                        const auto cost =  mSetupModel.data(index, IndustryManufacturingSetupModel::CostRole).toMap();
+
+                        auto &info = materials[typeId];
+                        info.mQuantity += quantity;
+                        info.mTotalCost += cost[IndustryManufacturingSetupModel::totalCostKey].toDouble();
                     }
                     else
                     {
@@ -661,9 +671,9 @@ namespace Evernus
             }
         } while (!indices.empty());
 
-        const auto table = new QTableWidget{static_cast<int>(materials.size()), 2, this};
+        const auto table = new QTableWidget{static_cast<int>(materials.size()), 3, this};
         table->setWindowFlags(Qt::Window);
-        table->setHorizontalHeaderLabels({ QStringLiteral("Name"), QStringLiteral("Quatity") });
+        table->setHorizontalHeaderLabels({ tr("Name"), tr("Quatity"), tr("Total cost") });
         table->setWindowTitle(tr("Bill of materials"));
 
         const auto curLocale = locale();
@@ -672,14 +682,16 @@ namespace Evernus
         for (const auto &material : materials)
         {
             table->setItem(row, 0, new QTableWidgetItem{mDataProvider.getTypeName(material.first)});
-            table->setItem(row, 1, new QTableWidgetItem{curLocale.toString(material.second)});
+            table->setItem(row, 1, new QTableWidgetItem{curLocale.toString(material.second.mQuantity)});
+            table->setItem(row, 2, new QTableWidgetItem{TextUtils::currencyToString(material.second.mTotalCost, curLocale)});
 
             ++row;
         }
 
         table->sortItems(0);
-        table->move(rect().center() - table->rect().center());
+        table->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
         table->show();
+        table->move(rect().center() - table->rect().center());
     }
 
     void IndustryManufacturingWidget::updateSummary()

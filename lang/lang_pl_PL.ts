@@ -3506,12 +3506,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="667"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
+        <source>Quatity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
+        <source>Total cost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="677"/>
         <source>Bill of materials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="709"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="721"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
