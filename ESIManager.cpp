@@ -1122,8 +1122,19 @@ namespace Evernus
 
                         if (charId != realCharId)
                         {
+                            QString name;
+
+                            try
+                            {
+                                name = mCharacterRepo.getName(charId);
+                            }
+                            catch (const CharacterRepository::NotFoundException &)
+                            {
+                                name = QString::number(charId);
+                            }
+
                             qDebug() << "Logged as invalid character id:" << realCharId;
-                            emit tokenError(charId, tr("Please authorize access for character: %1").arg(mCharacterRepo.getName(charId)));
+                            emit tokenError(charId, tr("Please authorize access for character: %1").arg(name));
                             return;
                         }
 
