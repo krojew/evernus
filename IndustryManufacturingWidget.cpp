@@ -704,11 +704,14 @@ namespace Evernus
         for (auto row = 0; row < outputRows; ++row)
         {
             const auto index = mSetupModel.index(row, 0);
-            const auto data = mSetupModel.data(index, IndustryManufacturingSetupModel::CostRole);
-            Q_ASSERT(data.type() == QVariant::Map);
 
-            totalCost += data.toMap().value(IndustryManufacturingSetupModel::totalCostKey).toDouble();
-            totalProfit += mSetupModel.data(index, IndustryManufacturingSetupModel::ProfitRole).toDouble();
+            const auto costData = mSetupModel.data(index, IndustryManufacturingSetupModel::CostRole);
+            Q_ASSERT(costData.type() == QVariant::Map);
+            const auto profitData = mSetupModel.data(index, IndustryManufacturingSetupModel::ProfitRole);
+            Q_ASSERT(profitData.type() == QVariant::Map);
+
+            totalCost += costData.toMap().value(IndustryManufacturingSetupModel::totalCostKey).toDouble();
+            totalProfit += profitData.toMap().value(IndustryManufacturingSetupModel::valueKey).toDouble();
             minTime = std::max(minTime, mSetupModel.data(index, IndustryManufacturingSetupModel::TotalTimeRole).toUInt());
         }
 
