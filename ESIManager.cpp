@@ -755,16 +755,7 @@ namespace Evernus
 
                 mAuthView.reset(new SSOAuthWidget{url});
 
-                QString charName;
-
-                try
-                {
-                    charName = mCharacterRepo.getName(charId);
-                }
-                catch (const CharacterRepository::NotFoundException &)
-                {
-                    charName = mDataProvider.getGenericName(charId);
-                }
+                const auto charName = getCharacterName(charId);
 
                 if (charName.isEmpty())
                     mAuthView->setWindowTitle(tr("SSO Authentication for unknown character: %1").arg(charId));
@@ -1122,19 +1113,8 @@ namespace Evernus
 
                         if (charId != realCharId)
                         {
-                            QString name;
-
-                            try
-                            {
-                                name = mCharacterRepo.getName(charId);
-                            }
-                            catch (const CharacterRepository::NotFoundException &)
-                            {
-                                name = QString::number(charId);
-                            }
-
                             qDebug() << "Logged as invalid character id:" << realCharId;
-                            emit tokenError(charId, tr("Please authorize access for character: %1").arg(name));
+                            emit tokenError(charId, tr("Please authorize access for character: %1").arg(getCharacterName(charId)));
                             return;
                         }
 
@@ -1243,6 +1223,22 @@ namespace Evernus
     const ESIInterface &ESIManager::selectNextInterface() const
     {
         return mInterfaceManager.selectNextInterface();
+    }
+
+    QString ESIManager::getCharacterName(Character::IdType id) const
+    {
+        QString charName;
+
+        try
+        {
+            charName = mCharacterRepo.getName(id);
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            charName = mDataProvider.getGenericName(id);
+        }
+
+        return charName;
     }
 
     MarketOrder::State ESIManager::getStateFromString(const QString &state)

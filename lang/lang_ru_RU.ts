@@ -169,375 +169,6 @@
     </message>
 </context>
 <context>
-    <name>DefaultColorDialog</name>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="280"/>
-        <source>Hue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="301"/>
-        <source>Saturation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="317"/>
-        <source>Luminosity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="335"/>
-        <source>Alpha</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="394"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="399"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultDialogWrapper</name>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultDialogWrapper.qml" line="118"/>
-        <source>Show Details...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultFileDialog</name>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="148"/>
-        <source>Go up to the folder containing this one</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="269"/>
-        <source>Remove favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="311"/>
-        <source>Add the current directory as a favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="349"/>
-        <source>Filename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="376"/>
-        <source>Type</source>
-        <comment>file type (extension)</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="399"/>
-        <source>Size</source>
-        <comment>file size</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="402"/>
-        <source>Modified</source>
-        <comment>last-modified time</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="403"/>
-        <source>Accessed</source>
-        <comment>last-accessed time</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="468"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="473"/>
-        <source>Choose</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="473"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="473"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultFontDialog</name>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="120"/>
-        <source>Font</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="121"/>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="202"/>
-        <source>Weight</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="122"/>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="276"/>
-        <source>Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="135"/>
-        <source>Font Family</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="205"/>
-        <source>Thin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="206"/>
-        <source>ExtraLight</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="207"/>
-        <source>Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="208"/>
-        <source>Normal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="209"/>
-        <source>Medium</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="210"/>
-        <source>DemiBold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="211"/>
-        <source>Bold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="212"/>
-        <source>ExtraBold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="213"/>
-        <source>Black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="303"/>
-        <source>Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="306"/>
-        <source>Italic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="312"/>
-        <source>Underline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="318"/>
-        <source>Overline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="324"/>
-        <source>Strikeout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="329"/>
-        <source>Writing System</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="338"/>
-        <source>Sample</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="390"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="394"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultMessageDialog</name>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="142"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="148"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="154"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="160"/>
-        <source>Save All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="166"/>
-        <source>Retry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="172"/>
-        <source>Ignore</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="178"/>
-        <source>Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="184"/>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="190"/>
-        <source>Yes to All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="196"/>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="202"/>
-        <source>No to All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="208"/>
-        <source>Discard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="214"/>
-        <source>Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="220"/>
-        <source>Restore Defaults</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="226"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="232"/>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="238"/>
-        <source>Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="244"/>
-        <source>Show Details...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="250"/>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="306"/>
-        <source>Hide Details</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>EditMenu_base</name>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="51"/>
-        <source>&amp;Undo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="62"/>
-        <source>&amp;Redo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="73"/>
-        <source>Cu&amp;t</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="87"/>
-        <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="101"/>
-        <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="112"/>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="123"/>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="134"/>
-        <source>Select All</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Evernus::APIManager</name>
     <message>
         <location filename="../APIManager.cpp" line="644"/>
@@ -2336,7 +1967,7 @@ Total: %7</source>
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="788"/>
+        <location filename="../ESIManager.cpp" line="779"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2353,27 +1984,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="770"/>
+        <location filename="../ESIManager.cpp" line="761"/>
         <source>SSO Authentication for unknown character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="772"/>
+        <location filename="../ESIManager.cpp" line="763"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="862"/>
+        <location filename="../ESIManager.cpp" line="853"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1092"/>
+        <location filename="../ESIManager.cpp" line="1083"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1137"/>
+        <location filename="../ESIManager.cpp" line="1117"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3895,7 +3526,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="721"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="724"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>

@@ -172,6 +172,8 @@ namespace Evernus
 
         const ESIInterface &selectNextInterface() const;
 
+        QString getCharacterName(Character::IdType id) const;
+
         static MarketOrder::State getStateFromString(const QString &state);
         static short getMarketOrderRangeFromString(const QString &range);
         static QDateTime getDateTimeFromString(const QString &value);
