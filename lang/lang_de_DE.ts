@@ -9477,72 +9477,71 @@ Please click on &quot;Import all&quot; after the update.</source>
 <context>
     <name>View</name>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="49"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="55"/>
         <source>Name</source>
         <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="53"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="59"/>
         <source>Quantity produced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="57"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="63"/>
         <source>Quantity required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="61"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="67"/>
         <source>Source</source>
         <translation type="unfinished">Quelle</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="65"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="71"/>
         <source>Time per run</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="69"/>
         <source>Runs</source>
-        <translation type="unfinished">Durchläufe</translation>
+        <translation type="obsolete">Durchläufe</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="73"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="75"/>
         <source>ME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="77"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="79"/>
         <source>TE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="81"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="83"/>
         <source>Total time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="85"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="87"/>
         <source>Total cost</source>
         <translation type="unfinished">Kosten gesamt</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="90"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="92"/>
         <source>Component cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="95"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="97"/>
         <source>Job fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="100"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="102"/>
         <source>Job tax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="105"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="107"/>
         <source>Total profit</source>
         <translation type="unfinished">Profit gesamt</translation>
     </message>

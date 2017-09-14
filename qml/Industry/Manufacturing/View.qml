@@ -45,6 +45,12 @@ Item {
         anchors.fill: parent
         visible: false
 
+        function resetModel() {
+            // we are doing full reset because we have no me/te role change signal (because of binding loop in Type.qml)
+            textView.model = null;
+            textView.model = setupModel;
+        }
+
         OldControls.TableViewColumn {
             title: qsTr("Name")
             role: "name"
@@ -64,10 +70,6 @@ Item {
         OldControls.TableViewColumn {
             title: qsTr("Time per run")
             role: "time"
-        }
-        OldControls.TableViewColumn {
-            title: qsTr("Runs")
-            role: "runs"
         }
         OldControls.TableViewColumn {
             title: qsTr("ME")
@@ -114,17 +116,17 @@ Item {
                 case 3:
                     return Utils.getSourceName(value);
                 case 4:
-                case 8:
+                case 7:
                     return Utils.formatDuration(value);
-                case 9:
+                case 8:
                     return (typeof value.totalCost !== "undefined") ? (Utils.formatCurrency(value.totalCost)) : ("");
-                case 10:
+                case 9:
                     return (typeof value.children !== "undefined") ? (Utils.formatCurrency(value.children)) : ("");
-                case 11:
+                case 10:
                     return (typeof value.jobFee !== "undefined") ? (Utils.formatCurrency(value.jobFee)) : ("");
-                case 12:
+                case 11:
                     return (typeof value.jobTax !== "undefined") ? (Utils.formatCurrency(value.jobTax)) : ("");
-                case 13:
+                case 12:
                     return (typeof value.value !== "undefined") ? (Utils.formatCurrency(value.value)) : ("");
                 default:
                     return value;
@@ -135,6 +137,13 @@ Item {
             elide: styleData.elideMode
             horizontalAlignment: styleData.textAlignment
             text: getTextValue(styleData.value, styleData.column)
+        }
+
+        Connections {
+            target: setupController
+
+            onMaterialEfficiencyChanged: textView.resetModel()
+            onTimeEfficiencyChanged: textView.resetModel()
         }
     }
 
