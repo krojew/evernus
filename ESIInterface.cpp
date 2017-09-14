@@ -34,15 +34,31 @@ namespace Evernus
     struct ESIInterface::TaggedInvoke<ESIInterface::JsonTag>
     {
         template<class T>
-        static inline void invoke(const QByteArray &data, const QDateTime &expires, const T &callback)
+        static inline void invoke(const QByteArray &data, const QNetworkReply &reply, const T &callback)
         {
-            callback(QJsonDocument::fromJson(data), QString{}, expires);
+            callback(QJsonDocument::fromJson(data), QString{}, getExpireTime(reply));
         }
 
         template<class T>
-        static inline void invoke(const QString &error, const QDateTime &expires, const T &callback)
+        static inline void invoke(const QString &error, const QNetworkReply &reply, const T &callback)
         {
-            callback(QJsonDocument{}, error, expires);
+            callback(QJsonDocument{}, error, getExpireTime(reply));
+        }
+    };
+
+    template<>
+    struct ESIInterface::TaggedInvoke<ESIInterface::PaginatedJsonTag>
+    {
+        template<class T>
+        static inline void invoke(const QByteArray &data, const QNetworkReply &reply, const T &callback)
+        {
+            callback(QJsonDocument::fromJson(data), QString{}, getExpireTime(reply), getPageCount(reply));
+        }
+
+        template<class T>
+        static inline void invoke(const QString &error, const QNetworkReply &reply, const T &callback)
+        {
+            callback(QJsonDocument{}, error, getExpireTime(reply), getPageCount(reply));
         }
     };
 
@@ -50,15 +66,15 @@ namespace Evernus
     struct ESIInterface::TaggedInvoke<ESIInterface::StringTag>
     {
         template<class T>
-        static inline void invoke(const QByteArray &data, const QDateTime &expires, const T &callback)
+        static inline void invoke(const QByteArray &data, const QNetworkReply &reply, const T &callback)
         {
-            callback(QString::fromUtf8(data), QString{}, expires);
+            callback(QString::fromUtf8(data), QString{}, getExpireTime(reply));
         }
 
         template<class T>
-        static inline void invoke(const QString &error, const QDateTime &expires, const T &callback)
+        static inline void invoke(const QString &error, const QNetworkReply &reply, const T &callback)
         {
-            callback(QString{}, error, expires);
+            callback(QString{}, error, getExpireTime(reply));
         }
     };
 
@@ -404,51 +420,101 @@ namespace Evernus
     template<class T>
     void ESIInterface::fetchPaginatedData(const QString &url, uint page, T &&continuation) const
     {
-        asyncGet(url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error, const auto &expires) {
+        const auto callback = [=](auto &&response, const auto &error, const auto &expires, auto pages) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 continuation({}, true, error, expires);
                 return;
             }
 
-            const auto array = response.array();
-            if (array.isEmpty())
+            if (pages > 1)
             {
-                continuation(std::move(response), true, QString{}, expires);
+                if (page == 1)
+                {
+                    qDebug() << "Got number of pages for paginated request:" << pages;
+
+                    continuation(std::move(response), false, QString{}, expires);
+
+                    for (auto nextPage = 2; nextPage <= pages; ++nextPage)
+                        fetchPaginatedData(url, nextPage, continuation);
+                }
+                else if (page >= pages)
+                {
+                    continuation(std::move(response), true, QString{}, expires);
+                }
+                else
+                {
+                    continuation(std::move(response), false, QString{}, expires);
+                }
             }
             else
             {
-                continuation(std::move(response), false, QString{}, expires);
-                fetchPaginatedData(url, page + 1, continuation);
+                const auto array = response.array();
+                if (array.isEmpty())
+                {
+                    continuation(std::move(response), true, QString{}, expires);
+                }
+                else
+                {
+                    continuation(std::move(response), false, QString{}, expires);
+                    fetchPaginatedData(url, page + 1, continuation);
+                }
             }
-        }, getNumRetries());
+        };
+
+        asyncGet<decltype(callback), PaginatedJsonTag>(url, QStringLiteral("page=%1").arg(page), callback, getNumRetries());
     }
 
     template<class T>
     void ESIInterface::fetchPaginatedData(Character::IdType charId, const QString &url, uint page, T &&continuation, bool suppressForbidden) const
     {
-        asyncGet(charId, url, QStringLiteral("page=%1").arg(page), [=](auto &&response, const auto &error, const auto &expires) {
+        const auto callback = [=](auto &&response, const auto &error, const auto &expires, auto pages) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 continuation({}, true, error, expires);
                 return;
             }
 
-            const auto array = response.array();
-            if (array.isEmpty())
+            if (pages > 1)
             {
-                continuation(std::move(response), true, QString{}, expires);
+                if (page == 1)
+                {
+                    qDebug() << "Got number of pages for paginated request:" << pages;
+
+                    continuation(std::move(response), false, QString{}, expires);
+
+                    for (auto nextPage = 2; nextPage <= pages; ++nextPage)
+                        fetchPaginatedData(charId, url, nextPage, continuation, suppressForbidden);
+                }
+                else if (page >= pages)
+                {
+                    continuation(std::move(response), true, QString{}, expires);
+                }
+                else
+                {
+                    continuation(std::move(response), false, QString{}, expires);
+                }
             }
             else
             {
-                continuation(std::move(response), false, QString{}, expires);
-                fetchPaginatedData(charId, url, page + 1, continuation, suppressForbidden);
+                const auto array = response.array();
+                if (array.isEmpty())
+                {
+                    continuation(std::move(response), true, QString{}, expires);
+                }
+                else
+                {
+                    continuation(std::move(response), false, QString{}, expires);
+                    fetchPaginatedData(charId, url, page + 1, continuation);
+                }
             }
-        }, getNumRetries(), suppressForbidden);
+        };
+
+        asyncGet<decltype(callback), PaginatedJsonTag>(charId, url, QStringLiteral("page=%1").arg(page), callback, getNumRetries(), suppressForbidden);
     }
 
-    template<class T>
-    void ESIInterface::asyncGet(const QString &url, const QString &query, T &&continuation, uint retries) const
+    template<class T, class ResultTag>
+    void ESIInterface::asyncGet(const QString &url, const QString &query, const T &continuation, uint retries) const
     {
         qDebug() << "ESI request:" << url << ":" << query;
         qDebug() << "Retries" << retries;
@@ -466,13 +532,13 @@ namespace Evernus
             if (Q_UNLIKELY(error != QNetworkReply::NoError))
             {
                 if (retries > 0)
-                    asyncGet(url, query, continuation, retries - 1);
+                    asyncGet<T, ResultTag>(url, query, continuation, retries - 1);
                 else
-                    continuation(QJsonDocument{}, getError(url, query, *reply), getExpireTime(*reply));
+                    TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
             }
             else
             {
-                continuation(QJsonDocument::fromJson(reply->readAll()), QString{}, getExpireTime(*reply));
+                TaggedInvoke<ResultTag>::invoke(reply->readAll(), *reply, continuation);
             }
         });
     }
@@ -503,7 +569,7 @@ namespace Evernus
                         if (error.isEmpty())
                             asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden);
                         else
-                            TaggedInvoke<ResultTag>::invoke(error, getExpireTime(*reply), continuation);
+                            TaggedInvoke<ResultTag>::invoke(error, *reply, continuation);
                     });
                 }
                 else
@@ -511,9 +577,9 @@ namespace Evernus
                     if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
                     {
                         if (suppressForbidden)
-                            TaggedInvoke<ResultTag>::invoke(QString{}, getExpireTime(*reply), continuation);
+                            TaggedInvoke<ResultTag>::invoke(QString{}, *reply, continuation);
                         else
-                            TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), getExpireTime(*reply), continuation);
+                            TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
                     }
                     else if (retries > 0)
                     {
@@ -521,13 +587,13 @@ namespace Evernus
                     }
                     else
                     {
-                        TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), getExpireTime(*reply), continuation);
+                        TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
                     }
                 }
             }
             else
             {
-                TaggedInvoke<ResultTag>::invoke(reply->readAll(), getExpireTime(*reply), continuation);
+                TaggedInvoke<ResultTag>::invoke(reply->readAll(), *reply, continuation);
             }
         });
     }
@@ -670,5 +736,10 @@ namespace Evernus
     QDateTime ESIInterface::getExpireTime(const QNetworkReply &reply)
     {
         return QDateTime::fromString(reply.rawHeader(QByteArrayLiteral("expires")), Qt::RFC2822Date);
+    }
+
+    uint ESIInterface::getPageCount(const QNetworkReply &reply)
+    {
+        return reply.rawHeader(QByteArrayLiteral("X-Pages")).toUInt();
     }
 }

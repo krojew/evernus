@@ -103,6 +103,7 @@ namespace Evernus
         };
 
         struct JsonTag {};
+        struct PaginatedJsonTag {};
         struct StringTag {};
 
         template<class Tag>
@@ -125,8 +126,8 @@ namespace Evernus
         template<class T>
         void fetchPaginatedData(Character::IdType charId, const QString &url, uint page, T &&continuation, bool suppressForbidden = false) const;
 
-        template<class T>
-        void asyncGet(const QString &url, const QString &query, T &&continuation, uint retries) const;
+        template<class T, class ResultTag = JsonTag>
+        void asyncGet(const QString &url, const QString &query, const T &continuation, uint retries) const;
         template<class T, class ResultTag = JsonTag>
         void asyncGet(Character::IdType charId,
                       const QString &url,
@@ -151,5 +152,6 @@ namespace Evernus
         static QString getError(const QByteArray &reply);
         static QString getError(const QString &url, const QString &query, QNetworkReply &reply);
         static QDateTime getExpireTime(const QNetworkReply &reply);
+        static uint getPageCount(const QNetworkReply &reply);
     };
 }
