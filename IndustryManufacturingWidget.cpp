@@ -295,6 +295,11 @@ namespace Evernus
             mSetupModel.setFacilityTax(value);
         });
 
+        const auto toggleViewTypeBtn = new QPushButton{tr("Toggle view type"), this};
+        toolBarLayout->addWidget(toggleViewTypeBtn);
+        connect(toggleViewTypeBtn, &QPushButton::clicked,
+                &mSetupController, &IndustryManufacturingSetupController::toggleViewType);
+
         mDontSaveBtn = new DontSaveImportedOrdersCheckBox{this};
         toolBarLayout->addWidget(mDontSaveBtn);
         mDontSaveBtn->setChecked(

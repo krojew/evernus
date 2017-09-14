@@ -19,6 +19,8 @@ import QtQml.Models 2.2
 import QtQuick 2.7
 import QtQml 2.2
 
+import "qrc:/qml/Industry/Manufacturing/Utils.js" as Utils
+
 Item {
     property bool isOutput: false
     property bool isManufactured: isOutput || source === 1 || source === 5
@@ -69,25 +71,6 @@ Item {
                 break;
             }
         }
-    }
-
-    function formatDuration(duration) {
-        var hours   = Math.floor(duration / 3600);
-        var minutes = Math.floor((duration / 60) % 60);
-        var seconds = duration % 60;
-
-        if (hours < 10)
-            hours   = "0" + hours;
-        if (minutes < 10)
-            minutes = "0" + minutes;
-        if (seconds < 10)
-            seconds = "0" + seconds;
-
-        return "%1:%2:%3".arg(hours).arg(minutes).arg(seconds);
-    }
-
-    function formatCurrency(value) {
-        return value.toLocaleCurrencyString(Qt.locale(), (omitCurrencySymbol) ? (" ") : (qsTr("ISK")));
     }
 
     RectangularGlow {
@@ -169,6 +152,8 @@ Item {
                     id: sourceCombo
                     textRole: "text"
                     Layout.fillWidth: true
+
+                    // note: sync text with Utils.js or use getSourceName() when ListElement starts accepting scripts
                     model: ListModel {
                         ListElement { text: qsTr("Buy from source"); value: 0; }
                         ListElement { text: qsTr("Acquire for free"); value: 2; }
@@ -273,7 +258,7 @@ Item {
 
                 Label {
                     id: quantityText
-                    text: (quantityProduced > 0) ? (qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(formatDuration(time))) : (qsTr("Quantity produced: N/A"))
+                    text: (quantityProduced > 0) ? (qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(Utils.formatDuration(time))) : (qsTr("Quantity produced: N/A"))
                     color: "#cccccc"
                     Layout.fillWidth: true
                     Layout.columnSpan: 2
@@ -281,7 +266,7 @@ Item {
 
                 Label {
                     font.bold: true
-                    text: (isManufactured) ? (qsTr("Total production time: %1").arg(formatDuration(totalTime))) : (qsTr("Total production time: N/A"))
+                    text: (isManufactured) ? (qsTr("Total production time: %1").arg(Utils.formatDuration(totalTime))) : (qsTr("Total production time: N/A"))
                     color: "orange"
                     Layout.columnSpan: 2
                 }
@@ -294,7 +279,7 @@ Item {
                     Label {
                         id: totalCosts
                         font.bold: true
-                        text: qsTr("Total cost: %1").arg(formatCurrency(cost.totalCost))
+                        text: qsTr("Total cost: %1").arg(Utils.formatCurrency(cost.totalCost))
                         color: "orange"
                     }
 
@@ -314,9 +299,9 @@ Item {
                             ToolTip.delay: 500
                             ToolTip.visible: containsMouse
                             ToolTip.text: qsTr("Component cost: %1\nJob fee: %2\nJob tax: %3")
-                                              .arg(formatCurrency(cost.children))
-                                              .arg(formatCurrency(cost.jobFee))
-                                              .arg(formatCurrency(cost.jobTax))
+                                              .arg(Utils.formatCurrency(cost.children))
+                                              .arg(Utils.formatCurrency(cost.jobFee))
+                                              .arg(Utils.formatCurrency(cost.jobTax))
                         }
                     }
 
@@ -346,7 +331,7 @@ Item {
                     Label {
                         id: profitInfo
                         font.bold: true
-                        text: qsTr("Profit from selling: %1").arg(formatCurrency(profit.value - cost.totalCost))
+                        text: qsTr("Profit from selling: %1").arg(Utils.formatCurrency(profit.value - cost.totalCost))
                         color: ((profit.value - cost.totalCost) <= 0) ? ("red") : ("green")
                         Layout.columnSpan: 2
                     }
@@ -371,7 +356,7 @@ Item {
 
                 Label {
                     font.bold: true
-                    text: qsTr("ISK/h: %1").arg((totalTime > 0) ? (formatCurrency((profit.value - cost.totalCost) * 3600 / totalTime)) : ("N/A"))
+                    text: qsTr("ISK/h: %1").arg((totalTime > 0) ? (Utils.formatCurrency((profit.value - cost.totalCost) * 3600 / totalTime)) : ("N/A"))
                     color: ((profit.value - cost.totalCost) <= 0) ? ("red") : ("green")
                     Layout.columnSpan: 2
                 }

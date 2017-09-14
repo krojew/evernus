@@ -4315,132 +4315,137 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Podatek obiektu:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="355"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="298"/>
+        <source>Toggle view type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="360"/>
         <source>Output</source>
         <translation>Produkty</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="375"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="380"/>
         <source>Summary</source>
         <translation>Podsumowanie</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="381"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="386"/>
         <source>Total cost:</source>
         <translation>Całkowity koszt:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="384"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="389"/>
         <source>Total profit:</source>
         <translation>Całkowity zysk:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="387"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="392"/>
         <source>Min. manufacturing time:</source>
         <translation>Min. czas produkcji:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="390"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="395"/>
         <source>Total ISK/h:</source>
         <translation>Całkowite ISK/godz.:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="393"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="398"/>
         <source>System cost index:</source>
         <translation>Indeks kosztów systemu:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="448"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="453"/>
         <source>Large setup</source>
         <translation>Duży układ</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="449"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="454"/>
         <source>Adding many output item types may take long time to process. Are you sure you want to proceed?</source>
         <translation>Dodanie wielu typów produktów może skutkować długim czasem przetwarzania. Kontynuować?</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="502"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="507"/>
         <source>Importing data...</source>
         <translation>Importowanie danych...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="504"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="509"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation>Tworzenie %1 zapytań Eve-Central o zlecenia...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="505"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="510"/>
         <source>Making %1 ESI order requests...</source>
         <translation>Tworzenie %1 zapytań ESI o zlecenia...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="508"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="513"/>
         <source>Importing industry market prices...</source>
         <translation>Importowanie cen produkcji...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="509"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="514"/>
         <source>Importing system cost indices...</source>
         <translation>Importowanie indeksów kosztów systemów...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="533"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="538"/>
         <source>View error</source>
         <translation>Błąd widoku</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="533"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="538"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation>Pojawił się błąd inicjalizacji widoku produkcji: %1</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="555"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="560"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="574"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="579"/>
         <source>Load setup</source>
         <translation>Załaduj układ</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="574"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="579"/>
         <source>Select setup:</source>
         <translation>Wybierz układ:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="600"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="605"/>
         <source>Save setup</source>
         <translation>Zapisz układ</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="600"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="605"/>
         <source>Enter setup name:</source>
         <translation>Nazwa układu:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="681"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="681"/>
         <source>Total cost</source>
         <translation>Całkowity koszt</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="681"/>
         <source>Quantity</source>
         <translation>Ilość</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="677"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="682"/>
         <source>Bill of materials</source>
         <translation>Materiały</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="724"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="729"/>
         <source>N/A</source>
         <translation>brak</translation>
     </message>
@@ -9734,92 +9739,91 @@ Czy chcesz kontynuować (może to wpłynąć negatywnie na bezpieczeństwo konta
 <context>
     <name>Type</name>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="90"/>
         <source>ISK</source>
-        <translation>ISK</translation>
+        <translation type="vanished">ISK</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="163"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="146"/>
         <source>Source:</source>
         <translation>Źródło:</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="173"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="158"/>
         <source>Buy from source</source>
         <translation>Kup ze źródła</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="174"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="159"/>
         <source>Acquire for free</source>
         <translation>Zdobądź za darmo</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="175"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="160"/>
         <source>Buy at custom cost</source>
         <translation>Kup za własną cenę</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="176"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="161"/>
         <source>Take assets then buy from source</source>
         <translation>Weź akutalne zasoby i kup ze źródła</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="177"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="162"/>
         <source>Take assets then buy at custom cost</source>
         <translation>Weź akutalne zasoby i kup za własną cenę</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="190"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="175"/>
         <source>Manufacture</source>
         <translation>Wyprodukuj</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="191"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="176"/>
         <source>Take assets then manufacture</source>
         <translation>Weź aktualne zasoby i wyprodukuj</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="210"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="195"/>
         <source>Runs:</source>
         <translation>Przebiegi:</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="225"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="210"/>
         <source>ME:</source>
         <translation>ME:</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="250"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="235"/>
         <source>TE:</source>
         <translation>TE:</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="276"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="261"/>
         <source>Quantity produced: %L1 / %2</source>
         <translation>Ilość produkowana: %L1 / %2</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="276"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="261"/>
         <source>Quantity produced: N/A</source>
         <translation>Ilość produkowana: brak</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="284"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="269"/>
         <source>Total production time: %1</source>
         <translation>Całkowity czas produkcji: %1</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="284"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="269"/>
         <source>Total production time: N/A</source>
         <translation>Całkowity czas produkcji: brak</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="297"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="282"/>
         <source>Total cost: %1</source>
         <translation>Całkowity koszt: %1</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="316"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="301"/>
         <source>Component cost: %1
 Job fee: %2
 Job tax: %3</source>
@@ -9828,7 +9832,7 @@ Koszt produkcji: %2
 Podatek produkcji: %3</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="336"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="321"/>
         <source>All required volume is not available on the market. Assuming the rest will be bought at the best price.</source>
         <translation>Brak wystarczającej ilości materiału na rynku. Zakładamy kupno pozostałej ilości po najlepszej cenie.</translation>
     </message>
@@ -9837,17 +9841,17 @@ Podatek produkcji: %3</translation>
         <translation type="vanished">Brak wystarczającej ilości materiału na rynku. Zakładamy kupno pozostałej ilości po najlepszej cenie.</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="349"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="334"/>
         <source>Profit from selling: %1</source>
         <translation>Zysk ze sprzedaży: %1</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="367"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="352"/>
         <source>All volume could not be sold on the market. Assuming the rest will be sold at the best price.</source>
         <translation>Całkowity wolumen nie może zostać sprzedany na rynku. Zakładamy sprzedaż pozostałej ilości po najlepszej cenie.</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="374"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="359"/>
         <source>ISK/h: %1</source>
         <translation>ISK/godz.: %1</translation>
     </message>
@@ -9968,6 +9972,126 @@ Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
         <location filename="../Updater.cpp" line="438"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
+    </message>
+</context>
+<context>
+    <name>Utils</name>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Utils.js" line="4"/>
+        <source>Buy from source</source>
+        <translation type="unfinished">Kup ze źródła</translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Utils.js" line="6"/>
+        <source>Manufacture</source>
+        <translation type="unfinished">Wyprodukuj</translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Utils.js" line="8"/>
+        <source>Acquire for free</source>
+        <translation type="unfinished">Zdobądź za darmo</translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Utils.js" line="10"/>
+        <source>Buy at custom cost</source>
+        <translation type="unfinished">Kup za własną cenę</translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Utils.js" line="12"/>
+        <source>Take assets then buy from source</source>
+        <translation type="unfinished">Weź akutalne zasoby i kup ze źródła</translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Utils.js" line="14"/>
+        <source>Take assets then manufacture</source>
+        <translation type="unfinished">Weź aktualne zasoby i wyprodukuj</translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Utils.js" line="16"/>
+        <source>Take assets then buy at custom cost</source>
+        <translation type="unfinished">Weź akutalne zasoby i kup za własną cenę</translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Utils.js" line="38"/>
+        <source>ISK</source>
+        <translation type="unfinished">ISK</translation>
+    </message>
+    <message>
+        <source>(unknown)</source>
+        <translation type="obsolete">(nieznane)</translation>
+    </message>
+</context>
+<context>
+    <name>View</name>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="49"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="53"/>
+        <source>Quantity produced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="57"/>
+        <source>Quantity required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="61"/>
+        <source>Source</source>
+        <translation type="unfinished">Źródło</translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="65"/>
+        <source>Time per run</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="69"/>
+        <source>Runs</source>
+        <translation type="unfinished">Przebiegi</translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="73"/>
+        <source>ME</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="77"/>
+        <source>TE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="81"/>
+        <source>Total time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="85"/>
+        <source>Total cost</source>
+        <translation type="unfinished">Całkowity koszt</translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="90"/>
+        <source>Component cost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="95"/>
+        <source>Job fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="100"/>
+        <source>Job tax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="105"/>
+        <source>Total profit</source>
+        <translation type="unfinished">Całkowity zysk</translation>
     </message>
 </context>
 <context>

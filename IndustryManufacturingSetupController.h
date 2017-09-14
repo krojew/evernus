@@ -51,6 +51,7 @@ namespace Evernus
         void materialEfficiencyChanged(EveType::IdType id, uint value);
         void timeEfficiencyChanged(EveType::IdType id, uint value);
         void outputViewCreated();
+        void toggleViewType();
 
     private:
         IndustryManufacturingSetupModel &mModel;
