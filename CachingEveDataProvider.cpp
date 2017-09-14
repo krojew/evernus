@@ -1230,6 +1230,27 @@ SELECT m.materialTypeID, m.quantity, p.quantity, a.time, s.skillID FROM industry
         return it->second;
     }
 
+    EveType::IdType CachingEveDataProvider::getBlueprintOutputType(EveType::IdType blueprintId) const
+    {
+        auto type = mBlueprintOutputCache.find(blueprintId);
+        if (type == std::end(mBlueprintOutputCache))
+        {
+            QSqlQuery query{mEveDb};
+            query.prepare(QStringLiteral("SELECT productTypeID FROM industryActivityProducts WHERE typeID = ? AND activityID = ?"));
+            query.addBindValue(blueprintId);
+            query.addBindValue(mManufacturingActivityId);
+
+            DatabaseUtils::execQuery(query);
+
+            if (query.next())
+                type = mBlueprintOutputCache.emplace(blueprintId, query.value(0).value<EveType::IdType>()).first;
+            else
+                type = mBlueprintOutputCache.emplace(blueprintId, EveType::invalidId).first;
+        }
+
+        return type->second;
+    }
+
     QString CachingEveDataProvider::getCitadelName(Citadel::IdType id) const
     {
         return getCitadel(id).getName();

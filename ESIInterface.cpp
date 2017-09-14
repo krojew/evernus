@@ -259,6 +259,24 @@ namespace Evernus
         });
     }
 
+    void ESIInterface::fetchCharacterBlueprints(Character::IdType charId, const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching character blueprints for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, tr("Cannot fetch character blueprints with no character selected."), {});
+            return;
+        }
+
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                asyncGet(charId, QStringLiteral("/v1/characters/%1/blueprints/").arg(charId), {}, callback, getNumRetries());
+        });
+    }
+
     void ESIInterface::fetchGenericName(quint64 id, const PersistentStringCallback &callback) const
     {
         qDebug() << "Fetching generic name:" << id;

@@ -54,6 +54,7 @@ namespace Evernus
     class CharacterRepository;
     class EveDataProvider;
     class ExternalOrder;
+    class Blueprint;
 
     class ESIManager final
         : public QObject
@@ -66,6 +67,7 @@ namespace Evernus
         template<class T>
         using PesistentDataCallback = std::function<void (T &&data, const QString &error)>;
         using ExternalOrderList = std::vector<ExternalOrder>;
+        using BlueprintList = std::vector<Blueprint>;
         using MarketOrderCallback = Callback<ExternalOrderList>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
         using NameMap = std::unordered_map<quint64, QString>;
@@ -101,6 +103,7 @@ namespace Evernus
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               WalletTransaction::IdType tillId,
                                               const Callback<WalletTransactions> &callback) const;
+        void fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const;
         void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
         void fetchMarketPrices(const PesistentDataCallback<MarketPrices> &callback) const;
         void fetchIndustryCostIndices(const PesistentDataCallback<IndustryCostIndices> &callback) const;

@@ -57,6 +57,7 @@
 #include "FlowLayout.h"
 #include "UISettings.h"
 #include "TextUtils.h"
+#include "Blueprint.h"
 
 #include "IndustryManufacturingWidget.h"
 
@@ -377,6 +378,12 @@ namespace Evernus
 
         mTypeView->selectTypes(types);
 
+        const auto importBlueprintsBtn = new QPushButton{tr("Import character blueprints"), this};
+        rightPaneLayout->addWidget(importBlueprintsBtn);
+        connect(importBlueprintsBtn, &QPushButton::clicked,
+                this, &IndustryManufacturingWidget::importCharacterBlueprints);
+        connectToSetupRefresh(*importBlueprintsBtn);
+
         const auto summaryGroup = new QGroupBox{tr("Summary"), this};
         rightPaneLayout->addWidget(summaryGroup);
 
@@ -459,7 +466,7 @@ namespace Evernus
 
         emit setupRefreshChanged(true);
 
-        mSetup.setOutputTypes(std::move(selected));
+        mSetup.setOutputTypes(selected);
 
         const auto outputSize = static_cast<int>(mSetup.getOutputSize());
         if (outputSize != 0)
@@ -467,7 +474,6 @@ namespace Evernus
             mViewResetProgress->reset();
             mViewResetProgress->setMaximum(outputSize - 1);
             mViewResetProgress->show();
-
         }
 
         mSetupModel.refreshData();
@@ -728,6 +734,50 @@ namespace Evernus
         mMinTimeLabel->setText(TextUtils::durationToString(std::chrono::seconds{minTime}));
         mISKPerHLabel->setText((minTime != 0) ? (TextUtils::currencyToString(realProfit * 3600 / minTime, curLocale)) : (tr("N/A")));
         mSystemCostIndexLabel->setText(curLocale.toString(mSetupModel.getSystemCostIndex()));
+    }
+
+    void IndustryManufacturingWidget::importCharacterBlueprints()
+    {
+        if (mBlueprintImportSubtask != TaskConstants::invalidTask)
+            return;
+
+        mBlueprintImportSubtask = mTaskManager.startTask(tr("Importing character blueprints..."));
+
+        mESIManager.fetchCharacterBlueprints(mCharacterId, [=](auto &&data, const auto &error, const auto &expires) {
+            Q_UNUSED(expires);
+
+            if (Q_LIKELY(error.isEmpty()))
+            {
+                std::unordered_map<EveType::IdType, uint> me, te;
+
+                TradeableTypesTreeView::TypeSet types;
+                for (const auto &blueprint : data)
+                {
+                    const auto output = mDataProvider.getBlueprintOutputType(blueprint.getTypeId());
+
+                    types.insert(output);
+                    me[output] = std::max(me[output], blueprint.getMaterialEfficiency());
+                    te[output] = std::max(te[output], blueprint.getTimeEfficiency());
+                }
+
+                mTypeView->selectTypes(types);
+                refreshTypes();
+
+                for (const auto &efficiency : me)
+                {
+                    mSetup.setMaterialEfficiency(efficiency.first, efficiency.second);
+                    emit mSetupController.materialEfficiencyChanged(efficiency.first, efficiency.second);
+                }
+                for (const auto &efficiency : te)
+                {
+                    mSetup.setTimeEfficiency(efficiency.first, efficiency.second);
+                    emit mSetupController.timeEfficiencyChanged(efficiency.first, efficiency.second);
+                }
+            }
+
+            mTaskManager.endTask(mBlueprintImportSubtask, error);
+            mBlueprintImportSubtask = TaskConstants::invalidTask;
+        });
     }
 
     void IndustryManufacturingWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)

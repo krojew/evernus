@@ -73,6 +73,7 @@ namespace Evernus
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               const boost::optional<WalletTransaction::IdType> &fromId,
                                               const JsonCallback &callback) const;
+        void fetchCharacterBlueprints(Character::IdType charId, const JsonCallback &callback) const;
         void fetchGenericName(quint64 id, const PersistentStringCallback &callback) const;
         void fetchMarketPrices(const PersistentJsonCallback &callback) const;
         void fetchIndustryCostIndices(const PersistentJsonCallback &callback) const;

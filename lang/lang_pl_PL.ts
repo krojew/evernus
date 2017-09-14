@@ -280,6 +280,33 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
 </context>
 <context>
+    <name>ESIManager</name>
+    <message>
+        <source>SSO Authentication for unknown character: %1</source>
+        <translation type="obsolete">Uwierzytelnienie SSO dla nieznanej postaci: %1</translation>
+    </message>
+    <message>
+        <source>SSO Authentication for character: %1</source>
+        <translation type="obsolete">Uwierzytelnienie SSO dla postaci: %1</translation>
+    </message>
+    <message>
+        <source>SSO authorization failed.</source>
+        <translation type="obsolete">Nieudana autoryzacja SSO.</translation>
+    </message>
+    <message>
+        <source>Empty access token!</source>
+        <translation type="obsolete">Pusty token dostępu!</translation>
+    </message>
+    <message>
+        <source>Empty refresh token!</source>
+        <translation type="obsolete">Pusty token odświeżania!</translation>
+    </message>
+    <message>
+        <source>Please authorize access for character: %1</source>
+        <translation type="obsolete">Proszę dać dostęp do postaci: %1</translation>
+    </message>
+</context>
+<context>
     <name>EditMenu_base</name>
     <message>
         <source>&amp;Copy</source>
@@ -2629,12 +2656,17 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation>Nie można pobrać transakcji bez wybranej postaci.</translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="276"/>
+        <location filename="../ESIInterface.cpp" line="268"/>
+        <source>Cannot fetch character blueprints with no character selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ESIInterface.cpp" line="294"/>
         <source>Missing name data for: %1</source>
         <translation>Brak nazwy dla: %1</translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="304"/>
+        <location filename="../ESIInterface.cpp" line="322"/>
         <source>Cannot open market window for invalid character. Check if there&apos;s a character associated with the item you wish to view.</source>
         <translation>Nie można otworzyć okna rynku dla nieprawidłowej postaci. Sprawdź, czy istnieje postać powiązana z przedmiotem, który chcesz zobaczyć.</translation>
     </message>
@@ -2642,17 +2674,17 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="779"/>
+        <location filename="../ESIManager.cpp" line="895"/>
         <source>SSO authorization failed.</source>
         <translation>Nieudana autoryzacja SSO.</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="187"/>
+        <location filename="../ESIManager.cpp" line="188"/>
         <source>Citadel order import</source>
         <translation>Import cytadel</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="187"/>
+        <location filename="../ESIManager.cpp" line="188"/>
         <source>Seems like you are importing citadel orders for the first time. CCP only allows importing orders from citadels you have access to. This means you need to authenticate yourself with Eve SSO, if you haven&apos;t done that already (please wait for the SSO window to open).
 
 Also, please note that due to large numbers of citadels in some regions, the import might take much longer. Remember you can toggle citadel import in the Preferences.</source>
@@ -2661,27 +2693,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 Z powodu dużej ilości cytadel w niektórych regionach, import może zająć dużo czasu. Pamiętaj, że możesz przełączyć import cytadel w ustawieniach.</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="761"/>
+        <location filename="../ESIManager.cpp" line="877"/>
         <source>SSO Authentication for unknown character: %1</source>
         <translation>Uwierzytelnienie SSO dla nieznanej postaci: %1</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="763"/>
+        <location filename="../ESIManager.cpp" line="879"/>
         <source>SSO Authentication for character: %1</source>
         <translation>Uwierzytelnienie SSO dla postaci: %1</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="853"/>
+        <location filename="../ESIManager.cpp" line="969"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1083"/>
+        <location filename="../ESIManager.cpp" line="1199"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1117"/>
+        <location filename="../ESIManager.cpp" line="1233"/>
         <source>Please authorize access for character: %1</source>
         <translation>Proszę dać dostęp do postaci: %1</translation>
     </message>
@@ -4152,302 +4184,312 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::IndustryManufacturingWidget</name>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="90"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="91"/>
         <source>Import data for current setup </source>
         <translation>Zaimportuj dane dla akutalnego układu </translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="95"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="96"/>
         <source>Load setup...</source>
         <translation>Załaduj układ...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="100"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="101"/>
         <source>Save setup...</source>
         <translation>Zapisz układ...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="105"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="106"/>
         <source>Show bill of materials</source>
         <translation>Pokaż materiały źródłowe</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="110"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="111"/>
         <source>Source:</source>
         <translation>Źródło:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="130"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="131"/>
         <source>Manufacturing station:</source>
         <translation>Stacja produkcji:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="141"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="142"/>
         <source>Leaving manufacturing station empty will cause costs to not include system cost index.</source>
         <translation>Pusta stacja produkcji spowoduje zignorowanie indeksu kosztów systemu i wpłynie na ostateczne koszty.</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="150"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="151"/>
         <source>Destination:</source>
         <translation>Cel:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="183"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="184"/>
         <source>Source price:</source>
         <translation>Cena źródła:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="188"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="189"/>
         <source>Type of orders used for buying items.</source>
         <translation>Typ zleceń użyty do kupna przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="190"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="191"/>
         <source>Destination price:</source>
         <translation>Cena celu:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="192"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="193"/>
         <source>Type of orders used for selling items.</source>
         <translation>Typ zleceń użyty do sprzedaży przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="196"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="197"/>
         <source>Facility type:</source>
         <translation>Typ obiektu:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="205"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="206"/>
         <source>Station</source>
         <translation>Stacja</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="206"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="207"/>
         <source>Engineering Complex</source>
         <translation>Engineering Complex</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="207"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="208"/>
         <source>Assembly Array</source>
         <translation>Assembly Array</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="208"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="209"/>
         <source>Thukker Component Array</source>
         <translation>Thukker Component Array</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="209"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="210"/>
         <source>Rapid Assembly Array</source>
         <translation>Rapid Assembly Array</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="214"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="215"/>
         <source>Structure size:</source>
         <translation>Rozmiar obiektu:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="218"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="219"/>
         <source>Medium</source>
         <translation>Średni</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="219"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="220"/>
         <source>Large</source>
         <translation>Duży</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="220"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="221"/>
         <source>X-Large</source>
         <translation>XL</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="229"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="230"/>
         <source>Security status:</source>
         <translation>Bezpieczeństwo:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="233"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="234"/>
         <source>High sec</source>
         <translation>High sec</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="234"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="235"/>
         <source>Low sec</source>
         <translation>Low sec</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="235"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="236"/>
         <source>Null sec/WH</source>
         <translation>Null sec/WH</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="244"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="245"/>
         <source>Material rig:</source>
         <translation>Rig materiałów:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="248"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="263"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="249"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="264"/>
         <source>None</source>
         <translation>Brak</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="249"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="264"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="250"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="265"/>
         <source>T1</source>
         <translation>T1</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="250"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="265"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="251"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="266"/>
         <source>T2</source>
         <translation>T2</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="259"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="260"/>
         <source>Time rig:</source>
         <translation>Rig czasu:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="283"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="284"/>
         <source>Facility tax:</source>
         <translation>Podatek obiektu:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="298"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="299"/>
         <source>Toggle view type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="360"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="361"/>
         <source>Output</source>
         <translation>Produkty</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="380"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="381"/>
+        <source>Import character blueprints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="387"/>
         <source>Summary</source>
         <translation>Podsumowanie</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="386"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="393"/>
         <source>Total cost:</source>
         <translation>Całkowity koszt:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="389"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="396"/>
         <source>Total profit:</source>
         <translation>Całkowity zysk:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="392"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="399"/>
         <source>Min. manufacturing time:</source>
         <translation>Min. czas produkcji:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="395"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="402"/>
         <source>Total ISK/h:</source>
         <translation>Całkowite ISK/godz.:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="398"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="405"/>
         <source>System cost index:</source>
         <translation>Indeks kosztów systemu:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="453"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="460"/>
         <source>Large setup</source>
         <translation>Duży układ</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="454"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="461"/>
         <source>Adding many output item types may take long time to process. Are you sure you want to proceed?</source>
         <translation>Dodanie wielu typów produktów może skutkować długim czasem przetwarzania. Kontynuować?</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="507"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="513"/>
         <source>Importing data...</source>
         <translation>Importowanie danych...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="509"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="515"/>
         <source>Making %1 Eve-Central order requests...</source>
         <translation>Tworzenie %1 zapytań Eve-Central o zlecenia...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="510"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="516"/>
         <source>Making %1 ESI order requests...</source>
         <translation>Tworzenie %1 zapytań ESI o zlecenia...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="513"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="519"/>
         <source>Importing industry market prices...</source>
         <translation>Importowanie cen produkcji...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="514"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="520"/>
         <source>Importing system cost indices...</source>
         <translation>Importowanie indeksów kosztów systemów...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="538"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="544"/>
         <source>View error</source>
         <translation>Błąd widoku</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="538"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="544"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation>Pojawił się błąd inicjalizacji widoku produkcji: %1</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="560"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="566"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="579"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="585"/>
         <source>Load setup</source>
         <translation>Załaduj układ</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="579"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="585"/>
         <source>Select setup:</source>
         <translation>Wybierz układ:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="605"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="611"/>
         <source>Save setup</source>
         <translation>Zapisz układ</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="605"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="611"/>
         <source>Enter setup name:</source>
         <translation>Nazwa układu:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="681"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="687"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="681"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="687"/>
         <source>Total cost</source>
         <translation>Całkowity koszt</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="681"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="687"/>
         <source>Quantity</source>
         <translation>Ilość</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="682"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="688"/>
         <source>Bill of materials</source>
         <translation>Materiały</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="729"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="735"/>
         <source>N/A</source>
         <translation>brak</translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="744"/>
+        <source>Importing character blueprints...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9917,17 +9959,17 @@ Czy chcesz rozpocząć aktualizację?</translation>
         <translation>Nie udało się rozpocząć aktualizacji. Pobrać ręcznie?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="509"/>
+        <location filename="../Updater.cpp" line="514"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation>Ta akutalizacja wymaga ustawienia własnego broker fee od nowa.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="536"/>
+        <location filename="../Updater.cpp" line="541"/>
         <source>This update requires re-importing citadels.</source>
         <translation>Ta aktualizacja wymaga ponownego importu cytadel.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="635"/>
+        <location filename="../Updater.cpp" line="640"/>
         <source>This update requires re-importing wallet journal.</source>
         <translation>Ta aktualizacja wymaga ponownego importu dziennika portfela.</translation>
     </message>
@@ -9939,37 +9981,37 @@ Czy chcesz rozpocząć aktualizację?</translation>
         <translation>Błąd aktualizacji wersji bazy danych: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="388"/>
-        <location filename="../Updater.cpp" line="419"/>
-        <location filename="../Updater.cpp" line="426"/>
-        <location filename="../Updater.cpp" line="438"/>
-        <location filename="../Updater.cpp" line="509"/>
-        <location filename="../Updater.cpp" line="536"/>
-        <location filename="../Updater.cpp" line="635"/>
+        <location filename="../Updater.cpp" line="393"/>
+        <location filename="../Updater.cpp" line="424"/>
+        <location filename="../Updater.cpp" line="431"/>
+        <location filename="../Updater.cpp" line="443"/>
+        <location filename="../Updater.cpp" line="514"/>
+        <location filename="../Updater.cpp" line="541"/>
+        <location filename="../Updater.cpp" line="640"/>
         <source>Update</source>
         <translation>Aktualizacja</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="388"/>
+        <location filename="../Updater.cpp" line="393"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation>Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="419"/>
+        <location filename="../Updater.cpp" line="424"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="426"/>
+        <location filename="../Updater.cpp" line="431"/>
         <source>This update requires re-importing all item prices.</source>
         <translation>Ta aktualizacja wymaga ponownego zaimportowania cen przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="438"/>
+        <location filename="../Updater.cpp" line="443"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation>Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>

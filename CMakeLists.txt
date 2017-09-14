@@ -161,6 +161,8 @@ add_executable(
     ButtonWithTimer.h
     BezierCurve.cpp
     BezierCurve.h
+    Blueprint.cpp
+    Blueprint.h
     CacheTimer.cpp
     CacheTimer.h
     CacheTimerProvider.h

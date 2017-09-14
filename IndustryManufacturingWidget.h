@@ -103,8 +103,8 @@ namespace Evernus
         void saveSetup();
 
         void showBoM();
-
         void updateSummary();
+        void importCharacterBlueprints();
 
     private:
         const EveDataProvider &mDataProvider;
@@ -152,6 +152,7 @@ namespace Evernus
         uint mOrderSubtask = TaskConstants::invalidTask;
         uint mMarketPricesSubtask = TaskConstants::invalidTask;
         uint mCostIndicesSubtask = TaskConstants::invalidTask;
+        uint mBlueprintImportSubtask = TaskConstants::invalidTask;
 
         QString mLastLoadedSetup;
 

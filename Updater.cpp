@@ -251,9 +251,14 @@ namespace Evernus
                 minorVersion = 0;
             }
 
-            if (minorVersion < 3)
+            if (minorVersion < 7)
             {
-                migrateCoreTo23();
+                if (minorVersion < 3)
+                {
+                    migrateCoreTo23();
+                }
+
+                migrateCoreTo27();
             }
         }
 
@@ -647,6 +652,16 @@ namespace Evernus
     }
 
     void Updater::migrateCoreTo23() const
+    {
+        removeRefreshTokens();
+    }
+
+    void Updater::migrateCoreTo27() const
+    {
+        removeRefreshTokens();
+    }
+
+    void Updater::removeRefreshTokens() const
     {
         QSettings settings;
         settings.remove(RegionTypeSelectDialog::settingsTypesKey);
