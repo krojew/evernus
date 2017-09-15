@@ -741,6 +741,12 @@ namespace Evernus
         if (mBlueprintImportSubtask != TaskConstants::invalidTask)
             return;
 
+        const auto ret = QMessageBox::question(this,
+                                               tr("Blueprint import"),
+                                               tr("Importing large number of blueprints can take long time. Are you sure you want to proceed?"));
+        if (ret == QMessageBox::No)
+            return;
+
         mBlueprintImportSubtask = mTaskManager.startTask(tr("Importing character blueprints..."));
 
         mESIManager.fetchCharacterBlueprints(mCharacterId, [=](auto &&data, const auto &error, const auto &expires) {

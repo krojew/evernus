@@ -4487,7 +4487,17 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>brak</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="744"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="745"/>
+        <source>Blueprint import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="746"/>
+        <source>Importing large number of blueprints can take long time. Are you sure you want to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="750"/>
         <source>Importing character blueprints...</source>
         <translation type="unfinished"></translation>
     </message>
