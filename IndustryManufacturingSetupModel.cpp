@@ -383,8 +383,10 @@ namespace Evernus
             case TimeRole:
                 return static_cast<uint>(item->getEffectiveTime().count());
             case RunsRole:
+            case RunsEditRole:
                 return item->getRuns();
             case MaterialEfficiencyRole:
+            case MaterialEfficiencyEditRole:
                 {
                     const auto id = item->getTypeId();
                     if (item->getParent() == &mRoot)
@@ -393,6 +395,7 @@ namespace Evernus
                     return mSetup.getTypeSettings(id).mMaterialEfficiency;
                 }
             case TimeEfficiencyRole:
+            case TimeEfficiencyEditRole:
                 {
                     const auto id = item->getTypeId();
                     if (item->getParent() == &mRoot)
@@ -429,8 +432,10 @@ namespace Evernus
          else
              parentItem = static_cast<const TreeItem *>(parent.internalPointer());
 
+         Q_ASSERT(parentItem != nullptr);
+
          const auto childItem = parentItem->getChild(row);
-         if (childItem)
+         if (childItem != nullptr)
              return createIndex(row, column, childItem);
 
          return {};
@@ -442,6 +447,8 @@ namespace Evernus
             return {};
 
         const auto childItem = static_cast<const TreeItem *>(index.internalPointer());
+        Q_ASSERT(childItem != nullptr);
+
         const auto parentItem = childItem->getParent();
 
         if (parentItem == &mRoot)
@@ -460,8 +467,11 @@ namespace Evernus
             { SourceRole, QByteArrayLiteral("source") },
             { TimeRole, QByteArrayLiteral("time") },
             { RunsRole, QByteArrayLiteral("runs") },
+            { RunsEditRole, QByteArrayLiteral("runsEdit") },
             { MaterialEfficiencyRole, QByteArrayLiteral("materialEfficiency") },
+            { MaterialEfficiencyEditRole, QByteArrayLiteral("materialEfficiencyEdit") },
             { TimeEfficiencyRole, QByteArrayLiteral("timeEfficiency") },
+            { TimeEfficiencyEditRole, QByteArrayLiteral("timeEfficiencyEdit") },
             { TotalTimeRole, QByteArrayLiteral("totalTime") },
             { CostRole, QByteArrayLiteral("cost") },
             { ProfitRole, QByteArrayLiteral("profit") },
@@ -479,7 +489,28 @@ namespace Evernus
          else
              parentItem = static_cast<const TreeItem *>(parent.internalPointer());
 
+         Q_ASSERT(parentItem != nullptr);
          return parentItem->getChildCount();
+    }
+
+    bool IndustryManufacturingSetupModel::setData(const QModelIndex &index, const QVariant &value, int role)
+    {
+        const auto item = static_cast<const TreeItem *>(index.internalPointer());
+        Q_ASSERT(item != nullptr);
+
+        switch (role) {
+        case RunsRole:
+            setRuns(item->getTypeId(), value.toUInt());
+            return true;
+        case MaterialEfficiencyRole:
+            setMaterialEfficiency(item->getTypeId(), value.toUInt());
+            return true;
+        case TimeEfficiencyRole:
+            setTimeEfficiency(item->getTypeId(), value.toUInt());
+            return true;
+        }
+
+        return false;
     }
 
     void IndustryManufacturingSetupModel::refreshData()
@@ -557,7 +588,7 @@ namespace Evernus
 
                 // note: don't emit manufacturing roles change, because this will propagate from children
                 const auto idx = createIndex(item->getRow(), 0, item.get());
-                emit dataChanged(idx, idx, { ProfitRole });
+                emit dataChanged(idx, idx, { RunsRole, ProfitRole });
 
                 for (const auto &child : *item)
                     signalManufacturingRolesChange(child->getTypeId());
@@ -572,13 +603,14 @@ namespace Evernus
     void IndustryManufacturingSetupModel::setMaterialEfficiency(EveType::IdType id, uint value)
     {
         mSetup.setMaterialEfficiency(id, value);
-        roleAndQuantityChange(id, { QuantityRequiredRole, TotalTimeRole, CostRole }); // note: don't change efficiency role because of binding loop
+        roleAndQuantityChange(id, { MaterialEfficiencyRole, QuantityRequiredRole, TotalTimeRole, CostRole });
     }
 
     void IndustryManufacturingSetupModel::setTimeEfficiency(EveType::IdType id, uint value)
     {
         mSetup.setTimeEfficiency(id, value);
         signalTimeChange(id);
+        signalRoleChange(id, { TimeEfficiencyRole });
     }
 
     void IndustryManufacturingSetupModel::setCharacter(Character::IdType id)
@@ -764,6 +796,17 @@ namespace Evernus
 
         const auto cost = system->second.find(IndustryCostIndex::Activity::Manufacturing);
         return (cost == std::end(system->second)) ? (1.) : (cost->second);
+    }
+
+    void IndustryManufacturingSetupModel::signalMaterialEfficiencyExternallyChanged(EveType::IdType id)
+    {
+        roleAndQuantityChange(id, { MaterialEfficiencyRole, MaterialEfficiencyEditRole, QuantityRequiredRole, TotalTimeRole, CostRole });
+    }
+
+    void IndustryManufacturingSetupModel::signalTimeEfficiencyExternallyChanged(EveType::IdType id)
+    {
+        signalTimeChange(id);
+        signalRoleChange(id, { TimeEfficiencyRole, TimeEfficiencyEditRole });
     }
 
     void IndustryManufacturingSetupModel::fillChildren(TreeItem &item)

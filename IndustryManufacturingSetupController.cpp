@@ -28,21 +28,4 @@ namespace Evernus
         mModel.setSource(id, source);
         emit sourceChanged(id, source);
     }
-
-    void IndustryManufacturingSetupController::setRuns(EveType::IdType id, uint runs)
-    {
-        mModel.setRuns(id, runs);
-    }
-
-    void IndustryManufacturingSetupController::setMaterialEfficiency(EveType::IdType id, uint value)
-    {
-        mModel.setMaterialEfficiency(id, value);
-        emit materialEfficiencyChanged(id, value);
-    }
-
-    void IndustryManufacturingSetupController::setTimeEfficiency(EveType::IdType id, uint value)
-    {
-        mModel.setTimeEfficiency(id, value);
-        emit timeEfficiencyChanged(id, value);
-    }
 }

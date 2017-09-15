@@ -7872,59 +7872,59 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="235"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="226"/>
         <source>TE:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="261"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="243"/>
         <source>Quantity produced: %L1 / %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="261"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="243"/>
         <source>Quantity produced: N/A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="269"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="251"/>
         <source>Total production time: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="269"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="251"/>
         <source>Total production time: N/A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="282"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="264"/>
         <source>Total cost: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="301"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="283"/>
         <source>Component cost: %1
 Job fee: %2
 Job tax: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="321"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="303"/>
         <source>All required volume is not available on the market. Assuming the rest will be bought at the best price.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="334"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="316"/>
         <source>Profit from selling: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="352"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="334"/>
         <source>All volume could not be sold on the market. Assuming the rest will be sold at the best price.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="359"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="341"/>
         <source>ISK/h: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8089,67 +8089,67 @@ Please click on &quot;Import all&quot; after the update.</source>
 <context>
     <name>View</name>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="55"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="49"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="59"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="53"/>
         <source>Quantity produced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="63"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="57"/>
         <source>Quantity required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="67"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="61"/>
         <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="71"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="65"/>
         <source>Time per run</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="75"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="69"/>
         <source>ME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="79"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="73"/>
         <source>TE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="83"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="77"/>
         <source>Total time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="87"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="81"/>
         <source>Total cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="92"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="86"/>
         <source>Component cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="97"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="91"/>
         <source>Job fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="102"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="96"/>
         <source>Job tax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="107"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="101"/>
         <source>Total profit</source>
         <translation type="unfinished"></translation>
     </message>

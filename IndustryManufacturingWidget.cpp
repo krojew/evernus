@@ -772,12 +772,12 @@ namespace Evernus
                 for (const auto &efficiency : me)
                 {
                     mSetup.setMaterialEfficiency(efficiency.first, efficiency.second);
-                    emit mSetupController.materialEfficiencyChanged(efficiency.first, efficiency.second);
+                    mSetupModel.signalMaterialEfficiencyExternallyChanged(efficiency.first);
                 }
                 for (const auto &efficiency : te)
                 {
                     mSetup.setTimeEfficiency(efficiency.first, efficiency.second);
-                    emit mSetupController.timeEfficiencyChanged(efficiency.first, efficiency.second);
+                    mSetupModel.signalTimeEfficiencyExternallyChanged(efficiency.first);
                 }
             }
 

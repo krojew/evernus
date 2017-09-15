@@ -57,8 +57,11 @@ namespace Evernus
             SourceRole,
             TimeRole,
             RunsRole,
+            RunsEditRole,
             MaterialEfficiencyRole,
+            MaterialEfficiencyEditRole,
             TimeEfficiencyRole,
+            TimeEfficiencyEditRole,
             TotalTimeRole,
             CostRole,
             ProfitRole,
@@ -83,6 +86,7 @@ namespace Evernus
         virtual QModelIndex parent(const QModelIndex &index) const override;
         virtual QHash<int, QByteArray> roleNames() const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
+        virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
         void refreshData();
         void refreshAssets();
@@ -111,6 +115,9 @@ namespace Evernus
         void setManufacturingStation(quint64 stationId);
 
         double getSystemCostIndex() const noexcept;
+
+        void signalMaterialEfficiencyExternallyChanged(EveType::IdType id);
+        void signalTimeEfficiencyExternallyChanged(EveType::IdType id);
 
         IndustryManufacturingSetupModel &operator =(const IndustryManufacturingSetupModel &) = default;
         IndustryManufacturingSetupModel &operator =(IndustryManufacturingSetupModel &&) = default;

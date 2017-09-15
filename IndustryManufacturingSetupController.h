@@ -41,15 +41,10 @@ namespace Evernus
 
     public slots:
         void setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
-        void setRuns(EveType::IdType id, uint runs);
-        void setMaterialEfficiency(EveType::IdType id, uint value);
-        void setTimeEfficiency(EveType::IdType id, uint value);
 
     signals:
         void typeSelected(EveType::IdType id);
         void sourceChanged(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
-        void materialEfficiencyChanged(EveType::IdType id, uint value);
-        void timeEfficiencyChanged(EveType::IdType id, uint value);
         void outputViewCreated();
         void toggleViewType();
 

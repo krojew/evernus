@@ -45,12 +45,6 @@ Item {
         anchors.fill: parent
         visible: false
 
-        function resetModel() {
-            // we are doing full reset because we have no me/te role change signal (because of binding loop in Type.qml)
-            textView.model = null;
-            textView.model = setupModel;
-        }
-
         OldControls.TableViewColumn {
             title: qsTr("Name")
             role: "name"
@@ -137,13 +131,6 @@ Item {
             elide: styleData.elideMode
             horizontalAlignment: styleData.textAlignment
             text: getTextValue(styleData.value, styleData.column)
-        }
-
-        Connections {
-            target: setupController
-
-            onMaterialEfficiencyChanged: textView.resetModel()
-            onTimeEfficiencyChanged: textView.resetModel()
         }
     }
 

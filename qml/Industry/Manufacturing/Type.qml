@@ -198,12 +198,12 @@ Item {
                 }
 
                 SpinBox {
-                    value: runs
+                    value: runsEdit
                     to: 1000000000
                     editable: true
                     visible: isOutput
 
-                    onValueChanged: setupController.setRuns(typeId, value)
+                    onValueChanged: runs = value
                 }
 
                 Label {
@@ -214,21 +214,12 @@ Item {
                 RowLayout {
                     SpinBox {
                         id: me
-                        value: materialEfficiency
+                        value: materialEfficiencyEdit
                         to: 10
                         editable: true
                         enabled: isManufactured
 
-                        onValueChanged: setupController.setMaterialEfficiency(typeId, value)
-
-                        Connections {
-                            target: setupController
-
-                            onMaterialEfficiencyChanged: {
-                                if (id == typeId)
-                                    me.value = value;
-                            }
-                        }
+                        onValueChanged: materialEfficiency = value
                     }
 
                     Label {
@@ -238,21 +229,12 @@ Item {
 
                     SpinBox {
                         id: te
-                        value: timeEfficiency
+                        value: timeEfficiencyEdit
                         to: 20
                         editable: true
                         enabled: isManufactured
 
-                        onValueChanged: setupController.setTimeEfficiency(typeId, value)
-
-                        Connections {
-                            target: setupController
-
-                            onTimeEfficiencyChanged: {
-                                if (id == typeId)
-                                    te.value = value;
-                            }
-                        }
+                        onValueChanged: timeEfficiency = value
                     }
                 }
 
