@@ -427,16 +427,23 @@ namespace Evernus
                 return;
             }
 
-            if (pages > 1)
+            if (pages > 0)
             {
                 if (page == 1)
                 {
                     qDebug() << "Got number of pages for paginated request:" << pages;
 
-                    continuation(std::move(response), false, QString{}, expires);
+                    if (pages == 1)
+                    {
+                        continuation(std::move(response), true, QString{}, expires);
+                    }
+                    else
+                    {
+                        continuation(std::move(response), false, QString{}, expires);
 
-                    for (auto nextPage = 2; nextPage <= pages; ++nextPage)
-                        fetchPaginatedData(url, nextPage, continuation);
+                        for (auto nextPage = 2; nextPage <= pages; ++nextPage)
+                            fetchPaginatedData(url, nextPage, continuation);
+                    }
                 }
                 else if (page >= pages)
                 {
@@ -475,16 +482,23 @@ namespace Evernus
                 return;
             }
 
-            if (pages > 1)
+            if (pages > 0)
             {
                 if (page == 1)
                 {
                     qDebug() << "Got number of pages for paginated request:" << pages;
 
-                    continuation(std::move(response), false, QString{}, expires);
+                    if (pages == 1)
+                    {
+                        continuation(std::move(response), true, QString{}, expires);
+                    }
+                    else
+                    {
+                        continuation(std::move(response), false, QString{}, expires);
 
-                    for (auto nextPage = 2; nextPage <= pages; ++nextPage)
-                        fetchPaginatedData(charId, url, nextPage, continuation, suppressForbidden);
+                        for (auto nextPage = 2; nextPage <= pages; ++nextPage)
+                            fetchPaginatedData(charId, url, nextPage, continuation, suppressForbidden);
+                    }
                 }
                 else if (page >= pages)
                 {
