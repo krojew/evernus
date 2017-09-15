@@ -66,6 +66,10 @@ Item {
             role: "time"
         }
         OldControls.TableViewColumn {
+            title: qsTr("Runs")
+            role: "runs"
+        }
+        OldControls.TableViewColumn {
             title: qsTr("ME")
             role: "materialEfficiency"
         }
@@ -110,17 +114,17 @@ Item {
                 case 3:
                     return Utils.getSourceName(value);
                 case 4:
-                case 7:
-                    return Utils.formatDuration(value);
                 case 8:
-                    return (typeof value.totalCost !== "undefined") ? (Utils.formatCurrency(value.totalCost)) : ("");
+                    return Utils.formatDuration(value);
                 case 9:
-                    return (typeof value.children !== "undefined") ? (Utils.formatCurrency(value.children)) : ("");
+                    return (typeof value.totalCost !== "undefined") ? (Utils.formatCurrency(value.totalCost)) : ("");
                 case 10:
-                    return (typeof value.jobFee !== "undefined") ? (Utils.formatCurrency(value.jobFee)) : ("");
+                    return (typeof value.children !== "undefined") ? (Utils.formatCurrency(value.children)) : ("");
                 case 11:
-                    return (typeof value.jobTax !== "undefined") ? (Utils.formatCurrency(value.jobTax)) : ("");
+                    return (typeof value.jobFee !== "undefined") ? (Utils.formatCurrency(value.jobFee)) : ("");
                 case 12:
+                    return (typeof value.jobTax !== "undefined") ? (Utils.formatCurrency(value.jobTax)) : ("");
+                case 13:
                     return (typeof value.value !== "undefined") ? (Utils.formatCurrency(value.value)) : ("");
                 default:
                     return value;

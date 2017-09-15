@@ -9512,46 +9512,47 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="69"/>
         <source>Runs</source>
-        <translation type="obsolete">Durchläufe</translation>
+        <translation type="unfinished">Durchläufe</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="69"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="73"/>
         <source>ME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="73"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="77"/>
         <source>TE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="77"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="81"/>
         <source>Total time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="81"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="85"/>
         <source>Total cost</source>
         <translation type="unfinished">Kosten gesamt</translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="86"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="90"/>
         <source>Component cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="91"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="95"/>
         <source>Job fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="96"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="100"/>
         <source>Job tax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/View.qml" line="101"/>
+        <location filename="../qml/Industry/Manufacturing/View.qml" line="105"/>
         <source>Total profit</source>
         <translation type="unfinished">Profit gesamt</translation>
     </message>
