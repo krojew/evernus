@@ -166,6 +166,8 @@ namespace Evernus
         if (id == 0)
             return tr("(unknown)");
 
+        std::lock_guard<std::recursive_mutex> lock{mGenericNameCacheMutex};
+
         if (mGenericNameCache.contains(id))
             return mGenericNameCache[id];
 
@@ -177,6 +179,9 @@ namespace Evernus
 
             mDataManagerProvider.getESIManager().fetchGenericName(id, [=](auto &&data, const auto &error) {
                 qDebug() << "Got generic name:" << id << data << " (" << error << ")";
+
+                // potential recursive lock if sync callback
+                std::lock_guard<std::recursive_mutex> lock{mGenericNameCacheMutex};
 
                 mPendingNameRequests.erase(id);
 
