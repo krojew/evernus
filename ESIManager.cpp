@@ -871,12 +871,15 @@ namespace Evernus
 
                 mAuthView.reset(new SSOAuthWidget{url});
 
-                const auto charName = getCharacterName(charId);
+                QString charName;
+                auto charNameFound = false;
+
+                std::tie(charName, charNameFound) = getCharacterName(charId);
 
                 if (charName.isEmpty())
                     mAuthView->setWindowTitle(tr("SSO Authentication for unknown character: %1").arg(charId));
                 else
-                    mAuthView->setWindowTitle(tr("SSO Authentication for character: %1").arg(charName));
+                    mAuthView->setWindowTitle(getAuthWidowTitle(charName));
 
                 mAuthView->setWindowModality(Qt::ApplicationModal);
                 mAuthView->adjustSize();
@@ -912,6 +915,13 @@ namespace Evernus
                         throw;
                     }
                 });
+
+                if (!charNameFound)
+                {
+                    connect(&mDataProvider, &EveDataProvider::namesChanged, mAuthView.get(), [=] {
+                        mAuthView->setWindowTitle(getAuthWidowTitle(mDataProvider.getGenericName(charId)));
+                    });
+                }
             }
             else
             {
@@ -1230,7 +1240,7 @@ namespace Evernus
                         if (charId != realCharId)
                         {
                             qDebug() << "Logged as invalid character id:" << realCharId;
-                            emit tokenError(charId, tr("Please authorize access for character: %1").arg(getCharacterName(charId)));
+                            emit tokenError(charId, tr("Please authorize access for character: %1").arg(getCharacterName(charId).first));
                             return;
                         }
 
@@ -1341,20 +1351,23 @@ namespace Evernus
         return mInterfaceManager.selectNextInterface();
     }
 
-    QString ESIManager::getCharacterName(Character::IdType id) const
+    std::pair<QString, bool> ESIManager::getCharacterName(Character::IdType id) const
     {
         QString charName;
+        auto nameFound = false;
 
         try
         {
             charName = mCharacterRepo.getName(id);
+            nameFound = true;
         }
         catch (const CharacterRepository::NotFoundException &)
         {
+            nameFound = mDataProvider.hasGenericName(id);
             charName = mDataProvider.getGenericName(id);
         }
 
-        return charName;
+        return std::make_pair(charName, nameFound);
     }
 
     MarketOrder::State ESIManager::getStateFromString(const QString &state)
@@ -1401,5 +1414,10 @@ namespace Evernus
         request.setRawHeader("Authorization", "Bearer  " + accessToken);
 
         return request;
+    }
+
+    QString ESIManager::getAuthWidowTitle(const QString &charName)
+    {
+        return tr("SSO Authentication for character: %1").arg(charName);
     }
 }

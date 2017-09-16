@@ -163,7 +163,7 @@ namespace Evernus
 
     QString CachingEveDataProvider::getGenericName(quint64 id) const
     {
-        if (id == 0)
+        if (Q_UNLIKELY(id == 0))
             return tr("(unknown)");
 
         std::lock_guard<std::recursive_mutex> lock{mGenericNameCacheMutex};
@@ -196,6 +196,15 @@ namespace Evernus
         }
 
         return tr("(unknown)");
+    }
+
+    bool CachingEveDataProvider::hasGenericName(quint64 id) const
+    {
+        if (Q_UNLIKELY(id == 0))
+            return true;
+
+        std::lock_guard<std::recursive_mutex> lock{mGenericNameCacheMutex};
+        return mGenericNameCache.contains(id);
     }
 
     double CachingEveDataProvider::getTypeVolume(EveType::IdType id) const

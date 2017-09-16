@@ -65,6 +65,7 @@ namespace Evernus
         virtual const std::unordered_map<EveType::IdType, QString> &getAllTradeableTypeNames() const override;
         virtual QString getTypeMetaGroupName(EveType::IdType id) const override;
         virtual QString getGenericName(quint64 id) const override;
+        virtual bool hasGenericName(quint64 id) const override;
 
         virtual double getTypeVolume(EveType::IdType id) const override;
         virtual std::shared_ptr<ExternalOrder> getTypeStationSellPrice(EveType::IdType id, quint64 stationId) const override;
