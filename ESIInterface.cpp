@@ -441,7 +441,7 @@ namespace Evernus
                     {
                         continuation(std::move(response), false, QString{}, expires);
 
-                        for (auto nextPage = 2; nextPage <= pages; ++nextPage)
+                        for (auto nextPage = 2u; nextPage <= pages; ++nextPage)
                             fetchPaginatedData(url, nextPage, continuation);
                     }
                 }
@@ -496,7 +496,7 @@ namespace Evernus
                     {
                         continuation(std::move(response), false, QString{}, expires);
 
-                        for (auto nextPage = 2; nextPage <= pages; ++nextPage)
+                        for (auto nextPage = 2u; nextPage <= pages; ++nextPage)
                             fetchPaginatedData(charId, url, nextPage, continuation, suppressForbidden);
                     }
                 }
