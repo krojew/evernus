@@ -1198,8 +1198,8 @@ namespace Evernus
 
                     const auto doc = QJsonDocument::fromJson(reply->readAll());
                     const auto object = doc.object();
-                    const auto accessToken = object.value("access_token").toString().toLatin1();
-                    const auto refreshToken = object.value("refresh_token").toString();
+                    const auto accessToken = object.value(QStringLiteral("access_token")).toString().toLatin1();
+                    const auto refreshToken = object.value(QStringLiteral("refresh_token")).toString();
 
                     if (Q_UNLIKELY(refreshToken.isEmpty()))
                     {
@@ -1245,7 +1245,7 @@ namespace Evernus
                         }
 
                         emit acquiredToken(realCharId, accessToken,
-                                           QDateTime::currentDateTime().addSecs(object.value("expires_in").toInt() - 10));
+                                           QDateTime::currentDateTime().addSecs(object.value(QStringLiteral("expires_in")).toInt() - 10));
                     });
                 }
                 catch (...)
@@ -1268,21 +1268,21 @@ namespace Evernus
         QNetworkRequest request{loginUrl + "/oauth/token"};
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
         request.setRawHeader(
-            "Authorization", "Basic " + (mClientId + ":" + mClientSecret).toBase64());
+            QByteArrayLiteral("Authorization"), QByteArrayLiteral("Basic ") + (mClientId + ":" + mClientSecret).toBase64());
 
         return request;
     }
 
     ExternalOrder ESIManager::getExternalOrderFromJson(const QJsonObject &object, uint regionId) const
     {
-        const auto range = object.value("range").toString();
+        const auto range = object.value(QStringLiteral("range")).toString();
 
         ExternalOrder order;
 
-        order.setId(object.value("order_id").toDouble()); // https://bugreports.qt.io/browse/QTBUG-28560
-        order.setType((object.value("is_buy_order").toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
-        order.setTypeId(object.value("type_id").toDouble());
-        order.setStationId(object.value("location_id").toDouble());
+        order.setId(object.value(QStringLiteral("order_id")).toDouble()); // https://bugreports.qt.io/browse/QTBUG-28560
+        order.setType((object.value(QStringLiteral("is_buy_order")).toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
+        order.setTypeId(object.value(QStringLiteral("type_id")).toDouble());
+        order.setStationId(object.value(QStringLiteral("location_id")).toDouble());
 
         //TODO: replace when available
         order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
@@ -1298,12 +1298,12 @@ namespace Evernus
             order.setRange(range.toShort());
 
         order.setUpdateTime(QDateTime::currentDateTimeUtc());
-        order.setPrice(object.value("price").toDouble());
-        order.setVolumeEntered(object.value("volume_total").toInt());
-        order.setVolumeRemaining(object.value("volume_remain").toInt());
-        order.setMinVolume(object.value("min_volume").toInt());
-        order.setIssued(getDateTimeFromString(object.value("issued").toString()));
-        order.setDuration(object.value("duration").toInt());
+        order.setPrice(object.value(QStringLiteral("price")).toDouble());
+        order.setVolumeEntered(object.value(QStringLiteral("volume_total")).toInt());
+        order.setVolumeRemaining(object.value(QStringLiteral("volume_remain")).toInt());
+        order.setMinVolume(object.value(QStringLiteral("min_volume")).toInt());
+        order.setIssued(getDateTimeFromString(object.value(QStringLiteral("issued")).toString()));
+        order.setDuration(object.value(QStringLiteral("duration")).toInt());
 
         return order;
     }
@@ -1411,7 +1411,7 @@ namespace Evernus
     QNetworkRequest ESIManager::getVerifyRequest(const QByteArray &accessToken)
     {
         QNetworkRequest request{loginUrl + "/oauth/verify"};
-        request.setRawHeader("Authorization", "Bearer  " + accessToken);
+        request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer  ") + accessToken);
 
         return request;
     }
