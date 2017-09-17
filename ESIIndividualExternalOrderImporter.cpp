@@ -74,7 +74,7 @@ namespace Evernus
                 {
                     processedCitadelRegions.emplace(regionId);
 
-                    const auto &citadels = mDataProvider.getCitadelsForRegion(regionId);
+                    const auto citadels = mDataProvider.getCitadelsForRegion(regionId);
                     for (const auto &citadel : citadels)
                     {
                         Q_ASSERT(citadel);

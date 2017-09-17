@@ -79,7 +79,7 @@ namespace Evernus
 
             if (importCitadels)
             {
-                const auto &citadels = mDataProvider.getCitadelsForRegion(region);
+                const auto citadels = mDataProvider.getCitadelsForRegion(region);
                 for (const auto &citadel : citadels)
                 {
                     Q_ASSERT(citadel);

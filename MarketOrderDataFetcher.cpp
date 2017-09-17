@@ -176,7 +176,7 @@ namespace Evernus
 
             regions.emplace(pair.second);
 
-            const auto &citadels = mDataProvider.getCitadelsForRegion(pair.second);
+            const auto citadels = mDataProvider.getCitadelsForRegion(pair.second);
             for (const auto &citadel : citadels)
             {
                 Q_ASSERT(citadel);

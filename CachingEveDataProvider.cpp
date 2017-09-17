@@ -800,22 +800,13 @@ namespace Evernus
         return systemId;
     }
 
-    const CitadelRepository::EntityList &CachingEveDataProvider::getCitadelsForRegion(uint regionId) const
+    const CitadelRepository::EntityList CachingEveDataProvider::getCitadelsForRegion(uint regionId) const
     {
         const auto citadels = mRegionCitadelCache.find(regionId);
         if (citadels != std::end(mRegionCitadelCache))
             return citadels->second;
 
         return mRegionCitadelCache.emplace(regionId, mCitadelRepository.fetchForRegion(regionId)).first->second;
-    }
-
-    const CitadelRepository::EntityList &CachingEveDataProvider::getCitadelsForSolarSystem(uint solarSystemId) const
-    {
-        const auto citadels = mSolarSystemCitadelCache.find(solarSystemId);
-        if (citadels != std::end(mSolarSystemCitadelCache))
-            return citadels->second;
-
-        return mSolarSystemCitadelCache.emplace(solarSystemId, mCitadelRepository.fetchForSolarSystem(solarSystemId)).first->second;
     }
 
     const CitadelRepository::EntityList &CachingEveDataProvider::getCitadels() const
@@ -825,13 +816,9 @@ namespace Evernus
             mAllCitadelsCache = mCitadelRepository.fetchAll();
 
             mRegionCitadelCache.clear();
-            mSolarSystemCitadelCache.clear();
 
             for (const auto &citadel : mAllCitadelsCache)
-            {
                 mRegionCitadelCache[citadel->getRegionId()].emplace_back(citadel);
-                mSolarSystemCitadelCache[citadel->getSolarSystemId()].emplace_back(citadel);
-            }
         }
 
         return mAllCitadelsCache;
