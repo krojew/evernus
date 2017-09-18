@@ -6,8 +6,8 @@ ARG EVERNUS_CLIENT_SECRET
 ARG EVERNUS_DROPBOX_APP_KEY
 ARG EVERNUS_DROPBOX_APP_SECRET
 
-RUN apt-get update
-RUN apt-get install -y qtbase5-dev qttools5-dev-tools qtbase5-private-dev qtdeclarative5-dev libqt5xmlpatterns5-dev qtpositioning5-dev qtwebengine5-dev qtmultimedia5-dev mercurial wget libboost-all-dev make
+RUN apt-get update && \
+    apt-get install -y qtmultimedia5-dev mercurial wget libboost-all-dev make libfontconfig1-dev libfreetype6-dev libx11-dev libxext-dev libxfixes-dev libxi-dev libxrender-dev libxcb1-dev libx11-xcb-dev libxcb-glx0-dev libgl1-mesa-dev libglu1-mesa-dev mdm libdbus-1-dev libxcomposite-dev libxcursor-dev libxrandr-dev libxtst-dev libegl1-mesa-dev bison flex gperf ninja-build
 
 RUN cd && \
     wget https://cmake.org/files/v3.8/cmake-3.8.2.tar.gz && \
@@ -17,6 +17,17 @@ RUN cd && \
     make -j`ncpus` && \
     make install && \
     cd && rm -rf cmake-3.8.2
+
+# TODO: remove when >= 5.8 is available
+RUN	cd && \
+    wget http://download.qt.io/official_releases/qt/5.9/5.9.1/single/qt-everywhere-opensource-src-5.9.1.tar.xz && \
+    tar xf qt-everywhere-opensource-src-5.9.1.tar.xz && \
+    rm qt-everywhere-opensource-src-5.9.1.tar.xz && \
+    cd ~/qt-everywhere-opensource-src-5.9.1 && \
+    ./configure -opensource -confirm-license -release -c++std c++1z -make libs && \
+    make -j`ncpus` && \
+    make install && \
+    cd && rm -rf qt-everywhere-opensource-src-5.9.1
 
 RUN hg clone -u latest-release https://krojew@bitbucket.org/krojew/evernus
 

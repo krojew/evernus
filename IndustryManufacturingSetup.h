@@ -58,16 +58,28 @@ namespace Evernus
             uint mTimeEfficiency = 0;
         };
 
-        struct NotSourceTypeException : std::runtime_error
+        struct Exception : std::runtime_error
         {
             using std::runtime_error::runtime_error;
+            virtual ~Exception() = default;
+        };
+
+        struct NotSourceTypeException : Exception
+        {
+            using Exception::Exception;
             virtual ~NotSourceTypeException() = default;
         };
 
-        struct NotOutputTypeException : std::runtime_error
+        struct NotOutputTypeException : Exception
         {
-            using std::runtime_error::runtime_error;
+            using Exception::Exception;
             virtual ~NotOutputTypeException() = default;
+        };
+
+        struct MissingDataException : Exception
+        {
+            using Exception::Exception;
+            virtual ~MissingDataException() = default;
         };
 
         using OutputTypeMap = std::unordered_map<EveType::IdType, OutputSettings>;

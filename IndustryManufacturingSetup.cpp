@@ -86,7 +86,7 @@ namespace Evernus
         if (Q_LIKELY(it != std::end(mManufacturingInfo)))
             return it->second;
 
-        BOOST_THROW_EXCEPTION(NotSourceTypeException{"Missing manufacturing info for: " + std::to_string(typeId)});
+        BOOST_THROW_EXCEPTION(MissingDataException{"Missing manufacturing info for: " + std::to_string(typeId)});
     }
 
     const IndustryManufacturingSetup::TypeSettings &IndustryManufacturingSetup::getTypeSettings(EveType::IdType typeId) const
