@@ -672,13 +672,13 @@ Total: %7</source>
     <name>Evernus::CachingEveDataProvider</name>
     <message>
         <location filename="../CachingEveDataProvider.cpp" line="167"/>
-        <location filename="../CachingEveDataProvider.cpp" line="186"/>
-        <location filename="../CachingEveDataProvider.cpp" line="193"/>
+        <location filename="../CachingEveDataProvider.cpp" line="191"/>
+        <location filename="../CachingEveDataProvider.cpp" line="198"/>
         <source>(unknown)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CachingEveDataProvider.cpp" line="400"/>
+        <location filename="../CachingEveDataProvider.cpp" line="414"/>
         <source>- unknown location -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1984,32 +1984,32 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="877"/>
+        <location filename="../ESIManager.cpp" line="880"/>
         <source>SSO Authentication for unknown character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="879"/>
+        <location filename="../ESIManager.cpp" line="1421"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="895"/>
+        <location filename="../ESIManager.cpp" line="898"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="969"/>
+        <location filename="../ESIManager.cpp" line="979"/>
         <source>Empty access token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1199"/>
+        <location filename="../ESIManager.cpp" line="1209"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1233"/>
+        <location filename="../ESIManager.cpp" line="1243"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
