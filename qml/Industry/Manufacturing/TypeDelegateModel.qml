@@ -50,7 +50,10 @@ BezierCurve {
                     connection.p4 = Qt.point(1, 0.5);
 
                     setCurveSourcePoints();
+
                     connections.heightChanged.connect(setCurveSourcePoints);
+                    item.yChanged.connect(setCurveSourcePoints);
+                    item.heightChanged.connect(setCurveSourcePoints);
                 }
             }
         }
