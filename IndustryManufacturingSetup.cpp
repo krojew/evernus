@@ -243,6 +243,17 @@ namespace Evernus
             >> setup.mTypeSettings
             >> setup.mOutputTypes;
 
+        if (stream.status() != QDataStream::Ok)
+            return stream;
+
+        if (version > IndustryManufacturingSetup::dataStreamVersion)
+        {
+            qWarning() << "Invalid setup version: " << version;
+
+            stream.setStatus(QDataStream::ReadCorruptData);
+            return stream;
+        }
+
         setup.mManufacturingInfo.clear();
 
         IndustryManufacturingSetup::TypeSet usedTypes;
