@@ -92,9 +92,6 @@ namespace Evernus
         void refreshAssets();
 
         void setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
-        void setRuns(EveType::IdType id, uint runs);
-        void setMaterialEfficiency(EveType::IdType id, uint value);
-        void setTimeEfficiency(EveType::IdType id, uint value);
 
         void setCharacter(Character::IdType id);
         void setFacilityType(IndustryUtils::FacilityType type);
@@ -113,6 +110,8 @@ namespace Evernus
         void setMarketPrices(MarketPrices prices);
         void setCostIndices(IndustryCostIndices indices);
         void setManufacturingStation(quint64 stationId);
+
+        void blockInteractions(bool flag) noexcept;
 
         double getSystemCostIndex() const noexcept;
 
@@ -260,6 +259,12 @@ namespace Evernus
 
         MarketPrices mMarketPrices;
         IndustryCostIndices mCostIndices;
+
+        bool mBlockInteractions = false;
+
+        void setRuns(EveType::IdType id, uint runs);
+        void setMaterialEfficiency(EveType::IdType id, uint value);
+        void setTimeEfficiency(EveType::IdType id, uint value);
 
         void fillChildren(TreeItem &item);
 

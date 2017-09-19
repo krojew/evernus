@@ -495,6 +495,9 @@ namespace Evernus
 
     bool IndustryManufacturingSetupModel::setData(const QModelIndex &index, const QVariant &value, int role)
     {
+        if (mBlockInteractions)
+            return false;
+
         const auto item = static_cast<const TreeItem *>(index.internalPointer());
         Q_ASSERT(item != nullptr);
 
@@ -564,6 +567,9 @@ namespace Evernus
     void IndustryManufacturingSetupModel
     ::setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source)
     {
+        if (mBlockInteractions)
+            return;
+
         mSetup.setSource(id, source);
         roleAndQuantityChange(id, { SourceRole, QuantityRequiredRole, TimeRole, TotalTimeRole, CostRole });
     }
@@ -786,6 +792,11 @@ namespace Evernus
     {
         mSrcSystemId = mDataProvider.getStationSolarSystemId(stationId);
         signalRoleChange({ CostRole });
+    }
+
+    void IndustryManufacturingSetupModel::blockInteractions(bool flag) noexcept
+    {
+        mBlockInteractions = flag;
     }
 
     double IndustryManufacturingSetupModel::getSystemCostIndex() const noexcept

@@ -426,6 +426,11 @@ namespace Evernus
                 updateSummary();
             }
         });
+
+        connect(this, &IndustryManufacturingWidget::setupRefreshChanged, this, [=](auto started) {
+            if (!started)
+                mSetupModel.blockInteractions(false);
+        });
     }
 
     void IndustryManufacturingWidget::refreshAssets()
@@ -476,6 +481,7 @@ namespace Evernus
             mViewResetProgress->show();
         }
 
+        mSetupModel.blockInteractions(true);
         mSetupModel.refreshData();
 
         if (outputSize == 0)
@@ -599,6 +605,7 @@ namespace Evernus
                     return;
                 }
 
+                mSetupModel.blockInteractions(true);
                 mSetupModel.refreshData();
 
                 mLastLoadedSetup = name;

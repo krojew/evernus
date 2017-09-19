@@ -162,11 +162,6 @@ Item {
                         ListElement { text: qsTr("Take assets then buy at custom cost"); value: 6; }
                     }
 
-                    onCurrentIndexChanged: {
-                        if (!isOutput)
-                            setupController.setSource(typeId, model.get(currentIndex).value);
-                    }
-
                     Component.onCompleted: {
                         if (isOutput)
                             return;
@@ -176,8 +171,13 @@ Item {
                             model.append({ text: qsTr("Take assets then manufacture"), value: 5 });
                         }
 
-
                         setSourceTypeCombo();
+
+                        // avoid initial signal emit
+                        currentIndexChanged.connect(function() {
+                            if (!isOutput)
+                                setupController.setSource(typeId, model.get(currentIndex).value);
+                        });
                     }
 
                     Connections {
@@ -203,7 +203,13 @@ Item {
                     editable: true
                     visible: isOutput
 
-                    onValueChanged: runs = value
+                    Component.onCompleted: {
+                        // avoid initial signal emit
+                        valueChanged.connect(function() {
+                            runs = value;
+                        });
+                    }
+
                 }
 
                 Label {
@@ -219,7 +225,12 @@ Item {
                         editable: true
                         enabled: isManufactured
 
-                        onValueChanged: materialEfficiency = value
+                        Component.onCompleted: {
+                            // avoid initial signal emit
+                            valueChanged.connect(function() {
+                                materialEfficiency = value;
+                            });
+                        }
                     }
 
                     Label {
@@ -234,7 +245,12 @@ Item {
                         editable: true
                         enabled: isManufactured
 
-                        onValueChanged: timeEfficiency = value
+                        Component.onCompleted: {
+                            // avoid initial signal emit
+                            valueChanged.connect(function() {
+                                timeEfficiency = value;
+                            });
+                        }
                     }
                 }
 
