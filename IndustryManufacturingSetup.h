@@ -111,7 +111,7 @@ namespace Evernus
         IndustryManufacturingSetup &operator =(IndustryManufacturingSetup &&) = default;
 
     private:
-        static const int dataStreamVersion = 1;
+        static const qint32 dataStreamVersion = 1;
 
         const EveDataProvider &mDataProvider;
 
