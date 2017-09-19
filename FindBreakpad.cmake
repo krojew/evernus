@@ -47,6 +47,21 @@ if(WIN32)
     )
 
     mark_as_advanced(BREAKPAD_HANDLER_LIBRARY_DEBUG BREAKPAD_HANDLER_LIBRARY_RELEASE)
+elseif(APPLE)
+    set(BREAKPAD_HANDLER_HEADER "client/mac/handler/exception_handler.h")
+    find_library(
+        BREAKPAD_HANDLER_LIBRARY
+        NAMES Breakpad
+        HINTS ${BREAKPAD_ROOT_HINTS}
+        PATH_SUFFIXES client/mac/build/Release/
+    )
+
+    # This is because cmake somehow does not recognize *.framework as framework
+    # and we need a proper library name. Also it cannot find Breakpad lib inside
+    # the framework, even given exact path.
+    set(BREAKPAD_HANDLER_LIBRARY "${BREAKPAD_HANDLER_LIBRARY}/Breakpad")
+
+    mark_as_advanced(BREAKPAD_HANDLER_LIBRARY)
 else()
     set(BREAKPAD_HANDLER_HEADER "client/linux/handler/exception_handler.h")
 
@@ -69,7 +84,11 @@ find_path(
 
 mark_as_advanced(BREAKPAD_HANDLER_INCLUDE_DIR)
 
-add_library(Breakpad::Client STATIC IMPORTED)
+if(APPLE)
+    add_library(Breakpad::Client SHARED IMPORTED)
+else()
+    add_library(Breakpad::Client STATIC IMPORTED)
+endif()
 
 set_target_properties(
     Breakpad::Client
@@ -92,6 +111,7 @@ else()
     set_target_properties(
         Breakpad::Client
         PROPERTIES
+        FRAMEWORK TRUE
         IMPORTED_LOCATION "${BREAKPAD_HANDLER_LIBRARY}"
     )
 endif()
