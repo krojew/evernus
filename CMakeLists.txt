@@ -33,6 +33,9 @@ find_package(Qt5Widgets REQUIRED)
 if(EVERNUS_CREATE_DUMPS)
     find_package(Breakpad REQUIRED)
     add_definitions(-DEVERNUS_CREATE_DUMPS=1)
+else()
+    # because Defines.h will define to 1 if undefined
+    add_definitions(-DEVERNUS_CREATE_DUMPS=0)
 endif()
 
 if(DEFINED EVERNUS_CLIENT_ID AND DEFINED EVERNUS_CLIENT_SECRET)
