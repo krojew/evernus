@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
 #   elif defined(Q_OS_OSX)
         google_breakpad::ExceptionHandler eh{
             dumpPath.toStdString(),
-            nullptr
+            nullptr,
             dumpCallback,
             nullptr,
             true,
