@@ -136,6 +136,11 @@ namespace Evernus
                                     provider.getCorpWalletJournalEntryRepository(),
                                     provider.getCharacterRepository());
             } },
+            { {2, 11}, [=](const auto &provider) {
+                migrateDatabaseTo211(provider.getWalletTransactionRepository(),
+                                     provider.getCorpWalletTransactionRepository(),
+                                     provider.getCharacterRepository());
+            } },
         }
     {
     }
@@ -583,6 +588,19 @@ namespace Evernus
         addSkillColumn(QStringLiteral("rocket_science"));
 
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing wallet journal."));
+    }
+
+    void Updater::migrateDatabaseTo211(const WalletTransactionRepository &walletTransactionRepo,
+                                       const WalletTransactionRepository &corpWalletTransactionRepo,
+                                       const Repository<Character> &characterRepo) const
+    {
+        safelyExecQuery(walletTransactionRepo, QStringLiteral("DROP TABLE IF EXISTS %1").arg(walletTransactionRepo.getTableName()));
+        safelyExecQuery(corpWalletTransactionRepo, QStringLiteral("DROP TABLE IF EXISTS %1").arg(corpWalletTransactionRepo.getTableName()));
+
+        walletTransactionRepo.create(characterRepo);
+        corpWalletTransactionRepo.create(characterRepo);
+
+        QMessageBox::information(nullptr, tr("Update"), tr("This update requires importing wallet transactions again."));
     }
 
     void Updater::migrateCoreTo130() const

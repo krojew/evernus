@@ -58,11 +58,6 @@ namespace Evernus
         quint64 getClientId() const noexcept;
         void setClientId(quint64 id) noexcept;
 
-        QString getClientName() const &;
-        QString &&getClientName() && noexcept;
-        void setClientName(const QString &name);
-        void setClientName(QString &&name);
-
         quint64 getLocationId() const noexcept;
         void setLocationId(quint64 id) noexcept;
 
@@ -88,7 +83,6 @@ namespace Evernus
         EveType::IdType mTypeId = EveType::invalidId;
         double mPrice = 0.;
         quint64 mClientId = 0;
-        QString mClientName;
         quint64 mLocationId = 0;
         Type mType = Type::Buy;
         WalletJournalEntry::IdType mJournalId = WalletJournalEntry::invalidId;

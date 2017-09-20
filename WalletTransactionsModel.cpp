@@ -80,7 +80,7 @@ namespace Evernus
     QVariant WalletTransactionsModel::data(const QModelIndex &index, int role) const
     {
         if (Q_UNLIKELY(!index.isValid()))
-             return QVariant{};
+             return {};
 
         const auto row = index.row();
         const auto column = index.column();
@@ -89,8 +89,8 @@ namespace Evernus
         case Qt::UserRole:
             if (column == typeIdColumn)
                 return mDataProvider.getTypeName(mData[row][typeIdColumn].value<EveType::IdType>());
-            if (column == characterColumn)
-                return mDataProvider.getGenericName(mData[row][characterColumn].value<Character::IdType>());
+            if (column == characterColumn || column == clientColumn)
+                return mDataProvider.getGenericName(mData[row][column].value<Character::IdType>());
 
             return mData[row][column];
         case Qt::DisplayRole:
@@ -116,7 +116,8 @@ namespace Evernus
                     return TextUtils::currencyToString(price, QLocale{});
                 }
             case characterColumn:
-                return mDataProvider.getGenericName(mData[row][characterColumn].value<Character::IdType>());
+            case clientColumn:
+                return mDataProvider.getGenericName(mData[row][column].value<Character::IdType>());
             }
 
             return mData[row][column];
@@ -146,7 +147,7 @@ namespace Evernus
                 return Qt::AlignRight;
         }
 
-        return QVariant{};
+        return {};
     }
 
     bool WalletTransactionsModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -192,7 +193,7 @@ namespace Evernus
                 mTotalQuantity += quantity;
             }
 
-            emit dataChanged(index, index, QVector<int>{} << Qt::CheckStateRole << Qt::FontRole);
+            emit dataChanged(index, index, { Qt::CheckStateRole, Qt::FontRole });
             return true;
         }
 
@@ -387,7 +388,7 @@ namespace Evernus
                 << entry->getTypeId()
                 << entry->getPrice()
                 << entry->getCharacterId()
-                << entry->getClientName()
+                << entry->getClientId()
                 << mDataProvider.getLocationName(entry->getLocationId())
                 << entry->getId();
 

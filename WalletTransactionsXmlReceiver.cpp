@@ -51,10 +51,6 @@ namespace Evernus
         {
             mCurrentElement->setClientId(convert<quint64>(strValue));
         }
-        else if (localName == "clientName")
-        {
-            mCurrentElement->setClientName(std::move(strValue));
-        }
         else if (localName == "stationID")
         {
             mCurrentElement->setLocationId(convert<quint64>(strValue));

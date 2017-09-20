@@ -76,26 +76,6 @@ namespace Evernus
         mClientId = id;
     }
 
-    QString WalletTransaction::getClientName() const &
-    {
-        return mClientName;
-    }
-
-    QString &&WalletTransaction::getClientName() && noexcept
-    {
-        return std::move(mClientName);
-    }
-
-    void WalletTransaction::setClientName(const QString &name)
-    {
-        mClientName = name;
-    }
-
-    void WalletTransaction::setClientName(QString &&name)
-    {
-        mClientName = std::move(name);
-    }
-
     quint64 WalletTransaction::getLocationId() const noexcept
     {
         return mLocationId;

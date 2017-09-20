@@ -1125,7 +1125,6 @@ namespace Evernus
                             transaction.setTypeId(transactionObj.value(QStringLiteral("type_id")).toDouble());
                             transaction.setPrice(transactionObj.value(QStringLiteral("unit_price")).toDouble());
                             transaction.setClientId(transactionObj.value(QStringLiteral("client_id")).toDouble());
-                            transaction.setClientName(mDataProvider.getGenericName(transaction.getClientId()));
                             transaction.setLocationId(transactionObj.value(QStringLiteral("location_id")).toDouble());
                             transaction.setType(
                                 (transactionObj.value(QStringLiteral("is_buy")).toBool()) ?
