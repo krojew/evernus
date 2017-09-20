@@ -329,8 +329,6 @@ namespace Evernus
                 mViewResetProgress->hide();
                 emit setupRefreshChanged(false);
             }
-
-            QCoreApplication::processEvents();
         });
 
         const auto contentSplitter = new QSplitter{this};
