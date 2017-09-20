@@ -631,7 +631,7 @@ namespace Evernus
 
     QVersionNumber Updater::getDbVersion(const QSqlDatabase &db, const QVersionNumber &defaultVersion)
     {
-        auto query = db.exec(QString{"SELECT major, minor FROM %1"}.arg(version::dbTableName()));
+        auto query = db.exec(QStringLiteral("SELECT major, minor FROM %1").arg(version::dbTableName()));
         if (query.next())
             return { query.value(0).toInt(), query.value(1).toInt() };
 
