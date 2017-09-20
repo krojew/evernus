@@ -330,6 +330,8 @@ namespace Evernus
                     nextVersion->second(provider);
                 }
             }
+
+            updateDatabaseVersion(provider.getCharacterRepository().getDatabase());
         }
         catch (...)
         {
