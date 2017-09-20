@@ -55,37 +55,108 @@
 
 namespace Evernus
 {
+    Updater::Updater()
+        : QObject{}
+        , mCoreUpdateSteps{
+            { {0, 3}, &Updater::migrateCoreTo03 },
+            { {1, 13}, &Updater::migrateCoreTo113 },
+            { {1, 30}, &Updater::migrateCoreTo130 },
+            { {1, 36}, &Updater::migrateCoreTo136 },
+            { {2, 3}, &Updater::migrateCoreTo23 },
+            { {2, 7}, &Updater::migrateCoreTo27 },
+        }
+        , mDbUpdateSteps{
+            { {0, 5}, [=](const auto &provider) {
+                migrateDatabaseTo05(provider.getCacheTimerRepository(),
+                                    provider.getCharacterRepository(),
+                                    provider.getMarketOrderRepository(),
+                                    provider.getCorpMarketOrderRepository());
+            } },
+            { {1, 8}, [=](const auto &provider) {
+                migrateDatabaseTo18(provider.getExternalOrderRepository());
+            } },
+            { {1, 9}, [=](const auto &provider) {
+                migrateDatabaseTo19(provider.getCharacterRepository(),
+                                    provider.getWalletJournalEntryRepository(),
+                                    provider.getCorpWalletJournalEntryRepository(),
+                                    provider.getWalletTransactionRepository(),
+                                    provider.getCorpWalletTransactionRepository());
+            } },
+            { {1, 11}, [=](const auto &provider) {
+                migrateDatabaseTo111(provider.getCacheTimerRepository(),
+                                     provider.getUpdateTimerRepository(),
+                                     provider.getCharacterRepository());
+            } },
+            { {1, 16}, [=](const auto &provider) {
+                migrateDatabaseTo116(provider.getMarketOrderValueSnapshotRepository(),
+                                     provider.getCorpMarketOrderValueSnapshotRepository());
+            } },
+            { {1, 23}, [=](const auto &provider) {
+                migrateDatabaseTo123(provider.getExternalOrderRepository(),
+                                     provider.getItemRepository());
+            } },
+            { {1, 27}, [=](const auto &provider) {
+                migrateDatabaseTo127(provider.getMarketOrderRepository(),
+                                     provider.getCorpMarketOrderRepository());
+            } },
+            { {1, 41}, [=](const auto &provider) {
+                migrateDatabaseTo141(provider.getCharacterRepository());
+            } },
+            { {1, 45}, [=](const auto &provider) {
+                migrateDatabaseTo145(provider.getCharacterRepository(),
+                                     provider.getKeyRepository(),
+                                     provider.getMarketOrderRepository(),
+                                     provider.getCorpMarketOrderRepository());
+            } },
+            { {1, 47}, [=](const auto &provider) {
+                migrateDatabaseTo147(provider.getMarketOrderRepository(),
+                                     provider.getCorpMarketOrderRepository());
+            } },
+            { {1, 49}, [=](const auto &provider) {
+                migrateDatabaseTo149(provider.getCitadelRepository());
+            } },
+            { {1, 50}, [=](const auto &provider) {
+                migrateDatabaseTo150(provider.getCitadelRepository());
+            } },
+            { {1, 53}, [=](const auto &provider) {
+                migrateDatabaseTo153(provider.getItemRepository());
+            } },
+            { {2, 0}, [=](const auto &provider) {
+                migrateDatabaseTo20(provider.getCharacterRepository());
+            } },
+            { {2, 2}, [=](const auto &provider) {
+                migrateDatabaseTo22(provider.getCitadelRepository(),
+                                    provider.getCorpItemRepository());
+            } },
+            { {2, 3}, [=](const auto &provider) {
+                migrateDatabaseTo23(provider.getCitadelRepository());
+            } },
+            { {2, 6}, [=](const auto &provider) {
+                migrateDatabaseTo26(provider.getWalletJournalEntryRepository(),
+                                    provider.getCorpWalletJournalEntryRepository(),
+                                    provider.getCharacterRepository());
+            } },
+        }
+    {
+    }
+
     void Updater::performVersionMigration(const RepositoryProvider &provider) const
     {
-        uint savedCoreMajorVersion = 0;
-        uint savedCoreMinorVersion = 0;
+        const auto savedCoreVersion = getSavedCoreVersion();
+        const auto curCoreVersion = getCurrentCoreVersion();
 
-        std::tie(savedCoreMajorVersion, savedCoreMinorVersion) = getSavedCoreVersion();
-
-        uint curCoreMajorVersion = 0;
-        uint curCoreMinorVersion = 0;
-
-        std::tie(curCoreMajorVersion, curCoreMinorVersion) = getCurrentCoreVersion();
-
-        if ((savedCoreMajorVersion == 0 && savedCoreMinorVersion == 0) || (savedCoreMajorVersion == curCoreMajorVersion && savedCoreMinorVersion == curCoreMinorVersion))
-            qDebug() << "Not updating core from" << savedCoreMajorVersion << savedCoreMinorVersion;
+        if ((savedCoreVersion.majorVersion() == 0 && savedCoreVersion.minorVersion() == 0) || (savedCoreVersion >= curCoreVersion))
+            qInfo() << "Not updating core from" << savedCoreVersion;
         else
-            updateCore(savedCoreMajorVersion, savedCoreMinorVersion);
+            updateCore(savedCoreVersion);
 
-        uint dbMajorVersion = savedCoreMajorVersion;
-        uint dbMinorVersion = savedCoreMinorVersion;
-
-        std::tie(dbMajorVersion, dbMinorVersion) = getDbVersion(provider.getKeyRepository().getDatabase(), dbMajorVersion, dbMinorVersion);
-
-        updateDatabase(dbMajorVersion, dbMinorVersion, provider);
+        const auto dbVersion = getDbVersion(provider.getKeyRepository().getDatabase(), savedCoreVersion);
+        updateDatabase(dbVersion, provider);
     }
 
     void Updater::updateDatabaseVersion(const QSqlDatabase &db) const
     {
-        uint curCoreMajorVersion = 0;
-        uint curCoreMinorVersion = 0;
-
-        std::tie(curCoreMajorVersion, curCoreMinorVersion) = getCurrentCoreVersion();
+        const auto curCoreVersion = getCurrentCoreVersion();
 
         db.exec(QString{ R"(
             CREATE TABLE IF NOT EXISTS %1 (
@@ -97,24 +168,19 @@ namespace Evernus
 
         const auto error = db.lastError();
         if (error.isValid())
-            BOOST_THROW_EXCEPTION(std::runtime_error{ tr("Error updating db version: %1").arg(error.text()).toStdString() });
+            BOOST_THROW_EXCEPTION(std::runtime_error{tr("Error updating db version: %1").arg(error.text()).toStdString()});
 
-        uint dbMajorVersion = 0;
-        uint dbMinorVersion = 0;
-
-        std::tie(dbMajorVersion, dbMinorVersion) = getSavedCoreVersion();
-        std::tie(dbMajorVersion, dbMinorVersion) = getDbVersion(db, dbMajorVersion, dbMinorVersion);
-
-        if (dbMajorVersion < curCoreMajorVersion || (dbMajorVersion == curCoreMajorVersion && dbMinorVersion < curCoreMinorVersion))
+        const auto dbVersion = getDbVersion(db, getSavedCoreVersion());
+        if (dbVersion < curCoreVersion)
         {
-            db.exec(QString{"DELETE FROM %1"}.arg(version::dbTableName()));
+            db.exec(QStringLiteral("DELETE FROM %1").arg(version::dbTableName()));
 
-            QSqlQuery query{ db };
-            if (!query.prepare(QString{"REPLACE INTO %1 (major, minor) VALUES (? ,?)"}.arg(version::dbTableName())))
+            QSqlQuery query{db};
+            if (!query.prepare(QStringLiteral("REPLACE INTO %1 (major, minor) VALUES (? ,?)").arg(version::dbTableName())))
                 BOOST_THROW_EXCEPTION(std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()});
 
-            query.bindValue(0, curCoreMajorVersion);
-            query.bindValue(1, curCoreMinorVersion);
+            query.bindValue(0, curCoreVersion.majorVersion());
+            query.bindValue(1, curCoreVersion.minorVersion());
 
             if (!query.exec())
                 BOOST_THROW_EXCEPTION(std::runtime_error{tr("Error updating db version: %1").arg(query.lastError().text()).toStdString()});
@@ -132,7 +198,7 @@ namespace Evernus
         if (mCheckingForUpdates)
             return;
 
-        qDebug() << "Checking for updates...";
+        qInfo() << "Checking for updates...";
 
         mCheckingForUpdates = true;
 
@@ -204,14 +270,14 @@ namespace Evernus
             nullptr, tr("Update found"), tr("A new version is available: %1\nDo you wish to launch the updater?").arg(nextVersionString));
         if (ret == QMessageBox::Yes)
         {
-            qDebug() << "Starting maintenance tool...";
+            qInfo() << "Starting maintenance tool...";
             if (QProcess::startDetached(QDir{QCoreApplication::applicationDirPath()}.filePath("../maintenancetool.exe"), QStringList()))
             {
                 QCoreApplication::exit();
             }
             else
             {
-                qDebug() << "Failed.";
+                qInfo() << "Failed.";
                 if (QMessageBox::question(nullptr, tr("Update found"), tr("Couldn't launch updater. Download manually?")) == QMessageBox::Yes)
                     QDesktopServices::openUrl(downloadUrl);
             }
@@ -219,46 +285,21 @@ namespace Evernus
 #endif
     }
 
-    void Updater::updateCore(uint majorVersion, uint minorVersion) const
+    void Updater::updateCore(const QVersionNumber &prevVersion) const
     {
-        qDebug() << "Update core from" << majorVersion << "." << minorVersion;
+        qInfo() << "Update core from" << prevVersion;
 
-        if (majorVersion < 3)
+        auto nextVersion = mCoreUpdateSteps.upper_bound(prevVersion);
+        if (nextVersion == std::end(mCoreUpdateSteps))
         {
-            if (majorVersion < 2)
+            qInfo() << "No updates found.";
+        }
+        else
+        {
+            for (; nextVersion != std::end(mCoreUpdateSteps); ++nextVersion)
             {
-                if (majorVersion == 0)
-                {
-                    if (minorVersion < 3)
-                        migrateCoreTo03();
-
-                    minorVersion = 0;
-                }
-
-                if (minorVersion < 36)
-                {
-                    if (minorVersion < 30)
-                    {
-                        if (minorVersion < 13)
-                            migrateCoreTo113();
-
-                        migrateCoreTo130();
-                    }
-
-                    migrateCoreTo136();
-                }
-
-                minorVersion = 0;
-            }
-
-            if (minorVersion < 7)
-            {
-                if (minorVersion < 3)
-                {
-                    migrateCoreTo23();
-                }
-
-                migrateCoreTo27();
+                qInfo() << "Updating core to:" << nextVersion->first;
+                (this->*nextVersion->second)();
             }
         }
 
@@ -268,125 +309,27 @@ namespace Evernus
     }
 
     void Updater
-    ::updateDatabase(uint majorVersion, uint minorVersion, const RepositoryProvider &provider) const
+    ::updateDatabase(const QVersionNumber &prevVersion, const RepositoryProvider &provider) const
     {
-        qDebug() << "Update db from" << majorVersion << "." << minorVersion;
+        qInfo() << "Update db from" << prevVersion;
 
-        const auto &characterRepo = provider.getCharacterRepository();
-        const auto &cacheTimerRepo = provider.getCacheTimerRepository();
-        const auto &characterOrderRepo = provider.getMarketOrderRepository();
-        const auto &corporationOrderRepo = provider.getCorpMarketOrderRepository();
-        const auto &walletJournalRepo = provider.getWalletJournalEntryRepository();
-        const auto &corpWalletJournalRepo = provider.getCorpWalletJournalEntryRepository();
-        const auto &walletTransactionRepo = provider.getWalletTransactionRepository();
-        const auto &corpWalletTransactionRepo = provider.getCorpWalletTransactionRepository();
-        const auto &updateTimerRepo = provider.getUpdateTimerRepository();
-        const auto &orderValueSnapshotRepo = provider.getMarketOrderValueSnapshotRepository();
-        const auto &corpOrderValueSnapshotRepo = provider.getCorpMarketOrderValueSnapshotRepository();
-        const auto &externalOrderRepo = provider.getExternalOrderRepository();
-        const auto &itemRepo = provider.getItemRepository();
-        const auto &keyRepo = provider.getKeyRepository();
-        const auto &citadelRepo = provider.getCitadelRepository();
-        const auto &corpItemRepo = provider.getCorpItemRepository();
-
-        const auto dbBak = DatabaseUtils::backupDatabase(characterRepo.getDatabase());
+        const auto dbBak = DatabaseUtils::backupDatabase(provider.getCharacterRepository().getDatabase());
 
         try
         {
-            // TODO: refactor someday...
-            if (majorVersion < 2)
+            auto nextVersion = mDbUpdateSteps.upper_bound(prevVersion);
+            if (nextVersion == std::end(mDbUpdateSteps))
             {
-                if (majorVersion == 0)
-                {
-                    if (minorVersion < 5)
-                        migrateDatabaseTo05(cacheTimerRepo, characterRepo, characterOrderRepo, corporationOrderRepo);
-                }
-
-                if (minorVersion < 53)
-                {
-                    if (minorVersion < 50)
-                    {
-                        if (minorVersion < 49)
-                        {
-                            if (minorVersion < 47)
-                            {
-                                if (minorVersion < 45)
-                                {
-                                    if (minorVersion < 41)
-                                    {
-                                        if (minorVersion < 27)
-                                        {
-                                            if (minorVersion < 23)
-                                            {
-                                                if (minorVersion < 16)
-                                                {
-                                                    if (minorVersion < 11)
-                                                    {
-                                                        if (minorVersion < 9)
-                                                        {
-                                                            if (minorVersion < 8)
-                                                                migrateDatabaseTo18(externalOrderRepo);
-
-                                                            migrateDatabaseTo19(characterRepo,
-                                                                                walletJournalRepo,
-                                                                                corpWalletJournalRepo,
-                                                                                walletTransactionRepo,
-                                                                                corpWalletTransactionRepo);
-                                                        }
-
-                                                        migrateDatabaseTo111(cacheTimerRepo, updateTimerRepo, characterRepo);
-                                                    }
-
-                                                    migrateDatabaseTo116(orderValueSnapshotRepo, corpOrderValueSnapshotRepo);
-                                                }
-
-                                                migrateDatabaseTo123(externalOrderRepo, itemRepo);
-                                            }
-
-                                            migrateDatabaseTo127(characterOrderRepo, corporationOrderRepo);
-                                        }
-
-                                        migrateDatabaseTo141(characterRepo);
-                                    }
-
-                                    migrateDatabaseTo145(characterRepo, keyRepo, characterOrderRepo, corporationOrderRepo);
-                                }
-
-                                migrateDatabaseTo147(characterOrderRepo, corporationOrderRepo);
-                            }
-
-                            migrateDatabaseTo149(citadelRepo);
-                        }
-
-                        migrateDatabaseTo150(citadelRepo);
-                    }
-
-                    migrateDatabaseTo153(itemRepo);
-                }
-
-                migrateDatabaseTo20(characterRepo);
-
-                // reset version in case major bump
-                minorVersion = 0;
+                qInfo() << "No updates found.";
             }
-
-            if (majorVersion < 3)
+            else
             {
-                if (minorVersion < 6)
+                for (; nextVersion != std::end(mDbUpdateSteps); ++nextVersion)
                 {
-                    if (minorVersion < 3)
-                    {
-                        if (minorVersion < 2)
-                            migrateDatabaseTo22(citadelRepo, corpItemRepo);
-
-                        migrateDatabaseTo23(citadelRepo);
-                    }
-
-                    migrateDatabaseTo26(walletJournalRepo, corpWalletJournalRepo, characterRepo);
+                    qInfo() << "Updating db to:" << nextVersion->first;
+                    nextVersion->second(provider);
                 }
             }
-
-            updateDatabaseVersion(provider.getKeyRepository().getDatabase());
         }
         catch (...)
         {
@@ -671,31 +614,28 @@ namespace Evernus
         settings.endGroup();
     }
 
-    std::pair<uint, uint> Updater::getSavedCoreVersion()
+    QVersionNumber Updater::getSavedCoreVersion()
     {
         QSettings settings;
 
         const auto curVersion
             = settings.value(EvernusApplication::versionKey, QCoreApplication::applicationVersion()).toString().split('.');
 
-        return std::make_pair(curVersion[0].toUInt(), curVersion[1].toUInt());
+        return { curVersion[0].toInt(), curVersion[1].toInt() };
     }
 
-    std::pair<uint, uint> Updater::getCurrentCoreVersion()
+    QVersionNumber Updater::getCurrentCoreVersion()
     {
-        return std::make_pair(version::major(), version::minor());
+        return { version::major(), version::minor() };
     }
 
-    std::pair<uint, uint> Updater::getDbVersion(const QSqlDatabase &db, uint defaultMajor, uint defaultMinor)
+    QVersionNumber Updater::getDbVersion(const QSqlDatabase &db, const QVersionNumber &defaultVersion)
     {
         auto query = db.exec(QString{"SELECT major, minor FROM %1"}.arg(version::dbTableName()));
         if (query.next())
-        {
-            defaultMajor = query.value(0).toUInt();
-            defaultMinor = query.value(1).toUInt();
-        }
+            return { query.value(0).toInt(), query.value(1).toInt() };
 
-        return std::make_pair(defaultMajor, defaultMinor);
+        return defaultVersion;
     }
 
     template<class T>
@@ -707,7 +647,7 @@ namespace Evernus
         }
         catch (const std::runtime_error &e)
         {
-            qWarning() << "Ignoring updater query error:" << query <<e.what();
+            qWarning() << "Ignoring updater query error:" << query << e.what();
         }
     }
 }

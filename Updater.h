@@ -14,7 +14,11 @@
  */
 #pragma once
 
+#include <functional>
+#include <map>
+
 #include <QNetworkAccessManager>
+#include <QVersionNumber>
 
 #include "Repository.h"
 
@@ -55,17 +59,23 @@ namespace Evernus
         void checkForUpdates(bool quiet) const;
 
     private:
+        template<class Sig>
+        using UpdateChain = std::map<QVersionNumber, Sig>;
+
+        UpdateChain<void (Updater::*)() const> mCoreUpdateSteps;
+        UpdateChain<std::function<void (const RepositoryProvider &)>> mDbUpdateSteps;
+
         mutable QNetworkAccessManager mAccessManager;
 
         mutable bool mCheckingForUpdates = false;
 
-        Updater() = default;
+        Updater();
         virtual ~Updater() = default;
 
         void finishCheck(bool quiet) const;
 
-        void updateCore(uint prevMajor, uint prevMinor) const;
-        void updateDatabase(uint prevMajor, uint prevMinor, const RepositoryProvider &provider) const;
+        void updateCore(const QVersionNumber &prevVersion) const;
+        void updateDatabase(const QVersionNumber &prevVersion, const RepositoryProvider &provider) const;
 
         void migrateCoreTo03() const;
         void migrateDatabaseTo05(const CacheTimerRepository &cacheTimerRepo,
@@ -113,9 +123,9 @@ namespace Evernus
 
         void removeRefreshTokens() const;
 
-        static std::pair<uint, uint> getSavedCoreVersion();
-        static std::pair<uint, uint> getCurrentCoreVersion();
-        static std::pair<uint, uint> getDbVersion(const QSqlDatabase &db, uint defaultMajor, uint defaultMinor);
+        static QVersionNumber getSavedCoreVersion();
+        static QVersionNumber getCurrentCoreVersion();
+        static QVersionNumber getDbVersion(const QSqlDatabase &db, const QVersionNumber &defaultVersion);
 
         template<class T>
         static void safelyExecQuery(const Repository<T> &repo, const QString &query);
