@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QWebEngineCookieStore>
+#include <QWebEngineProfile>
 #include <QStackedWidget>
 #include <QWebEnginePage>
 #include <QWebEngineView>
@@ -20,6 +22,7 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QIcon>
 #include <QLabel>
 
 #include "SSOAuthWidget.h"
@@ -27,8 +30,8 @@
 namespace Evernus
 {
     SSOAuthWidget::SSOAuthWidget(const QUrl &url, QWidget *parent)
-        : QWidget(parent)
-        , mAuthUrl(url)
+        : QWidget{parent}
+        , mAuthUrl{url}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -39,22 +42,20 @@ namespace Evernus
         urlLayout->addWidget(mUrlEdit);
         mUrlEdit->setReadOnly(true);
 
-        auto useExternalBtn = new QPushButton{tr("Toggle external browser"), this};
+        const auto clearCookiesBtn = new QPushButton{QIcon{QStringLiteral(":/images/bin.png")}, tr("Clear cookies"), this};
+        urlLayout->addWidget(clearCookiesBtn);
+        connect(clearCookiesBtn, &QPushButton::clicked, this, &SSOAuthWidget::clearCookies);
+
+        const auto useExternalBtn = new QPushButton{QIcon{QStringLiteral(":/images/world.png")}, tr("Toggle external browser"), this};
         urlLayout->addWidget(useExternalBtn);
-        connect(useExternalBtn, &QPushButton::clicked, this, [=] {
-            mAuthWidgetStack->setCurrentIndex(mAuthWidgetStack->currentIndex() ^ 1);
-            adjustSize();
-        });
+        connect(useExternalBtn, &QPushButton::clicked, this, &SSOAuthWidget::toggleViews);
 
         mAuthWidgetStack = new QStackedWidget{this};
         mainLayout->addWidget(mAuthWidgetStack);
 
         mView = new QWebEngineView{this};
         mAuthWidgetStack->addWidget(mView);
-        connect(mView, &QWebEngineView::urlChanged, this, [=](const QUrl &url) {
-            mUrlEdit->setText(url.toString());
-            mUrlEdit->setCursorPosition(0);
-        });
+        connect(mView, &QWebEngineView::urlChanged, this, &SSOAuthWidget::updateUrl);
         mView->setUrl(mAuthUrl);
 
         auto externalAuthWidget = new QWidget{this};
@@ -89,6 +90,7 @@ namespace Evernus
 
     void SSOAuthWidget::closeEvent(QCloseEvent *event)
     {
+        Q_UNUSED(event);
         emit aboutToClose();
     }
 
@@ -104,5 +106,34 @@ namespace Evernus
         }
 
         emit acquiredCode(code);
+    }
+
+    void SSOAuthWidget::updateUrl(const QUrl &url)
+    {
+        mUrlEdit->setText(url.toString());
+        mUrlEdit->setCursorPosition(0);
+    }
+
+    void SSOAuthWidget::toggleViews()
+    {
+        mAuthWidgetStack->setCurrentIndex(mAuthWidgetStack->currentIndex() ^ 1);
+        adjustSize();
+    }
+
+    void SSOAuthWidget::clearCookies()
+    {
+        const auto page = mView->page();
+        if (Q_UNLIKELY(page == nullptr))
+            return;
+
+        const auto profile = page->profile();
+        if (Q_UNLIKELY(profile == nullptr))
+            return;
+
+        const auto cookieStore = profile->cookieStore();
+        if (Q_UNLIKELY(cookieStore == nullptr))
+            return;
+
+        cookieStore->deleteAllCookies();
     }
 }

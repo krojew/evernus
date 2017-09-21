@@ -43,6 +43,9 @@ namespace Evernus
 
     private slots:
         void applyCode();
+        void updateUrl(const QUrl &url);
+        void toggleViews();
+        void clearCookies();
 
     private:
         QUrl mAuthUrl;
