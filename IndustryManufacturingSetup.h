@@ -19,6 +19,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include <QtDebug>
+
 #include "EveDataProvider.h"
 #include "EveType.h"
 
@@ -124,5 +126,7 @@ namespace Evernus
 
         friend QDataStream &operator >>(QDataStream &stream, IndustryManufacturingSetup &setup);
         friend QDataStream &operator <<(QDataStream &stream, const IndustryManufacturingSetup &setup);
+
+        friend QDebug operator <<(QDebug debug, const IndustryManufacturingSetup &setup);
     };
 }

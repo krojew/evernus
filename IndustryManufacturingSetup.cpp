@@ -86,6 +86,8 @@ namespace Evernus
         if (Q_LIKELY(it != std::end(mManufacturingInfo)))
             return it->second;
 
+        qWarning() << "Missing data for" << *this;
+
         BOOST_THROW_EXCEPTION(MissingDataException{"Missing manufacturing info for: " + std::to_string(typeId)});
     }
 
@@ -258,5 +260,51 @@ namespace Evernus
             << IndustryManufacturingSetup::dataStreamVersion
             << setup.mTypeSettings
             << setup.mOutputTypes;
+    }
+
+    QDebug operator <<(QDebug debug, const IndustryManufacturingSetup::OutputSettings &settings)
+    {
+        QDebugStateSaver saver{debug};
+        debug.nospace()
+            << settings.mRuns
+            << " "
+            << settings.mMaterialEfficiency
+            << " "
+            << settings.mTimeEfficiency;
+
+        return debug;
+    }
+
+    QDebug operator <<(QDebug debug, const IndustryManufacturingSetup::TypeSettings &settings)
+    {
+        QDebugStateSaver saver{debug};
+        debug.nospace()
+            << static_cast<int>(settings.mSource)
+            << " "
+            << settings.mMaterialEfficiency
+            << " "
+            << settings.mTimeEfficiency;
+
+        return debug;
+    }
+
+    QDebug operator <<(QDebug debug, const IndustryManufacturingSetup &setup)
+    {
+        QDebugStateSaver saver{debug};
+
+        debug.nospace().noquote() << "IndustryManufacturingSetup:\n";
+
+        for (const auto &settings : setup.mTypeSettings)
+            debug << settings.first << ": " << settings.second << "\n";
+
+        debug << "\n";
+
+        for (const auto &info : setup.mManufacturingInfo)
+            debug << "ManufacturingInfo: " << info.first << "\n";
+
+        for (const auto &settings : setup.mOutputTypes)
+            debug << settings.first << ": " << settings.second << "\n";
+
+        return debug;
     }
 }
