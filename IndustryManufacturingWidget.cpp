@@ -583,6 +583,12 @@ namespace Evernus
                 QDataStream stream{setup->getSerializedSetup()};
                 stream >> mSetup;
 
+                if (Q_UNLIKELY(stream.status() != QDataStream::Ok))
+                {
+                    QMessageBox::warning(this, tr("Load setup"), tr("Error loading setup! Either the data is corrupted or setup has been saved in a newer version."));
+                    return;
+                }
+
                 mSetupModel.blockInteractions(true);
                 mSetupModel.refreshData();
 
