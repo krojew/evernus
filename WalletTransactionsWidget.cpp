@@ -19,7 +19,7 @@
 #include <QSettings>
 #include <QCheckBox>
 #include <QLabel>
-#include <QDebug>
+#include <QtDebug>
 #include <QFont>
 
 #include "WalletEntryFilterWidget.h"

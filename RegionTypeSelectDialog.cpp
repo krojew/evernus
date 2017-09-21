@@ -23,7 +23,7 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QSettings>
-#include <QDebug>
+#include <QtDebug>
 
 #include "RegionTypePresetRepository.h"
 #include "TradeableTypesTreeView.h"

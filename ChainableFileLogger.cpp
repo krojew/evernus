@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QStandardPaths>
-#include <QDebug>
+#include <QtDebug>
 #include <QDir>
 
 #include "ChainableFileLogger.h"

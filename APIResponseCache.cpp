@@ -21,7 +21,7 @@
 #include <QDataStream>
 #include <QSaveFile>
 #include <QBuffer>
-#include <QDebug>
+#include <QtDebug>
 #include <QFile>
 #include <QHash>
 #include <QUuid>

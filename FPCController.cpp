@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QSettings>
-#include <QDebug>
+#include <QtDebug>
 #include <QUrl>
 
 #include "PriceSettings.h"

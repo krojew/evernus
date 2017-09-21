@@ -24,7 +24,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QProcess>
-#include <QDebug>
+#include <QtDebug>
 #include <QUrl>
 #include <QDir>
 

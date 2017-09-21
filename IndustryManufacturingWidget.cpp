@@ -35,7 +35,7 @@
 #include <QGroupBox>
 #include <QSettings>
 #include <QPixmap>
-#include <QDebug>
+#include <QtDebug>
 #include <QLabel>
 
 #include "IndustryManufacturingSetupRepository.h"

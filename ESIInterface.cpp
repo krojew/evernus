@@ -19,7 +19,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QUrlQuery>
-#include <QDebug>
+#include <QtDebug>
 #include <QUrl>
 
 #include "NetworkSettings.h"

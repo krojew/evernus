@@ -17,7 +17,7 @@
 #include <QVBoxLayout>
 #include <QCheckBox>
 #include <QSettings>
-#include <QDebug>
+#include <QtDebug>
 
 #include "WalletEntryFilterWidget.h"
 #include "CacheTimerProvider.h"

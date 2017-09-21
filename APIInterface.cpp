@@ -14,7 +14,7 @@
  */
 #include <QCoreApplication>
 #include <QUrlQuery>
-#include <QDebug>
+#include <QtDebug>
 
 #include "NetworkSettings.h"
 #include "SecurityHelper.h"

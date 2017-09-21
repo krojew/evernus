@@ -14,12 +14,13 @@
  */
 #include <queue>
 
+#include <QtDebug>
+
 #include <QStandardPaths>
 #include <QSqlDatabase>
 #include <QDataStream>
 #include <QSqlQuery>
 #include <QSettings>
-#include <QDebug>
 #include <QFile>
 #include <QDir>
 

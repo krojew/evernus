@@ -21,7 +21,7 @@
 #include <QGroupBox>
 #include <QSettings>
 #include <QLabel>
-#include <QDebug>
+#include <QtDebug>
 #include <QMenu>
 
 #include "MarketOrderViewWithTransactions.h"

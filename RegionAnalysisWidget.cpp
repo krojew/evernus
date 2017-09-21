@@ -26,7 +26,7 @@
 #include <QSpinBox>
 #include <QAction>
 #include <QLabel>
-#include <QDebug>
+#include <QtDebug>
 
 #include "TypeAggregatedDetailsWidget.h"
 #include "MarketAnalysisSettings.h"

@@ -20,7 +20,7 @@
 #include <QNetworkReply>
 #include <QUrlQuery>
 #include <QDateTime>
-#include <QDebug>
+#include <QtDebug>
 #include <QUrl>
 
 #include "EveDataProvider.h"

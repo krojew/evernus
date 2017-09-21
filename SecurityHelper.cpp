@@ -17,7 +17,7 @@
 #include <QMessageBox>
 #include <QSslError>
 #include <QSettings>
-#include <QDebug>
+#include <QtDebug>
 
 #include "NetworkSettings.h"
 

@@ -20,7 +20,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QDebug>
+#include <QtDebug>
 
 #include "Defines.h"
 

@@ -29,7 +29,7 @@
 #include <QSettings>
 #include <QAction>
 #include <QLabel>
-#include <QDebug>
+#include <QtDebug>
 
 #include "SourceDestinationSelectWidget.h"
 #include "InterRegionTypeDetailsWidget.h"

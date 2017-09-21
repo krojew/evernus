@@ -21,7 +21,7 @@
 #include <QLineEdit>
 #include <QSettings>
 #include <QLabel>
-#include <QDebug>
+#include <QtDebug>
 
 #include "ScrapmetalReprocessingArbitrageWidget.h"
 #include "OreReprocessingArbitrageWidget.h"

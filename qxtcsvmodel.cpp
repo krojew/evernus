@@ -40,7 +40,7 @@
 #include "qxtcsvmodel.h"
 #include <QFile>
 #include <QTextStream>
-#include <QDebug>
+#include <QtDebug>
 
 class QxtCsvModelPrivate : public QxtPrivate<QxtCsvModel>
 {

@@ -4,7 +4,7 @@
 //#include <QDateTime>
 
 #ifdef QTDROPBOX_DEBUG
-#include <QDebug>
+#include <QtDebug>
 #endif
 
 #include "qdropbox2common.h"

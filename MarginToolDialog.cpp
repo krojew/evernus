@@ -41,7 +41,7 @@
 #include <QSpinBox>
 #include <QRegExp>
 #include <QLabel>
-#include <QDebug>
+#include <QtDebug>
 #include <QFont>
 #include <QFile>
 #include <QDir>

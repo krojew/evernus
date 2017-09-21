@@ -17,7 +17,7 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 #include <QSqlError>
-#include <QDebug>
+#include <QtDebug>
 
 #include "DatabaseUtils.h"
 

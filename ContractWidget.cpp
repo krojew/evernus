@@ -17,7 +17,7 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QTabWidget>
-#include <QDebug>
+#include <QtDebug>
 #include <QMenu>
 
 #include "ContractStatusesWidget.h"

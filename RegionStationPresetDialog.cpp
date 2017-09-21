@@ -19,7 +19,7 @@
 #include <QGroupBox>
 #include <QComboBox>
 #include <QLabel>
-#include <QDebug>
+#include <QtDebug>
 #include <QIcon>
 
 #include "RegionStationPresetRepository.h"

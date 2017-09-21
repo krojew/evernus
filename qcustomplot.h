@@ -38,7 +38,7 @@
 #include <QDateTime>
 #include <QMultiMap>
 #include <QFlags>
-#include <QDebug>
+#include <QtDebug>
 #include <QVector2D>
 #include <QStack>
 #include <QCache>

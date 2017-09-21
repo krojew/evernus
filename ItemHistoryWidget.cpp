@@ -20,7 +20,7 @@
 #include <QComboBox>
 #include <QCheckBox>
 #include <QLabel>
-#include <QDebug>
+#include <QtDebug>
 #include <QHash>
 #include <QFont>
 

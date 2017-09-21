@@ -31,7 +31,7 @@
 #include <QByteArray>
 #include <QUrlQuery>
 #include <QSettings>
-#include <QDebug>
+#include <QtDebug>
 #include <QHash>
 
 #include <boost/scope_exit.hpp>

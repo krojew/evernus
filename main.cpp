@@ -24,7 +24,7 @@
 #include <QQmlEngine>
 #include <QSettings>
 #include <QSysInfo>
-#include <QDebug>
+#include <QtDebug>
 #include <QFile>
 #include <QDir>
 #include <QUrl>

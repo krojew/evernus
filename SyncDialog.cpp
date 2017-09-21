@@ -31,7 +31,7 @@
 #include <QUrlQuery>
 #include <QLabel>
 #include <QMovie>
-#include <QDebug>
+#include <QtDebug>
 #include <QFile>
 #include <QUuid>
 #include <QFont>

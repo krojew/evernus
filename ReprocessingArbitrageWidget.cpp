@@ -23,7 +23,7 @@
 #include <QSpinBox>
 #include <QAction>
 #include <QLabel>
-#include <QDebug>
+#include <QtDebug>
 
 #include "SourceDestinationSelectWidget.h"
 #include "ReprocessingArbitrageModel.h"

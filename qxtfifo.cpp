@@ -55,7 +55,7 @@ QxtFifo fifo;
 #include "qxtfifo.h"
 #include <string.h>
 #include <limits.h>
-#include <QDebug>
+#include <QtDebug>
 #include <QQueue>
 
 #include <qatomic.h>

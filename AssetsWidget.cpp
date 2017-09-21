@@ -26,8 +26,8 @@
 #include <QSettings>
 #include <QAction>
 #include <QLocale>
+#include <QtDebug>
 #include <QLabel>
-#include <QDebug>
 
 #include "AdjustableTableView.h"
 #include "CacheTimerProvider.h"

@@ -18,7 +18,7 @@
 
 #include <QDateTime>
 #include <QSettings>
-#include <QDebug>
+#include <QtDebug>
 
 #include "EveDataProvider.h"
 #include "ImportSettings.h"

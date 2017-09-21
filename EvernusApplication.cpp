@@ -27,7 +27,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QSettings>
-#include <QDebug>
+#include <QtDebug>
 #include <QSet>
 
 #include "ExternalOrderImporterNames.h"

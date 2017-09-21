@@ -15,7 +15,7 @@
 #include <algorithm>
 
 #include <QSettings>
-#include <QDebug>
+#include <QtDebug>
 
 #include <boost/scope_exit.hpp>
 

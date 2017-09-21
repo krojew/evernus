@@ -27,7 +27,7 @@
 #include <QMenuBar>
 #include <QTabBar>
 #include <QLabel>
-#include <QDebug>
+#include <QtDebug>
 
 #ifdef Q_OS_WIN
 #   include <sys/utime.h>

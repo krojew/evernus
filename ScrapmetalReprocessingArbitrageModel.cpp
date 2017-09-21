@@ -27,7 +27,7 @@
 
 #include <QCoreApplication>
 #include <QSettings>
-#include <QDebug>
+#include <QtDebug>
 
 #include "MarketAnalysisSettings.h"
 #include "EveDataProvider.h"

@@ -16,7 +16,7 @@
 #include <QNetworkReply>
 #include <QUrlQuery>
 #include <QSettings>
-#include <QDebug>
+#include <QtDebug>
 
 #include "LMeveSettings.h"
 
