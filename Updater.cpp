@@ -163,13 +163,13 @@ namespace Evernus
     {
         const auto curCoreVersion = getCurrentCoreVersion();
 
-        db.exec(QString{ R"(
+        db.exec(QStringLiteral(R"(
             CREATE TABLE IF NOT EXISTS %1 (
                 major INTEGER NOT NULL,
                 minor INTEGER NOT NULL,
                 PRIMARY KEY (major, minor)
             )
-        )" }.arg(version::dbTableName()));
+        )").arg(version::dbTableName()));
 
         const auto error = db.lastError();
         if (error.isValid())
@@ -207,7 +207,7 @@ namespace Evernus
 
         mCheckingForUpdates = true;
 
-        auto reply = mAccessManager.get(QNetworkRequest{QUrl{"http://evernus.com/latest_version.xml"}});
+        auto reply = mAccessManager.get(QNetworkRequest{QUrl{QStringLiteral("http://evernus.com/latest_version.xml")}});
         connect(reply, &QNetworkReply::finished, this, [quiet, this] {
             finishCheck(quiet);
         });
@@ -240,7 +240,7 @@ namespace Evernus
             return;
         }
 
-        const auto nextVersionString = doc.documentElement().attribute("id");
+        const auto nextVersionString = doc.documentElement().attribute(QStringLiteral("id"));
         const auto nextVersion = nextVersionString.split('.');
         if (nextVersion.count() != 2)
         {
@@ -263,7 +263,7 @@ namespace Evernus
             return;
         }
 
-        const QUrl downloadUrl{"http://evernus.com/download"};
+        const QUrl downloadUrl{QStringLiteral("http://evernus.com/download")};
 
 #ifndef Q_OS_WIN
         const auto ret = QMessageBox::question(
@@ -276,7 +276,7 @@ namespace Evernus
         if (ret == QMessageBox::Yes)
         {
             qInfo() << "Starting maintenance tool...";
-            if (QProcess::startDetached(QDir{QCoreApplication::applicationDirPath()}.filePath("../maintenancetool.exe"), QStringList()))
+            if (QProcess::startDetached(QDir{QCoreApplication::applicationDirPath()}.filePath(QStringLiteral("../maintenancetool.exe")), QStringList()))
             {
                 QCoreApplication::exit();
             }
@@ -359,17 +359,17 @@ namespace Evernus
                                       const MarketOrderRepository &characterOrderRepo,
                                       const MarketOrderRepository &corporationOrderRepo) const
     {
-        cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
+        cacheTimerRepo.exec(QStringLiteral("DROP TABLE %1").arg(cacheTimerRepo.getTableName()));
         cacheTimerRepo.create(characterRepo);
 
-        safelyExecQuery(characterRepo, QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterRepo.getTableName()));
-        safelyExecQuery(characterOrderRepo, QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(characterOrderRepo.getTableName()));
-        safelyExecQuery(corporationOrderRepo, QString{"ALTER TABLE %1 RENAME TO %1_temp"}.arg(corporationOrderRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+        safelyExecQuery(characterOrderRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0").arg(characterOrderRepo.getTableName()));
+        safelyExecQuery(corporationOrderRepo, QStringLiteral("ALTER TABLE %1 RENAME TO %1_temp").arg(corporationOrderRepo.getTableName()));
 
         corporationOrderRepo.dropIndexes(characterRepo);
         corporationOrderRepo.create(characterRepo);
-        corporationOrderRepo.copyDataWithoutCorporationIdFrom(QString{"%1_temp"}.arg(corporationOrderRepo.getTableName()));
-        corporationOrderRepo.exec(QString{"DROP TABLE %1_temp"}.arg(corporationOrderRepo.getTableName()));
+        corporationOrderRepo.copyDataWithoutCorporationIdFrom(QStringLiteral("%1_temp").arg(corporationOrderRepo.getTableName()));
+        corporationOrderRepo.exec(QStringLiteral("DROP TABLE %1_temp").arg(corporationOrderRepo.getTableName()));
 
         QMessageBox::information(nullptr, tr("Update"), tr(
             "This update requires re-importing all data.\n"
@@ -380,7 +380,7 @@ namespace Evernus
     {
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all item prices."));
 
-        externalOrderRepo.exec(QString{"DROP TABLE %1"}.arg(externalOrderRepo.getTableName()));
+        externalOrderRepo.exec(QStringLiteral("DROP TABLE %1").arg(externalOrderRepo.getTableName()));
         externalOrderRepo.create();
     }
 
@@ -392,22 +392,22 @@ namespace Evernus
     {
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all corporation transactions and journal."));
 
-        corpWalletJournalRepo.exec(QString{"DROP TABLE %1"}.arg(corpWalletJournalRepo.getTableName()));
+        corpWalletJournalRepo.exec(QStringLiteral("DROP TABLE %1").arg(corpWalletJournalRepo.getTableName()));
         corpWalletJournalRepo.create(characterRepo);
-        corpWalletTransactionRepo.exec(QString{"DROP TABLE %1"}.arg(corpWalletTransactionRepo.getTableName()));
+        corpWalletTransactionRepo.exec(QStringLiteral("DROP TABLE %1").arg(corpWalletTransactionRepo.getTableName()));
         corpWalletTransactionRepo.create(characterRepo);
 
-        safelyExecQuery(walletJournalRepo, QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(walletJournalRepo.getTableName()));
-        safelyExecQuery(walletTransactionRepo, QString{"ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0"}.arg(walletTransactionRepo.getTableName()));
+        safelyExecQuery(walletJournalRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0").arg(walletJournalRepo.getTableName()));
+        safelyExecQuery(walletTransactionRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN corporation_id INTEGER NOT NULL DEFAULT 0").arg(walletTransactionRepo.getTableName()));
     }
 
     void Updater::migrateDatabaseTo111(const CacheTimerRepository &cacheTimerRepo,
                                        const UpdateTimerRepository &updateTimerRepo,
                                        const Repository<Character> &characterRepo) const
     {
-        cacheTimerRepo.exec(QString{"DROP TABLE %1"}.arg(cacheTimerRepo.getTableName()));
+        cacheTimerRepo.exec(QStringLiteral("DROP TABLE %1").arg(cacheTimerRepo.getTableName()));
         cacheTimerRepo.create(characterRepo);
-        updateTimerRepo.exec(QString{"DROP TABLE %1"}.arg(updateTimerRepo.getTableName()));
+        updateTimerRepo.exec(QStringLiteral("DROP TABLE %1").arg(updateTimerRepo.getTableName()));
         updateTimerRepo.create(characterRepo);
     }
 
@@ -416,15 +416,15 @@ namespace Evernus
         QSettings settings;
         settings.setValue(ImportSettings::ignoreCachedImportKey, false);
         settings.setValue(StatisticsSettings::combineCorpAndCharPlotsKey,
-                          settings.value("rpices/combineCorpAndCharPlots", StatisticsSettings::combineCorpAndCharPlotsDefault));
+                          settings.value(QStringLiteral("rpices/combineCorpAndCharPlots"), StatisticsSettings::combineCorpAndCharPlotsDefault));
     }
 
     void Updater::migrateDatabaseTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
                                        const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const
     {
         const auto updateShots = [](const auto &repo) {
-            auto query = repo.prepare(QString{
-                "UPDATE %1 SET buy_value = buy_value / 2, sell_value = sell_value / 2 WHERE timestamp >= ?"}.arg(repo.getTableName()));
+            auto query = repo.prepare(QStringLiteral(
+                "UPDATE %1 SET buy_value = buy_value / 2, sell_value = sell_value / 2 WHERE timestamp >= ?").arg(repo.getTableName()));
             query.bindValue(0, QDateTime{QDate{2014, 9, 9}, QTime{0, 0}, Qt::UTC});
 
             Evernus::DatabaseUtils::execQuery(query);
@@ -439,8 +439,8 @@ namespace Evernus
         QSettings settings;
         settings.setValue(OrderSettings::deleteOldMarketOrdersKey, false);
 
-        externalOrderRepo.exec(QString{"DROP INDEX IF EXISTS %1_type_id_location"}.arg(externalOrderRepo.getTableName()));
-        safelyExecQuery(itemRepo, QString{"ALTER TABLE %1 ADD COLUMN raw_quantity INTEGER NOT NULL DEFAULT 0"}.arg(itemRepo.getTableName()));
+        externalOrderRepo.exec(QStringLiteral("DROP INDEX IF EXISTS %1_type_id_location").arg(externalOrderRepo.getTableName()));
+        safelyExecQuery(itemRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN raw_quantity INTEGER NOT NULL DEFAULT 0").arg(itemRepo.getTableName()));
     }
 
     void Updater::migrateDatabaseTo127(const MarketOrderRepository &characterOrderRepo,
@@ -453,7 +453,7 @@ namespace Evernus
 
     void Updater::migrateDatabaseTo141(const Repository<Character> &characterRepo) const
     {
-        safelyExecQuery(characterRepo, QString{"ALTER TABLE %1 ADD COLUMN brokers_fee FLOAT NULL DEFAULT NULL"}.arg(characterRepo.getTableName()));
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN brokers_fee FLOAT NULL DEFAULT NULL").arg(characterRepo.getTableName()));
     }
 
     void Updater::migrateDatabaseTo145(const CharacterRepository &characterRepo,
