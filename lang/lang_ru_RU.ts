@@ -3492,6 +3492,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="575"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="588"/>
         <source>Load setup</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3501,52 +3502,57 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="602"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="588"/>
+        <source>Error loading setup! Either the data is corrupted or setup has been saved in a newer version.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="608"/>
         <source>Save setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="602"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="608"/>
         <source>Enter setup name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="678"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="684"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="678"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="684"/>
         <source>Total cost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="678"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="684"/>
         <source>Quantity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="679"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="685"/>
         <source>Bill of materials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="726"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="732"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="736"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="742"/>
         <source>Blueprint import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="737"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="743"/>
         <source>Importing large number of blueprints can take long time. Are you sure you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="741"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="747"/>
         <source>Importing character blueprints...</source>
         <translation type="unfinished"></translation>
     </message>
