@@ -1050,16 +1050,16 @@ namespace Evernus
                             return false;
                         };
 
-                        checkAndSetExtraInfo(QStringLiteral("alliance_id")) &&
-                        checkAndSetExtraInfo(QStringLiteral("character_id")) &&
-                        checkAndSetExtraInfo(QStringLiteral("contract_id")) &&
-                        checkAndSetExtraInfo(QStringLiteral("corporation_id")) &&
-                        checkAndSetExtraInfo(QStringLiteral("destroyed_ship_type_id")) &&
-                        checkAndSetExtraInfo(QStringLiteral("job_id")) &&
-                        checkAndSetExtraInfo(QStringLiteral("location_id")) &&
-                        checkAndSetExtraInfo(QStringLiteral("npc_id")) &&
-                        checkAndSetExtraInfo(QStringLiteral("planet_id")) &&
-                        checkAndSetExtraInfo(QStringLiteral("system_id")) &&
+                        checkAndSetExtraInfo(QStringLiteral("alliance_id")) ||
+                        checkAndSetExtraInfo(QStringLiteral("character_id")) ||
+                        checkAndSetExtraInfo(QStringLiteral("contract_id")) ||
+                        checkAndSetExtraInfo(QStringLiteral("corporation_id")) ||
+                        checkAndSetExtraInfo(QStringLiteral("destroyed_ship_type_id")) ||
+                        checkAndSetExtraInfo(QStringLiteral("job_id")) ||
+                        checkAndSetExtraInfo(QStringLiteral("location_id")) ||
+                        checkAndSetExtraInfo(QStringLiteral("npc_id")) ||
+                        checkAndSetExtraInfo(QStringLiteral("planet_id")) ||
+                        checkAndSetExtraInfo(QStringLiteral("system_id")) ||
                         checkAndSetExtraInfo(QStringLiteral("transaction_id"));
                     }
 
