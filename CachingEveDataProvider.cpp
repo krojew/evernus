@@ -86,6 +86,8 @@ namespace Evernus
         readCache(nameCacheFileName, mGenericNameCache);
         findManufaturingActivity();
         handleNewPreferences();
+
+        connect(this, &CachingEveDataProvider::genericNameRequested, this, &CachingEveDataProvider::fetchGenericName);
     }
 
     CachingEveDataProvider::~CachingEveDataProvider()
@@ -174,26 +176,7 @@ namespace Evernus
 
         if (mPendingNameRequests.find(id) == std::end(mPendingNameRequests))
         {
-            qDebug() << "Fetching generic name:" << id;
-
-            mPendingNameRequests.emplace(id);
-
-            mDataManagerProvider.getESIManager().fetchGenericName(id, [=](auto &&data, const auto &error) {
-                qDebug() << "Got generic name:" << id << data << " (" << error << ")";
-
-                // potential recursive lock if sync callback
-                std::lock_guard<std::recursive_mutex> lock{mGenericNameCacheMutex};
-
-                mPendingNameRequests.erase(id);
-
-                if (error.isEmpty())
-                    mGenericNameCache[id] = std::move(data);
-                else
-                    mGenericNameCache[id] = tr("(unknown)");
-
-                if (mPendingNameRequests.empty())
-                    emit namesChanged();
-            });
+            emit genericNameRequested(id);
         }
 
         return tr("(unknown)");
@@ -1020,6 +1003,32 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
 
         mStationSellPrices.emplace(key, result);
         return result;
+    }
+
+    void CachingEveDataProvider::fetchGenericName(quint64 id)
+    {
+        qDebug() << "Fetching generic name:" << id;
+
+        // potential recursive lock if sync invokation
+        std::lock_guard<std::recursive_mutex> lock{mGenericNameCacheMutex};
+
+        mPendingNameRequests.emplace(id);
+
+        mDataManagerProvider.getESIManager().fetchGenericName(id, [=](auto &&data, const auto &error) {
+            qDebug() << "Got generic name:" << id << data << " (" << error << ")";
+
+            std::lock_guard<std::recursive_mutex> lock{mGenericNameCacheMutex};
+
+            mPendingNameRequests.erase(id);
+
+            if (error.isEmpty())
+                mGenericNameCache[id] = std::move(data);
+            else
+                mGenericNameCache[id] = tr("(unknown)");
+
+            if (mPendingNameRequests.empty())
+                emit namesChanged();
+        });
     }
 
     EveTypeRepository::EntityPtr CachingEveDataProvider::getEveType(EveType::IdType id) const

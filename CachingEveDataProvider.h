@@ -125,6 +125,12 @@ namespace Evernus
 
         static QDir getCacheDir();
 
+    signals:
+        void genericNameRequested(quint64 id) const;
+
+    private slots:
+        void fetchGenericName(quint64 id);
+
     private:
         using TypeLocationPair = std::pair<EveType::IdType, quint64>;
         using TypeRegionPair = std::pair<EveType::IdType, uint>;
