@@ -378,8 +378,9 @@ namespace Evernus
 
     void ESIInterface::updateTokenAndContinue(Character::IdType charId, QString token, const QDateTime &expiry)
     {
-        mAccessTokens[charId].mToken = std::move(token);
-        mAccessTokens[charId].mExpiry = expiry;
+        auto &charToken = mAccessTokens[charId];
+        charToken.mToken = std::move(token);
+        charToken.mExpiry = expiry;
 
         const auto range = mPendingAuthRequests.equal_range(charId);
         for (auto it = range.first; it != range.second; ++it)
@@ -405,7 +406,8 @@ namespace Evernus
     template<class T>
     void ESIInterface::checkAuth(Character::IdType charId, T &&continuation) const
     {
-        if (mAccessTokens[charId].mExpiry < QDateTime::currentDateTime() || mAccessTokens[charId].mToken.isEmpty())
+        const auto &charToken = mAccessTokens[charId];
+        if (charToken.mExpiry < QDateTime::currentDateTime() || charToken.mToken.isEmpty())
         {
             mPendingAuthRequests.insert(std::make_pair(charId, std::forward<T>(continuation)));
             if (mPendingAuthRequests.count(charId) == 1)
