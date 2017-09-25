@@ -884,7 +884,7 @@ if(APPLE)
     # $ xcodebuild -project Evernus.xcodeproj -target install
     # OSX budle is ready.
     install(CODE "
-            execute_process(COMMAND ${MACDEPLOYQT_PATH}/macdeployqt \"${BUNDLE_PATH}\" -verbose=2)
+            execute_process(COMMAND ${MACDEPLOYQT_PATH}/macdeployqt \"${BUNDLE_PATH}\" \"-qmldir=${CMAKE_SOURCE_DIR}/qml\" -verbose=2)
             message(STATUS \"Creating dmg of the app\")
             execute_process(COMMAND hdiutil create -volname ${PROJECT_NAME} -srcfolder \"${BUNDLE_PATH}\" -ov -format UDZO \"${PROJECT_NAME}.dmg\")
             " COMPONENT Runtime
