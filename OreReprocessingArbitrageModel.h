@@ -51,8 +51,6 @@ namespace Evernus
         OreReprocessingArbitrageModel &operator =(OreReprocessingArbitrageModel &&) = default;
 
     private:
-        std::shared_ptr<Character> mCharacter;
-
         std::unordered_map<uint, int CharacterData::ReprocessingSkills::*> mReprocessingSkillMap;
 
         void insertSkillMapping(const QString &groupName, int CharacterData::ReprocessingSkills::* skill);
