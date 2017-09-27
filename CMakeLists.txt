@@ -85,7 +85,7 @@ elseif(WIN32)
     endif() # > VS2015
 endif()
 
-set(TRANSLATIONS lang/lang_pl_PL.ts lang/lang_de_DE.ts lang/lang_ru_RU.ts)
+set(TRANSLATIONS lang/lang_pl_PL.ts lang/lang_de_DE.ts)
 set_source_files_properties(${TRANSLATIONS} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/translations")
 
 add_definitions(-DQXT_STATIC -DQTDROPBOX_DEBUG)
