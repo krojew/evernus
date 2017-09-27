@@ -19,18 +19,21 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QSettings>
+#include <QSqlQuery>
 #include <QLabel>
 
 #include "LanguageComboBox.h"
 #include "UpdaterSettings.h"
 #include "UISettings.h"
+#include "DbSettings.h"
 
 #include "GeneralPreferencesWidget.h"
 
 namespace Evernus
 {
-    GeneralPreferencesWidget::GeneralPreferencesWidget(QWidget *parent)
-        : QWidget(parent)
+    GeneralPreferencesWidget::GeneralPreferencesWidget(const QSqlDatabase &db, QWidget *parent)
+        : QWidget{parent}
+        , mDb{db}
     {
         QSettings settings;
 
@@ -84,32 +87,46 @@ namespace Evernus
         generalGroupLayout->addWidget(mUseUTCDatesBtn);
         mUseUTCDatesBtn->setChecked(settings.value(UISettings::useUTCDatesKey, UISettings::useUTCDatesDefault).toBool());
 
-        auto uiLayout = new QFormLayout{};
-        generalGroupLayout->addLayout(uiLayout);
+        auto generalFormLayout = new QFormLayout{};
+        generalGroupLayout->addLayout(generalFormLayout);
 
         mDateFormEdit
             = new QLineEdit{settings.value(UISettings::dateTimeFormatKey, locale().dateTimeFormat(QLocale::ShortFormat)).toString(), this};
-        uiLayout->addRow(tr("Date/time format (requires restart):"), mDateFormEdit);
+        generalFormLayout->addRow(tr("Date/time format (requires restart):"), mDateFormEdit);
 
         mApplyDateFormatToGraphsBtn = new QCheckBox{tr("Apply date format to graphs (requires restart)"), this};
-        uiLayout->addRow(mApplyDateFormatToGraphsBtn);
+        generalFormLayout->addRow(mApplyDateFormatToGraphsBtn);
         mApplyDateFormatToGraphsBtn->setChecked(
             settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool());
 
         mColumnDelimiterEdit = new QComboBox{this};
+        generalFormLayout->addRow(tr("Column data delimiter:"), mColumnDelimiterEdit);
         mColumnDelimiterEdit->addItem(tr("Tab"), '\t');
         mColumnDelimiterEdit->addItem(tr("Space"), ' ');
         mColumnDelimiterEdit->addItem(tr(";"), ';');
         mColumnDelimiterEdit->addItem(tr(","), ',');
         mColumnDelimiterEdit->setCurrentIndex(mColumnDelimiterEdit->findData(
             settings.value(UISettings::columnDelimiterKey, UISettings::columnDelimiterDefault).value<char>()));
-        uiLayout->addRow(tr("Column data delimiter:"), mColumnDelimiterEdit);
+
+        mDbSynchronousEdit = new QComboBox{this};
+        generalFormLayout->addRow(tr("Database synchronous flag:"), mDbSynchronousEdit);
+        mDbSynchronousEdit->addItem(QStringLiteral("EXTRA"), 3);
+        mDbSynchronousEdit->addItem(QStringLiteral("FULL"), 2);
+        mDbSynchronousEdit->addItem(QStringLiteral("NORMAL"), 1);
+        mDbSynchronousEdit->addItem(QStringLiteral("OFF"), 0);
+        mDbSynchronousEdit->setToolTip(tr("Value of the \"synchronous\" flag for SQLite. Change it only when you know what it means."));
+        mDbSynchronousEdit->setCurrentIndex(mDbSynchronousEdit->findData(
+            settings.value(DbSettings::synchronousKey, DbSettings::synchronousDefault).toInt()));
 
         mainLayout->addStretch();
     }
 
     void GeneralPreferencesWidget::applySettings()
     {
+        const auto synchronousFlag = mDbSynchronousEdit->currentData().toInt();
+
+        mDb.exec(QStringLiteral("PRAGMA synchronous = %1").arg(synchronousFlag));
+
         QSettings settings;
         settings.setValue(UISettings::languageKey, mLanguageEdit->currentData(Qt::UserRole));
         settings.setValue(UISettings::minimizeToTrayKey, mMinimizeToTrayBtn->isChecked());
@@ -121,5 +138,6 @@ namespace Evernus
         settings.setValue(UISettings::dateTimeFormatKey, mDateFormEdit->text());
         settings.setValue(UISettings::applyDateFormatToGraphsKey, mApplyDateFormatToGraphsBtn->isChecked());
         settings.setValue(UISettings::columnDelimiterKey, mColumnDelimiterEdit->currentData().value<char>());
+        settings.setValue(DbSettings::synchronousKey, synchronousFlag);
     }
 }

@@ -289,6 +289,7 @@ add_executable(
     DateFilteredPlotWidget.h
     DateRangeWidget.cpp
     DateRangeWidget.h
+    DbSettings.h
     Defines.h
     DeviationSourceWidget.cpp
     DeviationSourceWidget.h

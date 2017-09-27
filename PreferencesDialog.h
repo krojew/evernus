@@ -18,6 +18,7 @@
 
 class QTreeWidgetItem;
 class QStackedWidget;
+class QSqlDatabase;
 
 namespace Evernus
 {
@@ -29,7 +30,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit PreferencesDialog(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
+        PreferencesDialog(const EveDataProvider &dataProvider,
+                          const QSqlDatabase &db,
+                          QWidget *parent = nullptr);
         virtual ~PreferencesDialog() = default;
 
         virtual void accept() override;

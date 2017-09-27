@@ -184,7 +184,7 @@ namespace Evernus
 
     void MainWindow::showPreferences()
     {
-        PreferencesDialog dlg{mEveDataProvider, this};
+        PreferencesDialog dlg{mEveDataProvider, mRepositoryProvider.getCharacterRepository().getDatabase(), this};
         connect(&dlg, &PreferencesDialog::clearCorpWalletData, this, &MainWindow::clearCorpWalletData);
 
         dlg.exec();

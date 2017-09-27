@@ -46,6 +46,7 @@
 #include "HttpService.h"
 #include "SyncDialog.h"
 #include "UISettings.h"
+#include "DbSettings.h"
 #include "PathUtils.h"
 #include "Updater.h"
 
@@ -1961,11 +1962,15 @@ namespace Evernus
         if (!mEveDb.open())
             BOOST_THROW_EXCEPTION(std::runtime_error{"Error opening Eve DB!"});
 
+        QSettings settings;
+
         // disable syncing changes to the disk between
         // each transaction. This means the database can become
         // corrupted in the event of a power failure or OS crash
         // but NOT in the event of an application error
-        mMainDb.exec("PRAGMA synchronous = OFF");
+        mMainDb.exec(QStringLiteral("PRAGMA synchronous = %1").arg(
+            settings.value(DbSettings::synchronousKey, DbSettings::synchronousDefault).toInt()
+        ));
 
         mKeyRepository.reset(new KeyRepository{mMainDb});
         mCorpKeyRepository.reset(new CorpKeyRepository{mMainDb});

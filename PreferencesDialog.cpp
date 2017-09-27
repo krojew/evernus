@@ -42,8 +42,8 @@
 
 namespace Evernus
 {
-    PreferencesDialog::PreferencesDialog(const EveDataProvider &dataProvider, QWidget *parent)
-        : QDialog(parent)
+    PreferencesDialog::PreferencesDialog(const EveDataProvider &dataProvider, const QSqlDatabase &db, QWidget *parent)
+        : QDialog{parent}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -60,7 +60,7 @@ namespace Evernus
         preferencesLayout->addWidget(mPreferencesStack, 1);
 
         std::vector<std::pair<QString, QWidget *>> categories;
-        categories.emplace_back(std::make_pair(tr("General"), new GeneralPreferencesWidget{this}));
+        categories.emplace_back(std::make_pair(tr("General"), new GeneralPreferencesWidget{db, this}));
         categories.emplace_back(std::make_pair(tr("Paths"), new PathPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Sounds"), new SoundPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Prices"), new PricePreferencesWidget{this}));

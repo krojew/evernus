@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <QSqlDatabase>
 #include <QWidget>
 
 class QCheckBox;
@@ -30,13 +31,15 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit GeneralPreferencesWidget(QWidget *parent = nullptr);
+        explicit GeneralPreferencesWidget(const QSqlDatabase &db, QWidget *parent = nullptr);
         virtual ~GeneralPreferencesWidget() = default;
 
     public slots:
         void applySettings();
 
     private:
+        QSqlDatabase mDb;
+
         LanguageComboBox *mLanguageEdit = nullptr;
         QCheckBox *mMinimizeToTrayBtn = nullptr;
         QCheckBox *mMinimizeByMarginToolBtn = nullptr;
@@ -47,5 +50,6 @@ namespace Evernus
         QLineEdit *mDateFormEdit = nullptr;
         QCheckBox *mApplyDateFormatToGraphsBtn = nullptr;
         QComboBox *mColumnDelimiterEdit = nullptr;
+        QComboBox *mDbSynchronousEdit = nullptr;
     };
 }
