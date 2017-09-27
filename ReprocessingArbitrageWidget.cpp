@@ -170,6 +170,7 @@ namespace Evernus
         toolBarLayout->addWidget(new QLabel{tr("If you wish to make the fastest trade as possible, be sure to set the correct <b>destination price type</b>. <b>Buying always uses sell orders.</b>"), this});
         toolBarLayout->addWidget(new QLabel{tr("Due to the fast nature of arbitrage, prices are not based on volume percentile."), this});
         toolBarLayout->addWidget(new QLabel{tr("Remember to import the source and resulting items to reprocess, otherwise you won't see any data."), this});
+        toolBarLayout->addWidget(new QLabel{tr("The results show only the items which make profit and ignore non-profitable ones."), this});
 
         mDataStack = new QStackedWidget{this};
         mainLayout->addWidget(mDataStack);
