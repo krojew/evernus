@@ -333,6 +333,124 @@
         <source>Custom station</source>
         <translation type="obsolete">Benutzerdefinierte Station</translation>
     </message>
+    <message>
+        <location filename="../CachingEveDataProvider.cpp" line="1027"/>
+        <source>(unknown)</source>
+        <translation type="unfinished">(unbekannt)</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="227"/>
+        <location filename="../Updater.cpp" line="238"/>
+        <location filename="../Updater.cpp" line="248"/>
+        <source>Error</source>
+        <translation type="unfinished">Fehler</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="227"/>
+        <source>Error contacting update server: %1</source>
+        <translation type="unfinished">Fehler beim Verbinden mit dem Updateserver: %1</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="238"/>
+        <source>Error parsing response from the update server: %1</source>
+        <translation type="unfinished">Fehler beim Auswerten der Antwort des Updateservers: %1</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="248"/>
+        <source>Missing update version information!</source>
+        <translation type="unfinished">Fehlende Update-Versionsinformationen!</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="261"/>
+        <source>No update found</source>
+        <translation type="unfinished">Kein Update vorhanden</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="261"/>
+        <source>Your current version is up-to-date.</source>
+        <translation type="unfinished">Deine Version ist aktuell.</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="270"/>
+        <location filename="../Updater.cpp" line="275"/>
+        <location filename="../Updater.cpp" line="286"/>
+        <source>Update found</source>
+        <translation type="unfinished">Update gefunden</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="270"/>
+        <source>A new version is available: %1
+Do you wish to download it now?</source>
+        <translation type="unfinished">Eine neue Version ist verfügbar: %1
+Willst Du sie nun herunterladen?</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="275"/>
+        <source>A new version is available: %1
+Do you wish to launch the updater?</source>
+        <translation type="unfinished">Eine neue Version ist verfügbar: %1
+Wollen Sie den Updater starten möchten?</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="286"/>
+        <source>Couldn&apos;t launch updater. Download manually?</source>
+        <translation type="unfinished">Lässt sich nicht starten Updater. Manuell herunterladen?</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="343"/>
+        <location filename="../Updater.cpp" line="374"/>
+        <location filename="../Updater.cpp" line="381"/>
+        <location filename="../Updater.cpp" line="393"/>
+        <location filename="../Updater.cpp" line="464"/>
+        <location filename="../Updater.cpp" line="491"/>
+        <location filename="../Updater.cpp" line="590"/>
+        <location filename="../Updater.cpp" line="603"/>
+        <source>Update</source>
+        <translation type="unfinished">Update</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="343"/>
+        <source>An error occurred during the update process.
+Database backup was saved as %1. Please read online help how to deal with this situation.</source>
+        <translation type="unfinished">Während des Updateprozess ist ein Fehler aufgetreten.
+Ein Backup der Datenbank wurde als %1 gespeichert. Bitte schaue in der Onlinehilfe nach was in dieser Situation zu tun ist.</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="374"/>
+        <source>This update requires re-importing all data.
+Please click on &quot;Import all&quot; after the update.</source>
+        <translation type="unfinished">Diese Update erfordert den Reimport aller Daten. Bitte klicke nach dem Update auf &quot;Alle importieren&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="381"/>
+        <source>This update requires re-importing all item prices.</source>
+        <translation type="unfinished">Diese Update erfordert den Reimport aller Artikelpreise.</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="393"/>
+        <source>This update requires re-importing all corporation transactions and journal.</source>
+        <translation type="unfinished">Diese Update erfordert den Reimport aller Corporation Transaktionen und Logbücher.</translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="464"/>
+        <source>This update requires settings your custom broker&apos;s fee again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="491"/>
+        <source>This update requires re-importing citadels.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="590"/>
+        <source>This update requires re-importing wallet journal.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Updater.cpp" line="603"/>
+        <source>This update requires importing wallet transactions again.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Evernus::APIInterface</name>
@@ -989,14 +1107,13 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::CachingEveDataProvider</name>
     <message>
-        <location filename="../CachingEveDataProvider.cpp" line="168"/>
-        <location filename="../CachingEveDataProvider.cpp" line="192"/>
-        <location filename="../CachingEveDataProvider.cpp" line="199"/>
+        <location filename="../CachingEveDataProvider.cpp" line="170"/>
+        <location filename="../CachingEveDataProvider.cpp" line="182"/>
         <source>(unknown)</source>
         <translation>(unbekannt)</translation>
     </message>
     <message>
-        <location filename="../CachingEveDataProvider.cpp" line="415"/>
+        <location filename="../CachingEveDataProvider.cpp" line="398"/>
         <source>- unknown location -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2412,44 +2529,44 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="188"/>
+        <location filename="../ESIManager.cpp" line="196"/>
         <source>Citadel order import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="188"/>
+        <location filename="../ESIManager.cpp" line="196"/>
         <source>Seems like you are importing citadel orders for the first time. CCP only allows importing orders from citadels you have access to. This means you need to authenticate yourself with Eve SSO, if you haven&apos;t done that already (please wait for the SSO window to open).
 
 Also, please note that due to large numbers of citadels in some regions, the import might take much longer. Remember you can toggle citadel import in the Preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="880"/>
+        <location filename="../ESIManager.cpp" line="901"/>
         <source>SSO Authentication for unknown character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1420"/>
+        <location filename="../ESIManager.cpp" line="1443"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="898"/>
+        <location filename="../ESIManager.cpp" line="919"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="979"/>
+        <location filename="../ESIManager.cpp" line="1000"/>
         <source>Empty access token!</source>
         <translation type="unfinished">Leeres Access Token!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1208"/>
+        <location filename="../ESIManager.cpp" line="1231"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished">Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1242"/>
+        <location filename="../ESIManager.cpp" line="1265"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7469,32 +7586,37 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::SSOAuthWidget</name>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="42"/>
+        <location filename="../SSOAuthWidget.cpp" line="45"/>
+        <source>Clear cookies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SSOAuthWidget.cpp" line="49"/>
         <source>Toggle external browser</source>
         <translation type="unfinished">Externen Browser verwenden</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="66"/>
+        <location filename="../SSOAuthWidget.cpp" line="67"/>
         <source>To authorize inside the browser, use the following link and paste the resulting code below: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
         <translation type="unfinished">Um sich im Browser anzumelden, benetze den folgenden Link und füge den erzeugten Code nachstehend ein: &lt;a href=&apos;%1%&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="78"/>
+        <location filename="../SSOAuthWidget.cpp" line="79"/>
         <source>paste the resulting code here</source>
         <translation type="unfinished">Hier den erzeugten Code einfügen</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="80"/>
+        <location filename="../SSOAuthWidget.cpp" line="81"/>
         <source>Authorize</source>
         <translation type="unfinished">Authorisieren</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="101"/>
+        <location filename="../SSOAuthWidget.cpp" line="103"/>
         <source>SSO Authentication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="102"/>
+        <location filename="../SSOAuthWidget.cpp" line="104"/>
         <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
         <translation type="unfinished">Der angegeben Code ist ungültig. Bitte stelle sicher das alle Zeichen kopiert wurden oder verwende die interne Browseranmeldung.</translation>
     </message>
@@ -9319,82 +9441,48 @@ Job tax: %3</source>
 <context>
     <name>Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="227"/>
-        <location filename="../Updater.cpp" line="238"/>
-        <location filename="../Updater.cpp" line="248"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation type="vanished">Fehler</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="227"/>
         <source>Error contacting update server: %1</source>
-        <translation>Fehler beim Verbinden mit dem Updateserver: %1</translation>
+        <translation type="vanished">Fehler beim Verbinden mit dem Updateserver: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="238"/>
         <source>Error parsing response from the update server: %1</source>
-        <translation>Fehler beim Auswerten der Antwort des Updateservers: %1</translation>
+        <translation type="vanished">Fehler beim Auswerten der Antwort des Updateservers: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="248"/>
         <source>Missing update version information!</source>
-        <translation>Fehlende Update-Versionsinformationen!</translation>
+        <translation type="vanished">Fehlende Update-Versionsinformationen!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="261"/>
         <source>No update found</source>
-        <translation>Kein Update vorhanden</translation>
+        <translation type="vanished">Kein Update vorhanden</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="261"/>
         <source>Your current version is up-to-date.</source>
-        <translation>Deine Version ist aktuell.</translation>
+        <translation type="vanished">Deine Version ist aktuell.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="270"/>
-        <location filename="../Updater.cpp" line="275"/>
-        <location filename="../Updater.cpp" line="286"/>
         <source>Update found</source>
-        <translation>Update gefunden</translation>
+        <translation type="vanished">Update gefunden</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="270"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
-        <translation>Eine neue Version ist verfügbar: %1
+        <translation type="vanished">Eine neue Version ist verfügbar: %1
 Willst Du sie nun herunterladen?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="275"/>
         <source>A new version is available: %1
 Do you wish to launch the updater?</source>
-        <translation>Eine neue Version ist verfügbar: %1
+        <translation type="vanished">Eine neue Version ist verfügbar: %1
 Wollen Sie den Updater starten möchten?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="286"/>
         <source>Couldn&apos;t launch updater. Download manually?</source>
-        <translation>Lässt sich nicht starten Updater. Manuell herunterladen?</translation>
-    </message>
-    <message>
-        <location filename="../Updater.cpp" line="464"/>
-        <source>This update requires settings your custom broker&apos;s fee again.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Updater.cpp" line="491"/>
-        <source>This update requires re-importing citadels.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Updater.cpp" line="590"/>
-        <source>This update requires re-importing wallet journal.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Updater.cpp" line="603"/>
-        <source>This update requires importing wallet transactions again.</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Lässt sich nicht starten Updater. Manuell herunterladen?</translation>
     </message>
     <message>
         <location filename="../Updater.cpp" line="176"/>
@@ -9404,39 +9492,27 @@ Wollen Sie den Updater starten möchten?</translation>
         <translation>Fehler beim Aktualisieren der Datenbankversion: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="343"/>
-        <location filename="../Updater.cpp" line="374"/>
-        <location filename="../Updater.cpp" line="381"/>
-        <location filename="../Updater.cpp" line="393"/>
-        <location filename="../Updater.cpp" line="464"/>
-        <location filename="../Updater.cpp" line="491"/>
-        <location filename="../Updater.cpp" line="590"/>
-        <location filename="../Updater.cpp" line="603"/>
         <source>Update</source>
-        <translation>Update</translation>
+        <translation type="vanished">Update</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="343"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
-        <translation>Während des Updateprozess ist ein Fehler aufgetreten.
+        <translation type="vanished">Während des Updateprozess ist ein Fehler aufgetreten.
 Ein Backup der Datenbank wurde als %1 gespeichert. Bitte schaue in der Onlinehilfe nach was in dieser Situation zu tun ist.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="374"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
-        <translation>Diese Update erfordert den Reimport aller Daten. Bitte klicke nach dem Update auf &quot;Alle importieren&quot;.</translation>
+        <translation type="vanished">Diese Update erfordert den Reimport aller Daten. Bitte klicke nach dem Update auf &quot;Alle importieren&quot;.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="381"/>
         <source>This update requires re-importing all item prices.</source>
-        <translation>Diese Update erfordert den Reimport aller Artikelpreise.</translation>
+        <translation type="vanished">Diese Update erfordert den Reimport aller Artikelpreise.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="393"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
-        <translation>Diese Update erfordert den Reimport aller Corporation Transaktionen und Logbücher.</translation>
+        <translation type="vanished">Diese Update erfordert den Reimport aller Corporation Transaktionen und Logbücher.</translation>
     </message>
 </context>
 <context>
