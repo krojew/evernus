@@ -256,7 +256,9 @@ Item {
 
                 Label {
                     id: quantityText
-                    text: (quantityProduced > 0) ? (qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(Utils.formatDuration(time))) : (qsTr("Quantity produced: N/A"))
+                    text: (isOutput) ?
+                          (qsTr("Quantity produced: %L1 / %2  Total: %L3").arg(quantityProduced).arg(Utils.formatDuration(time)).arg(quantityProduced * runs)) :
+                          ((quantityProduced > 0) ? (qsTr("Quantity produced: %L1 / %2").arg(quantityProduced).arg(Utils.formatDuration(time))) : (qsTr("Quantity produced: N/A")))
                     color: "#cccccc"
                     Layout.fillWidth: true
                     Layout.columnSpan: 2

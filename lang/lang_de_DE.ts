@@ -9401,54 +9401,59 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen (dabei können Ihre Kontosicher
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="259"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="260"/>
+        <source>Quantity produced: %L1 / %2  Total: %L3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="261"/>
         <source>Quantity produced: %L1 / %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="259"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="261"/>
         <source>Quantity produced: N/A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="267"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="269"/>
         <source>Total production time: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="267"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="269"/>
         <source>Total production time: N/A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="280"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="282"/>
         <source>Total cost: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="299"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="301"/>
         <source>Component cost: %1
 Job fee: %2
 Job tax: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="319"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="321"/>
         <source>All required volume is not available on the market. Assuming the rest will be bought at the best price.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="332"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="334"/>
         <source>Profit from selling: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="350"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="352"/>
         <source>All volume could not be sold on the market. Assuming the rest will be sold at the best price.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Industry/Manufacturing/Type.qml" line="357"/>
+        <location filename="../qml/Industry/Manufacturing/Type.qml" line="359"/>
         <source>ISK/h: %1</source>
         <translation type="unfinished"></translation>
     </message>
