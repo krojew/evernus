@@ -316,26 +316,6 @@ namespace Evernus
         doFetchContractItems(key, characterId, contractId, callback);
     }
 
-    void APIManager::fetchGenericName(quint64 id, const Callback<QString> &callback) const
-    {
-#if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
-        mInterface.fetchGenericName(id, [=, callback = callback](const QString &response, const QString &error) {
-#else
-        mInterface.fetchGenericName(id, [=](const QString &response, const QString &error) {
-#endif
-            try
-            {
-                handlePotentialError(response, error);
-
-                callback(parseResult<QString>(response), QString{});
-            }
-            catch (const std::exception &e)
-            {
-                callback(QString{}, e.what());
-            }
-        });
-    }
-
     template<class Key>
     void APIManager::fetchWalletJournal(const Key &key,
                                         Character::IdType characterId,

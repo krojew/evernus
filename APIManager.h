@@ -92,8 +92,6 @@ namespace Evernus
                                 Contract::IdType contractId,
                                 const Callback<ContractItemList> &callback) const;
 
-        void fetchGenericName(quint64 id, const Callback<QString> &callback) const;
-
     private:
         static constexpr int defaultWalletAccountKey = 1000;
 

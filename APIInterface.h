@@ -81,7 +81,6 @@ namespace Evernus
                                 Character::IdType characterId,
                                 Contract::IdType contractId,
                                 const Callback &callback) const;
-        void fetchGenericName(quint64 id, const Callback &callback) const;
 
     private slots:
         void processSslErrors(const QList<QSslError> &errors);
