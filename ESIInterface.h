@@ -16,6 +16,7 @@
 
 #include <unordered_map>
 #include <functional>
+#include <mutex>
 
 #include <boost/optional.hpp>
 
@@ -92,6 +93,9 @@ namespace Evernus
     signals:
         void tokenRequested(Character::IdType charId) const;
 
+    protected:
+        virtual void customEvent(QEvent *event) override;
+
     private slots:
         void processSslErrors(const QList<QSslError> &errors);
 
@@ -110,6 +114,9 @@ namespace Evernus
         struct TaggedInvoke;
 
         static const QString esiUrl;
+
+        mutable std::mutex mObjectStateMutex;
+        mutable std::recursive_mutex mAuthMutex;
 
         mutable QNetworkAccessManager mNetworkManager;
 
@@ -148,6 +155,9 @@ namespace Evernus
         QNetworkRequest prepareRequest(Character::IdType charId, const QString &url, const QString &query) const;
 
         uint getNumRetries() const;
+
+        template<class T>
+        void runNowOrLater(T callback) const;
 
         static QString getError(const QByteArray &reply);
         static QString getError(const QString &url, const QString &query, QNetworkReply &reply);

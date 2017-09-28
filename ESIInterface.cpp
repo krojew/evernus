@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QtDebug>
+
 #include <QCoreApplication>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -19,11 +21,12 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QUrlQuery>
-#include <QtDebug>
+#include <QThread>
 #include <QUrl>
 
 #include "NetworkSettings.h"
 #include "SecurityHelper.h"
+#include "CallbackEvent.h"
 #include "ReplyTimeout.h"
 
 #include "ESIInterface.h"
@@ -378,6 +381,8 @@ namespace Evernus
 
     void ESIInterface::updateTokenAndContinue(Character::IdType charId, QString token, const QDateTime &expiry)
     {
+        std::lock_guard<std::recursive_mutex> lock{mAuthMutex};
+
         auto &charToken = mAccessTokens[charId];
         charToken.mToken = std::move(token);
         charToken.mExpiry = expiry;
@@ -391,11 +396,28 @@ namespace Evernus
 
     void ESIInterface::handleTokenError(Character::IdType charId, const QString &error)
     {
+        std::lock_guard<std::recursive_mutex> lock{mAuthMutex};
+
         const auto requests = mPendingAuthRequests.equal_range(charId);
         for (auto request = requests.first; request != requests.second; ++request)
             request->second(error);
 
         mPendingAuthRequests.erase(requests.first, requests.second);
+    }
+
+    void ESIInterface::customEvent(QEvent *event)
+    {
+        Q_ASSERT(event != nullptr);
+
+        if (event->type() == CallbackEvent::customType())
+        {
+            event->accept();
+            static_cast<CallbackEvent *>(event)->execute();
+        }
+        else
+        {
+            event->ignore();
+        }
     }
 
     void ESIInterface::processSslErrors(const QList<QSslError> &errors)
@@ -406,16 +428,30 @@ namespace Evernus
     template<class T>
     void ESIInterface::checkAuth(Character::IdType charId, T &&continuation) const
     {
-        const auto &charToken = mAccessTokens[charId];
-        if (charToken.mExpiry < QDateTime::currentDateTime() || charToken.mToken.isEmpty())
+        mAuthMutex.lock();
+
+        try
         {
-            mPendingAuthRequests.insert(std::make_pair(charId, std::forward<T>(continuation)));
-            if (mPendingAuthRequests.count(charId) == 1)
-                emit tokenRequested(charId);
+            const auto &charToken = mAccessTokens[charId];
+            if (charToken.mExpiry < QDateTime::currentDateTime() || charToken.mToken.isEmpty())
+            {
+                mPendingAuthRequests.insert(std::make_pair(charId, std::forward<T>(continuation)));
+                if (mPendingAuthRequests.count(charId) == 1)
+                {
+                    mAuthMutex.unlock();
+                    emit tokenRequested(charId);
+                }
+            }
+            else
+            {
+                mAuthMutex.unlock();
+                std::forward<T>(continuation)(QString{});
+            }
         }
-        else
+        catch (...)
         {
-            std::forward<T>(continuation)(QString{});
+            mAuthMutex.unlock();
+            throw;
         }
     }
 
@@ -532,30 +568,32 @@ namespace Evernus
     template<class T, class ResultTag>
     void ESIInterface::asyncGet(const QString &url, const QString &query, const T &continuation, uint retries) const
     {
-        qDebug() << "ESI request:" << url << ":" << query;
-        qDebug() << "Retries" << retries;
+        runNowOrLater([=] {
+            qDebug() << "ESI request:" << url << ":" << query;
+            qDebug() << "Retries" << retries;
 
-        auto reply = mNetworkManager.get(prepareRequest(url, query));
-        Q_ASSERT(reply != nullptr);
+            auto reply = mNetworkManager.get(prepareRequest(url, query));
+            Q_ASSERT(reply != nullptr);
 
-        new ReplyTimeout{*reply};
+            new ReplyTimeout{*reply};
 
-        connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
-        connect(reply, &QNetworkReply::finished, this, [=] {
-            reply->deleteLater();
+            connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
+            connect(reply, &QNetworkReply::finished, this, [=] {
+                reply->deleteLater();
 
-            const auto error = reply->error();
-            if (Q_UNLIKELY(error != QNetworkReply::NoError))
-            {
-                if (retries > 0)
-                    asyncGet<T, ResultTag>(url, query, continuation, retries - 1);
+                const auto error = reply->error();
+                if (Q_UNLIKELY(error != QNetworkReply::NoError))
+                {
+                    if (retries > 0)
+                        asyncGet<T, ResultTag>(url, query, continuation, retries - 1);
+                    else
+                        TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                }
                 else
-                    TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
-            }
-            else
-            {
-                TaggedInvoke<ResultTag>::invoke(reply->readAll(), *reply, continuation);
-            }
+                {
+                    TaggedInvoke<ResultTag>::invoke(reply->readAll(), *reply, continuation);
+                }
+            });
         });
     }
 
@@ -563,139 +601,149 @@ namespace Evernus
     void ESIInterface
     ::asyncGet(Character::IdType charId, const QString &url, const QString &query, const T &continuation, uint retries, bool suppressForbidden) const
     {
-        qDebug() << "ESI request:" << url << ":" << query;
-        qDebug() << "Retries" << retries;
+        runNowOrLater([=] {
+            qDebug() << "ESI request:" << url << ":" << query;
+            qDebug() << "Retries" << retries;
 
-        auto reply = mNetworkManager.get(prepareRequest(charId, url, query));
-        Q_ASSERT(reply != nullptr);
+            auto reply = mNetworkManager.get(prepareRequest(charId, url, query));
+            Q_ASSERT(reply != nullptr);
 
-        new ReplyTimeout{*reply};
+            new ReplyTimeout{*reply};
 
-        connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
-        connect(reply, &QNetworkReply::finished, this, [=] {
-            reply->deleteLater();
+            connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
+            connect(reply, &QNetworkReply::finished, this, [=] {
+                reply->deleteLater();
 
-            const auto error = reply->error();
-            if (Q_UNLIKELY(error != QNetworkReply::NoError))
-            {
-                if (error == QNetworkReply::AuthenticationRequiredError)
+                const auto error = reply->error();
+                if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
-                    // expired token?
-                    tryAuthAndContinue(charId, [=](const auto &error) {
-                        if (error.isEmpty())
-                            asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden);
-                        else
-                            TaggedInvoke<ResultTag>::invoke(error, *reply, continuation);
-                    });
-                }
-                else
-                {
-                    if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
+                    if (error == QNetworkReply::AuthenticationRequiredError)
                     {
-                        if (suppressForbidden)
-                            TaggedInvoke<ResultTag>::invoke(QString{}, *reply, continuation);
-                        else
-                            TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
-                    }
-                    else if (retries > 0)
-                    {
-                        asyncGet<T, ResultTag>(charId, url, query, continuation, retries - 1, suppressForbidden);
+                        // expired token?
+                        tryAuthAndContinue(charId, [=](const auto &error) {
+                            if (error.isEmpty())
+                                asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden);
+                            else
+                                TaggedInvoke<ResultTag>::invoke(error, *reply, continuation);
+                        });
                     }
                     else
                     {
-                        TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                        if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
+                        {
+                            if (suppressForbidden)
+                                TaggedInvoke<ResultTag>::invoke(QString{}, *reply, continuation);
+                            else
+                                TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                        }
+                        else if (retries > 0)
+                        {
+                            asyncGet<T, ResultTag>(charId, url, query, continuation, retries - 1, suppressForbidden);
+                        }
+                        else
+                        {
+                            TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                        }
                     }
                 }
-            }
-            else
-            {
-                TaggedInvoke<ResultTag>::invoke(reply->readAll(), *reply, continuation);
-            }
+                else
+                {
+                    TaggedInvoke<ResultTag>::invoke(reply->readAll(), *reply, continuation);
+                }
+            });
         });
     }
 
     template<class T>
     void ESIInterface::post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const
     {
-        qDebug() << "ESI request:" << url << ":" << query;
+        runNowOrLater([=] {
+            qDebug() << "ESI request:" << url << ":" << query;
 
-        auto request = prepareRequest(charId, url, query);
-        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+            auto request = prepareRequest(charId, url, query);
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-        auto reply = mNetworkManager.post(request, QByteArray{});
-        Q_ASSERT(reply != nullptr);
+            auto reply = mNetworkManager.post(request, QByteArray{});
+            Q_ASSERT(reply != nullptr);
 
-        new ReplyTimeout{*reply};
+            new ReplyTimeout{*reply};
 
-        connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
-        connect(reply, &QNetworkReply::finished, this, [=] {
-            reply->deleteLater();
+            connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
+            connect(reply, &QNetworkReply::finished, this, [=] {
+                reply->deleteLater();
 
-            const auto error = reply->error();
-            if (Q_UNLIKELY(error != QNetworkReply::NoError))
-            {
-                if (error == QNetworkReply::AuthenticationRequiredError)
+                const auto error = reply->error();
+                if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
-                    // expired token?
-                    tryAuthAndContinue(charId, [=](const auto &error) {
-                        if (error.isEmpty())
-                            post(charId, url, query, errorCallback);
-                        else
-                            errorCallback(error);
-                    });
+                    if (error == QNetworkReply::AuthenticationRequiredError)
+                    {
+                        // expired token?
+                        tryAuthAndContinue(charId, [=](const auto &error) {
+                            if (error.isEmpty())
+                                post(charId, url, query, errorCallback);
+                            else
+                                errorCallback(error);
+                        });
+                    }
+                    else
+                    {
+                        errorCallback(getError(url, query, *reply));
+                    }
                 }
                 else
                 {
-                    errorCallback(getError(url, query, *reply));
+                    const auto error = getError(reply->readAll());
+                    if (!error.isEmpty())
+                        errorCallback(error);
                 }
-            }
-            else
-            {
-                const auto error = getError(reply->readAll());
-                if (!error.isEmpty())
-                    errorCallback(error);
-            }
+            });
         });
     }
 
     template<class T>
     void ESIInterface::post(const QString &url, const QByteArray &body, ErrorCallback &&errorCallback, T &&resultCallback) const
     {
-        qDebug() << "ESI request:" << url << ":" << body;
+        runNowOrLater([=] {
+            qDebug() << "ESI request:" << url << ":" << body;
 
-        auto request = prepareRequest(url, {});
-        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+            auto request = prepareRequest(url, {});
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-        auto reply = mNetworkManager.post(request, body);
-        Q_ASSERT(reply != nullptr);
+            auto reply = mNetworkManager.post(request, body);
+            Q_ASSERT(reply != nullptr);
 
-        new ReplyTimeout{*reply};
+            new ReplyTimeout{*reply};
 
-        connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
-        connect(reply, &QNetworkReply::finished, this, [=] {
-            reply->deleteLater();
+            connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
+            connect(reply, &QNetworkReply::finished, this, [=] {
+                reply->deleteLater();
 
-            const auto error = reply->error();
-            if (Q_UNLIKELY(error != QNetworkReply::NoError))
-            {
-                errorCallback(getError(url, {}, *reply));
-            }
-            else
-            {
-                const auto resultText = reply->readAll();
-                const auto error = getError(resultText);
-                if (!error.isEmpty())
-                    errorCallback(error);
+                const auto error = reply->error();
+                if (Q_UNLIKELY(error != QNetworkReply::NoError))
+                {
+                    errorCallback(getError(url, {}, *reply));
+                }
                 else
-                    resultCallback(resultText);
-            }
+                {
+                    const auto resultText = reply->readAll();
+                    const auto error = getError(resultText);
+                    if (!error.isEmpty())
+                        errorCallback(error);
+                    else
+                        resultCallback(resultText);
+                }
+            });
         });
     }
 
     template<class T>
     void ESIInterface::tryAuthAndContinue(Character::IdType charId, T &&continuation) const
     {
-        mAccessTokens.erase(charId);
+        {
+            std::lock_guard<std::recursive_mutex> lock{mAuthMutex};
+            mAccessTokens.erase(charId);
+        }
+
         checkAuth(charId, std::forward<T>(continuation));
     }
 
@@ -722,7 +770,11 @@ namespace Evernus
     QNetworkRequest ESIInterface::prepareRequest(Character::IdType charId, const QString &url, const QString &query) const
     {
         auto request = prepareRequest(url, query);
-        request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer ") + mAccessTokens[charId].mToken.toLatin1());
+
+        {
+            std::lock_guard<std::recursive_mutex> lock{mAuthMutex};
+            request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer ") + mAccessTokens[charId].mToken.toLatin1());
+        }
 
         return request;
     }
@@ -730,6 +782,26 @@ namespace Evernus
     uint ESIInterface::getNumRetries() const
     {
         return mSettings.value(NetworkSettings::maxRetriesKey, NetworkSettings::maxRetriesDefault).toUInt();
+    }
+
+    template<class T>
+    void ESIInterface::runNowOrLater(T callback) const
+    {
+        if (thread() == QThread::currentThread())
+        {
+            callback();
+        }
+        else
+        {
+            std::lock_guard<std::mutex> lock{mObjectStateMutex};
+
+            // this is actually a design flaw in Qt - postEvent() is supposed to be thread-safe and the receiver is synchronized inside
+            // but!
+            // this is nowhere stated and receiver is non-const, despite no visible state change, so we cannot simply depend on internal implementation
+            // hence an artificial mutex and an artificial const_cast
+            // because obviously nobody at Qt has heard of mutable mutexes
+            QCoreApplication::postEvent(const_cast<ESIInterface *>(this), new CallbackEvent{std::move(callback)});
+        }
     }
 
     QString ESIInterface::getError(const QByteArray &reply)

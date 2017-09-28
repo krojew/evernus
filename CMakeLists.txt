@@ -183,6 +183,8 @@ add_executable(
     CachingNetworkAccessManagerFactory.h
     CalculatingDataWidget.cpp
     CalculatingDataWidget.h
+    CallbackEvent.cpp
+    CallbackEvent.h
     CallbackExternalOrderImporter.cpp
     CallbackExternalOrderImporter.h
     ChainableFileLogger.cpp
