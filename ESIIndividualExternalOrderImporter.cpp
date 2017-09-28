@@ -31,10 +31,11 @@ namespace Evernus
                                            QByteArray clientSecret,
                                            const EveDataProvider &dataProvider,
                                            const CharacterRepository &characterRepo,
+                                           ESIInterfaceManager &interfaceManager,
                                            QObject *parent)
         : CallbackExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
-        , mManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
+        , mManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
     {
         connect(&mManager, &ESIManager::error, this, &ESIIndividualExternalOrderImporter::genericError);
     }
@@ -103,10 +104,5 @@ namespace Evernus
             emit externalOrdersChanged(mResult);
             mResult.clear();
         }
-    }
-
-    void ESIIndividualExternalOrderImporter::handleNewPreferences()
-    {
-        mManager.handleNewPreferences();
     }
 }

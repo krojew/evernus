@@ -247,7 +247,8 @@ int main(int argc, char *argv[])
         auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getSSOClientId(),
                                                                                     app.getSSOClientSecret(),
                                                                                     app.getDataProvider(),
-                                                                                    app.getCharacterRepository());
+                                                                                    app.getCharacterRepository(),
+                                                                                    app.getESIInterfaceManager());
         auto webImporterPtr = webImporter.get();
 
         app.registerImporter(Evernus::ExternalOrderImporterNames::webImporter, std::move(webImporter));
@@ -280,6 +281,7 @@ int main(int argc, char *argv[])
                                         app,
                                         app,
                                         app,
+                                        app.getESIInterfaceManager(),
                                         app};
 
             QObject::connect(&mainWnd, &Evernus::MainWindow::refreshCharacters,

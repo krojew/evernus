@@ -33,10 +33,11 @@ namespace Evernus
                                                          QByteArray clientSecret,
                                                          const EveDataProvider &dataProvider,
                                                          const CharacterRepository &characterRepo,
+                                                         ESIInterfaceManager &interfaceManager,
                                                          QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
-        , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
+        , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
         , mEveCentralManager{mDataProvider}
     {
         connect(&mESIManager, &ESIManager::error, this, &MarketAnalysisDataFetcher::genericError);
@@ -98,11 +99,6 @@ namespace Evernus
             finishOrderImport();
         if (mHistoryCounter.isEmpty())
             finishHistoryImport();
-    }
-
-    void MarketAnalysisDataFetcher::handleNewPreferences()
-    {
-        mESIManager.handleNewPreferences();
     }
 
     void MarketAnalysisDataFetcher::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)

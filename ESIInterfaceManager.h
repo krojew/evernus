@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <atomic>
 #include <memory>
 
 #include <QDateTime>
@@ -34,16 +35,16 @@ namespace Evernus
 
     public:
         explicit ESIInterfaceManager(QObject *parent = nullptr);
-        ESIInterfaceManager(const ESIInterfaceManager &) = default;
+        ESIInterfaceManager(const ESIInterfaceManager &) = delete;
         ESIInterfaceManager(ESIInterfaceManager &&) = default;
         virtual ~ESIInterfaceManager() = default;
 
         void handleNewPreferences();
 
-        ESIInterfaceManager &operator =(const ESIInterfaceManager &) = default;
-        ESIInterfaceManager &operator =(ESIInterfaceManager &&) = default;
+        const ESIInterface &selectNextInterface();
 
-        static const ESIInterface &selectNextInterface();
+        ESIInterfaceManager &operator =(const ESIInterfaceManager &) = delete;
+        ESIInterfaceManager &operator =(ESIInterfaceManager &&) = default;
 
     signals:
         void tokenRequested(Character::IdType charId) const;
@@ -52,11 +53,10 @@ namespace Evernus
         void acquiredToken(Character::IdType charId, const QString &accessToken, const QDateTime &expiry);
 
     private:
-        static std::vector<std::unique_ptr<ESIInterface, QObjectDeleteLaterDeleter>> mInterfaces;
-        static std::size_t mCurrentInterface;
+        std::vector<std::unique_ptr<ESIInterface, QObjectDeleteLaterDeleter>> mInterfaces;
+        std::atomic_size_t mCurrentInterface{0};
 
         void connectInterfaces();
-
-        static void createInterfaces();
+        void createInterfaces();
     };
 }

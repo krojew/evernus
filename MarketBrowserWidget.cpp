@@ -67,6 +67,7 @@ namespace Evernus
                                              const MarketOrderProvider &orderProvider,
                                              const MarketOrderProvider &corpOrderProvider,
                                              EveDataProvider &dataProvider,
+                                             ESIInterfaceManager &interfaceManager,
                                              TaskManager &taskManager,
                                              const ItemCostProvider &costProvider,
                                              QByteArray clientId,
@@ -88,7 +89,7 @@ namespace Evernus
         , mFavoriteNameModel{mDataProvider}
         , mExternalOrderSellModel{mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider}
         , mExternalOrderBuyModel{mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider}
-        , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
+        , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -383,8 +384,6 @@ namespace Evernus
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
         });
-        connect(this, &MarketBrowserWidget::preferencesChanged,
-                &mDataFetcher, &MarketOrderDataFetcher::handleNewPreferences);
     }
 
     void MarketBrowserWidget::setCharacter(Character::IdType id)

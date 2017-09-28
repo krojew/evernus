@@ -23,11 +23,16 @@ namespace Evernus
                                                                  QByteArray clientSecret,
                                                                  const EveDataProvider &dataProvider,
                                                                  const CharacterRepository &characterRepo,
+                                                                 ESIInterfaceManager &interfaceManager,
                                                                  QObject *parent)
         : ExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
-        , mESIIndividualImporter{std::make_unique<ESIIndividualExternalOrderImporter>(clientId, clientSecret, mDataProvider, characterRepo, parent)}
-        , mESIWholeImporter{std::make_unique<ESIWholeExternalOrderImporter>(std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, parent)}
+        , mESIIndividualImporter{
+            std::make_unique<ESIIndividualExternalOrderImporter>(clientId, clientSecret, mDataProvider, characterRepo, interfaceManager, parent)
+        }
+        , mESIWholeImporter{
+            std::make_unique<ESIWholeExternalOrderImporter>(std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager, parent)
+        }
         , mEveCentralImporter{std::make_unique<EveCentralExternalOrderImporter>(mDataProvider, parent)}
     {
         setCurrentImporter();
@@ -62,9 +67,6 @@ namespace Evernus
 
     void ProxyWebExternalOrderImporter::handleNewPreferences()
     {
-        mESIIndividualImporter->handleNewPreferences();
-        mESIWholeImporter->handleNewPreferences();
-
         setCurrentImporter();
     }
 

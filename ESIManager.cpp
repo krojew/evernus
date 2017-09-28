@@ -37,6 +37,7 @@
 
 #include <boost/scope_exit.hpp>
 
+#include "ESIInterfaceManager.h"
 #include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "NetworkSettings.h"
@@ -64,10 +65,13 @@ namespace Evernus
 
     bool ESIManager::mFirstTimeCitadelOrderImport = true;
 
+    std::unordered_set<Character::IdType> ESIManager::mPendingTokenRefresh;
+
     ESIManager::ESIManager(QByteArray clientId,
                            QByteArray clientSecret,
                            const EveDataProvider &dataProvider,
                            const CharacterRepository &characterRepo,
+                           ESIInterfaceManager &interfaceManager,
                            QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
@@ -75,6 +79,7 @@ namespace Evernus
         , mClientId{std::move(clientId)}
         , mClientSecret{std::move(clientSecret)}
         , mCrypt{SSOSettings::cryptKey}
+        , mInterfaceManager{interfaceManager}
     {
         QSettings settings;
         settings.beginGroup(SSOSettings::refreshTokenGroup);
@@ -1019,11 +1024,6 @@ namespace Evernus
             mFetchingToken = false;
             throw;
         }
-    }
-
-    void ESIManager::handleNewPreferences()
-    {
-        mInterfaceManager.handleNewPreferences();
     }
 
     void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,

@@ -21,15 +21,10 @@
 
 namespace Evernus
 {
-    std::vector<std::unique_ptr<ESIInterface, QObjectDeleteLaterDeleter>> ESIInterfaceManager::mInterfaces;
-    std::size_t ESIInterfaceManager::mCurrentInterface = 0;
-
     ESIInterfaceManager::ESIInterfaceManager(QObject *parent)
         : QObject{parent}
     {
-        if (Q_UNLIKELY(mInterfaces.empty()))
-            createInterfaces();
-
+        createInterfaces();
         connectInterfaces();
     }
 

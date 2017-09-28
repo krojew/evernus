@@ -30,7 +30,6 @@
 
 #include "QObjectDeleteLaterDeleter.h"
 #include "IndustryCostIndices.h"
-#include "ESIInterfaceManager.h"
 #include "MarketHistoryEntry.h"
 #include "WalletJournalEntry.h"
 #include "WalletTransactions.h"
@@ -51,6 +50,7 @@ class QDateTime;
 
 namespace Evernus
 {
+    class ESIInterfaceManager;
     class CharacterRepository;
     class EveDataProvider;
     class ExternalOrder;
@@ -76,6 +76,7 @@ namespace Evernus
                    QByteArray clientSecret,
                    const EveDataProvider &dataProvider,
                    const CharacterRepository &characterRepo,
+                   ESIInterfaceManager &interfaceManager,
                    QObject *parent = nullptr);
         ESIManager(const ESIManager &) = default;
         ESIManager(ESIManager &&) = default;
@@ -126,8 +127,6 @@ namespace Evernus
     public slots:
         void fetchToken(Character::IdType charId);
 
-        void handleNewPreferences();
-
     private:
         static const QString loginUrl;
         static const QString redirectDomain;
@@ -138,6 +137,8 @@ namespace Evernus
 
         static bool mFirstTimeCitadelOrderImport;
 
+        static std::unordered_set<Character::IdType> mPendingTokenRefresh;
+
         const EveDataProvider &mDataProvider;
         const CharacterRepository &mCharacterRepo;
 
@@ -146,13 +147,11 @@ namespace Evernus
 
         SimpleCrypt mCrypt;
 
-        ESIInterfaceManager mInterfaceManager;
+        ESIInterfaceManager &mInterfaceManager;
 
         QNetworkAccessManager mNetworkManager;
 
         std::unique_ptr<SSOAuthWidget, QObjectDeleteLaterDeleter> mAuthView;
-
-        std::unordered_set<Character::IdType> mPendingTokenRefresh;
 
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          const boost::optional<WalletJournalEntry::IdType> &fromId,

@@ -64,6 +64,7 @@ namespace Evernus
                                     const MarketGroupRepository &groupRepo,
                                     const CharacterRepository &characterRepo,
                                     const IndustryManufacturingSetupRepository &setupRepo,
+                                    ESIInterfaceManager &interfaceManager,
                                     TaskManager &taskManager,
                                     const AssetProvider &assetProvider,
                                     const ItemCostProvider &costProvider,

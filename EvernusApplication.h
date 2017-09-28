@@ -58,6 +58,7 @@
 #include "LMeveTaskRepository.h"
 #include "AssetListRepository.h"
 #include "MetaGroupRepository.h"
+#include "ESIInterfaceManager.h"
 #include "ItemCostRepository.h"
 #include "CacheTimerProvider.h"
 #include "RepositoryProvider.h"
@@ -160,6 +161,8 @@ namespace Evernus
         virtual void endTask(uint taskId, const QString &error = QString{}) override;
 
         virtual const ESIManager &getESIManager() const override;
+
+        ESIInterfaceManager &getESIInterfaceManager() noexcept;
 
         QByteArray getSSOClientId() const;
         QByteArray getSSOClientSecret() const;
@@ -304,6 +307,8 @@ namespace Evernus
         std::unique_ptr<RegionTypePresetRepository> mRegionTypePresetRepository;
         std::unique_ptr<RegionStationPresetRepository> mRegionStationPresetRepository;
         std::unique_ptr<IndustryManufacturingSetupRepository> mIndustryManufacturingSetupRepository;
+
+        ESIInterfaceManager mESIInterfaceManager;
 
         APIManager mAPIManager;
         LMeveAPIManager mLMeveAPIManager;

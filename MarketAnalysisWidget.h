@@ -54,6 +54,7 @@ namespace Evernus
         MarketAnalysisWidget(const QByteArray &clientId,
                              const QByteArray &clientSecret,
                              const EveDataProvider &dataProvider,
+                             ESIInterfaceManager &interfaceManager,
                              TaskManager &taskManager,
                              const MarketOrderRepository &orderRepo,
                              const MarketOrderRepository &corpOrderRepo,

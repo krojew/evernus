@@ -71,6 +71,7 @@ namespace Evernus
                             const MarketOrderProvider &orderProvider,
                             const MarketOrderProvider &corpOrderProvider,
                             EveDataProvider &dataProvider,
+                            ESIInterfaceManager &interfaceManager,
                             TaskManager &taskManager,
                             const ItemCostProvider &costProvider,
                             QByteArray clientId,

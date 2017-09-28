@@ -44,6 +44,7 @@
 #include "CharacterRepository.h"
 #include "MarketBrowserWidget.h"
 #include "ItemHistoriesWidget.h"
+#include "ESIInterfaceManager.h"
 #include "RepositoryProvider.h"
 #include "ActiveTasksDialog.h"
 #include "PreferencesDialog.h"
@@ -90,6 +91,7 @@ namespace Evernus
                            const CacheTimerProvider &cacheTimerProvider,
                            ItemCostProvider &itemCostProvider,
                            const LMeveDataProvider &lMeveDataProvider,
+                           ESIInterfaceManager &interfaceManager,
                            TaskManager &taskManager,
                            QWidget *parent,
                            Qt::WindowFlags flags)
@@ -113,11 +115,13 @@ namespace Evernus
                        corpContractProvider,
                        lMeveDataProvider,
                        cacheTimerProvider,
+                       interfaceManager,
                        taskManager);
         createStatusBar();
 
         connect(mTrayIcon, &QSystemTrayIcon::activated, this, &MainWindow::activateTrayIcon);
         connect(&mAutoImportTimer, &QTimer::timeout, this, &MainWindow::refreshAll);
+        connect(this, &MainWindow::preferencesChanged, &interfaceManager, &ESIInterfaceManager::handleNewPreferences);
 
         setWindowIcon(QIcon{":/images/main-icon.png"});
 
@@ -692,6 +696,7 @@ namespace Evernus
                                     const ContractProvider &corpContractProvider,
                                     const LMeveDataProvider &lMeveDataProvider,
                                     const CacheTimerProvider &cacheTimerProvider,
+                                    ESIInterfaceManager &interfaceManager,
                                     TaskManager &taskManager)
     {
         mMainTabs = new QTabWidget{this};
@@ -924,6 +929,7 @@ namespace Evernus
                                                         charOrderProvider,
                                                         corpOrderProvider,
                                                         mEveDataProvider,
+                                                        interfaceManager,
                                                         taskManager,
                                                         mItemCostProvider,
                                                         clientId,
@@ -962,6 +968,7 @@ namespace Evernus
         auto marketAnalysisTab = new MarketAnalysisWidget{std::move(clientId),
                                                           std::move(clientSecret),
                                                           mEveDataProvider,
+                                                          interfaceManager,
                                                           taskManager,
                                                           mRepositoryProvider.getMarketOrderRepository(),
                                                           mRepositoryProvider.getCorpMarketOrderRepository(),
@@ -982,6 +989,7 @@ namespace Evernus
                                                     mRepositoryProvider.getMarketGroupRepository(),
                                                     mRepositoryProvider.getCharacterRepository(),
                                                     mRepositoryProvider.getIndustryManufacturingSetupRepository(),
+                                                    interfaceManager,
                                                     taskManager,
                                                     charAssetProvider,
                                                     mItemCostProvider,

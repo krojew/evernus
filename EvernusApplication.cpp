@@ -235,7 +235,7 @@ namespace Evernus
         if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);
 
-        mESIManager = std::make_unique<ESIManager>(mClientId, mClientSecret, *mDataProvider, *mCharacterRepository);
+        mESIManager = std::make_unique<ESIManager>(mClientId, mClientSecret, *mDataProvider, *mCharacterRepository, mESIInterfaceManager);
         connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::showGenericError);
 
         mDataProvider->precacheNames();
@@ -762,6 +762,11 @@ namespace Evernus
     {
         Q_ASSERT(mESIManager);
         return *mESIManager;
+    }
+
+    ESIInterfaceManager &EvernusApplication::getESIInterfaceManager() noexcept
+    {
+        return mESIInterfaceManager;
     }
 
     QByteArray EvernusApplication::getSSOClientId() const
@@ -1647,8 +1652,6 @@ namespace Evernus
         mDataProvider->handleNewPreferences();
 
         setSmtpSettings();
-
-        mESIManager->handleNewPreferences();
 
         emit itemCostsChanged();
         emit itemVolumeChanged();

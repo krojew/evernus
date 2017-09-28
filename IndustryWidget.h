@@ -30,6 +30,7 @@ namespace Evernus
     class TradeableTypesTreeView;
     class MarketGroupRepository;
     class CharacterRepository;
+    class ESIInterfaceManager;
     class EveTypeRepository;
     class ItemCostProvider;
     class EveDataProvider;
@@ -50,6 +51,7 @@ namespace Evernus
                        const MarketGroupRepository &groupRepo,
                        const CharacterRepository &characterRepo,
                        const IndustryManufacturingSetupRepository &setupRepo,
+                       ESIInterfaceManager &interfaceManager,
                        TaskManager &taskManager,
                        const AssetProvider &assetProvider,
                        const ItemCostProvider &costProvider,

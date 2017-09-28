@@ -47,6 +47,7 @@ namespace Evernus
                                QByteArray clientSecret,
                                const EveDataProvider &dataProvider,
                                const CharacterRepository &characterRepo,
+                               ESIInterfaceManager &interfaceManager,
                                QObject *parent = nullptr);
         virtual ~MarketOrderDataFetcher() = default;
 
@@ -62,8 +63,6 @@ namespace Evernus
     public slots:
         void importData(const TypeLocationPairs &pairs,
                         Character::IdType charId);
-
-        void handleNewPreferences();
 
     private:
         const EveDataProvider &mDataProvider;

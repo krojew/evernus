@@ -47,6 +47,7 @@ namespace Evernus
     MarketAnalysisWidget::MarketAnalysisWidget(const QByteArray &clientId,
                                                const QByteArray &clientSecret,
                                                const EveDataProvider &dataProvider,
+                                               ESIInterfaceManager &interfaceManager,
                                                TaskManager &taskManager,
                                                const MarketOrderRepository &orderRepo,
                                                const MarketOrderRepository &corpOrderRepo,
@@ -68,7 +69,7 @@ namespace Evernus
         , mRegionTypePresetRepo{regionTypePresetRepo}
         , mOrders{std::make_shared<MarketAnalysisDataFetcher::OrderResultType::element_type>()}
         , mHistory{std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>()}
-        , mDataFetcher{clientId, clientSecret, mDataProvider, mCharacterRepo}
+        , mDataFetcher{clientId, clientSecret, mDataProvider, mCharacterRepo, interfaceManager}
     {
         connect(&mDataFetcher, &MarketAnalysisDataFetcher::orderStatusUpdated,
                 this, &MarketAnalysisWidget::updateOrderTask);
@@ -82,8 +83,6 @@ namespace Evernus
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
         });
-        connect(this, &MarketAnalysisWidget::preferencesChanged,
-                &mDataFetcher, &MarketAnalysisDataFetcher::handleNewPreferences);
 
         auto mainLayout = new QVBoxLayout{this};
 

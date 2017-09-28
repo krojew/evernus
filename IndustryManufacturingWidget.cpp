@@ -69,6 +69,7 @@ namespace Evernus
                                                              const MarketGroupRepository &groupRepo,
                                                              const CharacterRepository &characterRepo,
                                                              const IndustryManufacturingSetupRepository &setupRepo,
+                                                             ESIInterfaceManager &interfaceManager,
                                                              TaskManager &taskManager,
                                                              const AssetProvider &assetProvider,
                                                              const ItemCostProvider &costProvider,
@@ -80,8 +81,8 @@ namespace Evernus
         , mTaskManager{taskManager}
         , mSetupRepo{setupRepo}
         , mSetupModel{mSetup, mDataProvider, assetProvider, costProvider, characterRepo}
-        , mDataFetcher{clientId, clientSecret, mDataProvider, characterRepo}
-        , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo}
+        , mDataFetcher{clientId, clientSecret, mDataProvider, characterRepo, interfaceManager}
+        , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
@@ -438,7 +439,6 @@ namespace Evernus
 
     void IndustryManufacturingWidget::handleNewPreferences()
     {
-        mDataFetcher.handleNewPreferences();
         setQmlSettings();
     }
 
