@@ -428,30 +428,22 @@ namespace Evernus
     template<class T>
     void ESIInterface::checkAuth(Character::IdType charId, T &&continuation) const
     {
-        mAuthMutex.lock();
+        std::unique_lock<std::recursive_mutex> lock{mAuthMutex};
 
-        try
+        const auto &charToken = mAccessTokens[charId];
+        if (charToken.mExpiry < QDateTime::currentDateTime() || charToken.mToken.isEmpty())
         {
-            const auto &charToken = mAccessTokens[charId];
-            if (charToken.mExpiry < QDateTime::currentDateTime() || charToken.mToken.isEmpty())
+            mPendingAuthRequests.insert(std::make_pair(charId, std::forward<T>(continuation)));
+            if (mPendingAuthRequests.count(charId) == 1)
             {
-                mPendingAuthRequests.insert(std::make_pair(charId, std::forward<T>(continuation)));
-                if (mPendingAuthRequests.count(charId) == 1)
-                {
-                    mAuthMutex.unlock();
-                    emit tokenRequested(charId);
-                }
-            }
-            else
-            {
-                mAuthMutex.unlock();
-                std::forward<T>(continuation)(QString{});
+                lock.unlock();
+                emit tokenRequested(charId);
             }
         }
-        catch (...)
+        else
         {
-            mAuthMutex.unlock();
-            throw;
+            lock.unlock();
+            std::forward<T>(continuation)(QString{});
         }
     }
 
