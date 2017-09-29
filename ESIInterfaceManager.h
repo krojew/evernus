@@ -14,7 +14,6 @@
  */
 #pragma once
 
-#include <atomic>
 #include <memory>
 
 #include <QDateTime>
@@ -54,7 +53,7 @@ namespace Evernus
 
     private:
         std::vector<std::unique_ptr<ESIInterface, QObjectDeleteLaterDeleter>> mInterfaces;
-        std::atomic_size_t mCurrentInterface{0};
+        std::size_t mCurrentInterface{0};
 
         void connectInterfaces();
         void createInterfaces();
