@@ -57,7 +57,6 @@ namespace Evernus
 
         mRegionList = new QListWidget{this};
         regionLayout->addWidget(mRegionList);
-        mRegionList->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
         QSettings settings;
         const auto selectedRegions = settings.value(settingsRegionsKey).toList();
@@ -67,9 +66,8 @@ namespace Evernus
         {
             auto item = new QListWidgetItem{region.second, mRegionList};
             item->setData(Qt::UserRole, region.first);
-
-            if (selectedRegions.contains(region.first))
-                item->setSelected(true);
+            item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemNeverHasChildren);
+            item->setCheckState((selectedRegions.contains(region.first)) ? (Qt::Checked) : (Qt::Unchecked));
         }
 
         auto regionBtnsLayout = new QGridLayout{};
@@ -77,22 +75,26 @@ namespace Evernus
 
         auto selectBtn = new QPushButton{tr("Select all"), this};
         regionBtnsLayout->addWidget(selectBtn, 0, 0);
-        connect(selectBtn, &QPushButton::clicked, mRegionList, &QListWidget::selectAll);
+        connect(selectBtn, &QPushButton::clicked, mRegionList, [=] {
+            setRegionCheckStates(Qt::Checked);
+        });
 
         selectBtn = new QPushButton{tr("Deselect all"), this};
         regionBtnsLayout->addWidget(selectBtn, 0, 1);
-        connect(selectBtn, &QPushButton::clicked, mRegionList, &QListWidget::clearSelection);
+        connect(selectBtn, &QPushButton::clicked, mRegionList, [=] {
+            setRegionCheckStates(Qt::Unchecked);
+        });
 
         selectBtn = new QPushButton{tr("Select without wormholes"), this};
         regionBtnsLayout->addWidget(selectBtn, 1, 0, 1, 2);
         connect(selectBtn, &QPushButton::clicked, this, [=] {
-            QRegularExpression re{"^[A-Z]-R\\d+$"};
+            QRegularExpression re{QStringLiteral("^[A-Z]-R\\d+$")};
 
             const auto count = mRegionList->count();
             for (auto i = 0; i < count; ++i)
             {
                 auto item = mRegionList->item(i);
-                item->setSelected(!re.match(item->text()).hasMatch());
+                item->setCheckState((re.match(item->text()).hasMatch()) ? (Qt::Unchecked) : (Qt::Checked));
             }
         });
 
@@ -134,7 +136,7 @@ namespace Evernus
     {
         TypeLocationPairs result;
 
-        const auto regions = mRegionList->selectedItems();
+        const auto regionCount = mRegionList->count();
         const auto types = mTypeView->getSelectedTypes();
 
         QVariantList selectedRegions, selectedTypes;
@@ -142,8 +144,14 @@ namespace Evernus
         for (const auto type : types)
             selectedTypes << type;
 
-        for (const auto region : regions)
+        for (auto i = 0; i < regionCount; ++i)
         {
+            const auto region = mRegionList->item(i);
+            Q_ASSERT(region != nullptr);
+
+            if (region->checkState() != Qt::Checked)
+                continue;
+
             const auto regionId = region->data(Qt::UserRole).value<TypeLocationPair::second_type>();
             for (const auto type : types)
                 result.emplace(type, regionId);
@@ -222,6 +230,16 @@ namespace Evernus
             {
                 qWarning() << "Cannot find chosen preset:" << name;
             }
+        }
+    }
+
+    void RegionTypeSelectDialog::setRegionCheckStates(Qt::CheckState state)
+    {
+        const auto count = mRegionList->count();
+        for (auto i = 0; i < count; ++i)
+        {
+            auto item = mRegionList->item(i);
+            item->setCheckState(state);
         }
     }
 }

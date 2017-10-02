@@ -62,5 +62,7 @@ namespace Evernus
         TradeableTypesTreeView *mTypeView = nullptr;
 
         QString mLastLoadedPreset;
+
+        void setRegionCheckStates(Qt::CheckState state);
     };
 }
