@@ -24,6 +24,7 @@
 #include <QThread>
 #include <QUrl>
 
+#include "CitadelAccessCache.h"
 #include "NetworkSettings.h"
 #include "SecurityHelper.h"
 #include "CallbackEvent.h"
@@ -82,6 +83,12 @@ namespace Evernus
     };
 
     const QString ESIInterface::esiUrl{"https://esi.tech.ccp.is"};
+
+    ESIInterface::ESIInterface(CitadelAccessCache &citadelAccessCache, QObject *parent)
+        : QObject{parent}
+        , mCitadelAccessCache{citadelAccessCache}
+    {
+    }
 
     void ESIInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
     {

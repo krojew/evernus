@@ -12,7 +12,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QStandardPaths>
+#include <QDataStream>
 #include <QSettings>
+#include <QFile>
+#include <QDir>
 
 #include "NetworkSettings.h"
 #include "ESIInterface.h"
@@ -24,8 +28,20 @@ namespace Evernus
     ESIInterfaceManager::ESIInterfaceManager(QObject *parent)
         : QObject{parent}
     {
+        readCitadelAccessCache();
         createInterfaces();
         connectInterfaces();
+    }
+
+    ESIInterfaceManager::~ESIInterfaceManager()
+    {
+        try
+        {
+            writeCitadelAccessCache();
+        }
+        catch (...)
+        {
+        }
     }
 
     void ESIInterfaceManager::handleNewPreferences()
@@ -65,6 +81,29 @@ namespace Evernus
         );
 
         for (auto i = 0u; i < maxInterfaces; ++i)
-            mInterfaces.emplace_back(new ESIInterface{});
+            mInterfaces.emplace_back(new ESIInterface{mCitadelAccessCache});
+    }
+
+    void ESIInterfaceManager::readCitadelAccessCache()
+    {
+        QFile cacheFile{getCachePath()};
+        QDataStream stream{&cacheFile};
+
+        if (cacheFile.open(QIODevice::ReadOnly))
+            stream >> mCitadelAccessCache;
+    }
+
+    void ESIInterfaceManager::writeCitadelAccessCache()
+    {
+        QFile cacheFile{getCachePath()};
+        QDataStream stream{&cacheFile};
+
+        if (cacheFile.open(QIODevice::WriteOnly))
+            stream << mCitadelAccessCache;
+    }
+
+    QString ESIInterfaceManager::getCachePath()
+    {
+        return QDir{QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QStringLiteral("/data")}.filePath(QStringLiteral("citadel_access"));
     }
 }

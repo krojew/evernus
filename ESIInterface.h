@@ -35,6 +35,8 @@ class QJsonDocument;
 
 namespace Evernus
 {
+    class CitadelAccessCache;
+
     class ESIInterface final
         : public QObject
     {
@@ -50,8 +52,7 @@ namespace Evernus
         using PersistentStringCallback = PersistentCallback<QString>;
         using PersistentJsonCallback = PersistentCallback<QJsonDocument>;
 
-        using QObject::QObject;
-        ESIInterface() = default;
+        explicit ESIInterface(CitadelAccessCache &citadelAccessCache, QObject *parent = nullptr);
         ESIInterface(const ESIInterface &) = default;
         ESIInterface(ESIInterface &&) = default;
         virtual ~ESIInterface() = default;
@@ -114,6 +115,8 @@ namespace Evernus
         struct TaggedInvoke;
 
         static const QString esiUrl;
+
+        CitadelAccessCache &mCitadelAccessCache;
 
         mutable std::mutex mObjectStateMutex;
         mutable std::recursive_mutex mAuthMutex;

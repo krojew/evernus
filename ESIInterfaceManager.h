@@ -21,6 +21,7 @@
 #include <QString>
 
 #include "QObjectDeleteLaterDeleter.h"
+#include "CitadelAccessCache.h"
 #include "Character.h"
 
 namespace Evernus
@@ -36,7 +37,7 @@ namespace Evernus
         explicit ESIInterfaceManager(QObject *parent = nullptr);
         ESIInterfaceManager(const ESIInterfaceManager &) = delete;
         ESIInterfaceManager(ESIInterfaceManager &&) = default;
-        virtual ~ESIInterfaceManager() = default;
+        virtual ~ESIInterfaceManager();
 
         void handleNewPreferences();
 
@@ -55,7 +56,14 @@ namespace Evernus
         std::vector<std::unique_ptr<ESIInterface, QObjectDeleteLaterDeleter>> mInterfaces;
         std::size_t mCurrentInterface{0};
 
+        CitadelAccessCache mCitadelAccessCache;
+
         void connectInterfaces();
         void createInterfaces();
+
+        void readCitadelAccessCache();
+        void writeCitadelAccessCache();
+
+        static QString getCachePath();
     };
 }

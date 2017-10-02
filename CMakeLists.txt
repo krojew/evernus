@@ -214,6 +214,8 @@ add_executable(
     CheckableTreeView.h
     Citadel.cpp
     Citadel.h
+    CitadelAccessCache.cpp
+    CitadelAccessCache.h
     CitadelLocationModel.cpp
     CitadelLocationModel.h
     CitadelLocationWidget.cpp

@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 
 class QDataStream;
 
@@ -29,6 +30,11 @@ namespace Evernus
     QDataStream &operator <<(QDataStream &stream, const std::unordered_map<Key, T, Hash, KeyEqual, Allocator> &map);
     template<class Key, class T, class Hash, class KeyEqual, class Allocator>
     QDataStream &operator >>(QDataStream &stream, std::unordered_map<Key, T, Hash, KeyEqual, Allocator> &map);
+
+    template<class Key, class Hash, class KeyEqual, class Allocator>
+    QDataStream &operator <<(QDataStream &stream, const std::unordered_set<Key, Hash, KeyEqual, Allocator> &set);
+    template<class Key, class Hash, class KeyEqual, class Allocator>
+    QDataStream &operator >>(QDataStream &stream, std::unordered_set<Key, Hash, KeyEqual, Allocator> &set);
 
 }
 

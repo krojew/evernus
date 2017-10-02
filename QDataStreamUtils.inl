@@ -60,4 +60,33 @@ namespace Evernus
 
         return stream;
     }
+
+    template<class Key, class Hash, class KeyEqual, class Allocator>
+    QDataStream &operator <<(QDataStream &stream, const std::unordered_set<Key, Hash, KeyEqual, Allocator> &set)
+    {
+        stream << static_cast<quint64>(set.size());
+        for (const auto &key : set)
+            stream << key;
+
+        return stream;
+    }
+
+    template<class Key, class Hash, class KeyEqual, class Allocator>
+    QDataStream &operator >>(QDataStream &stream, std::unordered_set<Key, Hash, KeyEqual, Allocator> &set)
+    {
+        set.clear();
+
+        quint64 size = 0;
+        stream >> size;
+
+        for (auto i = 0u; i < size; ++i)
+        {
+            Key value;
+            stream >> value;
+
+            set.insert(value);
+        }
+
+        return stream;
+    }
 }
