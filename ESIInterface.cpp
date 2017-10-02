@@ -576,6 +576,7 @@ namespace Evernus
                 const auto error = reply->error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
+                    qWarning() << "Error for request:" << url << query << ":" << getError(url, query, *reply);
                     if (retries > 0)
                         asyncGet<T, ResultTag>(url, query, continuation, retries - 1);
                     else
@@ -609,6 +610,7 @@ namespace Evernus
                 const auto error = reply->error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
+                    qWarning() << "Error for request:" << url << query << ":" << getError(url, query, *reply);
                     if (error == QNetworkReply::AuthenticationRequiredError)
                     {
                         // expired token?
@@ -667,6 +669,7 @@ namespace Evernus
                 const auto error = reply->error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
+                    qWarning() << "Error for request:" << url << query << ":" << getError(url, query, *reply);
                     if (error == QNetworkReply::AuthenticationRequiredError)
                     {
                         // expired token?
