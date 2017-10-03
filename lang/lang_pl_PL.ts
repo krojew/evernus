@@ -3945,27 +3945,37 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Maks. czas aktualizacji kontraktów:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="77"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="79"/>
+        <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportPreferencesWidget.cpp" line="81"/>
+        <source>Max. citadel access cache age:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportPreferencesWidget.cpp" line="83"/>
         <source>Auto-import</source>
         <translation>Automatyczny import</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="82"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="88"/>
         <source>Enabled</source>
         <translation>Włączony</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="87"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="93"/>
         <source>Auto-import time:</source>
         <translation>Czas między importami:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="142"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="148"/>
         <source>Email notifications</source>
         <translation>Powiadomienia email</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="142"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="148"/>
         <source>Email notifications will be disabled since destination address or SMTP host is empty.</source>
         <translation>Powiadomienia email zostaną wyłączone, gdyż adres docelowy lub adres SMTP jest pusty.</translation>
     </message>
@@ -3974,63 +3984,63 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished"> min</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="93"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="99"/>
         <source>Enable email notifications</source>
         <translation>Włącz powiadomienia mailem</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="99"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="105"/>
         <source>Destination address:</source>
         <translation>Adres docelowy:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="105"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="111"/>
         <source>SMTP security:</source>
         <translation>Bezpieczeństwo SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="106"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="112"/>
         <source>None</source>
         <translation>Brak</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="107"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="113"/>
         <source>STARTTLS</source>
         <translation>STARTTLS</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="108"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="114"/>
         <source>SSL/TLS</source>
         <translation>SSL/TLS</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="111"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="117"/>
         <source>SMTP host:</source>
         <translation>Serwer SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="114"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="120"/>
         <source>SMTP port:</source>
         <translation>Port SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="120"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="126"/>
         <source>SMTP user:</source>
         <translation>Użytkownik SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="123"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="129"/>
         <source>SMTP password:</source>
         <translation>Hasło SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="126"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="132"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
         <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="90"/>
-        <location filename="../ImportPreferencesWidget.cpp" line="174"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="96"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="181"/>
         <source>min</source>
         <translation>min</translation>
     </message>

@@ -82,6 +82,7 @@ namespace Evernus
         const auto marketOrderImportTypeDefault = MarketOrderImportType::Auto;
         const auto csvSeparatorDefault = QChar(',');
         const auto eveImportSourceDefault = EveImportSource::ESI;
+        const auto maxCitadelAccessAgeDefault = 1;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -120,5 +121,6 @@ namespace Evernus
         const auto itemPricesFileDirKey = QStringLiteral("import/costs/fileDir");
         const auto csvSeparatorKey = QStringLiteral("import/csvSeparator");
         const auto eveImportSourceKey = QStringLiteral("import/source/eve");
+        const auto maxCitadelAccessAgeKey = QStringLiteral("import/citadelAccess/maxAge");
     }
 }

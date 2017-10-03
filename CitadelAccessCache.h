@@ -39,13 +39,15 @@ namespace Evernus
         bool isAvailable(Character::IdType charId, Citadel::IdType citadelId) const;
         void blacklist(Character::IdType charId, Citadel::IdType citadelId);
 
+        void clearIfObsolete(const QDateTime &minTimestamp);
+
         CitadelAccessCache &operator =(const CitadelAccessCache &) = default;
         CitadelAccessCache &operator =(CitadelAccessCache &&) = default;
 
     private:
         using CharacterCitadelPair = std::pair<Character::IdType, Citadel::IdType>;
 
-        QDateTime mTimeStamp = QDateTime::currentDateTimeUtc();
+        QDateTime mTimeStamp = QDateTime::currentDateTime();
 
         std::unordered_set<CharacterCitadelPair, boost::hash<CharacterCitadelPair>> mBlacklisted;
         mutable std::mutex mCacheMutex;

@@ -19,6 +19,7 @@
 #include <QDir>
 
 #include "NetworkSettings.h"
+#include "ImportSettings.h"
 #include "ESIInterface.h"
 
 #include "ESIInterfaceManager.h"
@@ -90,7 +91,14 @@ namespace Evernus
         QDataStream stream{&cacheFile};
 
         if (cacheFile.open(QIODevice::ReadOnly))
+        {
             stream >> mCitadelAccessCache;
+
+            QSettings settings;
+            mCitadelAccessCache.clearIfObsolete(QDateTime::currentDateTime().addDays(
+                -settings.value(ImportSettings::maxCitadelAccessAgeKey, ImportSettings::maxCitadelAccessAgeDefault).toInt()
+            ));
+        }
     }
 
     void ESIInterfaceManager::writeCitadelAccessCache()

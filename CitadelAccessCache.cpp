@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QtDebug>
+
 #include "QDataStreamUtils.h"
 
 #include "CitadelAccessCache.h"
@@ -28,6 +30,17 @@ namespace Evernus
     {
         std::lock_guard<std::mutex> lock{mCacheMutex};
         mBlacklisted.emplace(std::make_pair(charId, citadelId));
+    }
+
+    void CitadelAccessCache::clearIfObsolete(const QDateTime &minTimestamp)
+    {
+        if (mTimeStamp < minTimestamp)
+        {
+            qDebug() << "Clearing citadel access cache.";
+
+            std::lock_guard<std::mutex> lock{mCacheMutex};
+            mBlacklisted.clear();
+        }
     }
 
     QDataStream &operator <<(QDataStream &stream, const CitadelAccessCache &cache)

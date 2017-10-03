@@ -74,6 +74,12 @@ namespace Evernus
         mContractsTimerEdit = createTimerSpin(settings.value(ImportSettings::maxContractsAgeKey, ImportSettings::importTimerDefault).toInt());
         timersBoxLayout->addRow(tr("Max. contracts update age:"), mContractsTimerEdit);
 
+        mCitadelAccessTimeEdit = new QSpinBox{this};
+        mCitadelAccessTimeEdit->setRange(1, 365);
+        mCitadelAccessTimeEdit->setSuffix(tr(" days"));
+        mCitadelAccessTimeEdit->setValue(settings.value(ImportSettings::maxCitadelAccessAgeKey, ImportSettings::maxCitadelAccessAgeDefault).toInt());
+        timersBoxLayout->addRow(tr("Max. citadel access cache age:"), mCitadelAccessTimeEdit);
+
         auto autoImportBox = new QGroupBox{tr("Auto-import"), this};
         mainLayout->addWidget(autoImportBox);
 
@@ -156,6 +162,7 @@ namespace Evernus
         settings.setValue(ImportSettings::maxWalletAgeKey, mWalletTimerEdit->value());
         settings.setValue(ImportSettings::maxMarketOrdersAgeKey, mMarketOrdersTimerEdit->value());
         settings.setValue(ImportSettings::maxContractsAgeKey, mContractsTimerEdit->value());
+        settings.setValue(ImportSettings::maxCitadelAccessAgeKey, mCitadelAccessTimeEdit->value());
         settings.setValue(ImportSettings::autoImportEnabledKey, autoImport);
         settings.setValue(ImportSettings::autoImportTimeKey, mAutoImportTimeEdit->value());
         settings.setValue(ImportSettings::emailNotificationsEnabledKey, emailNotifications);
