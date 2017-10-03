@@ -139,7 +139,12 @@ namespace Evernus
         template<class T>
         void fetchPaginatedData(const QString &url, uint page, T &&continuation) const;
         template<class T>
-        void fetchPaginatedData(Character::IdType charId, const QString &url, uint page, T &&continuation, bool suppressForbidden = false) const;
+        void fetchPaginatedData(Character::IdType charId,
+                                const QString &url,
+                                uint page,
+                                T &&continuation,
+                                bool suppressForbidden = false,
+                                quint64 citadelId = 0) const;
 
         template<class T, class ResultTag = JsonTag>
         void asyncGet(const QString &url, const QString &query, const T &continuation, uint retries) const;
@@ -149,7 +154,8 @@ namespace Evernus
                       const QString &query,
                       const T &continuation,
                       uint retries,
-                      bool suppressForbidden = false) const;
+                      bool suppressForbidden = false,
+                      quint64 citadelId = 0) const;
 
         template<class T>
         void post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const;

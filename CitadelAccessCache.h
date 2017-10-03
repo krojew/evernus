@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_set>
+#include <mutex>
 
 #include <boost/functional/hash.hpp>
 
@@ -35,6 +36,9 @@ namespace Evernus
         CitadelAccessCache(CitadelAccessCache &&) = default;
         ~CitadelAccessCache() = default;
 
+        bool isAvailable(Character::IdType charId, Citadel::IdType citadelId) const;
+        void blacklist(Character::IdType charId, Citadel::IdType citadelId);
+
         CitadelAccessCache &operator =(const CitadelAccessCache &) = default;
         CitadelAccessCache &operator =(CitadelAccessCache &&) = default;
 
@@ -44,6 +48,7 @@ namespace Evernus
         QDateTime mTimeStamp = QDateTime::currentDateTimeUtc();
 
         std::unordered_set<CharacterCitadelPair, boost::hash<CharacterCitadelPair>> mBlacklisted;
+        mutable std::mutex mCacheMutex;
 
         friend QDataStream &operator <<(QDataStream &stream, const CitadelAccessCache &cache);
         friend QDataStream &operator >>(QDataStream &stream, CitadelAccessCache &cache);

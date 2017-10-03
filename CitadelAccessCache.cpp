@@ -18,6 +18,18 @@
 
 namespace Evernus
 {
+    bool CitadelAccessCache::isAvailable(Character::IdType charId, Citadel::IdType citadelId) const
+    {
+        std::lock_guard<std::mutex> lock{mCacheMutex};
+        return mBlacklisted.find(std::make_pair(charId, citadelId)) == std::end(mBlacklisted);
+    }
+
+    void CitadelAccessCache::blacklist(Character::IdType charId, Citadel::IdType citadelId)
+    {
+        std::lock_guard<std::mutex> lock{mCacheMutex};
+        mBlacklisted.emplace(std::make_pair(charId, citadelId));
+    }
+
     QDataStream &operator <<(QDataStream &stream, const CitadelAccessCache &cache)
     {
         stream

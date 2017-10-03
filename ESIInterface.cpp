@@ -122,11 +122,17 @@ namespace Evernus
             return;
         }
 
+        if (!mCitadelAccessCache.isAvailable(charId, citadelId))
+        {
+            callback({}, true, {}, {});
+            return;
+        }
+
         checkAuth(charId, [=](const auto &error) {
             if (!error.isEmpty())
                 callback(QJsonDocument{}, true, error, {});
             else
-                fetchPaginatedData(charId, QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback, true);
+                fetchPaginatedData(charId, QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback, true, citadelId);
         });
     }
 
@@ -514,7 +520,12 @@ namespace Evernus
     }
 
     template<class T>
-    void ESIInterface::fetchPaginatedData(Character::IdType charId, const QString &url, uint page, T &&continuation, bool suppressForbidden) const
+    void ESIInterface::fetchPaginatedData(Character::IdType charId,
+                                          const QString &url,
+                                          uint page,
+                                          T &&continuation,
+                                          bool suppressForbidden,
+                                          quint64 citadelId) const
     {
         const auto callback = [=](auto &&response, const auto &error, const auto &expires, auto pages) {
             if (Q_UNLIKELY(!error.isEmpty()))
@@ -538,7 +549,7 @@ namespace Evernus
                         continuation(std::move(response), false, QString{}, expires);
 
                         for (auto nextPage = 2u; nextPage <= pages; ++nextPage)
-                            fetchPaginatedData(charId, url, nextPage, continuation, suppressForbidden);
+                            fetchPaginatedData(charId, url, nextPage, continuation, suppressForbidden, citadelId);
                     }
                 }
                 else if (page >= pages)
@@ -560,12 +571,20 @@ namespace Evernus
                 else
                 {
                     continuation(std::move(response), false, QString{}, expires);
-                    fetchPaginatedData(charId, url, page + 1, continuation);
+                    fetchPaginatedData(charId, url, page + 1, continuation, suppressForbidden, citadelId);
                 }
             }
         };
 
-        asyncGet<decltype(callback), PaginatedJsonTag>(charId, url, QStringLiteral("page=%1").arg(page), callback, getNumRetries(), suppressForbidden);
+        asyncGet<decltype(callback), PaginatedJsonTag>(
+            charId,
+            url,
+            QStringLiteral("page=%1").arg(page),
+            callback,
+            getNumRetries(),
+            suppressForbidden,
+            citadelId
+        );
     }
 
     template<class T, class ResultTag>
@@ -613,8 +632,13 @@ namespace Evernus
     }
 
     template<class T, class ResultTag>
-    void ESIInterface
-    ::asyncGet(Character::IdType charId, const QString &url, const QString &query, const T &continuation, uint retries, bool suppressForbidden) const
+    void ESIInterface::asyncGet(Character::IdType charId,
+                                const QString &url,
+                                const QString &query,
+                                const T &continuation,
+                                uint retries,
+                                bool suppressForbidden,
+                                quint64 citadelId) const
     {
         runNowOrLater([=] {
             qDebug() << "ESI request:" << url << ":" << query;
@@ -638,7 +662,7 @@ namespace Evernus
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
-                            asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden);
+                            asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden, citadelId);
                         }, *reply);
                     }
                     else
@@ -658,13 +682,23 @@ namespace Evernus
                             if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
                             {
                                 if (suppressForbidden)
+                                {
+                                    if (citadelId != 0)
+                                    {
+                                        qDebug() << "Blacklisting citadel:" << citadelId << charId;
+                                        mCitadelAccessCache.blacklist(charId, citadelId);
+                                    }
+
                                     TaggedInvoke<ResultTag>::invoke(QString{}, *reply, continuation);
+                                }
                                 else
+                                {
                                     TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                                }
                             }
                             else if (retries > 0)
                             {
-                                asyncGet<T, ResultTag>(charId, url, query, continuation, retries - 1, suppressForbidden);
+                                asyncGet<T, ResultTag>(charId, url, query, continuation, retries - 1, suppressForbidden, citadelId);
                             }
                             else
                             {
