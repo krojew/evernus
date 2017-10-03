@@ -24,6 +24,7 @@
 #include <QThread>
 #include <QUrl>
 
+#include "ESIInterfaceErrorLimiter.h"
 #include "CitadelAccessCache.h"
 #include "NetworkSettings.h"
 #include "SecurityHelper.h"
@@ -84,9 +85,12 @@ namespace Evernus
 
     const QString ESIInterface::esiUrl{"https://esi.tech.ccp.is"};
 
-    ESIInterface::ESIInterface(CitadelAccessCache &citadelAccessCache, QObject *parent)
+    ESIInterface::ESIInterface(CitadelAccessCache &citadelAccessCache,
+                               ESIInterfaceErrorLimiter &errorLimiter,
+                               QObject *parent)
         : QObject{parent}
         , mCitadelAccessCache{citadelAccessCache}
+        , mErrorLimiter{errorLimiter}
     {
     }
 
@@ -584,10 +588,21 @@ namespace Evernus
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
                     qWarning() << "Error for request:" << url << query << ":" << getError(url, query, *reply);
-                    if (retries > 0)
-                        asyncGet<T, ResultTag>(url, query, continuation, retries - 1);
+
+                    const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                    if (httpStatus == errorLimitCode)  // error limit reached?
+                    {
+                        schedulePostErrorLimitRequest([=] {
+                            asyncGet<T, ResultTag>(url, query, continuation, retries);
+                        }, *reply);
+                    }
                     else
-                        TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                    {
+                        if (retries > 0)
+                            asyncGet<T, ResultTag>(url, query, continuation, retries - 1);
+                        else
+                            TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                    }
                 }
                 else
                 {
@@ -618,32 +633,43 @@ namespace Evernus
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
                     qWarning() << "Error for request:" << url << query << ":" << getError(url, query, *reply);
-                    if (error == QNetworkReply::AuthenticationRequiredError)
+
+                    const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                    if (httpStatus == errorLimitCode)  // error limit reached?
                     {
-                        // expired token?
-                        tryAuthAndContinue(charId, [=](const auto &error) {
-                            if (error.isEmpty())
-                                asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden);
-                            else
-                                TaggedInvoke<ResultTag>::invoke(error, *reply, continuation);
-                        });
+                        schedulePostErrorLimitRequest([=] {
+                            asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden);
+                        }, *reply);
                     }
                     else
                     {
-                        if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
+                        if (error == QNetworkReply::AuthenticationRequiredError)
                         {
-                            if (suppressForbidden)
-                                TaggedInvoke<ResultTag>::invoke(QString{}, *reply, continuation);
-                            else
-                                TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
-                        }
-                        else if (retries > 0)
-                        {
-                            asyncGet<T, ResultTag>(charId, url, query, continuation, retries - 1, suppressForbidden);
+                            // expired token?
+                            tryAuthAndContinue(charId, [=](const auto &error) {
+                                if (error.isEmpty())
+                                    asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden);
+                                else
+                                    TaggedInvoke<ResultTag>::invoke(error, *reply, continuation);
+                            });
                         }
                         else
                         {
-                            TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                            if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
+                            {
+                                if (suppressForbidden)
+                                    TaggedInvoke<ResultTag>::invoke(QString{}, *reply, continuation);
+                                else
+                                    TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                            }
+                            else if (retries > 0)
+                            {
+                                asyncGet<T, ResultTag>(charId, url, query, continuation, retries - 1, suppressForbidden);
+                            }
+                            else
+                            {
+                                TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                            }
                         }
                     }
                 }
@@ -677,19 +703,30 @@ namespace Evernus
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
                     qWarning() << "Error for request:" << url << query << ":" << getError(url, query, *reply);
-                    if (error == QNetworkReply::AuthenticationRequiredError)
+
+                    const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                    if (httpStatus == errorLimitCode)  // error limit reached?
                     {
-                        // expired token?
-                        tryAuthAndContinue(charId, [=](const auto &error) {
-                            if (error.isEmpty())
-                                post(charId, url, query, errorCallback);
-                            else
-                                errorCallback(error);
-                        });
+                        schedulePostErrorLimitRequest([=] {
+                            post(charId, url, query, std::move(errorCallback));
+                        }, *reply);
                     }
                     else
                     {
-                        errorCallback(getError(url, query, *reply));
+                        if (error == QNetworkReply::AuthenticationRequiredError)
+                        {
+                            // expired token?
+                            tryAuthAndContinue(charId, [=](const auto &error) {
+                                if (error.isEmpty())
+                                    post(charId, url, query, errorCallback);
+                                else
+                                    errorCallback(error);
+                            });
+                        }
+                        else
+                        {
+                            errorCallback(getError(url, query, *reply));
+                        }
                     }
                 }
                 else
@@ -703,7 +740,7 @@ namespace Evernus
     }
 
     template<class T>
-    void ESIInterface::post(const QString &url, const QByteArray &body, ErrorCallback &&errorCallback, T &&resultCallback) const
+    void ESIInterface::post(const QString &url, const QByteArray &body, ErrorCallback errorCallback, T &&resultCallback) const
     {
         runNowOrLater([=] {
             qDebug() << "ESI request:" << url << ":" << body;
@@ -723,7 +760,17 @@ namespace Evernus
                 const auto error = reply->error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
-                    errorCallback(getError(url, {}, *reply));
+                    const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                    if (httpStatus == errorLimitCode)  // error limit reached?
+                    {
+                        schedulePostErrorLimitRequest([=] {
+                            post(url, body, errorCallback, resultCallback);
+                        }, *reply);
+                    }
+                    else
+                    {
+                        errorCallback(getError(url, {}, *reply));
+                    }
                 }
                 else
                 {
@@ -747,6 +794,13 @@ namespace Evernus
         }
 
         checkAuth(charId, std::forward<T>(continuation));
+    }
+
+    template<class T>
+    void ESIInterface::schedulePostErrorLimitRequest(T &&callback, const QNetworkReply &reply) const
+    {
+        const auto errorTimeout = reply.rawHeader(QByteArrayLiteral("X-Esi-Error-Limit-Reset")).toUInt();
+        mErrorLimiter.addCallback(std::move(callback), std::chrono::seconds{errorTimeout});
     }
 
     QNetworkRequest ESIInterface::prepareRequest(const QString &url, const QString &query) const

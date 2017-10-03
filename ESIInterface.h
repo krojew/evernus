@@ -35,6 +35,7 @@ class QJsonDocument;
 
 namespace Evernus
 {
+    class ESIInterfaceErrorLimiter;
     class CitadelAccessCache;
 
     class ESIInterface final
@@ -52,7 +53,9 @@ namespace Evernus
         using PersistentStringCallback = PersistentCallback<QString>;
         using PersistentJsonCallback = PersistentCallback<QJsonDocument>;
 
-        explicit ESIInterface(CitadelAccessCache &citadelAccessCache, QObject *parent = nullptr);
+        ESIInterface(CitadelAccessCache &citadelAccessCache,
+                     ESIInterfaceErrorLimiter &errorLimiter,
+                     QObject *parent = nullptr);
         ESIInterface(const ESIInterface &) = default;
         ESIInterface(ESIInterface &&) = default;
         virtual ~ESIInterface() = default;
@@ -115,8 +118,10 @@ namespace Evernus
         struct TaggedInvoke;
 
         static const QString esiUrl;
+        static const int errorLimitCode = 420;
 
         CitadelAccessCache &mCitadelAccessCache;
+        ESIInterfaceErrorLimiter &mErrorLimiter;
 
         mutable std::mutex mObjectStateMutex;
         mutable std::recursive_mutex mAuthMutex;
@@ -149,10 +154,13 @@ namespace Evernus
         template<class T>
         void post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const;
         template<class T>
-        void post(const QString &url, const QByteArray &body, ErrorCallback &&errorCallback, T &&resultCallback) const;
+        void post(const QString &url, const QByteArray &body, ErrorCallback errorCallback, T &&resultCallback) const;
 
         template<class T>
         void tryAuthAndContinue(Character::IdType charId, T &&continuation) const;
+
+        template<class T>
+        void schedulePostErrorLimitRequest(T &&callback, const QNetworkReply &reply) const;
 
         QNetworkRequest prepareRequest(const QString &url, const QString &query) const;
         QNetworkRequest prepareRequest(Character::IdType charId, const QString &url, const QString &query) const;

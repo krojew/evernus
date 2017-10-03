@@ -81,7 +81,7 @@ namespace Evernus
         );
 
         for (auto i = 0u; i < maxInterfaces; ++i)
-            mInterfaces.emplace_back(new ESIInterface{mCitadelAccessCache});
+            mInterfaces.emplace_back(new ESIInterface{mCitadelAccessCache, mErrorLimiter});
     }
 
     void ESIInterfaceManager::readCitadelAccessCache()

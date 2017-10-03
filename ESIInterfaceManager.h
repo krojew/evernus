@@ -21,6 +21,7 @@
 #include <QString>
 
 #include "QObjectDeleteLaterDeleter.h"
+#include "ESIInterfaceErrorLimiter.h"
 #include "CitadelAccessCache.h"
 #include "Character.h"
 
@@ -57,6 +58,7 @@ namespace Evernus
         std::size_t mCurrentInterface{0};
 
         CitadelAccessCache mCitadelAccessCache;
+        ESIInterfaceErrorLimiter mErrorLimiter;
 
         void connectInterfaces();
         void createInterfaces();

@@ -310,6 +310,8 @@ add_executable(
     ESIIndividualExternalOrderImporter.h
     ESIInterface.cpp
     ESIInterface.h
+    ESIInterfaceErrorLimiter.cpp
+    ESIInterfaceErrorLimiter.h
     ESIInterfaceManager.cpp
     ESIInterfaceManager.h
     ESIManager.h
