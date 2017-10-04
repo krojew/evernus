@@ -3945,11 +3945,6 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Maks. czas aktualizacji kontraktów:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="79"/>
-        <source>days</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ImportPreferencesWidget.cpp" line="81"/>
         <source>Max. citadel access cache age:</source>
         <translation type="unfinished"></translation>
@@ -3982,6 +3977,11 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     <message>
         <source> min</source>
         <translation type="vanished"> min</translation>
+    </message>
+    <message>
+        <location filename="../ImportPreferencesWidget.cpp" line="79"/>
+        <source> days</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="99"/>

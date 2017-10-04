@@ -62,6 +62,9 @@ RUN cd && \
     make install && \
     cd && rm -rf cmake-3.8.2
 
+# we don't want to use cache for the following layers, but docker cannot selectively disable it
+ADD .cache-bust /root
+
 RUN hg clone -u latest-release https://krojew@bitbucket.org/krojew/evernus
 
 WORKDIR evernus

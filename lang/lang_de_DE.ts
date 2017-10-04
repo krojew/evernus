@@ -3608,8 +3608,8 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="79"/>
-        <source>days</source>
-        <translation type="unfinished"></translation>
+        <source> days</source>
+        <translation type="unfinished"> Tage</translation>
     </message>
     <message>
         <location filename="../ImportPreferencesWidget.cpp" line="81"/>
