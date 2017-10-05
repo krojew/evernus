@@ -44,6 +44,8 @@ namespace Evernus
 
         const ESIInterface &selectNextInterface();
 
+        const CitadelAccessCache &getCitadelAccessCache() const noexcept;
+
         ESIInterfaceManager &operator =(const ESIInterfaceManager &) = delete;
         ESIInterfaceManager &operator =(ESIInterfaceManager &&) = default;
 

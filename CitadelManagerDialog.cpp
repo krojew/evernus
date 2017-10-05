@@ -26,6 +26,8 @@ namespace Evernus
 {
     CitadelManagerDialog::CitadelManagerDialog(const EveDataProvider &dataProvider,
                                                const CitadelRepository &citadelRepo,
+                                               const CitadelAccessCache &citadelAccessCache,
+                                               Character::IdType charId,
                                                QWidget *parent)
         : QDialog{parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint}
         , mCitadelRepo{citadelRepo}
@@ -39,9 +41,11 @@ namespace Evernus
 
         ignoredBoxLayout->addWidget(new QLabel{tr("Ignored citadels will not have their data imported."), this});
 
-        mIgnoredCitadelsWidget = new CitadelLocationWidget{dataProvider, this};
+        mIgnoredCitadelsWidget = new CitadelLocationWidget{dataProvider, citadelAccessCache, charId, this};
         ignoredBoxLayout->addWidget(mIgnoredCitadelsWidget);
         connect(this, &CitadelManagerDialog::citadelsChanged, mIgnoredCitadelsWidget, &CitadelLocationWidget::refresh);
+
+        ignoredBoxLayout->addWidget(new QLabel{tr("<s>Citadel Name</s> - citadel unavailable for current character"), this});
 
         const auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);

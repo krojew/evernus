@@ -17,9 +17,11 @@
 #include <QWidget>
 
 #include "CitadelLocationModel.h"
+#include "Character.h"
 
 namespace Evernus
 {
+    class CitadelAccessCache;
     class EveDataProvider;
 
     class CitadelLocationWidget
@@ -30,7 +32,10 @@ namespace Evernus
     public:
         using CitadelList = CitadelLocationModel::CitadelList;
 
-        explicit CitadelLocationWidget(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
+        CitadelLocationWidget(const EveDataProvider &dataProvider,
+                              const CitadelAccessCache &citadelAccessCache,
+                              Character::IdType charId,
+                              QWidget *parent = nullptr);
         CitadelLocationWidget(const CitadelLocationWidget &) = default;
         CitadelLocationWidget(CitadelLocationWidget &&) = default;
         virtual ~CitadelLocationWidget() = default;

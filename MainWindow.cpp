@@ -99,9 +99,10 @@ namespace Evernus
         , mRepositoryProvider{repositoryProvider}
         , mItemCostProvider{itemCostProvider}
         , mEveDataProvider{eveDataProvider}
-        , mTrayIcon{new QSystemTrayIcon{QIcon{":/images/main-icon.png"}, this}}
-        , mStatusActiveTasksThrobber{":/images/loader.gif"}
-        , mStatusActiveTasksDonePixmap{":/images/tick.png"}
+        , mCitadelAccessCache{interfaceManager.getCitadelAccessCache()}
+        , mTrayIcon{new QSystemTrayIcon{QIcon{QStringLiteral(":/images/main-icon.png")}, this}}
+        , mStatusActiveTasksThrobber{QStringLiteral(":/images/loader.gif")}
+        , mStatusActiveTasksDonePixmap{QStringLiteral(":/images/tick.png")}
     {
         readSettings();
         createMenu();
@@ -234,7 +235,11 @@ namespace Evernus
 
     void MainWindow::showCitadelManager()
     {
-        CitadelManagerDialog dlg{mEveDataProvider, mRepositoryProvider.getCitadelRepository(), this};
+        CitadelManagerDialog dlg{mEveDataProvider,
+                                 mRepositoryProvider.getCitadelRepository(),
+                                 mCitadelAccessCache,
+                                 mCurrentCharacterId,
+                                 this};
         connect(this, &MainWindow::citadelsChanged, &dlg, &CitadelManagerDialog::citadelsChanged);
 
         if (dlg.exec() == QDialog::Accepted)

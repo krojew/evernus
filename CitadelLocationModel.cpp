@@ -14,6 +14,9 @@
  */
 #include <boost/scope_exit.hpp>
 
+#include <QFont>
+
+#include "CitadelAccessCache.h"
 #include "EveDataProvider.h"
 
 #include "CitadelLocationModel.h"
@@ -29,9 +32,14 @@ namespace Evernus
     {
     }
 
-    CitadelLocationModel::CitadelLocationModel(const EveDataProvider &dataProvider, QObject *parent)
+    CitadelLocationModel::CitadelLocationModel(const EveDataProvider &dataProvider,
+                                               const CitadelAccessCache &citadelAccessCache,
+                                               Character::IdType charId,
+                                               QObject *parent)
         : QAbstractItemModel{parent}
         , mDataProvider{dataProvider}
+        , mCitadelAccessCache{citadelAccessCache}
+        , mCharacterId{charId}
     {
         fillStaticData();
         refresh();
@@ -56,6 +64,14 @@ namespace Evernus
             return node->mName;
         case Qt::CheckStateRole:
             return getNodeCheckState(*node);
+        case Qt::FontRole:
+            if (node->mBlacklisted)
+            {
+                QFont font;
+                font.setStrikeOut(true);
+
+                return font;
+            }
         }
 
         return {};
@@ -169,7 +185,10 @@ namespace Evernus
             {
                 auto &target = mCitadels[citadel->getSolarSystemId()];
                 target.emplace_back(std::make_unique<LocationNode>(citadel->getId(), solarSystem->second, target.size(), citadel->getName(), LocationNode::Type::Citadel));
-                target.back()->mSelected = citadel->isIgnored();
+
+                const auto &citadelNode = target.back();
+                citadelNode->mSelected = citadel->isIgnored();
+                citadelNode->mBlacklisted = !mCitadelAccessCache.isAvailable(mCharacterId, citadel->getId());
             }
         }
     }

@@ -43,6 +43,7 @@ namespace Evernus
     class WalletJournalEntry;
     class CacheTimerProvider;
     class RepositoryProvider;
+    class CitadelAccessCache;
     class ActiveTasksDialog;
     class LMeveDataProvider;
     class MarginToolDialog;
@@ -209,6 +210,8 @@ namespace Evernus
         ItemCostProvider &mItemCostProvider;
 
         EveDataProvider &mEveDataProvider;
+
+        const CitadelAccessCache &mCitadelAccessCache;
 
 #ifdef Q_OS_WIN
         QWinTaskbarButton *mTaskbarButton = nullptr;

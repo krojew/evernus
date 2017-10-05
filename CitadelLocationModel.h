@@ -21,8 +21,11 @@
 
 #include <QAbstractItemModel>
 
+#include "Character.h"
+
 namespace Evernus
 {
+    class CitadelAccessCache;
     class EveDataProvider;
 
     class CitadelLocationModel
@@ -33,7 +36,10 @@ namespace Evernus
     public:
         using CitadelList = std::unordered_set<quint64>;
 
-        explicit CitadelLocationModel(const EveDataProvider &dataProvider, QObject *parent = nullptr);
+        CitadelLocationModel(const EveDataProvider &dataProvider,
+                             const CitadelAccessCache &citadelAccessCache,
+                             Character::IdType charId,
+                             QObject *parent = nullptr);
         CitadelLocationModel(const CitadelLocationModel &) = default;
         CitadelLocationModel(CitadelLocationModel &&) = default;
         virtual ~CitadelLocationModel() = default;
@@ -70,6 +76,7 @@ namespace Evernus
             QString mName;
             Type mType = Type::Region;
             bool mSelected = false;
+            bool mBlacklisted = false;
 
             LocationNode(quint64 id, LocationNode *parent, size_t row, const QString &name, Type type);
         };
@@ -78,6 +85,9 @@ namespace Evernus
         using LocationList = std::vector<std::unique_ptr<LocationNode>>;
 
         const EveDataProvider &mDataProvider;
+        const CitadelAccessCache &mCitadelAccessCache;
+
+        Character::IdType mCharacterId = Character::invalidId;
 
         mutable LocationList mRegions;
         mutable std::unordered_map<uint, LocationList> mConstellations, mSolarSystems, mCitadels;

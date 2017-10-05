@@ -23,9 +23,12 @@
 
 namespace Evernus
 {
-    CitadelLocationWidget::CitadelLocationWidget(const EveDataProvider &dataProvider, QWidget *parent)
+    CitadelLocationWidget::CitadelLocationWidget(const EveDataProvider &dataProvider,
+                                                 const CitadelAccessCache &citadelAccessCache,
+                                                 Character::IdType charId,
+                                                 QWidget *parent)
         : QWidget{parent}
-        , mModel{dataProvider}
+        , mModel{dataProvider, citadelAccessCache, charId}
     {
         const auto mainLayout = new QVBoxLayout{this};
 

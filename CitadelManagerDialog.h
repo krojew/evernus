@@ -16,9 +16,12 @@
 
 #include <QDialog>
 
+#include "Character.h"
+
 namespace Evernus
 {
     class CitadelLocationWidget;
+    class CitadelAccessCache;
     class CitadelRepository;
     class EveDataProvider;
 
@@ -28,9 +31,11 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit CitadelManagerDialog(const EveDataProvider &dataProvider,
-                                      const CitadelRepository &citadelRepo,
-                                      QWidget *parent = nullptr);
+        CitadelManagerDialog(const EveDataProvider &dataProvider,
+                             const CitadelRepository &citadelRepo,
+                             const CitadelAccessCache &citadelAccessCache,
+                             Character::IdType charId,
+                             QWidget *parent = nullptr);
         CitadelManagerDialog(const CitadelManagerDialog &) = default;
         CitadelManagerDialog(CitadelManagerDialog &&) = default;
         virtual ~CitadelManagerDialog() = default;
