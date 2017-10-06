@@ -680,7 +680,7 @@ namespace Evernus
                         }
                         else
                         {
-                            if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
+                            if (error == QNetworkReply::ContentAccessDenied)
                             {
                                 if (importingCitadels)
                                 {
