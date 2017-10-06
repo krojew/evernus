@@ -143,7 +143,7 @@ namespace Evernus
                                 const QString &url,
                                 uint page,
                                 T &&continuation,
-                                bool suppressForbidden = false,
+                                bool importingCitadels = false,
                                 quint64 citadelId = 0) const;
 
         template<class T, class ResultTag = JsonTag>
@@ -154,7 +154,7 @@ namespace Evernus
                       const QString &query,
                       const T &continuation,
                       uint retries,
-                      bool suppressForbidden = false,
+                      bool importingCitadels = false,
                       quint64 citadelId = 0) const;
 
         template<class T>

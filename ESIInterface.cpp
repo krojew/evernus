@@ -524,7 +524,7 @@ namespace Evernus
                                           const QString &url,
                                           uint page,
                                           T &&continuation,
-                                          bool suppressForbidden,
+                                          bool importingCitadels,
                                           quint64 citadelId) const
     {
         const auto callback = [=](auto &&response, const auto &error, const auto &expires, auto pages) {
@@ -549,7 +549,7 @@ namespace Evernus
                         continuation(std::move(response), false, QString{}, expires);
 
                         for (auto nextPage = 2u; nextPage <= pages; ++nextPage)
-                            fetchPaginatedData(charId, url, nextPage, continuation, suppressForbidden, citadelId);
+                            fetchPaginatedData(charId, url, nextPage, continuation, importingCitadels, citadelId);
                     }
                 }
                 else if (page >= pages)
@@ -571,7 +571,7 @@ namespace Evernus
                 else
                 {
                     continuation(std::move(response), false, QString{}, expires);
-                    fetchPaginatedData(charId, url, page + 1, continuation, suppressForbidden, citadelId);
+                    fetchPaginatedData(charId, url, page + 1, continuation, importingCitadels, citadelId);
                 }
             }
         };
@@ -582,7 +582,7 @@ namespace Evernus
             QStringLiteral("page=%1").arg(page),
             callback,
             getNumRetries(),
-            suppressForbidden,
+            importingCitadels,
             citadelId
         );
     }
@@ -637,7 +637,7 @@ namespace Evernus
                                 const QString &query,
                                 const T &continuation,
                                 uint retries,
-                                bool suppressForbidden,
+                                bool importingCitadels,
                                 quint64 citadelId) const
     {
         runNowOrLater([=] {
@@ -662,7 +662,7 @@ namespace Evernus
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
-                            asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden, citadelId);
+                            asyncGet<T, ResultTag>(charId, url, query, continuation, retries, importingCitadels, citadelId);
                         }, *reply);
                     }
                     else
@@ -672,7 +672,7 @@ namespace Evernus
                             // expired token?
                             tryAuthAndContinue(charId, [=](const auto &error) {
                                 if (error.isEmpty())
-                                    asyncGet<T, ResultTag>(charId, url, query, continuation, retries, suppressForbidden);
+                                    asyncGet<T, ResultTag>(charId, url, query, continuation, retries, importingCitadels);
                                 else
                                     TaggedInvoke<ResultTag>::invoke(error, *reply, continuation);
                             });
@@ -681,7 +681,7 @@ namespace Evernus
                         {
                             if (error == QNetworkReply::ContentOperationNotPermittedError || error == QNetworkReply::ContentAccessDenied)
                             {
-                                if (suppressForbidden)
+                                if (importingCitadels)
                                 {
                                     if (citadelId != 0)
                                     {
@@ -698,7 +698,7 @@ namespace Evernus
                             }
                             else if (retries > 0)
                             {
-                                asyncGet<T, ResultTag>(charId, url, query, continuation, retries - 1, suppressForbidden, citadelId);
+                                asyncGet<T, ResultTag>(charId, url, query, continuation, retries - 1, importingCitadels, citadelId);
                             }
                             else
                             {
