@@ -124,6 +124,7 @@ namespace Evernus
 
         if (!mCitadelAccessCache.isAvailable(charId, citadelId))
         {
+            qDebug() << "Citadel blacklisted:" << charId << citadelId;
             callback({}, true, {}, {});
             return;
         }
