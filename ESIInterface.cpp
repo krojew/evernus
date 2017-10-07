@@ -592,11 +592,11 @@ namespace Evernus
     void ESIInterface::asyncGet(const QString &url, const QString &query, const T &continuation, uint retries) const
     {
         runNowOrLater([=] {
-            qDebug() << "ESI request:" << url << ":" << query;
-            qDebug() << "Retries" << retries;
-
             auto reply = mNetworkManager.get(prepareRequest(url, query));
             Q_ASSERT(reply != nullptr);
+
+            qDebug() << "ESI request:" << reply << "" << url << ":" << query;
+            qDebug() << "Retries" << retries;
 
             new ReplyTimeout{*reply};
 
@@ -607,9 +607,10 @@ namespace Evernus
                 const auto error = reply->error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
-                    qWarning() << "Error for request:" << url << query << ":" << getError(url, query, *reply);
-
                     const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                    qWarning() << "Error for request" << reply << ":" << url << query << ":" << httpStatus << getError(url, query, *reply);
+
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
@@ -642,11 +643,11 @@ namespace Evernus
                                 quint64 citadelId) const
     {
         runNowOrLater([=] {
-            qDebug() << "ESI request:" << url << ":" << query;
-            qDebug() << "Retries" << retries;
-
             auto reply = mNetworkManager.get(prepareRequest(charId, url, query));
             Q_ASSERT(reply != nullptr);
+
+            qDebug() << "ESI request" << reply << ":" << url << ":" << query;
+            qDebug() << "Retries" << retries;
 
             new ReplyTimeout{*reply};
 
@@ -657,9 +658,10 @@ namespace Evernus
                 const auto error = reply->error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
-                    qWarning() << "Error for request:" << url << query << ":" << getError(url, query, *reply);
-
                     const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                    qWarning() << "Error for request" << reply << ":" << url << query << ":" << httpStatus << getError(url, query, *reply);
+
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
@@ -720,13 +722,13 @@ namespace Evernus
     void ESIInterface::post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const
     {
         runNowOrLater([=] {
-            qDebug() << "ESI request:" << url << ":" << query;
-
             auto request = prepareRequest(charId, url, query);
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
             auto reply = mNetworkManager.post(request, QByteArray{});
             Q_ASSERT(reply != nullptr);
+
+            qDebug() << "ESI request" << reply << ":" << url << ":" << query;
 
             new ReplyTimeout{*reply};
 
@@ -737,9 +739,10 @@ namespace Evernus
                 const auto error = reply->error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
-                    qWarning() << "Error for request:" << url << query << ":" << getError(url, query, *reply);
-
                     const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                    qWarning() << "Error for request" << reply << ":" << url << query << ":" << httpStatus << getError(url, query, *reply);
+
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
@@ -778,13 +781,13 @@ namespace Evernus
     void ESIInterface::post(const QString &url, const QByteArray &body, ErrorCallback errorCallback, T &&resultCallback) const
     {
         runNowOrLater([=] {
-            qDebug() << "ESI request:" << url << ":" << body;
-
             auto request = prepareRequest(url, {});
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
             auto reply = mNetworkManager.post(request, body);
             Q_ASSERT(reply != nullptr);
+
+            qDebug() << "ESI request" << reply << ":" << url << ":" << body;
 
             new ReplyTimeout{*reply};
 
@@ -796,6 +799,9 @@ namespace Evernus
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
                     const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                    qWarning() << "Error for request" << reply << ":" << url << ":" << httpStatus;
+
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
