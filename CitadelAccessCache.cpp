@@ -35,12 +35,15 @@ namespace Evernus
     void CitadelAccessCache::clearIfObsolete(const QDateTime &minTimestamp)
     {
         if (mTimeStamp < minTimestamp)
-        {
-            qDebug() << "Clearing citadel access cache.";
+            clear();
+    }
 
-            std::lock_guard<std::mutex> lock{mCacheMutex};
-            mBlacklisted.clear();
-        }
+    void CitadelAccessCache::clear()
+    {
+        qDebug() << "Clearing citadel access cache.";
+
+        std::lock_guard<std::mutex> lock{mCacheMutex};
+        mBlacklisted.clear();
     }
 
     QDataStream &operator <<(QDataStream &stream, const CitadelAccessCache &cache)

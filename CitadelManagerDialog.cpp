@@ -14,10 +14,12 @@
  */
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
+#include <QPushButton>
 #include <QGroupBox>
 #include <QLabel>
 
 #include "CitadelLocationWidget.h"
+#include "CitadelAccessCache.h"
 #include "CitadelRepository.h"
 
 #include "CitadelManagerDialog.h"
@@ -26,11 +28,12 @@ namespace Evernus
 {
     CitadelManagerDialog::CitadelManagerDialog(const EveDataProvider &dataProvider,
                                                const CitadelRepository &citadelRepo,
-                                               const CitadelAccessCache &citadelAccessCache,
+                                               CitadelAccessCache &citadelAccessCache,
                                                Character::IdType charId,
                                                QWidget *parent)
         : QDialog{parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint}
         , mCitadelRepo{citadelRepo}
+        , mCitadelAccessCache{citadelAccessCache}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
@@ -41,11 +44,16 @@ namespace Evernus
 
         ignoredBoxLayout->addWidget(new QLabel{tr("Ignored citadels will not have their data imported."), this});
 
-        mIgnoredCitadelsWidget = new CitadelLocationWidget{dataProvider, citadelAccessCache, charId, this};
+        mIgnoredCitadelsWidget = new CitadelLocationWidget{dataProvider, mCitadelAccessCache, charId, this};
         ignoredBoxLayout->addWidget(mIgnoredCitadelsWidget);
         connect(this, &CitadelManagerDialog::citadelsChanged, mIgnoredCitadelsWidget, &CitadelLocationWidget::refresh);
 
         ignoredBoxLayout->addWidget(new QLabel{tr("<s>Citadel Name</s> - citadel unavailable for current character"), this});
+
+        const auto refreshAccessCacheBtn = new QPushButton{tr("Refresh access cache"), this};
+        mainLayout->addWidget(refreshAccessCacheBtn);
+        refreshAccessCacheBtn->setToolTip(tr("Clear citadel access cache to check if your characters have access to various citadels."));
+        connect(refreshAccessCacheBtn, &QPushButton::clicked, this, &CitadelManagerDialog::refreshAccessCache);
 
         const auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
@@ -59,5 +67,11 @@ namespace Evernus
     {
         mCitadelRepo.setIgnored(mIgnoredCitadelsWidget->getSelectedCitadels());
         accept();
+    }
+
+    void CitadelManagerDialog::refreshAccessCache()
+    {
+        mCitadelAccessCache.clear();
+        mIgnoredCitadelsWidget->refresh();
     }
 }

@@ -66,6 +66,11 @@ namespace Evernus
         return mCitadelAccessCache;
     }
 
+    CitadelAccessCache &ESIInterfaceManager::getCitadelAccessCache() noexcept
+    {
+        return mCitadelAccessCache;
+    }
+
     void ESIInterfaceManager::connectInterfaces()
     {
         for (const auto &interface : mInterfaces)

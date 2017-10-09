@@ -211,7 +211,7 @@ namespace Evernus
 
         EveDataProvider &mEveDataProvider;
 
-        const CitadelAccessCache &mCitadelAccessCache;
+        CitadelAccessCache &mCitadelAccessCache;
 
 #ifdef Q_OS_WIN
         QWinTaskbarButton *mTaskbarButton = nullptr;

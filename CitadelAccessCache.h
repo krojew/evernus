@@ -40,6 +40,7 @@ namespace Evernus
         void blacklist(Character::IdType charId, Citadel::IdType citadelId);
 
         void clearIfObsolete(const QDateTime &minTimestamp);
+        void clear();
 
         CitadelAccessCache &operator =(const CitadelAccessCache &) = default;
         CitadelAccessCache &operator =(CitadelAccessCache &&) = default;

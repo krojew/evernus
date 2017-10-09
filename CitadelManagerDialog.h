@@ -33,7 +33,7 @@ namespace Evernus
     public:
         CitadelManagerDialog(const EveDataProvider &dataProvider,
                              const CitadelRepository &citadelRepo,
-                             const CitadelAccessCache &citadelAccessCache,
+                             CitadelAccessCache &citadelAccessCache,
                              Character::IdType charId,
                              QWidget *parent = nullptr);
         CitadelManagerDialog(const CitadelManagerDialog &) = default;
@@ -48,9 +48,11 @@ namespace Evernus
 
     private slots:
         void applyChanges();
+        void refreshAccessCache();
 
     private:
         const CitadelRepository &mCitadelRepo;
+        CitadelAccessCache &mCitadelAccessCache;
 
         CitadelLocationWidget *mIgnoredCitadelsWidget = nullptr;
     };
