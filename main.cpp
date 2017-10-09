@@ -338,9 +338,9 @@ int main(int argc, char *argv[])
                              &app, &Evernus::EvernusApplication::makeValueSnapshots);
             QObject::connect(&mainWnd, &Evernus::MainWindow::citadelsEdited,
                              &app, &Evernus::EvernusApplication::clearCitadelCache);
-            QObject::connect(&app, static_cast<void (Evernus::EvernusApplication::*)(uint, const QString &)>(&Evernus::EvernusApplication::taskStarted),
+            QObject::connect(&app, QOverload<uint, const QString &>::of(&Evernus::EvernusApplication::taskStarted),
                              &mainWnd, &Evernus::MainWindow::addNewTaskInfo);
-            QObject::connect(&app, static_cast<void (Evernus::EvernusApplication::*)(uint, uint, const QString &)>(&Evernus::EvernusApplication::taskStarted),
+            QObject::connect(&app, QOverload<uint, uint, const QString &>::of(&Evernus::EvernusApplication::taskStarted),
                              &mainWnd, &Evernus::MainWindow::newSubTaskInfoAdded);
             QObject::connect(&app, &Evernus::EvernusApplication::taskInfoChanged,
                              &mainWnd, &Evernus::MainWindow::taskInfoChanged);
