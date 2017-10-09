@@ -30,21 +30,33 @@ namespace Evernus
         ChainableFileLogger &operator =(const ChainableFileLogger &) = delete;
         ChainableFileLogger &operator =(ChainableFileLogger &&) = delete;
 
-        static void initialize();
+        static void initialize(std::size_t maxLogSize, uint maxLogFiles);
 
     private:
         static ChainableFileLogger *instance;
+
+        static const uint logCheckCount = 100;
+        static const QString fileNameBase;
+
+        std::size_t mMaxLogSize = 10 * 1024 * 1024;
+        uint mMaxLogFiles = 3;
 
         QFile mLogFile;
         QTextStream mStream{&mLogFile};
         QtMessageHandler mPrevHandler = nullptr;
 
+        uint mCurrentLogCheckCount = 0;
+        uint mRotationCount = 0;    // keep current log chain from being removed
+
         std::mutex mStreamMutex;
 
-        ChainableFileLogger();
+        ChainableFileLogger(std::size_t maxLogSize, uint maxLogFiles);
         ~ChainableFileLogger();
 
         void writeMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+        void rotateLogs();
+
+        bool openLog();
 
         static void handleMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg);
         static QString getLogDir();

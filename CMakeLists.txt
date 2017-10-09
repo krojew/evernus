@@ -230,6 +230,7 @@ add_executable(
     ClickableLabel.h
     ColorButton.cpp
     ColorButton.h
+    CommandLineOptions.h
     CommonScriptAPI.cpp
     CommonScriptAPI.h
     ConquerableStation.cpp

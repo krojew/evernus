@@ -45,6 +45,7 @@
 #include "ChainableFileLogger.h"
 #include "ExternalOrderModel.h"
 #include "EvernusApplication.h"
+#include "CommandLineOptions.h"
 #include "UpdaterSettings.h"
 #include "ImportSettings.h"
 #include "BezierCurve.h"
@@ -65,6 +66,17 @@
 #   else
 #       include <client/windows/handler/exception_handler.h>
 #   endif
+#endif
+
+#define STR_VALUE(s) #s
+#define EVERNUS_TEXT(s) STR_VALUE(s)
+
+#if defined(EVERNUS_CLIENT_ID) && defined(EVERNUS_CLIENT_SECRET)
+#   define EVERNUS_CLIENT_ID_TEXT EVERNUS_TEXT(EVERNUS_CLIENT_ID)
+#   define EVERNUS_CLIENT_SECRET_TEXT EVERNUS_TEXT(EVERNUS_CLIENT_SECRET)
+#else
+#   define EVERNUS_CLIENT_ID_TEXT ""
+#   define EVERNUS_CLIENT_SECRET_TEXT ""
 #endif
 
 #if EVERNUS_CREATE_DUMPS
@@ -151,7 +163,30 @@ int main(int argc, char *argv[])
         };
 #   endif
 #endif
-        Evernus::ChainableFileLogger::initialize();
+
+        QStringList arguments;
+        arguments.reserve(argc);
+
+        for (auto i = 0; i < argc; ++i)
+            arguments << QString::fromLocal8Bit(argv[i]);
+
+        QCommandLineParser parser;
+        parser.setApplicationDescription(QCoreApplication::translate("main", "Evernus EVE Online trade tool"));
+        parser.addHelpOption();
+        parser.addVersionOption();
+        parser.addOptions({
+            { Evernus::CommandLineOptions::forceVersionArg, QCoreApplication::translate("main", "Force specific version") },
+            { Evernus::CommandLineOptions::noUpdateArg, QCoreApplication::translate("main", "Don't run internal updater") },
+            { Evernus::CommandLineOptions::clientIdArg, QCoreApplication::translate("main", "SSO client id"), QStringLiteral("id"), EVERNUS_CLIENT_ID_TEXT },
+            { Evernus::CommandLineOptions::clientSecretArg, QCoreApplication::translate("main", "SSO client secret"), QStringLiteral("secret"), EVERNUS_CLIENT_SECRET_TEXT },
+            { Evernus::CommandLineOptions::maxLogFileSizeArg, QCoreApplication::translate("main", "Max. log file size"), QStringLiteral("size"), QStringLiteral("%1").arg(10 * 1014 * 1024) },
+            { Evernus::CommandLineOptions::maxLogFilesArg, QCoreApplication::translate("main", "Max. log files"), QStringLiteral("n"), QStringLiteral("3") },
+        });
+
+        parser.process(arguments);
+
+        Evernus::ChainableFileLogger::initialize(parser.value(Evernus::CommandLineOptions::maxLogFileSizeArg).toULongLong(),
+                                                 parser.value(Evernus::CommandLineOptions::maxLogFilesArg).toUInt());
 
         qSetMessagePattern(QStringLiteral("[%{type}] %{time} %{threadid} %{message}"));
 
@@ -232,7 +267,12 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::VolumeType>("VolumeType");
         qRegisterMetaType<Evernus::IndustryManufacturingSetup::InventorySource>("IndustryManufacturingSetup::InventorySource");
 
-        Evernus::EvernusApplication app{argc, argv};
+        Evernus::EvernusApplication app{argc,
+                                        argv,
+                                        parser.value(Evernus::CommandLineOptions::clientIdArg).toLatin1(),
+                                        parser.value(Evernus::CommandLineOptions::clientSecretArg).toLatin1(),
+                                        parser.value(Evernus::CommandLineOptions::forceVersionArg),
+                                        parser.isSet(Evernus::CommandLineOptions::noUpdateArg)};
 
 #if EVERNUS_CREATE_DUMPS
         // hopefully we'll reach this point

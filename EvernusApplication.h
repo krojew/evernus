@@ -102,7 +102,12 @@ namespace Evernus
     public:
         static const QString versionKey;
 
-        EvernusApplication(int &argc, char *argv[]);
+        EvernusApplication(int &argc,
+                           char *argv[],
+                           QByteArray clientId,
+                           QByteArray clientSecret,
+                           const QString &forcedVersion,
+                           bool dontUpdate);
         virtual ~EvernusApplication() = default;
 
         virtual void registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer) override;

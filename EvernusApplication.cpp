@@ -19,7 +19,6 @@
 
 #include <boost/throw_exception.hpp>
 
-#include <QCommandLineParser>
 #include <QSslConfiguration>
 #include <QStandardPaths>
 #include <QSplashScreen>
@@ -55,22 +54,16 @@
 #include "EvernusApplication.h"
 #include "SSOMessageBox.h"
 
-#define STR_VALUE(s) #s
-#define EVERNUS_TEXT(s) STR_VALUE(s)
-
-#if defined(EVERNUS_CLIENT_ID) && defined(EVERNUS_CLIENT_SECRET)
-#   define EVERNUS_CLIENT_ID_TEXT EVERNUS_TEXT(EVERNUS_CLIENT_ID)
-#   define EVERNUS_CLIENT_SECRET_TEXT EVERNUS_TEXT(EVERNUS_CLIENT_SECRET)
-#else
-#   define EVERNUS_CLIENT_ID_TEXT ""
-#   define EVERNUS_CLIENT_SECRET_TEXT ""
-#endif
-
 namespace Evernus
 {
     const QString EvernusApplication::versionKey = "version";
 
-    EvernusApplication::EvernusApplication(int &argc, char *argv[])
+    EvernusApplication::EvernusApplication(int &argc,
+                                           char *argv[],
+                                           QByteArray clientId,
+                                           QByteArray clientSecret,
+                                           const QString &forcedVersion,
+                                           bool dontUpdate)
         : QApplication{argc, argv}
         , ExternalOrderImporterRegistry{}
         , CacheTimerProvider{}
@@ -81,6 +74,8 @@ namespace Evernus
         , EveDataManagerProvider{}
         , mMainDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("main"))}
         , mEveDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("eve"))}
+        , mClientId{std::move(clientId)}
+        , mClientSecret{std::move(clientSecret)}
         , mAPIManager{*this}
     {
         QSettings settings;
@@ -108,29 +103,8 @@ namespace Evernus
             updateTranslator(lang);
         }
 
-        const auto forceVersionArg = QStringLiteral("force-version");
-        const auto noUpdateArg = QStringLiteral("no-update");
-        const auto clientIdArg = QStringLiteral("client-id");
-        const auto clientSecretArg = QStringLiteral("client-secret");
-
-        QCommandLineParser parser;
-        parser.setApplicationDescription(QCoreApplication::translate("main", "Evernus EVE Online trade tool"));
-        parser.addHelpOption();
-        parser.addVersionOption();
-        parser.addOptions({
-            { forceVersionArg, tr("Force specific version") },
-            { noUpdateArg, tr("Don't run internal updater") },
-            { clientIdArg, tr("SSO client id"), "id", EVERNUS_CLIENT_ID_TEXT },
-            { clientSecretArg, tr("SSO client secret"), "secret", EVERNUS_CLIENT_SECRET_TEXT },
-        });
-
-        parser.process(*this);
-
-        mClientId = parser.value(clientIdArg).toLatin1();
-        mClientSecret = parser.value(clientSecretArg).toLatin1();
-
-        if (parser.isSet(forceVersionArg))
-            setApplicationVersion(parser.value(forceVersionArg));
+        if (!forcedVersion.isEmpty())
+            setApplicationVersion(forcedVersion);
 
         setProxySettings();
 
@@ -216,7 +190,7 @@ namespace Evernus
 
         showSplashMessage(tr("Loading..."), splash);
 
-        if (parser.isSet(noUpdateArg))
+        if (dontUpdate)
             Updater::getInstance().updateDatabaseVersion(mMainDb);
         else
             Updater::getInstance().performVersionMigration(*this);
