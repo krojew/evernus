@@ -110,6 +110,14 @@ namespace Evernus
             QDateTime mExpiry;
         };
 
+        struct ErrorInfo
+        {
+            QString mMessage;
+            int mSSOStatus = 0;
+
+            operator QString() const;
+        };
+
         struct JsonTag {};
         struct PaginatedJsonTag {};
         struct StringTag {};
@@ -176,8 +184,8 @@ namespace Evernus
         template<class T>
         void runNowOrLater(T callback) const;
 
-        static QString getError(const QByteArray &reply);
-        static QString getError(const QString &url, const QString &query, QNetworkReply &reply);
+        static ErrorInfo getError(const QByteArray &reply);
+        static ErrorInfo getError(const QString &url, const QString &query, QNetworkReply &reply);
         static QDateTime getExpireTime(const QNetworkReply &reply);
         static uint getPageCount(const QNetworkReply &reply);
     };

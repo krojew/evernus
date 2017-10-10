@@ -1750,14 +1750,14 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
 </context>
 <context>
-    <name>Evernus::CitadelLocationWidget</name>
+    <name>Evernus::CitadelManagementWidget</name>
     <message>
-        <location filename="../CitadelLocationWidget.cpp" line="47"/>
+        <location filename="../CitadelManagementWidget.cpp" line="47"/>
         <source>Expand all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CitadelLocationWidget.cpp" line="53"/>
+        <location filename="../CitadelManagementWidget.cpp" line="53"/>
         <source>Collapse all</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2486,57 +2486,57 @@ Are you sure you wish to proceed (doing so can compromise your account security)
 <context>
     <name>Evernus::ESIInterface</name>
     <message>
-        <location filename="../ESIInterface.cpp" line="121"/>
+        <location filename="../ESIInterface.cpp" line="126"/>
         <source>Cannot fetch citadels with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="146"/>
+        <location filename="../ESIInterface.cpp" line="151"/>
         <source>Cannot fetch assets with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="164"/>
+        <location filename="../ESIInterface.cpp" line="169"/>
         <source>Cannot fetch character with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="177"/>
+        <location filename="../ESIInterface.cpp" line="182"/>
         <source>Cannot fetch character skills with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="213"/>
+        <location filename="../ESIInterface.cpp" line="218"/>
         <source>Cannot fetch character wallet with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="231"/>
+        <location filename="../ESIInterface.cpp" line="236"/>
         <source>Cannot fetch character market orders with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="251"/>
+        <location filename="../ESIInterface.cpp" line="256"/>
         <source>Cannot fetch character wallet journal with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="279"/>
+        <location filename="../ESIInterface.cpp" line="284"/>
         <source>Cannot fetch character wallet transactions with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="305"/>
+        <location filename="../ESIInterface.cpp" line="310"/>
         <source>Cannot fetch character blueprints with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="331"/>
+        <location filename="../ESIInterface.cpp" line="336"/>
         <source>Missing name data for: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="359"/>
+        <location filename="../ESIInterface.cpp" line="364"/>
         <source>Cannot open market window for invalid character. Check if there&apos;s a character associated with the item you wish to view.</source>
         <translation type="unfinished"></translation>
     </message>

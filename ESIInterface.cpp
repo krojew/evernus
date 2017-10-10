@@ -35,6 +35,11 @@
 
 namespace Evernus
 {
+    ESIInterface::ErrorInfo::operator QString() const
+    {
+        return QStringLiteral("%1 (SSO: %2)").arg(mMessage).arg(mSSOStatus);
+    }
+
     template<>
     struct ESIInterface::TaggedInvoke<ESIInterface::JsonTag>
     {
@@ -659,8 +664,9 @@ namespace Evernus
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
                     const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                    const auto parsedError = getError(url, query, *reply);
 
-                    qWarning() << "Error for request" << reply << ":" << url << query << ":" << httpStatus << getError(url, query, *reply);
+                    qWarning() << "Error for request" << reply << ":" << url << query << ":" << httpStatus << parsedError;
 
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
@@ -670,7 +676,8 @@ namespace Evernus
                     }
                     else
                     {
-                        if (error == QNetworkReply::AuthenticationRequiredError)
+                        if (error == QNetworkReply::AuthenticationRequiredError ||
+                            (error == QNetworkReply::ContentAccessDenied && parsedError.mSSOStatus != 0))
                         {
                             // expired token?
                             tryAuthAndContinue(charId, [=](const auto &error) {
@@ -751,7 +758,7 @@ namespace Evernus
                     }
                     else
                     {
-                        if (error == QNetworkReply::AuthenticationRequiredError)
+                        if (error == QNetworkReply::AuthenticationRequiredError || error == QNetworkReply::ContentAccessDenied)
                         {
                             // expired token?
                             tryAuthAndContinue(charId, [=](const auto &error) {
@@ -770,7 +777,7 @@ namespace Evernus
                 else
                 {
                     const auto error = getError(reply->readAll());
-                    if (!error.isEmpty())
+                    if (!error.mMessage.isEmpty())
                         errorCallback(error);
                 }
             });
@@ -817,7 +824,7 @@ namespace Evernus
                 {
                     const auto resultText = reply->readAll();
                     const auto error = getError(resultText);
-                    if (!error.isEmpty())
+                    if (!error.mMessage.isEmpty())
                         errorCallback(error);
                     else
                         resultCallback(resultText);
@@ -901,21 +908,21 @@ namespace Evernus
         }
     }
 
-    QString ESIInterface::getError(const QByteArray &reply)
+    ESIInterface::ErrorInfo ESIInterface::getError(const QByteArray &reply)
     {
         // try to get ESI error
-        const auto errorDoc = QJsonDocument::fromJson(reply);
-        return errorDoc.object().value(QStringLiteral("error")).toString();
+        const auto error = QJsonDocument::fromJson(reply).object();
+        return { error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("sso_status")).toInt() };
     }
 
-    QString ESIInterface::getError(const QString &url, const QString &query, QNetworkReply &reply)
+    ESIInterface::ErrorInfo ESIInterface::getError(const QString &url, const QString &query, QNetworkReply &reply)
     {
         // try to get ESI error
-        auto errorString = getError(reply.readAll());
-        if (errorString.isEmpty())
-            errorString = reply.errorString();
+        auto error = getError(reply.readAll());
+        if (error.mMessage.isEmpty())
+            error.mMessage = reply.errorString();
 
-        return QStringLiteral("%1?%2: %3").arg(url).arg(query).arg(errorString);
+        return { QStringLiteral("%1?%2: %3").arg(url).arg(query).arg(error.mMessage), error.mSSOStatus };
     }
 
     QDateTime ESIInterface::getExpireTime(const QNetworkReply &reply)
