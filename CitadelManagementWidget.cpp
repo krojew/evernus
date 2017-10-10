@@ -19,11 +19,11 @@
 
 #include "CheckableTreeView.h"
 
-#include "CitadelLocationWidget.h"
+#include "CitadelManagementWidget.h"
 
 namespace Evernus
 {
-    CitadelLocationWidget::CitadelLocationWidget(const EveDataProvider &dataProvider,
+    CitadelManagementWidget::CitadelManagementWidget(const EveDataProvider &dataProvider,
                                                  const CitadelAccessCache &citadelAccessCache,
                                                  Character::IdType charId,
                                                  QWidget *parent)
@@ -54,12 +54,12 @@ namespace Evernus
         connect(btn, &QPushButton::clicked, mainView, &QTreeView::collapseAll);
     }
 
-    CitadelLocationWidget::CitadelList CitadelLocationWidget::getSelectedCitadels() const
+    CitadelManagementWidget::CitadelList CitadelManagementWidget::getSelectedCitadels() const
     {
         return mModel.getSelectedCitadels();
     }
 
-    void CitadelLocationWidget::refresh()
+    void CitadelManagementWidget::refresh()
     {
         mModel.refresh();
     }

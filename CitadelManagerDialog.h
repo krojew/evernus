@@ -20,7 +20,7 @@
 
 namespace Evernus
 {
-    class CitadelLocationWidget;
+    class CitadelManagementWidget;
     class CitadelAccessCache;
     class CitadelRepository;
     class EveDataProvider;
@@ -54,6 +54,6 @@ namespace Evernus
         const CitadelRepository &mCitadelRepo;
         CitadelAccessCache &mCitadelAccessCache;
 
-        CitadelLocationWidget *mIgnoredCitadelsWidget = nullptr;
+        CitadelManagementWidget *mIgnoredCitadelsWidget = nullptr;
     };
 }

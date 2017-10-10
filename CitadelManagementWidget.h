@@ -16,7 +16,7 @@
 
 #include <QWidget>
 
-#include "CitadelLocationModel.h"
+#include "CitadelManagementModel.h"
 #include "Character.h"
 
 namespace Evernus
@@ -24,31 +24,31 @@ namespace Evernus
     class CitadelAccessCache;
     class EveDataProvider;
 
-    class CitadelLocationWidget
+    class CitadelManagementWidget
         : public QWidget
     {
         Q_OBJECT
 
     public:
-        using CitadelList = CitadelLocationModel::CitadelList;
+        using CitadelList = CitadelManagementModel::CitadelList;
 
-        CitadelLocationWidget(const EveDataProvider &dataProvider,
-                              const CitadelAccessCache &citadelAccessCache,
-                              Character::IdType charId,
-                              QWidget *parent = nullptr);
-        CitadelLocationWidget(const CitadelLocationWidget &) = default;
-        CitadelLocationWidget(CitadelLocationWidget &&) = default;
-        virtual ~CitadelLocationWidget() = default;
+        CitadelManagementWidget(const EveDataProvider &dataProvider,
+                                const CitadelAccessCache &citadelAccessCache,
+                                Character::IdType charId,
+                                QWidget *parent = nullptr);
+        CitadelManagementWidget(const CitadelManagementWidget &) = default;
+        CitadelManagementWidget(CitadelManagementWidget &&) = default;
+        virtual ~CitadelManagementWidget() = default;
 
         CitadelList getSelectedCitadels() const;
 
-        CitadelLocationWidget &operator =(const CitadelLocationWidget &) = default;
-        CitadelLocationWidget &operator =(CitadelLocationWidget &&) = default;
+        CitadelManagementWidget &operator =(const CitadelManagementWidget &) = default;
+        CitadelManagementWidget &operator =(CitadelManagementWidget &&) = default;
 
     public slots:
         void refresh();
 
     private:
-        CitadelLocationModel mModel;
+        CitadelManagementModel mModel;
     };
 }

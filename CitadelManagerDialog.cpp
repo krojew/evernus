@@ -19,7 +19,7 @@
 #include <QLabel>
 #include <QIcon>
 
-#include "CitadelLocationWidget.h"
+#include "CitadelManagementWidget.h"
 #include "CitadelAccessCache.h"
 #include "CitadelRepository.h"
 
@@ -45,9 +45,9 @@ namespace Evernus
 
         ignoredBoxLayout->addWidget(new QLabel{tr("Ignored citadels will not have their data imported."), this});
 
-        mIgnoredCitadelsWidget = new CitadelLocationWidget{dataProvider, mCitadelAccessCache, charId, this};
+        mIgnoredCitadelsWidget = new CitadelManagementWidget{dataProvider, mCitadelAccessCache, charId, this};
         ignoredBoxLayout->addWidget(mIgnoredCitadelsWidget);
-        connect(this, &CitadelManagerDialog::citadelsChanged, mIgnoredCitadelsWidget, &CitadelLocationWidget::refresh);
+        connect(this, &CitadelManagerDialog::citadelsChanged, mIgnoredCitadelsWidget, &CitadelManagementWidget::refresh);
 
         ignoredBoxLayout->addWidget(new QLabel{tr("<s>Citadel Name</s> - citadel unavailable for current character"), this});
 

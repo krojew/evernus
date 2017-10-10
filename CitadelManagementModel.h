@@ -28,7 +28,7 @@ namespace Evernus
     class CitadelAccessCache;
     class EveDataProvider;
 
-    class CitadelLocationModel
+    class CitadelManagementModel
         : public QAbstractItemModel
     {
         Q_OBJECT
@@ -36,13 +36,13 @@ namespace Evernus
     public:
         using CitadelList = std::unordered_set<quint64>;
 
-        CitadelLocationModel(const EveDataProvider &dataProvider,
-                             const CitadelAccessCache &citadelAccessCache,
-                             Character::IdType charId,
-                             QObject *parent = nullptr);
-        CitadelLocationModel(const CitadelLocationModel &) = default;
-        CitadelLocationModel(CitadelLocationModel &&) = default;
-        virtual ~CitadelLocationModel() = default;
+        CitadelManagementModel(const EveDataProvider &dataProvider,
+                               const CitadelAccessCache &citadelAccessCache,
+                               Character::IdType charId,
+                               QObject *parent = nullptr);
+        CitadelManagementModel(const CitadelManagementModel &) = default;
+        CitadelManagementModel(CitadelManagementModel &&) = default;
+        virtual ~CitadelManagementModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
         virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -56,8 +56,8 @@ namespace Evernus
 
         CitadelList getSelectedCitadels() const;
 
-        CitadelLocationModel &operator =(const CitadelLocationModel &) = default;
-        CitadelLocationModel &operator =(CitadelLocationModel &&) = default;
+        CitadelManagementModel &operator =(const CitadelManagementModel &) = default;
+        CitadelManagementModel &operator =(CitadelManagementModel &&) = default;
 
     private:
         struct LocationNode

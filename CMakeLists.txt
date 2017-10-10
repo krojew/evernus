@@ -216,10 +216,10 @@ add_executable(
     Citadel.h
     CitadelAccessCache.cpp
     CitadelAccessCache.h
-    CitadelLocationModel.cpp
-    CitadelLocationModel.h
-    CitadelLocationWidget.cpp
-    CitadelLocationWidget.h
+    CitadelManagementModel.cpp
+    CitadelManagementModel.h
+    CitadelManagementWidget.cpp
+    CitadelManagementWidget.h
     CitadelManager.cpp
     CitadelManager.h
     CitadelManagerDialog.cpp

@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "CitadelManagementModel.h"
+
 #include <boost/scope_exit.hpp>
 
 #include <QFont>
@@ -19,11 +21,10 @@
 #include "CitadelAccessCache.h"
 #include "EveDataProvider.h"
 
-#include "CitadelLocationModel.h"
 
 namespace Evernus
 {
-    CitadelLocationModel::LocationNode::LocationNode(quint64 id, LocationNode *parent, size_t row, const QString &name, Type type)
+    CitadelManagementModel::LocationNode::LocationNode(quint64 id, LocationNode *parent, size_t row, const QString &name, Type type)
         : mId{id}
         , mParent{parent}
         , mRow{row}
@@ -32,7 +33,7 @@ namespace Evernus
     {
     }
 
-    CitadelLocationModel::CitadelLocationModel(const EveDataProvider &dataProvider,
+    CitadelManagementModel::CitadelManagementModel(const EveDataProvider &dataProvider,
                                                const CitadelAccessCache &citadelAccessCache,
                                                Character::IdType charId,
                                                QObject *parent)
@@ -45,13 +46,13 @@ namespace Evernus
         refresh();
     }
 
-    int CitadelLocationModel::columnCount(const QModelIndex &parent) const
+    int CitadelManagementModel::columnCount(const QModelIndex &parent) const
     {
         Q_UNUSED(parent);
         return 1;
     }
 
-    QVariant CitadelLocationModel::data(const QModelIndex &index, int role) const
+    QVariant CitadelManagementModel::data(const QModelIndex &index, int role) const
     {
         if (Q_UNLIKELY(!index.isValid()))
             return {};
@@ -77,7 +78,7 @@ namespace Evernus
         return {};
     }
 
-    Qt::ItemFlags CitadelLocationModel::flags(const QModelIndex &index) const
+    Qt::ItemFlags CitadelManagementModel::flags(const QModelIndex &index) const
     {
         if (!index.isValid())
             return 0;
@@ -85,7 +86,7 @@ namespace Evernus
         return QAbstractItemModel::flags(index) | Qt::ItemIsUserCheckable;
     }
 
-    QModelIndex CitadelLocationModel::index(int row, int column, const QModelIndex &parent) const
+    QModelIndex CitadelManagementModel::index(int row, int column, const QModelIndex &parent) const
     {
         if (column != 0)
             return {};
@@ -108,7 +109,7 @@ namespace Evernus
         }
     }
 
-    QModelIndex CitadelLocationModel::parent(const QModelIndex &index) const
+    QModelIndex CitadelManagementModel::parent(const QModelIndex &index) const
     {
         if (!index.isValid())
             return {};
@@ -128,7 +129,7 @@ namespace Evernus
         return {};
     }
 
-    int CitadelLocationModel::rowCount(const QModelIndex &parent) const
+    int CitadelManagementModel::rowCount(const QModelIndex &parent) const
     {
         if (!parent.isValid())
             return static_cast<int>(mRegions.size());
@@ -148,7 +149,7 @@ namespace Evernus
         }
     }
 
-    bool CitadelLocationModel::setData(const QModelIndex &index, const QVariant &value, int role)
+    bool CitadelManagementModel::setData(const QModelIndex &index, const QVariant &value, int role)
     {
         if (index.isValid() && role == Qt::CheckStateRole)
         {
@@ -167,7 +168,7 @@ namespace Evernus
         return false;
     }
 
-    void CitadelLocationModel::refresh()
+    void CitadelManagementModel::refresh()
     {
         beginResetModel();
 
@@ -193,7 +194,7 @@ namespace Evernus
         }
     }
 
-    CitadelLocationModel::CitadelList CitadelLocationModel::getSelectedCitadels() const
+    CitadelManagementModel::CitadelList CitadelManagementModel::getSelectedCitadels() const
     {
         CitadelList result;
         for (const auto &systemCitadels : mCitadels)
@@ -209,7 +210,7 @@ namespace Evernus
         return result;
     }
 
-    void CitadelLocationModel::fillStaticData()
+    void CitadelManagementModel::fillStaticData()
     {
         beginResetModel();
 
@@ -257,7 +258,7 @@ namespace Evernus
         }
     }
 
-    Qt::CheckState CitadelLocationModel::getNodeCheckState(const LocationNode &node) const noexcept
+    Qt::CheckState CitadelManagementModel::getNodeCheckState(const LocationNode &node) const noexcept
     {
         switch (node.mType) {
         case LocationNode::Type::Region:
@@ -273,7 +274,7 @@ namespace Evernus
         return Qt::Unchecked;
     }
 
-    Qt::CheckState CitadelLocationModel::getNodeCheckState(const LocationList &children) const noexcept
+    Qt::CheckState CitadelManagementModel::getNodeCheckState(const LocationList &children) const noexcept
     {
         auto state = Qt::Unchecked;
 
@@ -299,28 +300,28 @@ namespace Evernus
         return state;
     }
 
-    Qt::CheckState CitadelLocationModel::getRegionNodeCheckState(const LocationNode &node) const noexcept
+    Qt::CheckState CitadelManagementModel::getRegionNodeCheckState(const LocationNode &node) const noexcept
     {
         return getNodeCheckState(mConstellations[node.mId]);
     }
 
-    Qt::CheckState CitadelLocationModel::getConstellationNodeCheckState(const LocationNode &node) const noexcept
+    Qt::CheckState CitadelManagementModel::getConstellationNodeCheckState(const LocationNode &node) const noexcept
     {
         return getNodeCheckState(mSolarSystems[node.mId]);
     }
 
-    Qt::CheckState CitadelLocationModel::getSolarSystemNodeCheckState(const LocationNode &node) const noexcept
+    Qt::CheckState CitadelManagementModel::getSolarSystemNodeCheckState(const LocationNode &node) const noexcept
     {
         const auto &citadels = mCitadels[node.mId];
         return (citadels.empty()) ? ((node.mSelected) ? (Qt::Checked) : (Qt::Unchecked)) : (getNodeCheckState(citadels));
     }
 
-    Qt::CheckState CitadelLocationModel::getCitadelNodeCheckState(const LocationNode &node) const noexcept
+    Qt::CheckState CitadelManagementModel::getCitadelNodeCheckState(const LocationNode &node) const noexcept
     {
         return (node.mSelected) ? (Qt::Checked) : (Qt::Unchecked);
     }
 
-    void CitadelLocationModel::setCheckState(const QModelIndex &index, bool checked)
+    void CitadelManagementModel::setCheckState(const QModelIndex &index, bool checked)
     {
         const auto node = static_cast<LocationNode *>(index.internalPointer());
         Q_ASSERT(node != nullptr);
@@ -345,7 +346,7 @@ namespace Evernus
         emit dataChanged(index, index, { Qt::CheckStateRole });
     }
 
-    void CitadelLocationModel::setCheckState(const QModelIndex &parent, const LocationList &children, bool checked)
+    void CitadelManagementModel::setCheckState(const QModelIndex &parent, const LocationList &children, bool checked)
     {
         for (auto row = 0u; row < children.size(); ++row)
             setCheckState(index(row, 0, parent), checked);
