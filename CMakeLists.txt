@@ -894,7 +894,7 @@ if(APPLE)
     install(CODE "
             execute_process(COMMAND ${MACDEPLOYQT_PATH}/macdeployqt \"${BUNDLE_PATH}\" \"-qmldir=${CMAKE_SOURCE_DIR}/qml\" -verbose=2)
             message(STATUS \"Creating dmg of the app\")
-            execute_process(COMMAND hdiutil create -volname ${PROJECT_NAME} -srcfolder \"${BUNDLE_PATH}\" -ov -format UDZO \"${PROJECT_NAME}.dmg\")
+            execute_process(COMMAND hdiutil create -fs HFS+ -volname ${PROJECT_NAME} -srcfolder \"${BUNDLE_PATH}\" -ov -format UDZO \"${PROJECT_NAME}.dmg\")
             " COMPONENT Runtime
     )
 elseif(UNIX)
