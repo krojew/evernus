@@ -81,4 +81,6 @@ RUN cmake \
 ENV QT_PLUGIN_PATH=/usr/local/Qt-5.9.1/plugins
 ENV QML2_IMPORT_PATH=/usr/local/Qt-5.9.1/qml
 
+ENV LD_LIBRARY_PATH=/usr/local/Qt-5.9.1/lib
+
 ENTRYPOINT /usr/local/bin/evernus
