@@ -2023,32 +2023,32 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::CitadelManagerDialog</name>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="40"/>
+        <location filename="../CitadelManagerDialog.cpp" line="41"/>
         <source>Ignored citadels</source>
         <translation>Ignorowane cytadele</translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="45"/>
+        <location filename="../CitadelManagerDialog.cpp" line="46"/>
         <source>Ignored citadels will not have their data imported.</source>
         <translation>Ignorowane cytadele będą wykluczone z importu danych.</translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="51"/>
+        <location filename="../CitadelManagerDialog.cpp" line="52"/>
         <source>&lt;s&gt;Citadel Name&lt;/s&gt; - citadel unavailable for current character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="53"/>
+        <location filename="../CitadelManagerDialog.cpp" line="54"/>
         <source>Refresh access cache</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="55"/>
+        <location filename="../CitadelManagerDialog.cpp" line="56"/>
         <source>Clear citadel access cache to check if your characters have access to various citadels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="63"/>
+        <location filename="../CitadelManagerDialog.cpp" line="64"/>
         <source>Citadel manager</source>
         <translation>Menadżer cytadel</translation>
     </message>

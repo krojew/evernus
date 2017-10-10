@@ -17,6 +17,7 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QLabel>
+#include <QIcon>
 
 #include "CitadelLocationWidget.h"
 #include "CitadelAccessCache.h"
@@ -50,7 +51,7 @@ namespace Evernus
 
         ignoredBoxLayout->addWidget(new QLabel{tr("<s>Citadel Name</s> - citadel unavailable for current character"), this});
 
-        const auto refreshAccessCacheBtn = new QPushButton{tr("Refresh access cache"), this};
+        const auto refreshAccessCacheBtn = new QPushButton{QIcon{QStringLiteral(":/images/arrow_refresh.png")}, tr("Refresh access cache"), this};
         mainLayout->addWidget(refreshAccessCacheBtn);
         refreshAccessCacheBtn->setToolTip(tr("Clear citadel access cache to check if your characters have access to various citadels."));
         connect(refreshAccessCacheBtn, &QPushButton::clicked, this, &CitadelManagerDialog::refreshAccessCache);
