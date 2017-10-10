@@ -29,9 +29,11 @@ namespace Evernus
     template<class T>
     class Repository;
     class CorpMarketOrderValueSnapshotRepository;
+    class IndustryManufacturingSetupRepository;
     class MarketOrderValueSnapshotRepository;
     class WalletJournalEntryRepository;
     class WalletTransactionRepository;
+    class RegionTypePresetRepository;
     class ExternalOrderRepository;
     class MarketOrderRepository;
     class UpdateTimerRepository;
@@ -39,6 +41,7 @@ namespace Evernus
     class CharacterRepository;
     class RepositoryProvider;
     class CitadelRepository;
+    class EveDataProvider;
     class ItemRepository;
     class KeyRepository;
     class ExternalOrder;
@@ -50,7 +53,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        void performVersionMigration(const RepositoryProvider &provider) const;
+        void performVersionMigration(const RepositoryProvider &repoProvider,
+                                     const EveDataProvider &dataProvider) const;
         void updateDatabaseVersion(const QSqlDatabase &db) const;
 
         static Updater &getInstance();
@@ -62,7 +66,7 @@ namespace Evernus
         template<class Sig>
         using UpdateChain = std::map<QVersionNumber, Sig>;
 
-        UpdateChain<void (Updater::*)() const> mCoreUpdateSteps;
+        UpdateChain<void (*)()> mCoreUpdateSteps;
         UpdateChain<std::function<void (const RepositoryProvider &)>> mDbUpdateSteps;
 
         mutable QNetworkAccessManager mAccessManager;
@@ -77,54 +81,57 @@ namespace Evernus
         void updateCore(const QVersionNumber &prevVersion) const;
         void updateDatabase(const QVersionNumber &prevVersion, const RepositoryProvider &provider) const;
 
-        void migrateCoreTo03() const;
-        void migrateDatabaseTo05(const CacheTimerRepository &cacheTimerRepo,
-                                 const Repository<Character> &characterRepo,
-                                 const MarketOrderRepository &characterOrderRepo,
-                                 const MarketOrderRepository &corporationOrderRepo) const;
-        void migrateDatabaseTo18(const ExternalOrderRepository &externalOrderRepo) const;
-        void migrateDatabaseTo19(const Repository<Character> &characterRepo,
-                                 const WalletJournalEntryRepository &walletJournalRepo,
-                                 const WalletJournalEntryRepository &corpWalletJournalRepo,
-                                 const WalletTransactionRepository &walletTransactionRepo,
-                                 const WalletTransactionRepository &corpWalletTransactionRepo) const;
-        void migrateDatabaseTo111(const CacheTimerRepository &cacheTimerRepo,
-                                  const UpdateTimerRepository &updateTimerRepo,
-                                  const Repository<Character> &characterRepo) const;
-        void migrateCoreTo113() const;
-        void migrateDatabaseTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
-                                  const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const;
-        void migrateDatabaseTo123(const ExternalOrderRepository &externalOrderRepo,
-                                  const ItemRepository &itemRepo) const;
-        void migrateDatabaseTo127(const MarketOrderRepository &characterOrderRepo,
-                                  const MarketOrderRepository &corporationOrderRepo) const;
-        void migrateDatabaseTo141(const Repository<Character> &characterRepo) const;
-        void migrateDatabaseTo145(const CharacterRepository &characterRepo,
-                                  const KeyRepository &keyRepository,
-                                  const MarketOrderRepository &characterOrderRepo,
-                                  const MarketOrderRepository &corporationOrderRepo) const;
-        void migrateDatabaseTo147(const MarketOrderRepository &characterOrderRepo,
-                                  const MarketOrderRepository &corporationOrderRepo) const;
-        void migrateDatabaseTo149(const CitadelRepository &citadelRepo) const;
-        void migrateDatabaseTo150(const CitadelRepository &citadelRepo) const;
-        void migrateDatabaseTo153(const ItemRepository &itemRepo) const;
-        void migrateDatabaseTo20(const Repository<Character> &characterRepo) const;
-        void migrateDatabaseTo22(const CitadelRepository &citadelRepo,
-                                 const ItemRepository &corpItemRepo) const;
-        void migrateDatabaseTo23(const CitadelRepository &citadelRepo) const;
-        void migrateDatabaseTo26(const WalletJournalEntryRepository &walletJournalRepo,
-                                 const WalletJournalEntryRepository &corpWalletJournalRepo,
-                                 const Repository<Character> &characterRepo) const;
-        void migrateDatabaseTo211(const WalletTransactionRepository &walletTransactionRepo,
-                                  const WalletTransactionRepository &corpWalletTransactionRepo,
-                                  const Repository<Character> &characterRepo) const;
+        static void migrateCoreTo03();
+        static void migrateDatabaseTo05(const CacheTimerRepository &cacheTimerRepo,
+                                        const Repository<Character> &characterRepo,
+                                        const MarketOrderRepository &characterOrderRepo,
+                                        const MarketOrderRepository &corporationOrderRepo);
+        static void migrateDatabaseTo18(const ExternalOrderRepository &externalOrderRepo);
+        static void migrateDatabaseTo19(const Repository<Character> &characterRepo,
+                                        const WalletJournalEntryRepository &walletJournalRepo,
+                                        const WalletJournalEntryRepository &corpWalletJournalRepo,
+                                        const WalletTransactionRepository &walletTransactionRepo,
+                                        const WalletTransactionRepository &corpWalletTransactionRepo);
+        static void migrateDatabaseTo111(const CacheTimerRepository &cacheTimerRepo,
+                                         const UpdateTimerRepository &updateTimerRepo,
+                                         const Repository<Character> &characterRepo);
+        static void migrateCoreTo113();
+        static void migrateDatabaseTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
+                                         const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo);
+        static void migrateDatabaseTo123(const ExternalOrderRepository &externalOrderRepo,
+                                         const ItemRepository &itemRepo);
+        static void migrateDatabaseTo127(const MarketOrderRepository &characterOrderRepo,
+                                         const MarketOrderRepository &corporationOrderRepo);
+        static void migrateDatabaseTo141(const Repository<Character> &characterRepo);
+        static void migrateDatabaseTo145(const CharacterRepository &characterRepo,
+                                         const KeyRepository &keyRepository,
+                                         const MarketOrderRepository &characterOrderRepo,
+                                         const MarketOrderRepository &corporationOrderRepo);
+        static void migrateDatabaseTo147(const MarketOrderRepository &characterOrderRepo,
+                                         const MarketOrderRepository &corporationOrderRepo);
+        static void migrateDatabaseTo149(const CitadelRepository &citadelRepo);
+        static void migrateDatabaseTo150(const CitadelRepository &citadelRepo);
+        static void migrateDatabaseTo153(const ItemRepository &itemRepo);
+        static void migrateDatabaseTo20(const Repository<Character> &characterRepo);
+        static void migrateDatabaseTo22(const CitadelRepository &citadelRepo,
+                                        const ItemRepository &corpItemRepo);
+        static void migrateDatabaseTo23(const CitadelRepository &citadelRepo);
+        static void migrateDatabaseTo26(const WalletJournalEntryRepository &walletJournalRepo,
+                                        const WalletJournalEntryRepository &corpWalletJournalRepo,
+                                        const Repository<Character> &characterRepo);
+        static void migrateDatabaseTo211(const WalletTransactionRepository &walletTransactionRepo,
+                                         const WalletTransactionRepository &corpWalletTransactionRepo,
+                                         const Repository<Character> &characterRepo);
 
-        void migrateCoreTo130() const;
-        void migrateCoreTo136() const;
-        void migrateCoreTo23() const;
-        void migrateCoreTo27() const;
+        static void migrateCoreTo130();
+        static void migrateCoreTo136();
+        static void migrateCoreTo23();
+        static void migrateCoreTo27();
 
-        void removeRefreshTokens() const;
+        static void removeRefreshTokens();
+
+        static void fixRegionTypePresets(const RegionTypePresetRepository &repo,
+                                         const EveDataProvider &dataProvider);
 
         static QVersionNumber getSavedCoreVersion();
         static QVersionNumber getCurrentCoreVersion();

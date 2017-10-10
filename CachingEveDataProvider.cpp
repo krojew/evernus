@@ -136,11 +136,20 @@ namespace Evernus
 
     const std::unordered_map<EveType::IdType, QString> &CachingEveDataProvider::getAllTradeableTypeNames() const
     {
-        if (!mTypeNameCache.empty())
-            return mTypeNameCache;
+        if (!mTradeableTypeNameCache.empty())
+            return mTradeableTypeNameCache;
 
-        mTypeNameCache = mEveTypeRepository.fetchAllTradeableNames();
-        return mTypeNameCache;
+        mTradeableTypeNameCache = mEveTypeRepository.fetchAllTradeableNames();
+        return mTradeableTypeNameCache;
+    }
+
+    const CachingEveDataProvider::TypeList &CachingEveDataProvider::getAllTradeableTypeIds() const
+    {
+        if (!mTradeableTypeCache.empty())
+            return mTradeableTypeCache;
+
+        mTradeableTypeCache = mEveTypeRepository.fetchAllTradeableIds();
+        return mTradeableTypeCache;
     }
 
     QString CachingEveDataProvider::getTypeMetaGroupName(EveType::IdType id) const

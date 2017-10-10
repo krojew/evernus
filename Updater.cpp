@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <stdexcept>
+#include <algorithm>
 
 #include <boost/throw_exception.hpp>
 
@@ -32,6 +33,7 @@
 #include "MarketOrderValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
 #include "WalletTransactionRepository.h"
+#include "RegionTypePresetRepository.h"
 #include "ExternalOrderRepository.h"
 #include "CachingEveDataProvider.h"
 #include "RegionTypeSelectDialog.h"
@@ -41,7 +43,9 @@
 #include "EvernusApplication.h"
 #include "RepositoryProvider.h"
 #include "StatisticsSettings.h"
+#include "RegionTypePreset.h"
 #include "UpdaterSettings.h"
+#include "EveDataProvider.h"
 #include "ItemRepository.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
@@ -66,77 +70,77 @@ namespace Evernus
             { {2, 7}, &Updater::migrateCoreTo27 },
         }
         , mDbUpdateSteps{
-            { {0, 5}, [=](const auto &provider) {
+            { {0, 5}, [](const auto &provider) {
                 migrateDatabaseTo05(provider.getCacheTimerRepository(),
                                     provider.getCharacterRepository(),
                                     provider.getMarketOrderRepository(),
                                     provider.getCorpMarketOrderRepository());
             } },
-            { {1, 8}, [=](const auto &provider) {
+            { {1, 8}, [](const auto &provider) {
                 migrateDatabaseTo18(provider.getExternalOrderRepository());
             } },
-            { {1, 9}, [=](const auto &provider) {
+            { {1, 9}, [](const auto &provider) {
                 migrateDatabaseTo19(provider.getCharacterRepository(),
                                     provider.getWalletJournalEntryRepository(),
                                     provider.getCorpWalletJournalEntryRepository(),
                                     provider.getWalletTransactionRepository(),
                                     provider.getCorpWalletTransactionRepository());
             } },
-            { {1, 11}, [=](const auto &provider) {
+            { {1, 11}, [](const auto &provider) {
                 migrateDatabaseTo111(provider.getCacheTimerRepository(),
                                      provider.getUpdateTimerRepository(),
                                      provider.getCharacterRepository());
             } },
-            { {1, 16}, [=](const auto &provider) {
+            { {1, 16}, [](const auto &provider) {
                 migrateDatabaseTo116(provider.getMarketOrderValueSnapshotRepository(),
                                      provider.getCorpMarketOrderValueSnapshotRepository());
             } },
-            { {1, 23}, [=](const auto &provider) {
+            { {1, 23}, [](const auto &provider) {
                 migrateDatabaseTo123(provider.getExternalOrderRepository(),
                                      provider.getItemRepository());
             } },
-            { {1, 27}, [=](const auto &provider) {
+            { {1, 27}, [](const auto &provider) {
                 migrateDatabaseTo127(provider.getMarketOrderRepository(),
                                      provider.getCorpMarketOrderRepository());
             } },
-            { {1, 41}, [=](const auto &provider) {
+            { {1, 41}, [](const auto &provider) {
                 migrateDatabaseTo141(provider.getCharacterRepository());
             } },
-            { {1, 45}, [=](const auto &provider) {
+            { {1, 45}, [](const auto &provider) {
                 migrateDatabaseTo145(provider.getCharacterRepository(),
                                      provider.getKeyRepository(),
                                      provider.getMarketOrderRepository(),
                                      provider.getCorpMarketOrderRepository());
             } },
-            { {1, 47}, [=](const auto &provider) {
+            { {1, 47}, [](const auto &provider) {
                 migrateDatabaseTo147(provider.getMarketOrderRepository(),
                                      provider.getCorpMarketOrderRepository());
             } },
-            { {1, 49}, [=](const auto &provider) {
+            { {1, 49}, [](const auto &provider) {
                 migrateDatabaseTo149(provider.getCitadelRepository());
             } },
-            { {1, 50}, [=](const auto &provider) {
+            { {1, 50}, [](const auto &provider) {
                 migrateDatabaseTo150(provider.getCitadelRepository());
             } },
-            { {1, 53}, [=](const auto &provider) {
+            { {1, 53}, [](const auto &provider) {
                 migrateDatabaseTo153(provider.getItemRepository());
             } },
-            { {2, 0}, [=](const auto &provider) {
+            { {2, 0}, [](const auto &provider) {
                 migrateDatabaseTo20(provider.getCharacterRepository());
             } },
-            { {2, 2}, [=](const auto &provider) {
+            { {2, 2}, [](const auto &provider) {
                 migrateDatabaseTo22(provider.getCitadelRepository(),
                                     provider.getCorpItemRepository());
             } },
-            { {2, 3}, [=](const auto &provider) {
+            { {2, 3}, [](const auto &provider) {
                 migrateDatabaseTo23(provider.getCitadelRepository());
             } },
-            { {2, 6}, [=](const auto &provider) {
+            { {2, 6}, [](const auto &provider) {
                 migrateDatabaseTo26(provider.getWalletJournalEntryRepository(),
                                     provider.getCorpWalletJournalEntryRepository(),
                                     provider.getCharacterRepository());
             } },
-            { {2, 11}, [=](const auto &provider) {
+            { {2, 11}, [](const auto &provider) {
                 migrateDatabaseTo211(provider.getWalletTransactionRepository(),
                                      provider.getCorpWalletTransactionRepository(),
                                      provider.getCharacterRepository());
@@ -145,18 +149,28 @@ namespace Evernus
     {
     }
 
-    void Updater::performVersionMigration(const RepositoryProvider &provider) const
+    void Updater::performVersionMigration(const RepositoryProvider &repoProvider, const EveDataProvider &dataProvider) const
     {
         const auto savedCoreVersion = getSavedCoreVersion();
         const auto curCoreVersion = getCurrentCoreVersion();
 
-        if ((savedCoreVersion.majorVersion() == 0 && savedCoreVersion.minorVersion() == 0) || (savedCoreVersion >= curCoreVersion))
-            qInfo() << "Not updating core from" << savedCoreVersion;
-        else
-            updateCore(savedCoreVersion);
+        auto coreUpdated = false;
 
-        const auto dbVersion = getDbVersion(provider.getKeyRepository().getDatabase(), savedCoreVersion);
-        updateDatabase(dbVersion, provider);
+        if ((savedCoreVersion.majorVersion() == 0 && savedCoreVersion.minorVersion() == 0) || (savedCoreVersion >= curCoreVersion))
+        {
+            qInfo() << "Not updating core from" << savedCoreVersion;
+        }
+        else
+        {
+            updateCore(savedCoreVersion);
+            coreUpdated = true;
+        }
+
+        const auto dbVersion = getDbVersion(repoProvider.getKeyRepository().getDatabase(), savedCoreVersion);
+        updateDatabase(dbVersion, repoProvider);
+
+        if (Q_UNLIKELY(coreUpdated))
+            fixRegionTypePresets(repoProvider.getRegionTypePresetRepository(), dataProvider);
     }
 
     void Updater::updateDatabaseVersion(const QSqlDatabase &db) const
@@ -304,7 +318,7 @@ namespace Evernus
             for (; nextVersion != std::end(mCoreUpdateSteps); ++nextVersion)
             {
                 qInfo() << "Updating core to:" << nextVersion->first;
-                (this->*nextVersion->second)();
+                (*nextVersion->second)();
             }
         }
 
@@ -348,7 +362,7 @@ namespace Evernus
         }
     }
 
-    void Updater::migrateCoreTo03() const
+    void Updater::migrateCoreTo03()
     {
         QSettings settings;
         settings.setValue(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault);
@@ -357,7 +371,7 @@ namespace Evernus
     void Updater::migrateDatabaseTo05(const CacheTimerRepository &cacheTimerRepo,
                                       const Repository<Character> &characterRepo,
                                       const MarketOrderRepository &characterOrderRepo,
-                                      const MarketOrderRepository &corporationOrderRepo) const
+                                      const MarketOrderRepository &corporationOrderRepo)
     {
         cacheTimerRepo.exec(QStringLiteral("DROP TABLE %1").arg(cacheTimerRepo.getTableName()));
         cacheTimerRepo.create(characterRepo);
@@ -376,7 +390,7 @@ namespace Evernus
             "Please click on \"Import all\" after the update."));
     }
 
-    void Updater::migrateDatabaseTo18(const ExternalOrderRepository &externalOrderRepo) const
+    void Updater::migrateDatabaseTo18(const ExternalOrderRepository &externalOrderRepo)
     {
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all item prices."));
 
@@ -388,7 +402,7 @@ namespace Evernus
                                       const WalletJournalEntryRepository &walletJournalRepo,
                                       const WalletJournalEntryRepository &corpWalletJournalRepo,
                                       const WalletTransactionRepository &walletTransactionRepo,
-                                      const WalletTransactionRepository &corpWalletTransactionRepo) const
+                                      const WalletTransactionRepository &corpWalletTransactionRepo)
     {
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing all corporation transactions and journal."));
 
@@ -403,7 +417,7 @@ namespace Evernus
 
     void Updater::migrateDatabaseTo111(const CacheTimerRepository &cacheTimerRepo,
                                        const UpdateTimerRepository &updateTimerRepo,
-                                       const Repository<Character> &characterRepo) const
+                                       const Repository<Character> &characterRepo)
     {
         cacheTimerRepo.exec(QStringLiteral("DROP TABLE %1").arg(cacheTimerRepo.getTableName()));
         cacheTimerRepo.create(characterRepo);
@@ -411,7 +425,7 @@ namespace Evernus
         updateTimerRepo.create(characterRepo);
     }
 
-    void Updater::migrateCoreTo113() const
+    void Updater::migrateCoreTo113()
     {
         QSettings settings;
         settings.setValue(ImportSettings::ignoreCachedImportKey, false);
@@ -420,7 +434,7 @@ namespace Evernus
     }
 
     void Updater::migrateDatabaseTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
-                                       const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo) const
+                                       const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo)
     {
         const auto updateShots = [](const auto &repo) {
             auto query = repo.prepare(QStringLiteral(
@@ -434,7 +448,7 @@ namespace Evernus
         updateShots(corpOrderValueSnapshotRepo);
     }
 
-    void Updater::migrateDatabaseTo123(const ExternalOrderRepository &externalOrderRepo, const ItemRepository &itemRepo) const
+    void Updater::migrateDatabaseTo123(const ExternalOrderRepository &externalOrderRepo, const ItemRepository &itemRepo)
     {
         QSettings settings;
         settings.setValue(OrderSettings::deleteOldMarketOrdersKey, false);
@@ -444,14 +458,14 @@ namespace Evernus
     }
 
     void Updater::migrateDatabaseTo127(const MarketOrderRepository &characterOrderRepo,
-                               const MarketOrderRepository &corporationOrderRepo) const
+                               const MarketOrderRepository &corporationOrderRepo)
     {
         const QString sql = "ALTER TABLE %1 ADD COLUMN notes TEXT NULL DEFAULT NULL";
         safelyExecQuery(characterOrderRepo, sql.arg(characterOrderRepo.getTableName()));
         safelyExecQuery(corporationOrderRepo, sql.arg(corporationOrderRepo.getTableName()));
     }
 
-    void Updater::migrateDatabaseTo141(const Repository<Character> &characterRepo) const
+    void Updater::migrateDatabaseTo141(const Repository<Character> &characterRepo)
     {
         safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN brokers_fee FLOAT NULL DEFAULT NULL").arg(characterRepo.getTableName()));
     }
@@ -459,7 +473,7 @@ namespace Evernus
     void Updater::migrateDatabaseTo145(const CharacterRepository &characterRepo,
                                        const KeyRepository &keyRepository,
                                        const MarketOrderRepository &characterOrderRepo,
-                                       const MarketOrderRepository &corporationOrderRepo) const
+                                       const MarketOrderRepository &corporationOrderRepo)
     {
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires settings your custom broker's fee again."));
 
@@ -470,14 +484,14 @@ namespace Evernus
     }
 
     void Updater::migrateDatabaseTo147(const MarketOrderRepository &characterOrderRepo,
-                                       const MarketOrderRepository &corporationOrderRepo) const
+                                       const MarketOrderRepository &corporationOrderRepo)
     {
         const auto query = QStringLiteral("ALTER TABLE %1 ADD COLUMN color_tag TEXT NULL");
         safelyExecQuery(characterOrderRepo, query.arg(characterOrderRepo.getTableName()));
         safelyExecQuery(corporationOrderRepo, query.arg(corporationOrderRepo.getTableName()));
     }
 
-    void Updater::migrateDatabaseTo149(const CitadelRepository &citadelRepo) const
+    void Updater::migrateDatabaseTo149(const CitadelRepository &citadelRepo)
     {
         // disable - never released
         //QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing citadels."));
@@ -486,7 +500,7 @@ namespace Evernus
         safelyExecQuery(citadelRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN region_id INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
     }
 
-    void Updater::migrateDatabaseTo150(const CitadelRepository &citadelRepo) const
+    void Updater::migrateDatabaseTo150(const CitadelRepository &citadelRepo)
     {
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires re-importing citadels."));
 
@@ -494,12 +508,12 @@ namespace Evernus
         safelyExecQuery(citadelRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN type_id INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
     }
 
-    void Updater::migrateDatabaseTo153(const ItemRepository &itemRepo) const
+    void Updater::migrateDatabaseTo153(const ItemRepository &itemRepo)
     {
         safelyExecQuery(itemRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN custom_value NUMERIC NULL DEFAULT NULL").arg(itemRepo.getTableName()));
     }
 
-    void Updater::migrateDatabaseTo20(const Repository<Character> &characterRepo) const
+    void Updater::migrateDatabaseTo20(const Repository<Character> &characterRepo)
     {
         safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN reprocessing_implant_bonus FLOAT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
         safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN arkonor_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
@@ -524,13 +538,13 @@ namespace Evernus
         safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN veldspar_processing TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
     }
 
-    void Updater::migrateDatabaseTo22(const CitadelRepository &citadelRepo, const ItemRepository &corpItemRepo) const
+    void Updater::migrateDatabaseTo22(const CitadelRepository &citadelRepo, const ItemRepository &corpItemRepo)
     {
         safelyExecQuery(citadelRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN ignored INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
         safelyExecQuery(corpItemRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN custom_value NUMERIC NULL DEFAULT NULL").arg(corpItemRepo.getTableName()));
     }
 
-    void Updater::migrateDatabaseTo23(const CitadelRepository &citadelRepo) const
+    void Updater::migrateDatabaseTo23(const CitadelRepository &citadelRepo)
     {
         // re-add ignored column because of borked prev update
         safelyExecQuery(citadelRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN ignored INTEGER NOT NULL DEFAULT 0").arg(citadelRepo.getTableName()));
@@ -538,7 +552,7 @@ namespace Evernus
 
     void Updater::migrateDatabaseTo26(const WalletJournalEntryRepository &walletJournalRepo,
                                       const WalletJournalEntryRepository &corpWalletJournalRepo,
-                                      const Repository<Character> &characterRepo) const
+                                      const Repository<Character> &characterRepo)
     {
         const auto update = [&](const auto &repo) {
             safelyExecQuery(repo, QStringLiteral("DROP TABLE %1").arg(repo.getTableName()));
@@ -592,7 +606,7 @@ namespace Evernus
 
     void Updater::migrateDatabaseTo211(const WalletTransactionRepository &walletTransactionRepo,
                                        const WalletTransactionRepository &corpWalletTransactionRepo,
-                                       const Repository<Character> &characterRepo) const
+                                       const Repository<Character> &characterRepo)
     {
         safelyExecQuery(walletTransactionRepo, QStringLiteral("DROP TABLE IF EXISTS %1").arg(walletTransactionRepo.getTableName()));
         safelyExecQuery(corpWalletTransactionRepo, QStringLiteral("DROP TABLE IF EXISTS %1").arg(corpWalletTransactionRepo.getTableName()));
@@ -603,28 +617,28 @@ namespace Evernus
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires importing wallet transactions again."));
     }
 
-    void Updater::migrateCoreTo130() const
+    void Updater::migrateCoreTo130()
     {
         QFile::remove(CachingEveDataProvider::getCacheDir().filePath(CachingEveDataProvider::systemDistanceCacheFileName));
     }
 
-    void Updater::migrateCoreTo136() const
+    void Updater::migrateCoreTo136()
     {
         QSettings settings;
         settings.remove(UISettings::tabShowStateParentKey);
     }
 
-    void Updater::migrateCoreTo23() const
+    void Updater::migrateCoreTo23()
     {
         removeRefreshTokens();
     }
 
-    void Updater::migrateCoreTo27() const
+    void Updater::migrateCoreTo27()
     {
         removeRefreshTokens();
     }
 
-    void Updater::removeRefreshTokens() const
+    void Updater::removeRefreshTokens()
     {
         QSettings settings;
         settings.remove(RegionTypeSelectDialog::settingsTypesKey);
@@ -632,6 +646,32 @@ namespace Evernus
         settings.beginGroup(SSOSettings::refreshTokenGroup);
         settings.remove(QStringLiteral(""));
         settings.endGroup();
+    }
+
+    void Updater::fixRegionTypePresets(const RegionTypePresetRepository &repo, const EveDataProvider &dataProvider)
+    {
+        qInfo() << "Fixing region-type presets...";
+
+        const auto typeIds = dataProvider.getAllTradeableTypeIds();
+
+        const auto presets = repo.fetchAll();
+        for (const auto &preset : presets)
+        {
+            Q_ASSERT(preset);
+
+            const auto types = preset->getTypes();
+
+            RegionTypePreset::TypeSet fixedTypes;
+            std::copy_if(std::begin(types), std::end(types), std::inserter(fixedTypes, std::end(fixedTypes)), [&](auto id) {
+                return typeIds.find(id) != std::end(typeIds);
+            });
+
+            if (fixedTypes.size() != types.size())
+            {
+                preset->setTypes(std::move(fixedTypes));
+                repo.store(*preset);
+            }
+        }
     }
 
     QVersionNumber Updater::getSavedCoreVersion()

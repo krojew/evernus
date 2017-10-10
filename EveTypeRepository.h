@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 
 #include "Repository.h"
 #include "EveType.h"
@@ -34,6 +35,7 @@ namespace Evernus
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         std::unordered_map<EveType::IdType, QString> fetchAllTradeableNames() const;
+        std::unordered_set<EveType::IdType> fetchAllTradeableIds() const;
         EntityList fetchAllTradeable() const;
 
     private:

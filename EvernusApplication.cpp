@@ -188,12 +188,14 @@ namespace Evernus
         if (settings.value(HttpSettings::enabledKey, HttpSettings::enabledDefault).toBool())
             mHttpSessionManager.start();
 
-        showSplashMessage(tr("Loading..."), splash);
+        showSplashMessage(tr("Updating..."), splash);
 
         if (dontUpdate)
             Updater::getInstance().updateDatabaseVersion(mMainDb);
         else
-            Updater::getInstance().performVersionMigration(*this);
+            Updater::getInstance().performVersionMigration(*this, *mDataProvider);
+
+        showSplashMessage(tr("Loading..."), splash);
 
         settings.setValue(versionKey, applicationVersion());
 

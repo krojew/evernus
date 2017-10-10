@@ -84,6 +84,7 @@ namespace Evernus
         virtual QString getTypeMarketGroupName(EveType::IdType id) const = 0;
         virtual MarketGroup::IdType getTypeMarketGroupParentId(EveType::IdType id) const = 0;
         virtual const std::unordered_map<EveType::IdType, QString> &getAllTradeableTypeNames() const = 0;
+        virtual const TypeList &getAllTradeableTypeIds() const = 0;
         virtual QString getTypeMetaGroupName(EveType::IdType id) const = 0;
         virtual QString getGenericName(quint64 id) const = 0;
         virtual bool hasGenericName(quint64 id) const = 0;

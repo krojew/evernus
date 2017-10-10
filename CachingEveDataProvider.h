@@ -63,6 +63,7 @@ namespace Evernus
         virtual QString getTypeMarketGroupName(EveType::IdType id) const override;
         virtual MarketGroup::IdType getTypeMarketGroupParentId(EveType::IdType id) const override;
         virtual const std::unordered_map<EveType::IdType, QString> &getAllTradeableTypeNames() const override;
+        virtual const TypeList &getAllTradeableTypeIds() const override;
         virtual QString getTypeMetaGroupName(EveType::IdType id) const override;
         virtual QString getGenericName(quint64 id) const override;
         virtual bool hasGenericName(quint64 id) const override;
@@ -155,7 +156,8 @@ namespace Evernus
 
         QSqlDatabase mEveDb;
 
-        mutable std::unordered_map<EveType::IdType, QString> mTypeNameCache;
+        mutable std::unordered_map<EveType::IdType, QString> mTradeableTypeNameCache;
+        mutable TypeList mTradeableTypeCache;
         mutable std::unordered_map<EveType::IdType, MetaGroupRepository::EntityPtr> mTypeMetaGroupCache;
         mutable std::unordered_map<EveType::IdType, EveTypeRepository::EntityPtr> mTypeCache;
 

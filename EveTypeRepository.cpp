@@ -70,6 +70,18 @@ namespace Evernus
         return result;
     }
 
+    std::unordered_set<EveType::IdType> EveTypeRepository::fetchAllTradeableIds() const
+    {
+        auto query = exec(QStringLiteral("SELECT %1 FROM %2 WHERE published = 1 AND marketGroupID IS NOT NULL")
+            .arg(getIdColumn()).arg(getTableName()));
+
+        std::unordered_set<EveType::IdType> result;
+        while (query.next())
+            result.emplace(query.value(0).toUInt());
+
+        return result;
+    }
+
     EveTypeRepository::EntityList EveTypeRepository::fetchAllTradeable() const
     {
         EntityList out;
