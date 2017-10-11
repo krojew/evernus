@@ -28,7 +28,7 @@ namespace Evernus
 
     template<class Id>
     Entity<Id>::Entity(IdType &&id)
-        : mId{std::move(id)}
+        : mId{id}
         , mOriginalId{std::move(id)}
     {
     }
