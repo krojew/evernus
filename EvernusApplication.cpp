@@ -191,9 +191,15 @@ namespace Evernus
         showSplashMessage(tr("Updating..."), splash);
 
         if (dontUpdate)
+        {
             Updater::getInstance().updateDatabaseVersion(mMainDb);
+        }
         else
-            Updater::getInstance().performVersionMigration(*this, *mDataProvider);
+        {
+            Updater::getInstance().performVersionMigration(*this,
+                                                           *mDataProvider,
+                                                           mESIInterfaceManager.getCitadelAccessCache());
+        }
 
         showSplashMessage(tr("Loading..."), splash);
 

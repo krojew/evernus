@@ -17,6 +17,8 @@
 
 #include <boost/throw_exception.hpp>
 
+#include <QtDebug>
+
 #include <QDesktopServices>
 #include <QCoreApplication>
 #include <QNetworkRequest>
@@ -25,7 +27,6 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QProcess>
-#include <QtDebug>
 #include <QUrl>
 #include <QDir>
 
@@ -42,6 +43,7 @@
 #include "CacheTimerRepository.h"
 #include "EvernusApplication.h"
 #include "RepositoryProvider.h"
+#include "CitadelAccessCache.h"
 #include "StatisticsSettings.h"
 #include "RegionTypePreset.h"
 #include "UpdaterSettings.h"
@@ -62,12 +64,27 @@ namespace Evernus
     Updater::Updater()
         : QObject{}
         , mCoreUpdateSteps{
-            { {0, 3}, &Updater::migrateCoreTo03 },
-            { {1, 13}, &Updater::migrateCoreTo113 },
-            { {1, 30}, &Updater::migrateCoreTo130 },
-            { {1, 36}, &Updater::migrateCoreTo136 },
-            { {2, 3}, &Updater::migrateCoreTo23 },
-            { {2, 7}, &Updater::migrateCoreTo27 },
+            { {0, 3}, [](auto &) {
+                migrateCoreTo03();
+            } },
+            { {1, 13}, [](auto &) {
+                migrateCoreTo113();
+            } },
+            { {1, 30}, [](auto &) {
+                migrateCoreTo130();
+            } },
+            { {1, 36}, [](auto &) {
+                migrateCoreTo136();
+            } },
+            { {2, 3}, [](auto &) {
+                migrateCoreTo23();
+            } },
+            { {2, 7}, [](auto &) {
+                migrateCoreTo27();
+            } },
+            { { 2, 15 }, [](auto &citadelAccessCache) {
+                migrateCoreTo214(citadelAccessCache);
+            } },
         }
         , mDbUpdateSteps{
             { {0, 5}, [](const auto &provider) {
@@ -136,7 +153,8 @@ namespace Evernus
                 migrateDatabaseTo23(provider.getCitadelRepository());
             } },
             { {2, 6}, [](const auto &provider) {
-                migrateDatabaseTo26(provider.getWalletJournalEntryRepository(),
+                migrateDatabaseTo26(
+                    provider.getWalletJournalEntryRepository(),
                                     provider.getCorpWalletJournalEntryRepository(),
                                     provider.getCharacterRepository());
             } },
@@ -149,7 +167,9 @@ namespace Evernus
     {
     }
 
-    void Updater::performVersionMigration(const RepositoryProvider &repoProvider, const EveDataProvider &dataProvider) const
+    void Updater::performVersionMigration(const RepositoryProvider &repoProvider,
+                                          const EveDataProvider &dataProvider,
+                                          CitadelAccessCache &citadelAccessCache) const
     {
         const auto savedCoreVersion = getSavedCoreVersion();
         const auto curCoreVersion = getCurrentCoreVersion();
@@ -162,7 +182,7 @@ namespace Evernus
         }
         else
         {
-            updateCore(savedCoreVersion);
+            updateCore(savedCoreVersion, citadelAccessCache);
             coreUpdated = true;
         }
 
@@ -304,7 +324,7 @@ namespace Evernus
 #endif
     }
 
-    void Updater::updateCore(const QVersionNumber &prevVersion) const
+    void Updater::updateCore(const QVersionNumber &prevVersion, CitadelAccessCache &citadelAccessCache) const
     {
         qInfo() << "Update core from" << prevVersion;
 
@@ -318,7 +338,7 @@ namespace Evernus
             for (; nextVersion != std::end(mCoreUpdateSteps); ++nextVersion)
             {
                 qInfo() << "Updating core to:" << nextVersion->first;
-                (*nextVersion->second)();
+                (nextVersion->second)(citadelAccessCache);
             }
         }
 
@@ -360,12 +380,6 @@ namespace Evernus
 
             throw;
         }
-    }
-
-    void Updater::migrateCoreTo03()
-    {
-        QSettings settings;
-        settings.setValue(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault);
     }
 
     void Updater::migrateDatabaseTo05(const CacheTimerRepository &cacheTimerRepo,
@@ -423,6 +437,12 @@ namespace Evernus
         cacheTimerRepo.create(characterRepo);
         updateTimerRepo.exec(QStringLiteral("DROP TABLE %1").arg(updateTimerRepo.getTableName()));
         updateTimerRepo.create(characterRepo);
+    }
+
+    void Updater::migrateCoreTo03()
+    {
+        QSettings settings;
+        settings.setValue(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault);
     }
 
     void Updater::migrateCoreTo113()
@@ -636,6 +656,11 @@ namespace Evernus
     void Updater::migrateCoreTo27()
     {
         removeRefreshTokens();
+    }
+
+    void Updater::migrateCoreTo214(CitadelAccessCache &citadelAccessCache)
+    {
+        citadelAccessCache.clear();
     }
 
     void Updater::removeRefreshTokens()

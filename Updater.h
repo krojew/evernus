@@ -40,6 +40,7 @@ namespace Evernus
     class CacheTimerRepository;
     class CharacterRepository;
     class RepositoryProvider;
+    class CitadelAccessCache;
     class CitadelRepository;
     class EveDataProvider;
     class ItemRepository;
@@ -54,7 +55,8 @@ namespace Evernus
 
     public:
         void performVersionMigration(const RepositoryProvider &repoProvider,
-                                     const EveDataProvider &dataProvider) const;
+                                     const EveDataProvider &dataProvider,
+                                     CitadelAccessCache &citadelAccessCache) const;
         void updateDatabaseVersion(const QSqlDatabase &db) const;
 
         static Updater &getInstance();
@@ -66,11 +68,10 @@ namespace Evernus
         template<class Sig>
         using UpdateChain = std::map<QVersionNumber, Sig>;
 
-        UpdateChain<void (*)()> mCoreUpdateSteps;
+        UpdateChain<std::function<void (CitadelAccessCache &)>> mCoreUpdateSteps;
         UpdateChain<std::function<void (const RepositoryProvider &)>> mDbUpdateSteps;
 
         mutable QNetworkAccessManager mAccessManager;
-
         mutable bool mCheckingForUpdates = false;
 
         Updater();
@@ -78,10 +79,9 @@ namespace Evernus
 
         void finishCheck(bool quiet) const;
 
-        void updateCore(const QVersionNumber &prevVersion) const;
+        void updateCore(const QVersionNumber &prevVersion, CitadelAccessCache &citadelAccessCache) const;
         void updateDatabase(const QVersionNumber &prevVersion, const RepositoryProvider &provider) const;
 
-        static void migrateCoreTo03();
         static void migrateDatabaseTo05(const CacheTimerRepository &cacheTimerRepo,
                                         const Repository<Character> &characterRepo,
                                         const MarketOrderRepository &characterOrderRepo,
@@ -95,7 +95,6 @@ namespace Evernus
         static void migrateDatabaseTo111(const CacheTimerRepository &cacheTimerRepo,
                                          const UpdateTimerRepository &updateTimerRepo,
                                          const Repository<Character> &characterRepo);
-        static void migrateCoreTo113();
         static void migrateDatabaseTo116(const MarketOrderValueSnapshotRepository &orderValueSnapshotRepo,
                                          const CorpMarketOrderValueSnapshotRepository &corpOrderValueSnapshotRepo);
         static void migrateDatabaseTo123(const ExternalOrderRepository &externalOrderRepo,
@@ -123,10 +122,13 @@ namespace Evernus
                                          const WalletTransactionRepository &corpWalletTransactionRepo,
                                          const Repository<Character> &characterRepo);
 
+        static void migrateCoreTo03();
+        static void migrateCoreTo113();
         static void migrateCoreTo130();
         static void migrateCoreTo136();
         static void migrateCoreTo23();
         static void migrateCoreTo27();
+        static void migrateCoreTo214(CitadelAccessCache &citadelAccessCache);
 
         static void removeRefreshTokens();
 
