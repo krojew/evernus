@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QtDebug>
+
 #include <QRegularExpression>
 #include <QDialogButtonBox>
 #include <QInputDialog>
@@ -23,7 +25,7 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QSettings>
-#include <QtDebug>
+#include <QIcon>
 
 #include "RegionTypePresetRepository.h"
 #include "TradeableTypesTreeView.h"
@@ -116,11 +118,11 @@ namespace Evernus
         const auto presetLayout = new QHBoxLayout{};
         mainLayout->addLayout(presetLayout);
 
-        const auto savePresetBtn = new QPushButton{tr("Save preset..."), this};
+        const auto savePresetBtn = new QPushButton{QIcon{QStringLiteral(":/images/disk.png")}, tr("Save preset..."), this};
         presetLayout->addWidget(savePresetBtn);
         connect(savePresetBtn, &QPushButton::clicked, this, &RegionTypeSelectDialog::savePreset);
 
-        const auto loadPresetBtn = new QPushButton{tr("Load preset..."), this};
+        const auto loadPresetBtn = new QPushButton{QIcon{QStringLiteral(":/images/arrow_refresh.png")}, tr("Load preset..."), this};
         presetLayout->addWidget(loadPresetBtn);
         connect(loadPresetBtn, &QPushButton::clicked, this, &RegionTypeSelectDialog::loadPreset);
 
