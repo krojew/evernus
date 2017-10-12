@@ -326,6 +326,8 @@ namespace Evernus
 
     double IndustryManufacturingSetupModel::TreeItem::getJobCost() const
     {
+        Q_ASSERT(mModel.mCharacter);
+
         const auto baseJobCost = std::accumulate(
             std::begin(mManufacturingInfo.mMaterials),
             std::end(mManufacturingInfo.mMaterials),
@@ -335,7 +337,8 @@ namespace Evernus
             }
         );
 
-        return baseJobCost * mModel.getSystemCostIndex() * getEffectiveRuns();
+        const auto omegaCost = baseJobCost * mModel.getSystemCostIndex();
+        return ((mModel.mCharacter->isAlphaClone()) ? (omegaCost + baseJobCost * 0.02) : (omegaCost)) * getEffectiveRuns();
     }
 
     IndustryManufacturingSetupModel::IndustryManufacturingSetupModel(IndustryManufacturingSetup &setup,
