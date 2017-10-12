@@ -115,6 +115,10 @@ namespace Evernus
         mISKLabel = new QLabel{this};
         backgroundLayout->addWidget(mISKLabel);
 
+        mAlphaClone = new QCheckBox{tr("Alpha Clone"), this};
+        backgroundLayout->addWidget(mAlphaClone);
+        connect(mAlphaClone, &QCheckBox::stateChanged, this, &CharacterWidget::setAlphaClone);
+
         mUpdateTimersGroup = new QGroupBox{tr("Data age"), this};
         characterLayout->addWidget(mUpdateTimersGroup);
         mUpdateTimersGroup->setVisible(false);
@@ -562,6 +566,16 @@ namespace Evernus
         emit characterDataChanged();
     }
 
+    void CharacterWidget::setAlphaClone()
+    {
+        const auto id = getCharacterId();
+        Q_ASSERT(id != Character::invalidId);
+
+        mCharacterRepository.updateAlphaClone(id, mAlphaClone->isChecked());
+
+        emit characterDataChanged();
+    }
+
     void CharacterWidget::setSkillLevel(int level)
     {
         const auto id = getCharacterId();
@@ -595,6 +609,7 @@ namespace Evernus
         mMarginTradingSkillEdit->blockSignals(true);
         mContractingSkillEdit->blockSignals(true);
         mCorporationContractingSkillEdit->blockSignals(true);
+        mAlphaClone->blockSignals(true);
 
         if (id == Character::invalidId)
         {
@@ -602,6 +617,7 @@ namespace Evernus
             mBackgroundLabel->setText(QString{});
             mCorporationLabel->setText(QString{});
             mISKLabel->setText(QString{});
+            mAlphaClone->setChecked(false);
 
             mBuyOrderCountLabel->clear();
             mSellOrderCountLabel->clear();
@@ -709,6 +725,7 @@ namespace Evernus
                     .arg(character->getAncestry()));
                 mCorporationLabel->setText(character->getCorporationName());
                 mISKLabel->setText(character->getISKPresentation());
+                mAlphaClone->setChecked(character->isAlphaClone());
 
                 updateCharacterMarketData(orderAmountSkills);
 
@@ -837,6 +854,7 @@ namespace Evernus
         mMarginTradingSkillEdit->blockSignals(false);
         mContractingSkillEdit->blockSignals(false);
         mCorporationContractingSkillEdit->blockSignals(false);
+        mAlphaClone->blockSignals(false);
     }
 
     void CharacterWidget::downloadPortrait()

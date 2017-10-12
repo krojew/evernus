@@ -42,6 +42,7 @@ namespace Evernus
         void updateBrokersFee(Character::IdType id, const boost::optional<double> &buy, const boost::optional<double> &sell) const;
         void updateReprocessingImplantBonus(Character::IdType id, double value) const;
         void updateManufacturingTimeImplantBonus(Character::IdType id, double value) const;
+        void updateAlphaClone(Character::IdType id, bool flag) const;
 
         void disableByKey(Key::IdType id) const;
         void disableByKey(Key::IdType id, const std::vector<Character::IdType> &excluded) const;

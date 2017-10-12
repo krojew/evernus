@@ -61,6 +61,7 @@ namespace Evernus
         void setBrokersFee();
         void setReprocessingImplantBonus(double value);
         void setManufacturingTimeImplantBonus(double value);
+        void setAlphaClone();
 
         void setSkillLevel(int level);
 
@@ -83,6 +84,7 @@ namespace Evernus
         QLabel *mBackgroundLabel = nullptr;
         QLabel *mCorporationLabel = nullptr;
         QLabel *mISKLabel = nullptr;
+        QCheckBox *mAlphaClone = nullptr;
         QLabel *mBuyOrderCountLabel = nullptr;
         QLabel *mSellOrderCountLabel = nullptr;
         QLabel *mTotalOrderCountLabel = nullptr;

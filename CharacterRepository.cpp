@@ -200,6 +200,17 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    void CharacterRepository::updateAlphaClone(Character::IdType id, bool flag) const
+    {
+        auto query = prepare(QStringLiteral("UPDATE %1 SET alpha_clone = ? WHERE %2 = ?")
+            .arg(getTableName())
+            .arg(getIdColumn()));
+        query.bindValue(0, flag);
+        query.bindValue(1, id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     void CharacterRepository::disableByKey(Key::IdType id) const
     {
         auto query = prepare(QStringLiteral("UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ?").arg(getTableName()));
