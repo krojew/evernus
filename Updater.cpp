@@ -163,6 +163,9 @@ namespace Evernus
                                      provider.getCorpWalletTransactionRepository(),
                                      provider.getCharacterRepository());
             } },
+            { {2, 16}, [](const auto &provider) {
+                migrateDatabaseTo216(provider.getCharacterRepository());
+            } },
         }
     {
     }
@@ -635,6 +638,11 @@ namespace Evernus
         corpWalletTransactionRepo.create(characterRepo);
 
         QMessageBox::information(nullptr, tr("Update"), tr("This update requires importing wallet transactions again."));
+    }
+
+    void Updater::migrateDatabaseTo216(const Repository<Character> &characterRepo)
+    {
+        safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN alpha_clone TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
     }
 
     void Updater::migrateCoreTo130()

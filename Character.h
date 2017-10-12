@@ -94,6 +94,9 @@ namespace Evernus
         float getManufacturingTimeImplantBonus() const noexcept;
         void setManufacturingTimeImplantBonus(float value) noexcept;
 
+        bool isAlphaClone() const noexcept;
+        void setAlphaClone(bool flag) noexcept;
+
         CharacterData::OrderAmountSkills getOrderAmountSkills() const noexcept;
         void setOrderAmountSkills(const CharacterData::OrderAmountSkills &skills) noexcept;
         void setOrderAmountSkills(CharacterData::OrderAmountSkills &&skills) noexcept;

@@ -236,6 +236,16 @@ namespace Evernus
         mData.mManufacturingTimeImplantBonus = value;
     }
 
+    bool Character::isAlphaClone() const noexcept
+    {
+        return mData.mAlphaClone;
+    }
+
+    void Character::setAlphaClone(bool flag) noexcept
+    {
+        mData.mAlphaClone = flag;
+    }
+
     CharacterData::OrderAmountSkills Character::getOrderAmountSkills() const noexcept
     {
         return mData.mOrderAmountSkills;

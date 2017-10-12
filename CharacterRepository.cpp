@@ -51,6 +51,7 @@ namespace Evernus
         character->setEnabled(record.value(QStringLiteral("enabled")).toBool());
         character->setReprocessingImplantBonus(record.value(QStringLiteral("reprocessing_implant_bonus")).toFloat());
         character->setManufacturingTimeImplantBonus(record.value(QStringLiteral("manufacturing_time_implant_bonus")).toFloat());
+        character->setAlphaClone(record.value(QStringLiteral("alpha_clone")).toBool());
 
         if (!record.value(QStringLiteral("brokers_fee")).isNull())
             character->setBuyBrokersFee(record.value(QStringLiteral("brokers_fee")).toDouble());
@@ -357,7 +358,8 @@ namespace Evernus
             "nuclear_physics TINYINT NOT NULL,"
             "plasma_physics TINYINT NOT NULL,"
             "quantum_physics TINYINT NOT NULL,"
-            "rocket_science TINYINT NOT NULL"
+            "rocket_science TINYINT NOT NULL,"
+            "alpha_clone TINYINT NOT NULL"
         ")").arg(getTableName()).arg(keyRepository.getTableName());
     }
 
@@ -436,6 +438,7 @@ namespace Evernus
             QStringLiteral("plasma_physics"),
             QStringLiteral("quantum_physics"),
             QStringLiteral("rocket_science"),
+            QStringLiteral("alpha_clone"),
         };
     }
 
@@ -524,6 +527,7 @@ namespace Evernus
         query.bindValue(QStringLiteral(":plasma_physics"), industrySkills.mPlasmaPhysics);
         query.bindValue(QStringLiteral(":quantum_physics"), industrySkills.mQuantumPhysics);
         query.bindValue(QStringLiteral(":rocket_science"), industrySkills.mRocketScience);
+        query.bindValue(QStringLiteral(":alpha_clone"), entity.isAlphaClone());
     }
 
     void CharacterRepository::bindPositionalValues(const Character &entity, QSqlQuery &query) const
@@ -611,5 +615,6 @@ namespace Evernus
         query.addBindValue(industrySkills.mPlasmaPhysics);
         query.addBindValue(industrySkills.mQuantumPhysics);
         query.addBindValue(industrySkills.mRocketScience);
+        query.addBindValue(entity.isAlphaClone());
     }
 }
