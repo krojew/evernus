@@ -183,7 +183,13 @@ int main(int argc, char *argv[])
             { Evernus::CommandLineOptions::maxLogFilesArg, QCoreApplication::translate("main", "Max. log files"), QStringLiteral("n"), QStringLiteral("3") },
         });
 
-        parser.process(arguments);
+        // NOTE: don't use process here or it will exit on additional args in OSX
+        parser.parse(arguments);
+
+        if (parser.isSet(QStringLiteral("version")))
+            parser.showVersion();
+        if (parser.isSet(QStringLiteral("help")))
+            parser.showHelp();
 
         Evernus::ChainableFileLogger::initialize(parser.value(Evernus::CommandLineOptions::maxLogFileSizeArg).toULongLong(),
                                                  parser.value(Evernus::CommandLineOptions::maxLogFilesArg).toUInt());
