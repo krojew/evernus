@@ -109,34 +109,7 @@ namespace Evernus
         Q_ASSERT(thread() == QThread::currentThread());
 
         qDebug() << "Started market order import at" << QDateTime::currentDateTime();
-
-        auto ifaceCallback = [=](auto &&data, const auto &error, const auto &expires) {
-            if (Q_UNLIKELY(!error.isEmpty()))
-            {
-                callback({}, error, expires);
-                return;
-            }
-
-            const auto watcher = new QFutureWatcher<ExternalOrderList>{};
-            connect(watcher, &QFutureWatcher<ExternalOrderList>::finished, this, [=] {
-                watcher->deleteLater();
-
-                const auto future = watcher->future();
-                callback(future.result(), {}, expires);
-            });
-
-            watcher->setFuture(QtConcurrent::run([=, items = data.array()] {
-                ExternalOrderList result;
-                result.reserve(items.size());
-
-                for (const auto &item : items)
-                    result.emplace_back(getExternalOrderFromJson(item.toObject(), regionId));
-
-                return result;
-            }));
-        };
-
-        selectNextInterface().fetchMarketOrders(regionId, typeId, ifaceCallback);
+        selectNextInterface().fetchMarketOrders(regionId, typeId, getMarketOrderCallback(regionId, callback));
     }
 
     void ESIManager::fetchMarketHistory(uint regionId,
@@ -1254,6 +1227,7 @@ namespace Evernus
                             emit tokenError(charId, error);
                             return;
                         }
+
                         const Character::IdType realCharId = object[QStringLiteral("CharacterID")].toDouble(Character::invalidId);
 
                         mRefreshTokens[realCharId] = refreshToken;
@@ -1436,6 +1410,7 @@ namespace Evernus
     {
         QNetworkRequest request{ESIInterface::esiUrl + "/verify"};
         request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer  ") + accessToken);
+        request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
         return request;
     }

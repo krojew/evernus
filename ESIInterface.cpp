@@ -35,6 +35,63 @@
 
 namespace Evernus
 {
+    namespace
+    {
+        template<class T, class U>
+        auto createPaginatedCallback(uint page, T continuation, U fetchNext)
+        {
+            return [=, continuation = std::move(continuation), fetchNext = std::move(fetchNext)]
+                   (auto &&response, const auto &error, const auto &expires, auto pages) {
+                if (Q_UNLIKELY(!error.isEmpty()))
+                {
+                    continuation({}, true, error, expires);
+                    return;
+                }
+
+                if (pages > 0)
+                {
+                    if (page == 1)
+                    {
+                        qDebug() << "Got number of pages for paginated request:" << pages;
+
+                        if (pages == 1)
+                        {
+                            continuation(std::move(response), true, QString{}, expires);
+                        }
+                        else
+                        {
+                            continuation(std::move(response), false, QString{}, expires);
+
+                            for (auto nextPage = 2u; nextPage <= pages; ++nextPage)
+                                fetchNext(nextPage);
+                        }
+                    }
+                    else if (page >= pages)
+                    {
+                        continuation(std::move(response), true, QString{}, expires);
+                    }
+                    else
+                    {
+                        continuation(std::move(response), false, QString{}, expires);
+                    }
+                }
+                else
+                {
+                    const auto array = response.array();
+                    if (array.isEmpty())
+                    {
+                        continuation(std::move(response), true, QString{}, expires);
+                    }
+                    else
+                    {
+                        continuation(std::move(response), false, QString{}, expires);
+                        fetchNext(page + 1);
+                    }
+                }
+            };
+        }
+
+    }
     ESIInterface::ErrorInfo::operator QString() const
     {
         return QStringLiteral("%1 (SSO: %2)").arg(mMessage).arg(mSSOStatus);
@@ -99,16 +156,20 @@ namespace Evernus
     {
     }
 
-    void ESIInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
+    void ESIInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const PaginatedCallback &callback) const
     {
         qDebug() << "Fetching market orders for" << regionId << "and" << typeId;
-        asyncGet(QStringLiteral("/v1/markets/%1/orders/").arg(regionId), QStringLiteral("type_id=%1").arg(typeId), callback, getNumRetries());
+
+        QUrlQuery query;
+        query.addQueryItem(QStringLiteral("type_id"), QString::number(typeId));
+
+        fetchPaginatedData(QStringLiteral("/v1/markets/%1/orders/").arg(regionId), query, 1, callback);
     }
 
     void ESIInterface::fetchMarketOrders(uint regionId, const PaginatedCallback &callback) const
     {
         qDebug() << "Fetching whole market for" << regionId;
-        fetchPaginatedData(QStringLiteral("/v1/markets/%1/orders/").arg(regionId), 1, callback);
+        fetchPaginatedData(QStringLiteral("/v1/markets/%1/orders/").arg(regionId), {}, 1, callback);
     }
 
     void ESIInterface::fetchMarketHistory(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
@@ -471,58 +532,18 @@ namespace Evernus
     }
 
     template<class T>
-    void ESIInterface::fetchPaginatedData(const QString &url, uint page, T &&continuation) const
+    void ESIInterface::fetchPaginatedData(const QString &url, QUrlQuery query, uint page, T &&continuation) const
     {
-        const auto callback = [=](auto &&response, const auto &error, const auto &expires, auto pages) {
-            if (Q_UNLIKELY(!error.isEmpty()))
-            {
-                continuation({}, true, error, expires);
-                return;
+        const auto callback = createPaginatedCallback(
+            page,
+            continuation,
+            [=](auto nextPage) {
+                fetchPaginatedData(url, query, nextPage, continuation);
             }
+        );
 
-            if (pages > 0)
-            {
-                if (page == 1)
-                {
-                    qDebug() << "Got number of pages for paginated request:" << pages;
-
-                    if (pages == 1)
-                    {
-                        continuation(std::move(response), true, QString{}, expires);
-                    }
-                    else
-                    {
-                        continuation(std::move(response), false, QString{}, expires);
-
-                        for (auto nextPage = 2u; nextPage <= pages; ++nextPage)
-                            fetchPaginatedData(url, nextPage, continuation);
-                    }
-                }
-                else if (page >= pages)
-                {
-                    continuation(std::move(response), true, QString{}, expires);
-                }
-                else
-                {
-                    continuation(std::move(response), false, QString{}, expires);
-                }
-            }
-            else
-            {
-                const auto array = response.array();
-                if (array.isEmpty())
-                {
-                    continuation(std::move(response), true, QString{}, expires);
-                }
-                else
-                {
-                    continuation(std::move(response), false, QString{}, expires);
-                    fetchPaginatedData(url, page + 1, continuation);
-                }
-            }
-        };
-
-        asyncGet<decltype(callback), PaginatedJsonTag>(url, QStringLiteral("page=%1").arg(page), callback, getNumRetries());
+        query.addQueryItem(QStringLiteral("page"), QString::number(page));
+        asyncGet<decltype(callback), PaginatedJsonTag>(url, query.toString(), callback, getNumRetries());
     }
 
     template<class T>
@@ -533,54 +554,13 @@ namespace Evernus
                                           bool importingCitadels,
                                           quint64 citadelId) const
     {
-        const auto callback = [=](auto &&response, const auto &error, const auto &expires, auto pages) {
-            if (Q_UNLIKELY(!error.isEmpty()))
-            {
-                continuation({}, true, error, expires);
-                return;
+        const auto callback = createPaginatedCallback(
+            page,
+            continuation,
+            [=](auto nextPage) {
+                fetchPaginatedData(charId, url, nextPage, continuation, importingCitadels, citadelId);
             }
-
-            if (pages > 0)
-            {
-                if (page == 1)
-                {
-                    qDebug() << "Got number of pages for paginated request:" << pages;
-
-                    if (pages == 1)
-                    {
-                        continuation(std::move(response), true, QString{}, expires);
-                    }
-                    else
-                    {
-                        continuation(std::move(response), false, QString{}, expires);
-
-                        for (auto nextPage = 2u; nextPage <= pages; ++nextPage)
-                            fetchPaginatedData(charId, url, nextPage, continuation, importingCitadels, citadelId);
-                    }
-                }
-                else if (page >= pages)
-                {
-                    continuation(std::move(response), true, QString{}, expires);
-                }
-                else
-                {
-                    continuation(std::move(response), false, QString{}, expires);
-                }
-            }
-            else
-            {
-                const auto array = response.array();
-                if (array.isEmpty())
-                {
-                    continuation(std::move(response), true, QString{}, expires);
-                }
-                else
-                {
-                    continuation(std::move(response), false, QString{}, expires);
-                    fetchPaginatedData(charId, url, page + 1, continuation, importingCitadels, citadelId);
-                }
-            }
-        };
+        );
 
         asyncGet<decltype(callback), PaginatedJsonTag>(
             charId,

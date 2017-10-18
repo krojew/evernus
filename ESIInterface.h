@@ -32,6 +32,7 @@
 
 class QNetworkRequest;
 class QJsonDocument;
+class QUrlQuery;
 
 namespace Evernus
 {
@@ -62,7 +63,7 @@ namespace Evernus
         ESIInterface(ESIInterface &&) = default;
         virtual ~ESIInterface() = default;
 
-        void fetchMarketOrders(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const;
+        void fetchMarketOrders(uint regionId, EveType::IdType typeId, const PaginatedCallback &callback) const;
         void fetchMarketOrders(uint regionId, const PaginatedCallback &callback) const;
         void fetchMarketHistory(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const;
         void fetchCitadelMarketOrders(quint64 citadelId, Character::IdType charId, const PaginatedCallback &callback) const;
@@ -146,7 +147,7 @@ namespace Evernus
         void checkAuth(Character::IdType charId, T &&continuation) const;
 
         template<class T>
-        void fetchPaginatedData(const QString &url, uint page, T &&continuation) const;
+        void fetchPaginatedData(const QString &url, QUrlQuery query, uint page, T &&continuation) const;
         template<class T>
         void fetchPaginatedData(Character::IdType charId,
                                 const QString &url,
