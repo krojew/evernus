@@ -339,115 +339,115 @@
         <translation type="unfinished">(unbekannt)</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="250"/>
-        <location filename="../Updater.cpp" line="261"/>
-        <location filename="../Updater.cpp" line="271"/>
+        <location filename="../Updater.cpp" line="264"/>
+        <location filename="../Updater.cpp" line="275"/>
+        <location filename="../Updater.cpp" line="285"/>
         <source>Error</source>
         <translation type="unfinished">Fehler</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="250"/>
+        <location filename="../Updater.cpp" line="264"/>
         <source>Error contacting update server: %1</source>
         <translation type="unfinished">Fehler beim Verbinden mit dem Updateserver: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="261"/>
+        <location filename="../Updater.cpp" line="275"/>
         <source>Error parsing response from the update server: %1</source>
         <translation type="unfinished">Fehler beim Auswerten der Antwort des Updateservers: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="271"/>
+        <location filename="../Updater.cpp" line="285"/>
         <source>Missing update version information!</source>
         <translation type="unfinished">Fehlende Update-Versionsinformationen!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="284"/>
+        <location filename="../Updater.cpp" line="298"/>
         <source>No update found</source>
         <translation type="unfinished">Kein Update vorhanden</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="284"/>
+        <location filename="../Updater.cpp" line="298"/>
         <source>Your current version is up-to-date.</source>
         <translation type="unfinished">Deine Version ist aktuell.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="293"/>
-        <location filename="../Updater.cpp" line="298"/>
-        <location filename="../Updater.cpp" line="309"/>
+        <location filename="../Updater.cpp" line="307"/>
+        <location filename="../Updater.cpp" line="312"/>
+        <location filename="../Updater.cpp" line="323"/>
         <source>Update found</source>
         <translation type="unfinished">Update gefunden</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="293"/>
+        <location filename="../Updater.cpp" line="307"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation type="unfinished">Eine neue Version ist verfügbar: %1
 Willst Du sie nun herunterladen?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="298"/>
+        <location filename="../Updater.cpp" line="312"/>
         <source>A new version is available: %1
 Do you wish to launch the updater?</source>
         <translation type="unfinished">Eine neue Version ist verfügbar: %1
 Wollen Sie den Updater starten möchten?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="309"/>
+        <location filename="../Updater.cpp" line="323"/>
         <source>Couldn&apos;t launch updater. Download manually?</source>
         <translation type="unfinished">Lässt sich nicht starten Updater. Manuell herunterladen?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="366"/>
-        <location filename="../Updater.cpp" line="391"/>
-        <location filename="../Updater.cpp" line="398"/>
-        <location filename="../Updater.cpp" line="410"/>
-        <location filename="../Updater.cpp" line="487"/>
-        <location filename="../Updater.cpp" line="514"/>
-        <location filename="../Updater.cpp" line="613"/>
-        <location filename="../Updater.cpp" line="626"/>
+        <location filename="../Updater.cpp" line="380"/>
+        <location filename="../Updater.cpp" line="405"/>
+        <location filename="../Updater.cpp" line="412"/>
+        <location filename="../Updater.cpp" line="424"/>
+        <location filename="../Updater.cpp" line="501"/>
+        <location filename="../Updater.cpp" line="528"/>
+        <location filename="../Updater.cpp" line="627"/>
+        <location filename="../Updater.cpp" line="640"/>
         <source>Update</source>
         <translation type="unfinished">Update</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="366"/>
+        <location filename="../Updater.cpp" line="380"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation type="unfinished">Während des Updateprozess ist ein Fehler aufgetreten.
 Ein Backup der Datenbank wurde als %1 gespeichert. Bitte schaue in der Onlinehilfe nach was in dieser Situation zu tun ist.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="391"/>
+        <location filename="../Updater.cpp" line="405"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished">Diese Update erfordert den Reimport aller Daten. Bitte klicke nach dem Update auf &quot;Alle importieren&quot;.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="398"/>
+        <location filename="../Updater.cpp" line="412"/>
         <source>This update requires re-importing all item prices.</source>
         <translation type="unfinished">Diese Update erfordert den Reimport aller Artikelpreise.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="410"/>
+        <location filename="../Updater.cpp" line="424"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation type="unfinished">Diese Update erfordert den Reimport aller Corporation Transaktionen und Logbücher.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="487"/>
+        <location filename="../Updater.cpp" line="501"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="514"/>
+        <location filename="../Updater.cpp" line="528"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="613"/>
+        <location filename="../Updater.cpp" line="627"/>
         <source>This update requires re-importing wallet journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="626"/>
+        <location filename="../Updater.cpp" line="640"/>
         <source>This update requires importing wallet transactions again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1265,473 +1265,478 @@ Are you sure you wish to proceed (doing so can compromise your account security)
     </message>
     <message>
         <location filename="../CharacterWidget.cpp" line="118"/>
+        <source>Alpha Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CharacterWidget.cpp" line="122"/>
         <source>Data age</source>
         <translation>Alter der Daten</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="128"/>
+        <location filename="../CharacterWidget.cpp" line="132"/>
         <source>Import all</source>
         <translation>Alle importieren</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="135"/>
+        <location filename="../CharacterWidget.cpp" line="139"/>
         <source>Orders</source>
         <translation>Aufträge</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="140"/>
+        <location filename="../CharacterWidget.cpp" line="144"/>
         <source>Buy orders:</source>
         <translation>Kaufaufträge:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="145"/>
-        <location filename="../CharacterWidget.cpp" line="158"/>
-        <location filename="../CharacterWidget.cpp" line="171"/>
+        <location filename="../CharacterWidget.cpp" line="149"/>
+        <location filename="../CharacterWidget.cpp" line="162"/>
+        <location filename="../CharacterWidget.cpp" line="175"/>
         <source>Volume:</source>
         <translation>Volumen:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="153"/>
+        <location filename="../CharacterWidget.cpp" line="157"/>
         <source>Sell orders:</source>
         <translation>Verkaufsaufträge:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="166"/>
+        <location filename="../CharacterWidget.cpp" line="170"/>
         <source>Total:</source>
         <translation>Gesamt:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="179"/>
+        <location filename="../CharacterWidget.cpp" line="183"/>
         <source>Station owner standings</source>
         <translation>Ansehen zum Stationsbesitzer</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="185"/>
+        <location filename="../CharacterWidget.cpp" line="189"/>
         <source>Corporation standing:</source>
         <translation>Ansehen Corporation:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="193"/>
+        <location filename="../CharacterWidget.cpp" line="197"/>
         <source>Faction standing:</source>
         <translation>Ansehen Fraktion:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="201"/>
+        <location filename="../CharacterWidget.cpp" line="205"/>
         <source>Custom broker&apos;s fee:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="203"/>
+        <location filename="../CharacterWidget.cpp" line="207"/>
         <source>Enable</source>
         <translation>Aktivieren</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="207"/>
+        <location filename="../CharacterWidget.cpp" line="211"/>
         <source>Buy:</source>
         <translation type="unfinished">Kauf:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="219"/>
+        <location filename="../CharacterWidget.cpp" line="223"/>
         <source>Sell:</source>
         <translation type="unfinished">Verkauf:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="231"/>
+        <location filename="../CharacterWidget.cpp" line="235"/>
         <source>Trade skills</source>
         <translation>Handelsskills</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="236"/>
+        <location filename="../CharacterWidget.cpp" line="240"/>
         <source>Order amount skills</source>
         <translation>Skills Auftragsanzahl</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="241"/>
+        <location filename="../CharacterWidget.cpp" line="245"/>
         <source>Trade:</source>
         <translation>Trade:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="242"/>
+        <location filename="../CharacterWidget.cpp" line="246"/>
         <source>Retail:</source>
         <translation>Retail:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="243"/>
+        <location filename="../CharacterWidget.cpp" line="247"/>
         <source>Wholesale:</source>
         <translation>Wholesale:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="244"/>
+        <location filename="../CharacterWidget.cpp" line="248"/>
         <source>Tycoon:</source>
         <translation>Tycoon:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="246"/>
+        <location filename="../CharacterWidget.cpp" line="250"/>
         <source>Trade range skills</source>
         <translation>Skills Auftragsreichweite</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="251"/>
+        <location filename="../CharacterWidget.cpp" line="255"/>
         <source>Marketing:</source>
         <translation>Marketing:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="252"/>
+        <location filename="../CharacterWidget.cpp" line="256"/>
         <source>Procurement:</source>
         <translation>Procurement:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="253"/>
+        <location filename="../CharacterWidget.cpp" line="257"/>
         <source>Daytrading:</source>
         <translation>Daytrading:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="254"/>
+        <location filename="../CharacterWidget.cpp" line="258"/>
         <source>Visibility:</source>
         <translation>Visibility:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="256"/>
+        <location filename="../CharacterWidget.cpp" line="260"/>
         <source>Fee skills</source>
         <translation>Skills Gebühren</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="261"/>
+        <location filename="../CharacterWidget.cpp" line="265"/>
         <source>Accounting:</source>
         <translation>Accounting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="262"/>
+        <location filename="../CharacterWidget.cpp" line="266"/>
         <source>Broker relations:</source>
         <translation>Broker relations:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="263"/>
+        <location filename="../CharacterWidget.cpp" line="267"/>
         <source>Margin trading:</source>
         <translation>Margin Trading:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="265"/>
+        <location filename="../CharacterWidget.cpp" line="269"/>
         <source>Contracting skills</source>
         <translation>Skills Verträge</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="270"/>
+        <location filename="../CharacterWidget.cpp" line="274"/>
         <source>Contracting:</source>
         <translation>Contracting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="271"/>
+        <location filename="../CharacterWidget.cpp" line="275"/>
         <source>Corporation contracting:</source>
         <translation>Corporation Contracting:</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="274"/>
+        <location filename="../CharacterWidget.cpp" line="278"/>
         <source>Reprocessing skills</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="282"/>
+        <location filename="../CharacterWidget.cpp" line="286"/>
         <source>Reprocessing implant bonus:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="300"/>
+        <location filename="../CharacterWidget.cpp" line="304"/>
         <source>Arkonor processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="302"/>
+        <location filename="../CharacterWidget.cpp" line="306"/>
         <source>Bistot processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="304"/>
+        <location filename="../CharacterWidget.cpp" line="308"/>
         <source>Crokite processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="306"/>
+        <location filename="../CharacterWidget.cpp" line="310"/>
         <source>Dark Ochre processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="308"/>
+        <location filename="../CharacterWidget.cpp" line="312"/>
         <source>Gneiss processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="314"/>
+        <location filename="../CharacterWidget.cpp" line="318"/>
         <source>Hedbergite processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="316"/>
+        <location filename="../CharacterWidget.cpp" line="320"/>
         <source>Hemorphite processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="318"/>
+        <location filename="../CharacterWidget.cpp" line="322"/>
         <source>Ice processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="320"/>
+        <location filename="../CharacterWidget.cpp" line="324"/>
         <source>Jaspet processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="322"/>
+        <location filename="../CharacterWidget.cpp" line="326"/>
         <source>Kernite processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="328"/>
+        <location filename="../CharacterWidget.cpp" line="332"/>
         <source>Mercoxit processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="330"/>
+        <location filename="../CharacterWidget.cpp" line="334"/>
         <source>Omber processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="332"/>
+        <location filename="../CharacterWidget.cpp" line="336"/>
         <source>Plagioclase processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="334"/>
+        <location filename="../CharacterWidget.cpp" line="338"/>
         <source>Pyroxeres processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="336"/>
+        <location filename="../CharacterWidget.cpp" line="340"/>
         <source>Reprocessing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="342"/>
+        <location filename="../CharacterWidget.cpp" line="346"/>
         <source>Reprocessing efficiency:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="344"/>
+        <location filename="../CharacterWidget.cpp" line="348"/>
         <source>Scordite processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="346"/>
+        <location filename="../CharacterWidget.cpp" line="350"/>
         <source>Scrapmetal processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="348"/>
+        <location filename="../CharacterWidget.cpp" line="352"/>
         <source>Spodumain processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="350"/>
+        <location filename="../CharacterWidget.cpp" line="354"/>
         <source>Veldspar processing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="353"/>
+        <location filename="../CharacterWidget.cpp" line="357"/>
         <source>Industry skills</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="361"/>
+        <location filename="../CharacterWidget.cpp" line="365"/>
         <source>Manufacturing time implant bonus:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="378"/>
+        <location filename="../CharacterWidget.cpp" line="382"/>
         <source>Industry:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="380"/>
+        <location filename="../CharacterWidget.cpp" line="384"/>
         <source>Advanced industry:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="382"/>
+        <location filename="../CharacterWidget.cpp" line="386"/>
         <source>Advanced small ship construction:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="384"/>
+        <location filename="../CharacterWidget.cpp" line="388"/>
         <source>Advanced medium ship construction:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="386"/>
+        <location filename="../CharacterWidget.cpp" line="390"/>
         <source>Advanced large ship construction:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="388"/>
+        <location filename="../CharacterWidget.cpp" line="392"/>
         <source>Avanced industrial ship construction:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="394"/>
+        <location filename="../CharacterWidget.cpp" line="398"/>
         <source>Amarr starship engineering:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="396"/>
+        <location filename="../CharacterWidget.cpp" line="400"/>
         <source>Caldari starship engineering:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="398"/>
+        <location filename="../CharacterWidget.cpp" line="402"/>
         <source>Gallente starship engineering:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="400"/>
+        <location filename="../CharacterWidget.cpp" line="404"/>
         <source>Minmatar starship engineering:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="402"/>
+        <location filename="../CharacterWidget.cpp" line="406"/>
         <source>Electromagnetic physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="404"/>
+        <location filename="../CharacterWidget.cpp" line="408"/>
         <source>Electronic engineering:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="410"/>
+        <location filename="../CharacterWidget.cpp" line="414"/>
         <source>Graviton physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="412"/>
+        <location filename="../CharacterWidget.cpp" line="416"/>
         <source>High energy physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="414"/>
+        <location filename="../CharacterWidget.cpp" line="418"/>
         <source>Hydromagnetic physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="416"/>
+        <location filename="../CharacterWidget.cpp" line="420"/>
         <source>Laser physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="418"/>
+        <location filename="../CharacterWidget.cpp" line="422"/>
         <source>Mechanical engineering:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="420"/>
+        <location filename="../CharacterWidget.cpp" line="424"/>
         <source>Molecular engineering:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="426"/>
+        <location filename="../CharacterWidget.cpp" line="430"/>
         <source>Nuclear physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="428"/>
+        <location filename="../CharacterWidget.cpp" line="432"/>
         <source>Plasma physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="430"/>
+        <location filename="../CharacterWidget.cpp" line="434"/>
         <source>Quantum physics:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="432"/>
+        <location filename="../CharacterWidget.cpp" line="436"/>
         <source>Rocket science:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="474"/>
+        <location filename="../CharacterWidget.cpp" line="478"/>
         <source>never imported</source>
         <translation>niemals importiert</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="479"/>
+        <location filename="../CharacterWidget.cpp" line="483"/>
         <source>Character sheet: %1</source>
         <translation>Charakterblatt: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="480"/>
+        <location filename="../CharacterWidget.cpp" line="484"/>
         <source>Asset list: %1</source>
         <translation>Gegenstandsliste: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="481"/>
+        <location filename="../CharacterWidget.cpp" line="485"/>
         <source>Market orders: %1</source>
         <translation>Marktaufträge: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="482"/>
+        <location filename="../CharacterWidget.cpp" line="486"/>
         <source>Wallet journal: %1</source>
         <translation>Konto-Logbuch: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="483"/>
+        <location filename="../CharacterWidget.cpp" line="487"/>
         <source>Wallet transactions: %1</source>
         <translation>Konto-Transaktionen: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="486"/>
+        <location filename="../CharacterWidget.cpp" line="490"/>
         <source>Contracts: %1</source>
         <translation>Verträge: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="492"/>
+        <location filename="../CharacterWidget.cpp" line="496"/>
         <source>Corp. asset list: %1</source>
         <translation>Corp. Gegenstandsliste: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="493"/>
+        <location filename="../CharacterWidget.cpp" line="497"/>
         <source>Corp. market orders: %1</source>
         <translation>Corp. Marktaufträge: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="494"/>
+        <location filename="../CharacterWidget.cpp" line="498"/>
         <source>Corp. wallet journal: %1</source>
         <translation>Corp. Konto-Logbuch: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="495"/>
+        <location filename="../CharacterWidget.cpp" line="499"/>
         <source>Corp. wallet transactions: %1</source>
         <translation>Corp. Konto-Transaktionen: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="498"/>
+        <location filename="../CharacterWidget.cpp" line="502"/>
         <source>Corp. contracts: %1</source>
         <translation>Corp. Verträge: %1</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="816"/>
+        <location filename="../CharacterWidget.cpp" line="833"/>
         <source>Character error</source>
         <translation>Fehler bei Charakter</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="816"/>
+        <location filename="../CharacterWidget.cpp" line="833"/>
         <source>Character not found in DB. Refresh characters.</source>
         <translation>Charakter nicht in der DB gefunden. Aktualisiere die Charaktere.</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="902"/>
+        <location filename="../CharacterWidget.cpp" line="920"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1 von %2&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="912"/>
+        <location filename="../CharacterWidget.cpp" line="930"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
@@ -2561,7 +2566,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1443"/>
+        <location filename="../ESIManager.cpp" line="1445"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2581,7 +2586,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished">Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1265"/>
+        <location filename="../ESIManager.cpp" line="1267"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9515,9 +9520,9 @@ Wollen Sie den Updater starten möchten?</translation>
         <translation type="vanished">Lässt sich nicht starten Updater. Manuell herunterladen?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="199"/>
-        <location filename="../Updater.cpp" line="208"/>
-        <location filename="../Updater.cpp" line="214"/>
+        <location filename="../Updater.cpp" line="213"/>
+        <location filename="../Updater.cpp" line="222"/>
+        <location filename="../Updater.cpp" line="228"/>
         <source>Error updating db version: %1</source>
         <translation>Fehler beim Aktualisieren der Datenbankversion: %1</translation>
     </message>
@@ -9711,49 +9716,49 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="209"/>
-        <location filename="../main.cpp" line="224"/>
+        <location filename="../main.cpp" line="215"/>
+        <location filename="../main.cpp" line="230"/>
         <source>Already running</source>
         <translation>Läuft bereits</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="209"/>
+        <location filename="../main.cpp" line="215"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation>Evernus scheint schon zu laufen. Is das nicht der Fall, entferne bitte &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="224"/>
+        <location filename="../main.cpp" line="230"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation>Evernus wurde letztes Mal wahrscheinlich nicht korrekt beendet. Möchtest du einen Aufräumversuch starten?</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="233"/>
-        <location filename="../main.cpp" line="496"/>
+        <location filename="../main.cpp" line="239"/>
+        <location filename="../main.cpp" line="502"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="234"/>
+        <location filename="../main.cpp" line="240"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation>Konnte &apos;%1&apos; nicht entfernen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="440"/>
+        <location filename="../main.cpp" line="446"/>
         <source>New version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="441"/>
+        <location filename="../main.cpp" line="447"/>
         <source>Would you like to see what&apos;s new in this version?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="454"/>
+        <location filename="../main.cpp" line="460"/>
         <source>Import source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="455"/>
+        <location filename="../main.cpp" line="461"/>
         <source>Would you like to use ESI for data import where applicable?
 
 Using ESI gives access to more data, e.g. citadel assets, and lower cache timers but requires additional autorization. Support for more ESI endpoints is ongoing.
@@ -9762,17 +9767,17 @@ You can always change it in Preferences-&gt;Import-&gt;Source.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="465"/>
+        <location filename="../main.cpp" line="471"/>
         <source>Use ESI and XML API</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="466"/>
+        <location filename="../main.cpp" line="472"/>
         <source>Use only XML API</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="507"/>
+        <location filename="../main.cpp" line="513"/>
         <source>Initialization error</source>
         <translation>Fehler beim Initialisieren</translation>
     </message>

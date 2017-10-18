@@ -1243,16 +1243,18 @@ namespace Evernus
 
                         charReply->deleteLater();
 
-                        if (Q_UNLIKELY(charReply->error() != QNetworkReply::NoError))
-                        {
-                            qDebug() << "Error verifying access token:" << charReply->errorString();
-                            emit tokenError(charId, charReply->errorString());
-                            return;
-                        }
-
                         const auto doc = QJsonDocument::fromJson(charReply->readAll());
                         const auto object = doc.object();
-                        const Character::IdType realCharId = object["CharacterID"].toDouble(Character::invalidId);
+
+                        if (Q_UNLIKELY(charReply->error() != QNetworkReply::NoError))
+                        {
+                            const auto error = object.value(QStringLiteral("error")).toString(charReply->errorString());
+
+                            qDebug() << "Error verifying access token:" << error;
+                            emit tokenError(charId, error);
+                            return;
+                        }
+                        const Character::IdType realCharId = object[QStringLiteral("CharacterID")].toDouble(Character::invalidId);
 
                         mRefreshTokens[realCharId] = refreshToken;
 
@@ -1432,7 +1434,7 @@ namespace Evernus
 
     QNetworkRequest ESIManager::getVerifyRequest(const QByteArray &accessToken)
     {
-        QNetworkRequest request{loginUrl + "/oauth/verify"};
+        QNetworkRequest request{ESIInterface::esiUrl + "/verify"};
         request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer  ") + accessToken);
 
         return request;
