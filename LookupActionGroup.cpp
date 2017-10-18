@@ -28,8 +28,8 @@ namespace Evernus
         auto action = addAction(tr("Lookup item on eve-marketdata.com"));
         connect(action, &QAction::triggered, this, &LookupActionGroup::lookupOnEveMarketdata);
 
-        action = addAction(tr("Lookup item on eve-central.com"));
-        connect(action, &QAction::triggered, this, &LookupActionGroup::lookupOnEveCentral);
+        action = addAction(tr("Lookup item on evemarketer.com"));
+        connect(action, &QAction::triggered, this, &LookupActionGroup::lookupOnEveMarketer);
     }
 
     void LookupActionGroup::lookupOnEveMarketdata()
@@ -37,9 +37,9 @@ namespace Evernus
         lookupOnWeb(QStringLiteral("http://eve-marketdata.com/price_check.php?type_id=%1"));
     }
 
-    void LookupActionGroup::lookupOnEveCentral()
+    void LookupActionGroup::lookupOnEveMarketer()
     {
-        lookupOnWeb(QStringLiteral("https://eve-central.com/home/quicklook.html?typeid=%1"));
+        lookupOnWeb(QStringLiteral("https://evemarketer.com/types/%1"));
     }
 
     void LookupActionGroup::lookupOnWeb(const QString &baseUrl) const

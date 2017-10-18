@@ -5252,8 +5252,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../LookupActionGroup.cpp" line="31"/>
+        <source>Lookup item on evemarketer.com</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Lookup item on eve-central.com</source>
-        <translation>Sprawdź cenę na eve-central.com</translation>
+        <translation type="vanished">Sprawdź cenę na eve-central.com</translation>
     </message>
 </context>
 <context>

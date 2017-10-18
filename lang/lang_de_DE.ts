@@ -4858,8 +4858,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../LookupActionGroup.cpp" line="31"/>
+        <source>Lookup item on evemarketer.com</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Lookup item on eve-central.com</source>
-        <translation type="unfinished">Artikel auf eve-central.com nachschauen</translation>
+        <translation type="obsolete">Artikel auf eve-central.com nachschauen</translation>
     </message>
 </context>
 <context>
