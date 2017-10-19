@@ -35,7 +35,6 @@ namespace Evernus
     private:
         QComboBox *mPriceSourceCombo = nullptr;
         QComboBox *mMarketOrderSourceCombo = nullptr;
-        QComboBox *mWebImporterTypeCombo = nullptr;
         QComboBox *mMarketOrderImportTypeCombo = nullptr;
         QComboBox *mEveImportSourceCombo = nullptr;
 

@@ -28,7 +28,6 @@
 #include "MarketOrderRepository.h"
 #include "MarketHistoryEntry.h"
 #include "ProgressiveCounter.h"
-#include "EveCentralManager.h"
 #include "ExternalOrder.h"
 #include "ESIManager.h"
 #include "Character.h"
@@ -74,7 +73,6 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         ESIManager mESIManager;
-        EveCentralManager mEveCentralManager;
 
         ProgressiveCounter mOrderCounter, mHistoryCounter;
         bool mPreparingRequests = false;

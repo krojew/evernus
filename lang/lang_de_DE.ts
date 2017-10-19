@@ -2594,9 +2594,8 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::EveCentralExternalOrderImporter</name>
     <message>
-        <location filename="../EveCentralExternalOrderImporter.cpp" line="60"/>
         <source>Waiting for %1 eve-central replies...</source>
-        <translation>Warte auf %1 Eve-Central Serverantworten...</translation>
+        <translation type="vanished">Warte auf %1 Eve-Central Serverantworten...</translation>
     </message>
 </context>
 <context>
@@ -3742,28 +3741,25 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation>API</translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="58"/>
         <source>Web importer:</source>
-        <translation>Web Importeur:</translation>
+        <translation type="vanished">Web Importeur:</translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="63"/>
         <source>Eve-Central</source>
-        <translation>Eve-Central</translation>
+        <translation type="vanished">Eve-Central</translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="83"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="74"/>
         <source>ESI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="80"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="71"/>
         <source>Eve data import type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="82"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="73"/>
         <source>XML</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3772,22 +3768,22 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">CREST</translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="67"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="58"/>
         <source>Market order import type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="72"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="63"/>
         <source>Auto</source>
         <translation>Auto</translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="73"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="64"/>
         <source>Individual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="74"/>
+        <location filename="../ImportSourcePreferencesWidget.cpp" line="65"/>
         <source>Whole</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3977,316 +3973,310 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryManufacturingWidget</name>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="92"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="91"/>
         <source>Import data for current setup </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="97"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="96"/>
         <source>Load setup...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="102"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="101"/>
         <source>Save setup...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="107"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="106"/>
         <source>Show bill of materials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="112"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="111"/>
         <source>Source:</source>
         <translation type="unfinished">Quelle:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="132"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="131"/>
         <source>Manufacturing station:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="143"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="142"/>
         <source>Leaving manufacturing station empty will cause costs to not include system cost index.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="152"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="151"/>
         <source>Destination:</source>
         <translation type="unfinished">Ziel:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="185"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="184"/>
         <source>Source price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="190"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="189"/>
         <source>Type of orders used for buying items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="192"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="191"/>
         <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="194"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="193"/>
         <source>Type of orders used for selling items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="198"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="197"/>
         <source>Facility type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="207"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="206"/>
         <source>Station</source>
         <translation type="unfinished">Station</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="208"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="207"/>
         <source>Engineering Complex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="209"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="208"/>
         <source>Assembly Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="210"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="209"/>
         <source>Thukker Component Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="211"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="210"/>
         <source>Rapid Assembly Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="216"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="215"/>
         <source>Structure size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="220"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="219"/>
         <source>Medium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="221"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="220"/>
         <source>Large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="222"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="221"/>
         <source>X-Large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="231"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="230"/>
         <source>Security status:</source>
         <translation type="unfinished">Sicherheitsstatus:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="235"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="234"/>
         <source>High sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="236"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="235"/>
         <source>Low sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="237"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="236"/>
         <source>Null sec/WH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="246"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="245"/>
         <source>Material rig:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="250"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="265"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="249"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="264"/>
         <source>None</source>
         <translation type="unfinished">Keine</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="251"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="266"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="250"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="265"/>
         <source>T1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="252"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="267"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="251"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="266"/>
         <source>T2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="261"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="260"/>
         <source>Time rig:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="285"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="284"/>
         <source>Facility tax:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="300"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="299"/>
         <source>Toggle view type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="360"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="359"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="380"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="379"/>
         <source>Import character blueprints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="386"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="385"/>
         <source>Summary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="392"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="391"/>
         <source>Total cost:</source>
         <translation type="unfinished">Kosten gesamt:</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="395"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="394"/>
         <source>Total profit:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="398"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="397"/>
         <source>Min. manufacturing time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="401"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="400"/>
         <source>Total ISK/h:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="404"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="403"/>
         <source>System cost index:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="503"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="498"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="505"/>
         <source>Making %1 Eve-Central order requests...</source>
-        <translation type="unfinished">Erstelle %1 Eve-Central Auftragsanfragen...</translation>
+        <translation type="obsolete">Erstelle %1 Eve-Central Auftragsanfragen...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="506"/>
-        <source>Making %1 ESI order requests...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="509"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="501"/>
         <source>Importing industry market prices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="510"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="502"/>
         <source>Importing system cost indices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="534"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="526"/>
         <source>View error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="534"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="526"/>
         <source>There was an error initializing the manufacturing view: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="556"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="548"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished">Speichere %1 importierte Aufträge...</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="575"/>
-        <location filename="../IndustryManufacturingWidget.cpp" line="588"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="567"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="580"/>
         <source>Load setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="575"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="567"/>
         <source>Select setup:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="588"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="580"/>
         <source>Error loading setup! Either the data is corrupted or setup has been saved in a newer version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="608"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="600"/>
         <source>Save setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="608"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="600"/>
         <source>Enter setup name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="684"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
         <source>Name</source>
         <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="684"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
         <source>Total cost</source>
         <translation type="unfinished">Kosten gesamt</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="684"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="676"/>
         <source>Quantity</source>
         <translation type="unfinished">Menge</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="685"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="677"/>
         <source>Bill of materials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="732"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="724"/>
         <source>N/A</source>
         <translation type="unfinished">k.A.</translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="742"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="734"/>
         <source>Blueprint import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="743"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="735"/>
         <source>Importing large number of blueprints can take long time. Are you sure you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryManufacturingWidget.cpp" line="747"/>
+        <location filename="../IndustryManufacturingWidget.cpp" line="739"/>
         <source>Importing character blueprints...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4295,7 +4285,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     <name>Evernus::IndustryWidget</name>
     <message>
         <location filename="../IndustryWidget.cpp" line="57"/>
-        <source>Manufacturing analysis</source>
+        <source>Manufacturing planner</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5269,14 +5259,14 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::MarketAnalysisDataFetcher</name>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="95"/>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="107"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="94"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="106"/>
         <source>Waiting for %1 order server replies...</source>
         <translation>Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="96"/>
-        <location filename="../MarketAnalysisDataFetcher.cpp" line="134"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="95"/>
+        <location filename="../MarketAnalysisDataFetcher.cpp" line="133"/>
         <source>Waiting for %1 history server replies...</source>
         <translation>Warte auf %1 Serverantworten für Historie...</translation>
     </message>
@@ -5328,12 +5318,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
     </message>
     <message>
         <location filename="../MarketAnalysisWidget.cpp" line="308"/>
-        <source>Making %1 ESI order requests...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="311"/>
-        <source>Making %1 ESI history requests...</source>
+        <source>Making %1 history requests...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5361,9 +5346,8 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="307"/>
         <source>Making %1 Eve-Central order requests...</source>
-        <translation>Erstelle %1 Eve-Central Auftragsanfragen...</translation>
+        <translation type="vanished">Erstelle %1 Eve-Central Auftragsanfragen...</translation>
     </message>
     <message>
         <source>Station change</source>
@@ -5509,7 +5493,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="366"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="363"/>
         <source>Saving %1 imported orders...</source>
         <translation>Speichere %1 importierte Aufträge...</translation>
     </message>
@@ -5525,275 +5509,269 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::MarketBrowserWidget</name>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="99"/>
+        <location filename="../MarketBrowserWidget.cpp" line="97"/>
         <source>Import prices from Web</source>
         <translation>Preisimport aus dem Web</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="104"/>
+        <location filename="../MarketBrowserWidget.cpp" line="102"/>
         <source>Import prices from logs</source>
         <translation>Preisimport aus Logs</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="109"/>
-        <location filename="../MarketBrowserWidget.cpp" line="271"/>
+        <location filename="../MarketBrowserWidget.cpp" line="107"/>
+        <location filename="../MarketBrowserWidget.cpp" line="269"/>
         <source>Filter</source>
         <translation>Filter</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="131"/>
+        <location filename="../MarketBrowserWidget.cpp" line="129"/>
         <source>Clean all orders</source>
         <translation>Alle Aufträge löschen</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="132"/>
+        <location filename="../MarketBrowserWidget.cpp" line="130"/>
         <source>Clean for selected type</source>
         <translation>Für ausgewählten Gegenstand löschen</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="134"/>
+        <location filename="../MarketBrowserWidget.cpp" line="132"/>
         <source>Cleanup  </source>
         <translation>Lösche</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="144"/>
+        <location filename="../MarketBrowserWidget.cpp" line="142"/>
         <source>Navigator</source>
         <translation>Navigator</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="152"/>
+        <location filename="../MarketBrowserWidget.cpp" line="150"/>
         <source>Back</source>
         <translation>Zurück</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="158"/>
+        <location filename="../MarketBrowserWidget.cpp" line="156"/>
         <source>Forward</source>
         <translation>Vor</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="166"/>
+        <location filename="../MarketBrowserWidget.cpp" line="164"/>
         <source>Bookmarks</source>
         <translation>Lesezeichen</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="171"/>
+        <location filename="../MarketBrowserWidget.cpp" line="169"/>
         <source>Grouping</source>
         <translation>Gruppierung</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="176"/>
+        <location filename="../MarketBrowserWidget.cpp" line="174"/>
         <source>None</source>
         <translation>Keine</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="184"/>
+        <location filename="../MarketBrowserWidget.cpp" line="182"/>
         <source>Station</source>
         <translation>Station</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="191"/>
+        <location filename="../MarketBrowserWidget.cpp" line="189"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="198"/>
+        <location filename="../MarketBrowserWidget.cpp" line="196"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="208"/>
+        <location filename="../MarketBrowserWidget.cpp" line="206"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="213"/>
+        <location filename="../MarketBrowserWidget.cpp" line="211"/>
         <source>My orders</source>
         <translation>Meine Aufträge</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="220"/>
+        <location filename="../MarketBrowserWidget.cpp" line="218"/>
         <source>Favorite</source>
         <translation>Favorit</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="222"/>
+        <location filename="../MarketBrowserWidget.cpp" line="220"/>
         <source>Add...</source>
         <translation>Hinzufügen...</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="227"/>
+        <location filename="../MarketBrowserWidget.cpp" line="225"/>
         <source>Remove</source>
         <translation>Entfernen</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="238"/>
+        <location filename="../MarketBrowserWidget.cpp" line="236"/>
         <source>Regions [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation>Regionen [&lt;a href=&apos;#&apos;&gt;alle&lt;/a&gt;]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="248"/>
+        <location filename="../MarketBrowserWidget.cpp" line="246"/>
         <source>Solar systems [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation>Sternensysteme [&lt;a href=&apos;#&apos;&gt;alle&lt;/a&gt;]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="258"/>
+        <location filename="../MarketBrowserWidget.cpp" line="256"/>
         <source>Stations [&lt;a href=&apos;#&apos;&gt;all&lt;/a&gt;]</source>
         <translation>Stationen [&lt;a href=&apos;#&apos;&gt;alle&lt;/a&gt;]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="278"/>
+        <location filename="../MarketBrowserWidget.cpp" line="276"/>
         <source>Min. price:</source>
         <translation>Min. Preis:</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="282"/>
-        <location filename="../MarketBrowserWidget.cpp" line="290"/>
-        <location filename="../MarketBrowserWidget.cpp" line="298"/>
-        <location filename="../MarketBrowserWidget.cpp" line="305"/>
+        <location filename="../MarketBrowserWidget.cpp" line="280"/>
+        <location filename="../MarketBrowserWidget.cpp" line="288"/>
+        <location filename="../MarketBrowserWidget.cpp" line="296"/>
+        <location filename="../MarketBrowserWidget.cpp" line="303"/>
         <source>any</source>
         <translation>jeder</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="286"/>
+        <location filename="../MarketBrowserWidget.cpp" line="284"/>
         <source>Max. price:</source>
         <translation>Max. Preis:</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="294"/>
+        <location filename="../MarketBrowserWidget.cpp" line="292"/>
         <source>Min. volume:</source>
         <translation>Min. Volumen:</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="301"/>
+        <location filename="../MarketBrowserWidget.cpp" line="299"/>
         <source>Max. volume:</source>
         <translation>Max. Volumen:</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="308"/>
+        <location filename="../MarketBrowserWidget.cpp" line="306"/>
         <source>Security status:</source>
         <translation>Sicherheitsstatus:</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="313"/>
+        <location filename="../MarketBrowserWidget.cpp" line="311"/>
         <source>-1.0 - 0.0</source>
         <translation>-1.0-0.0</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="318"/>
+        <location filename="../MarketBrowserWidget.cpp" line="316"/>
         <source>0.1 - 0.4</source>
         <translation>0.1-0.4</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="323"/>
+        <location filename="../MarketBrowserWidget.cpp" line="321"/>
         <source>0.5 - 1.0</source>
         <translation>0.5-1.0</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="330"/>
+        <location filename="../MarketBrowserWidget.cpp" line="328"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="334"/>
+        <location filename="../MarketBrowserWidget.cpp" line="332"/>
         <source>Reset</source>
         <translation>Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="341"/>
-        <location filename="../MarketBrowserWidget.cpp" line="1024"/>
+        <location filename="../MarketBrowserWidget.cpp" line="339"/>
+        <location filename="../MarketBrowserWidget.cpp" line="1015"/>
         <source>select an item</source>
         <translation>Wähle einen Gegenstand</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="345"/>
+        <location filename="../MarketBrowserWidget.cpp" line="343"/>
         <source>Sell orders</source>
         <translation>Verkaufsaufträge</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="354"/>
-        <location filename="../MarketBrowserWidget.cpp" line="371"/>
+        <location filename="../MarketBrowserWidget.cpp" line="352"/>
+        <location filename="../MarketBrowserWidget.cpp" line="369"/>
         <source>Set as deviation reference</source>
         <translation>Als Referenz für Abweichung benutzen</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="362"/>
+        <location filename="../MarketBrowserWidget.cpp" line="360"/>
         <source>Buy orders</source>
         <translation>Kaufaufträge</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="487"/>
-        <location filename="../MarketBrowserWidget.cpp" line="524"/>
-        <location filename="../MarketBrowserWidget.cpp" line="800"/>
+        <location filename="../MarketBrowserWidget.cpp" line="485"/>
+        <location filename="../MarketBrowserWidget.cpp" line="522"/>
+        <location filename="../MarketBrowserWidget.cpp" line="791"/>
         <source>(all)</source>
         <translation>(alle)</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="636"/>
+        <location filename="../MarketBrowserWidget.cpp" line="634"/>
         <source>Add to favorites</source>
         <translation>Zu Favoriten hinzufügen</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="730"/>
+        <location filename="../MarketBrowserWidget.cpp" line="724"/>
         <source>Importing data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="732"/>
         <source>Making %1 Eve-Central order requests...</source>
-        <translation type="unfinished">Erstelle %1 Eve-Central Auftragsanfragen...</translation>
+        <translation type="obsolete">Erstelle %1 Eve-Central Auftragsanfragen...</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="733"/>
-        <source>Making %1 ESI order requests...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MarketBrowserWidget.cpp" line="752"/>
+        <location filename="../MarketBrowserWidget.cpp" line="743"/>
         <source>Saving %1 imported orders...</source>
         <translation type="unfinished">Speichere %1 importierte Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="828"/>
+        <location filename="../MarketBrowserWidget.cpp" line="819"/>
         <source>Add bookmark</source>
         <translation>Lesezeichen hinzufügen</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="829"/>
+        <location filename="../MarketBrowserWidget.cpp" line="820"/>
         <source>Remove bookmark...</source>
         <translation>Lesezeichen entfernen...</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="857"/>
+        <location filename="../MarketBrowserWidget.cpp" line="848"/>
         <source>type in wildcard</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="881"/>
+        <location filename="../MarketBrowserWidget.cpp" line="872"/>
         <source>Deviation [median]  </source>
         <translation>Abweichung [Durchschnitt]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="883"/>
+        <location filename="../MarketBrowserWidget.cpp" line="874"/>
         <source>Deviation [best price]  </source>
         <translation>Abweichung [Bester Preis]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="885"/>
+        <location filename="../MarketBrowserWidget.cpp" line="876"/>
         <source>Deviation [custom cost]  </source>
         <translation>Abweichung [Benutzerdefinierte Kosten]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="887"/>
+        <location filename="../MarketBrowserWidget.cpp" line="878"/>
         <source>Deviation [fixed]  </source>
         <translation>Abweichung [Fest]</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="889"/>
+        <location filename="../MarketBrowserWidget.cpp" line="880"/>
         <source>Deviation  </source>
         <translation>Abweichung</translation>
     </message>
     <message>
-        <location filename="../MarketBrowserWidget.cpp" line="1022"/>
+        <location filename="../MarketBrowserWidget.cpp" line="1013"/>
         <source>%1 (%2m³)</source>
         <translation>%1 (%2m³)</translation>
     </message>
@@ -6130,8 +6108,8 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::MarketOrderDataFetcher</name>
     <message>
-        <location filename="../MarketOrderDataFetcher.cpp" line="83"/>
-        <location filename="../MarketOrderDataFetcher.cpp" line="92"/>
+        <location filename="../MarketOrderDataFetcher.cpp" line="82"/>
+        <location filename="../MarketOrderDataFetcher.cpp" line="91"/>
         <source>Waiting for %1 order server replies...</source>
         <translation type="unfinished">Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>

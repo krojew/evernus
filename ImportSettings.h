@@ -39,12 +39,6 @@ namespace Evernus
             Logs
         };
 
-        enum class WebImporterType
-        {
-            ESI,
-            EveCentral,
-        };
-
         enum class MarketOrderImportType
         {
             Auto,
@@ -78,7 +72,6 @@ namespace Evernus
         const auto useCustomAssetStationDefault = false;
         const auto importAllCharactersDefault = true;
         const auto corpWalletDivisionDefault = 1000;
-        const auto webImportTypeDefault = WebImporterType::ESI;
         const auto marketOrderImportTypeDefault = MarketOrderImportType::Auto;
         const auto csvSeparatorDefault = QChar(',');
         const auto eveImportSourceDefault = EveImportSource::ESI;
@@ -116,7 +109,6 @@ namespace Evernus
         const auto customAssetStationKey = QStringLiteral("import/assets/customStation");
         const auto importAllCharactersKey = QStringLiteral("import/allCharacters");
         const auto corpWalletDivisionKey = QStringLiteral("import/corp/walletDivision");
-        const auto webImportTypeKey = QStringLiteral("import/source/webImporter");
         const auto marketOrderImportTypeKey = QStringLiteral("import/marketOrderType");
         const auto itemPricesFileDirKey = QStringLiteral("import/costs/fileDir");
         const auto csvSeparatorKey = QStringLiteral("import/csvSeparator");

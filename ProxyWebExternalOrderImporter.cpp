@@ -33,13 +33,11 @@ namespace Evernus
         , mESIWholeImporter{
             std::make_unique<ESIWholeExternalOrderImporter>(std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager, parent)
         }
-        , mEveCentralImporter{std::make_unique<EveCentralExternalOrderImporter>(mDataProvider, parent)}
     {
         setCurrentImporter();
 
         connectImporter(*mESIIndividualImporter);
         connectImporter(*mESIWholeImporter);
-        connectImporter(*mEveCentralImporter);
     }
 
     void ProxyWebExternalOrderImporter::fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const
@@ -50,10 +48,6 @@ namespace Evernus
                 mESIWholeImporter->fetchExternalOrders(id, target);
             else
                 mESIIndividualImporter->fetchExternalOrders(id, target);
-        }
-        else if (mCurrentImporter == ImportSettings::WebImporterType::EveCentral)
-        {
-            mEveCentralImporter->fetchExternalOrders(id, target);
         }
         else if (mCurrentOrderImportType == ImportSettings::MarketOrderImportType::Individual)
         {
@@ -85,9 +79,6 @@ namespace Evernus
     {
         QSettings settings;
 
-        mCurrentImporter
-            = static_cast<ImportSettings::WebImporterType>(
-                settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
         mCurrentOrderImportType
             = static_cast<ImportSettings::MarketOrderImportType>(
                 settings.value(ImportSettings::marketOrderImportTypeKey, static_cast<int>(ImportSettings::marketOrderImportTypeDefault)).toInt());

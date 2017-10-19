@@ -39,7 +39,6 @@ namespace Evernus
         : QObject{parent}
         , mDataProvider{dataProvider}
         , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
-        , mEveCentralManager{mDataProvider}
     {
         connect(&mESIManager, &ESIManager::error, this, &MarketOrderDataFetcher::genericError);
     }
@@ -136,27 +135,14 @@ namespace Evernus
 
     void MarketOrderDataFetcher::importIndividualData(const TypeLocationPairs &pairs)
     {
-        QSettings settings;
-        const auto webImporter = static_cast<ImportSettings::WebImporterType>(
-            settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
-
         mOrderCounter.addCount(pairs.size());
 
         for (const auto &pair : pairs)
         {
-            if (webImporter == ImportSettings::WebImporterType::EveCentral)
-            {
-                mEveCentralManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
-                    processOrders(std::move(orders), error);
-                });
-            }
-            else
-            {
-                mESIManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error, const auto &expires) {
-                    Q_UNUSED(expires);
-                    processOrders(std::move(orders), error);
-                });
-            }
+            mESIManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error, const auto &expires) {
+                Q_UNUSED(expires);
+                processOrders(std::move(orders), error);
+            });
 
             processEvents();
         }

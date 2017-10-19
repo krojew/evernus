@@ -50,7 +50,6 @@
 #include "IndustrySettings.h"
 #include "EveDataProvider.h"
 #include "RegionComboBox.h"
-#include "ImportSettings.h"
 #include "SSOMessageBox.h"
 #include "IndustryUtils.h"
 #include "TaskManager.h"
@@ -496,16 +495,9 @@ namespace Evernus
 
         if (!importingOrders && !importingMarketPrices && !importingCostIndices)
         {
-            QSettings settings;
-            const auto webImporter = static_cast<ImportSettings::WebImporterType>(
-                settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
-
             const auto mainTask = mTaskManager.startTask(tr("Importing data..."));
-            const auto infoText = (webImporter == ImportSettings::WebImporterType::EveCentral) ?
-                                  (tr("Making %1 Eve-Central order requests...")) :
-                                  (tr("Making %1 ESI order requests..."));
 
-            mOrderSubtask = mTaskManager.startTask(mainTask, infoText.arg(pairs.size()));
+            mOrderSubtask = mTaskManager.startTask(mainTask, QStringLiteral("Making %1 order requests...").arg(pairs.size()));
             mMarketPricesSubtask = mTaskManager.startTask(mainTask, tr("Importing industry market prices..."));
             mCostIndicesSubtask = mTaskManager.startTask(mainTask, tr("Importing system cost indices..."));
         }

@@ -319,10 +319,6 @@ add_executable(
     ESIManager.cpp
     ESIWholeExternalOrderImporter.cpp
     ESIWholeExternalOrderImporter.h
-    EveCentralExternalOrderImporter.cpp
-    EveCentralExternalOrderImporter.h
-    EveCentralManager.cpp
-    EveCentralManager.h
     EveDataManagerProvider.h
     EveDataProvider.cpp
     EveDataProvider.h

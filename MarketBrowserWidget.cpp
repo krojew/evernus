@@ -28,7 +28,6 @@
 #include <QListView>
 #include <QGroupBox>
 #include <QLineEdit>
-#include <QSettings>
 #include <QSpinBox>
 #include <QLabel>
 #include <QMenu>
@@ -45,7 +44,6 @@
 #include "ExternalOrderView.h"
 #include "MarketOrderView.h"
 #include "EveDataProvider.h"
-#include "ImportSettings.h"
 #include "DatabaseUtils.h"
 #include "SSOMessageBox.h"
 #include "TaskManager.h"
@@ -723,16 +721,9 @@ namespace Evernus
     {
         if (!mDataFetcher.hasPendingOrderRequests())
         {
-            QSettings settings;
-            const auto webImporter = static_cast<ImportSettings::WebImporterType>(
-                settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
-
             const auto mainTask = mTaskManager.startTask(tr("Importing data..."));
-            const auto infoText = (webImporter == ImportSettings::WebImporterType::EveCentral) ?
-                                  (tr("Making %1 Eve-Central order requests...")) :
-                                  (tr("Making %1 ESI order requests..."));
 
-            mOrderSubtask = mTaskManager.startTask(mainTask, infoText.arg(pairs.size()));
+            mOrderSubtask = mTaskManager.startTask(mainTask, QStringLiteral("Making %1 order requests...").arg(pairs.size()));
         }
 
         mDataFetcher.importData(pairs, mCharacterId);

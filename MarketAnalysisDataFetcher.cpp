@@ -38,7 +38,6 @@ namespace Evernus
         : QObject{parent}
         , mDataProvider{dataProvider}
         , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
-        , mEveCentralManager{mDataProvider}
     {
         connect(&mESIManager, &ESIManager::error, this, &MarketAnalysisDataFetcher::genericError);
     }
@@ -188,10 +187,6 @@ namespace Evernus
     void MarketAnalysisDataFetcher::importIndividualData(const TypeLocationPairs &pairs,
                                                          const TypeLocationPairs &ignored)
     {
-        QSettings settings;
-        const auto webImporter = static_cast<ImportSettings::WebImporterType>(
-            settings.value(ImportSettings::webImportTypeKey, static_cast<int>(ImportSettings::webImportTypeDefault)).toInt());
-
         for (const auto &pair : pairs)
         {
             if (ignored.find(pair) != std::end(ignored))
@@ -200,19 +195,10 @@ namespace Evernus
             mOrderCounter.incCount();
             mHistoryCounter.incCount();
 
-            if (webImporter == ImportSettings::WebImporterType::EveCentral)
-            {
-                mEveCentralManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error) {
-                    processOrders(std::move(orders), error);
-                });
-            }
-            else
-            {
-                mESIManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error, const auto &expires) {
-                    Q_UNUSED(expires);
-                    processOrders(std::move(orders), error);
-                });
-            }
+            mESIManager.fetchMarketOrders(pair.second, pair.first, [=](auto &&orders, const auto &error, const auto &expires) {
+                Q_UNUSED(expires);
+                processOrders(std::move(orders), error);
+            });
 
             mESIManager.fetchMarketHistory(pair.second, pair.first, [=](auto &&history, const auto &error, const auto &expires) {
                 Q_UNUSED(expires);

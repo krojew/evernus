@@ -16,7 +16,6 @@
 
 #include "ESIIndividualExternalOrderImporter.h"
 #include "ESIWholeExternalOrderImporter.h"
-#include "EveCentralExternalOrderImporter.h"
 #include "ImportSettings.h"
 
 namespace Evernus
@@ -49,9 +48,7 @@ namespace Evernus
 
         std::unique_ptr<ESIIndividualExternalOrderImporter> mESIIndividualImporter;
         std::unique_ptr<ESIWholeExternalOrderImporter> mESIWholeImporter;
-        std::unique_ptr<EveCentralExternalOrderImporter> mEveCentralImporter;
 
-        ImportSettings::WebImporterType mCurrentImporter = ImportSettings::webImportTypeDefault;
         ImportSettings::MarketOrderImportType mCurrentOrderImportType = ImportSettings::marketOrderImportTypeDefault;
 
         template<class T>
