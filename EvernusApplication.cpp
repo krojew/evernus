@@ -1261,6 +1261,8 @@ namespace Evernus
                 // TODO: remove when https://github.com/ccpgames/esi-issues/issues/593 is done
                 mMiningLedgerRepository->removeForCharacter(id);
                 asyncBatchStore(*mMiningLedgerRepository, std::move(data), false);
+
+                saveUpdateTimer(Evernus::TimerType::MiningLedger, mMiningLedgerUtcUpdateTimes, id);
             }
 
             emit taskEnded(task, error);
