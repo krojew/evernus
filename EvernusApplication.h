@@ -214,6 +214,8 @@ namespace Evernus
 
         void openMarginTool();
 
+        void ssoError(const QString &info);
+
     public slots:
         void refreshCharacters();
         void refreshCharacter(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
@@ -264,7 +266,6 @@ namespace Evernus
         void updateCorpMarketOrders();
 
         void showPriceImportError(const QString &info);
-        void showGenericError(const QString &info);
         void showPriceImportStatus(const QString &info);
 
         void emitNewItemCosts();

@@ -179,6 +179,8 @@ namespace Evernus
 
         void characterDataChanged();
 
+        void showSSOError(const QString &info);
+
     private slots:
         void updateCurrentTab(int index);
 

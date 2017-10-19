@@ -436,6 +436,8 @@ int main(int argc, char *argv[])
                              &mainWnd, &Evernus::MainWindow::showMarginTool);
             QObject::connect(&app, &Evernus::EvernusApplication::snapshotsTaken,
                              &mainWnd, &Evernus::MainWindow::snapshotsTaken);
+            QObject::connect(&app, &Evernus::EvernusApplication::ssoError,
+                             &mainWnd, &Evernus::MainWindow::showSSOError);
             QObject::connect(&mainWnd, &Evernus::MainWindow::preferencesChanged,
                              webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::handleNewPreferences);
             mainWnd.showAsSaved();

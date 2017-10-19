@@ -61,6 +61,7 @@
 #include "KeyRepository.h"
 #include "MenuBarWidget.h"
 #include "PriceSettings.h"
+#include "SSOMessageBox.h"
 #include "SyncSettings.h"
 #include "HttpSettings.h"
 #include "AssetsWidget.h"
@@ -395,6 +396,11 @@ namespace Evernus
         const auto tabIndex = mMainTabs->currentIndex();
         if (tabIndex != mCharacterTabIndex)
             updateCurrentTab(tabIndex);
+    }
+
+    void MainWindow::showSSOError(const QString &info)
+    {
+        SSOMessageBox::showMessage(info, this);
     }
 
     void MainWindow::updateCurrentTab(int index)

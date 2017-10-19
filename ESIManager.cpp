@@ -934,6 +934,8 @@ namespace Evernus
                     emit tokenError(charId, tr("SSO authorization failed."));
 
                     scheduleNextTokenFetch();
+
+                    mAuthView.reset();
                 });
                 connect(mAuthView->page(), &QWebEnginePage::urlChanged, this, [=](const QUrl &url) {
                     try

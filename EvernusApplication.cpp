@@ -52,7 +52,6 @@
 #include "qxtmailmessage.h"
 
 #include "EvernusApplication.h"
-#include "SSOMessageBox.h"
 
 namespace Evernus
 {
@@ -218,7 +217,7 @@ namespace Evernus
             Updater::getInstance().checkForUpdates(true);
 
         mESIManager = std::make_unique<ESIManager>(mClientId, mClientSecret, *mDataProvider, *mCharacterRepository, mESIInterfaceManager);
-        connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::showGenericError);
+        connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::ssoError);
 
         mDataProvider->precacheNames();
     }
@@ -229,7 +228,7 @@ namespace Evernus
 
         connect(importer.get(), &ExternalOrderImporter::statusChanged, this, &EvernusApplication::showPriceImportStatus, Qt::QueuedConnection);
         connect(importer.get(), &ExternalOrderImporter::error, this, &EvernusApplication::showPriceImportError, Qt::QueuedConnection);
-        connect(importer.get(), &ExternalOrderImporter::genericError, this, &EvernusApplication::showGenericError, Qt::QueuedConnection);
+        connect(importer.get(), &ExternalOrderImporter::genericError, this, &EvernusApplication::ssoError, Qt::QueuedConnection);
         connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::finishExternalOrderImport, Qt::QueuedConnection);
         mExternalOrderImporters.emplace(name, std::move(importer));
     }
@@ -1912,11 +1911,6 @@ namespace Evernus
     {
         Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
         finishExternalOrderImportTask(info);
-    }
-
-    void EvernusApplication::showGenericError(const QString &info)
-    {
-        SSOMessageBox::showMessage(info, activeWindow());
     }
 
     void EvernusApplication::showPriceImportStatus(const QString &info)
