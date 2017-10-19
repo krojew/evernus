@@ -1243,6 +1243,25 @@ namespace Evernus
 
         if (!checkImportAndEndTask(id, TimerType::MiningLedger, task))
             return;
+
+        Q_ASSERT(mESIManager);
+
+        markImport(id, TimerType::MiningLedger);
+        mESIManager->fetchCharacterMiningLedger(id, [=](auto &&data, const auto &error, const auto &expires) {
+            unmarkImport(id, TimerType::MiningLedger);
+
+            if (error.isEmpty())
+            {
+                setUtcCacheTimer(id, TimerType::MiningLedger, expires);
+
+                Q_ASSERT(mMiningLedgerRepository);
+
+                // TODO: remove when https://github.com/ccpgames/esi-issues/issues/593 is done
+                mMiningLedgerRepository->removeForCharacter(id);
+            }
+
+            emit taskEnded(task, error);
+        });
     }
 
     void EvernusApplication::refreshCorpAssets(Character::IdType id, uint parentTask)
@@ -2215,6 +2234,8 @@ namespace Evernus
 
         markImport(id, TimerType::Character);
         mESIManager->fetchCharacter(id, [=](auto &&data, const auto &error, const auto &expires) {
+            Q_UNUSED(expires);
+
             unmarkImport(id, TimerType::Character);
 
             if (error.isEmpty())

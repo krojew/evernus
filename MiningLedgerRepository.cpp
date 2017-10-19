@@ -48,6 +48,16 @@ namespace Evernus
             "solar_system_id INTEGER NOT NULL,"
             "type_id INTEGER NOT NULL"
         ")").arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
+
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)").arg(getTableName()).arg(characterRepo.getTableName()));
+    }
+
+    void MiningLedgerRepository::removeForCharacter(Character::IdType characterId) const
+    {
+        auto query = prepare(QStringLiteral("DELETE FROM %1 WHERE character_id = ?").arg(getTableName()));
+        query.bindValue(0, characterId);
+
+        DatabaseUtils::execQuery(query);
     }
 
     QStringList MiningLedgerRepository::getColumns() const

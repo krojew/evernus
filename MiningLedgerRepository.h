@@ -36,6 +36,8 @@ namespace Evernus
 
         void create(const Repository<Character> &characterRepo) const;
 
+        void removeForCharacter(Character::IdType characterId) const;
+
         MiningLedgerRepository &operator =(const MiningLedgerRepository &) = default;
         MiningLedgerRepository &operator =(MiningLedgerRepository &&) = default;
 
