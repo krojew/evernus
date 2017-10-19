@@ -513,116 +513,116 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="unfinished">(nieznane)</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="264"/>
-        <location filename="../Updater.cpp" line="275"/>
-        <location filename="../Updater.cpp" line="285"/>
+        <location filename="../Updater.cpp" line="267"/>
+        <location filename="../Updater.cpp" line="278"/>
+        <location filename="../Updater.cpp" line="288"/>
         <source>Error</source>
         <translation type="unfinished">Błąd</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="264"/>
+        <location filename="../Updater.cpp" line="267"/>
         <source>Error contacting update server: %1</source>
         <translation type="unfinished">Błąd odpytywania serwera akutalizacji: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="275"/>
+        <location filename="../Updater.cpp" line="278"/>
         <source>Error parsing response from the update server: %1</source>
         <translation type="unfinished">Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="285"/>
+        <location filename="../Updater.cpp" line="288"/>
         <source>Missing update version information!</source>
         <translation type="unfinished">Brak informacji o wersji!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="298"/>
+        <location filename="../Updater.cpp" line="301"/>
         <source>No update found</source>
         <translation type="unfinished">Brak aktualizacji</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="298"/>
+        <location filename="../Updater.cpp" line="301"/>
         <source>Your current version is up-to-date.</source>
         <translation type="unfinished">Twoja wersja jest najbardziej aktualna.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="307"/>
-        <location filename="../Updater.cpp" line="312"/>
-        <location filename="../Updater.cpp" line="323"/>
+        <location filename="../Updater.cpp" line="310"/>
+        <location filename="../Updater.cpp" line="315"/>
+        <location filename="../Updater.cpp" line="326"/>
         <source>Update found</source>
         <translation type="unfinished">Znaleziono aktualizację</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="307"/>
+        <location filename="../Updater.cpp" line="310"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation type="unfinished">Znaleziono nową wersję: %1
 Czy chcesz ściągnąć ją teraz?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="312"/>
+        <location filename="../Updater.cpp" line="315"/>
         <source>A new version is available: %1
 Do you wish to launch the updater?</source>
         <translation type="unfinished">Znaleziono nową wersję: %1
 Czy chcesz rozpocząć aktualizację?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="323"/>
+        <location filename="../Updater.cpp" line="326"/>
         <source>Couldn&apos;t launch updater. Download manually?</source>
         <translation type="unfinished">Nie udało się rozpocząć aktualizacji. Pobrać ręcznie?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="380"/>
-        <location filename="../Updater.cpp" line="405"/>
-        <location filename="../Updater.cpp" line="412"/>
-        <location filename="../Updater.cpp" line="424"/>
-        <location filename="../Updater.cpp" line="501"/>
-        <location filename="../Updater.cpp" line="528"/>
-        <location filename="../Updater.cpp" line="627"/>
-        <location filename="../Updater.cpp" line="640"/>
+        <location filename="../Updater.cpp" line="383"/>
+        <location filename="../Updater.cpp" line="408"/>
+        <location filename="../Updater.cpp" line="415"/>
+        <location filename="../Updater.cpp" line="427"/>
+        <location filename="../Updater.cpp" line="504"/>
+        <location filename="../Updater.cpp" line="531"/>
+        <location filename="../Updater.cpp" line="630"/>
+        <location filename="../Updater.cpp" line="643"/>
         <source>Update</source>
         <translation type="unfinished">Aktualizacja</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="380"/>
+        <location filename="../Updater.cpp" line="383"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation type="unfinished">Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="405"/>
+        <location filename="../Updater.cpp" line="408"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished">Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="412"/>
+        <location filename="../Updater.cpp" line="415"/>
         <source>This update requires re-importing all item prices.</source>
         <translation type="unfinished">Ta aktualizacja wymaga ponownego zaimportowania cen przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="424"/>
+        <location filename="../Updater.cpp" line="427"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation type="unfinished">Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="501"/>
+        <location filename="../Updater.cpp" line="504"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation type="unfinished">Ta akutalizacja wymaga ustawienia własnego broker fee od nowa.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="528"/>
+        <location filename="../Updater.cpp" line="531"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished">Ta aktualizacja wymaga ponownego importu cytadel.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="627"/>
+        <location filename="../Updater.cpp" line="630"/>
         <source>This update requires re-importing wallet journal.</source>
         <translation type="unfinished">Ta aktualizacja wymaga ponownego importu dziennika portfela.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="640"/>
+        <location filename="../Updater.cpp" line="643"/>
         <source>This update requires importing wallet transactions again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2823,7 +2823,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::ESIManager</name>
     <message>
-        <location filename="../ESIManager.cpp" line="897"/>
+        <location filename="../ESIManager.cpp" line="898"/>
         <source>SSO authorization failed.</source>
         <translation>Nieudana autoryzacja SSO.</translation>
     </message>
@@ -2842,27 +2842,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 Z powodu dużej ilości cytadel w niektórych regionach, import może zająć dużo czasu. Pamiętaj, że możesz przełączyć import cytadel w ustawieniach.</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="879"/>
+        <location filename="../ESIManager.cpp" line="880"/>
         <source>SSO Authentication for unknown character: %1</source>
         <translation>Uwierzytelnienie SSO dla nieznanej postaci: %1</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1420"/>
+        <location filename="../ESIManager.cpp" line="1421"/>
         <source>SSO Authentication for character: %1</source>
         <translation>Uwierzytelnienie SSO dla postaci: %1</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="978"/>
+        <location filename="../ESIManager.cpp" line="979"/>
         <source>Empty access token!</source>
         <translation>Pusty token dostępu!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1204"/>
+        <location filename="../ESIManager.cpp" line="1205"/>
         <source>Empty refresh token!</source>
         <translation>Pusty token odświeżania!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1241"/>
+        <location filename="../ESIManager.cpp" line="1242"/>
         <source>Please authorize access for character: %1</source>
         <translation>Proszę dać dostęp do postaci: %1</translation>
     </message>
@@ -2962,8 +2962,8 @@ Z powodu dużej ilości cytadel w niektórych regionach, import może zająć du
     <message>
         <location filename="../EvernusApplication.cpp" line="829"/>
         <location filename="../EvernusApplication.cpp" line="835"/>
-        <location filename="../EvernusApplication.cpp" line="2530"/>
-        <location filename="../EvernusApplication.cpp" line="2568"/>
+        <location filename="../EvernusApplication.cpp" line="2532"/>
+        <location filename="../EvernusApplication.cpp" line="2570"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -3119,27 +3119,27 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2217"/>
+        <location filename="../EvernusApplication.cpp" line="2219"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2231"/>
+        <location filename="../EvernusApplication.cpp" line="2233"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2242"/>
+        <location filename="../EvernusApplication.cpp" line="2244"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2531"/>
+        <location filename="../EvernusApplication.cpp" line="2533"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2535"/>
+        <location filename="../EvernusApplication.cpp" line="2537"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -3148,14 +3148,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2538"/>
+        <location filename="../EvernusApplication.cpp" line="2540"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2568"/>
+        <location filename="../EvernusApplication.cpp" line="2570"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
@@ -3221,12 +3221,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="3033"/>
+        <location filename="../EvernusApplication.cpp" line="3035"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2206"/>
+        <location filename="../EvernusApplication.cpp" line="2208"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
@@ -5024,7 +5024,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::Key</name>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2955"/>
+        <location filename="../EvernusApplication.cpp" line="2957"/>
         <source>Fetching contract items for contract %1...</source>
         <translation>Pobieranie przedmiotów kontraktu: %1...</translation>
     </message>
@@ -10158,9 +10158,9 @@ Czy chcesz rozpocząć aktualizację?</translation>
         <translation type="vanished">Ta aktualizacja wymaga ponownego importu dziennika portfela.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="213"/>
-        <location filename="../Updater.cpp" line="222"/>
-        <location filename="../Updater.cpp" line="228"/>
+        <location filename="../Updater.cpp" line="216"/>
+        <location filename="../Updater.cpp" line="225"/>
+        <location filename="../Updater.cpp" line="231"/>
         <source>Error updating db version: %1</source>
         <translation>Błąd aktualizacji wersji bazy danych: %1</translation>
     </message>

@@ -1997,6 +1997,7 @@ namespace Evernus
         mRegionTypePresetRepository.reset(new RegionTypePresetRepository{mMainDb});
         mRegionStationPresetRepository.reset(new RegionStationPresetRepository{mMainDb});
         mIndustryManufacturingSetupRepository.reset(new IndustryManufacturingSetupRepository{mMainDb});
+        mMiningLedgerRepository.reset(new MiningLedgerRepository{mMainDb});
     }
 
     void EvernusApplication::createDbSchema()
@@ -2038,6 +2039,7 @@ namespace Evernus
         mRegionTypePresetRepository->create();
         mRegionStationPresetRepository->create();
         mIndustryManufacturingSetupRepository->create();
+        mMiningLedgerRepository->create(*mCharacterRepository);
     }
 
     void EvernusApplication::precacheCacheTimers()

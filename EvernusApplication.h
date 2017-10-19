@@ -46,6 +46,7 @@
 #include "FavoriteItemRepository.h"
 #include "CachingEveDataProvider.h"
 #include "ContractItemRepository.h"
+#include "MiningLedgerRepository.h"
 #include "ExternalOrderImporter.h"
 #include "MarketGroupRepository.h"
 #include "UpdateTimerRepository.h"
@@ -312,6 +313,7 @@ namespace Evernus
         std::unique_ptr<RegionTypePresetRepository> mRegionTypePresetRepository;
         std::unique_ptr<RegionStationPresetRepository> mRegionStationPresetRepository;
         std::unique_ptr<IndustryManufacturingSetupRepository> mIndustryManufacturingSetupRepository;
+        std::unique_ptr<MiningLedgerRepository> mMiningLedgerRepository;
 
         ESIInterfaceManager mESIInterfaceManager;
 
