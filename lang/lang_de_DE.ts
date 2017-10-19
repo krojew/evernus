@@ -5274,12 +5274,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::MarketAnalysisWidget</name>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="240"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="239"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="92"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="91"/>
         <source>Import data</source>
         <translation>Importiere Daten</translation>
     </message>
@@ -5292,32 +5292,32 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">Importierte Aufträge nicht speichern (großer Performancezugewinn)</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="108"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="107"/>
         <source>Ignore types with existing orders</source>
         <translation>Ignoriere Artikel mit bestehenden Aufträgen</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="110"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="109"/>
         <source>Ignore item types which have active market orders.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="123"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="122"/>
         <source>Use heuristics based on average price to determine if a given order is legit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="135"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="134"/>
         <source>Bogus order threshold:</source>
         <translation>Schwellenwert für unsinnige Aufträge:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="147"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="146"/>
         <source>How much a price can deviate from the average price to consider it legit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="308"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="303"/>
         <source>Making %1 history requests...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5326,22 +5326,22 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">Verwenden Sie Skills für Differenzberechnung</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="241"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="240"/>
         <source>Inter-Region</source>
         <translation>Interregional</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="242"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="241"/>
         <source>Importing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="243"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="242"/>
         <source>Ore reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="244"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="243"/>
         <source>Scrapmetal reprocessing arbitrage</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5418,27 +5418,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="obsolete">Kauf</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="174"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="173"/>
         <source>Source price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="179"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="178"/>
         <source>Type of orders used for buying items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="181"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="180"/>
         <source>Destination price:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="183"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="182"/>
         <source>Type of orders used for selling items.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="185"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="184"/>
         <source>Use skills and taxes for difference calculation (causes recalculation)</source>
         <translation>Verwenden Sie Skills für Differenzberechnung</translation>
     </message>
@@ -5459,7 +5459,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">&quot;In EVE anzeigen&quot; ist via Rechtsklickmenü verfügbar.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="120"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="119"/>
         <source>Discard bogus orders (causes recalculation)</source>
         <translation>Unsinnsaufträge verwerfen (startet Neuberechnung)</translation>
     </message>
@@ -5472,7 +5472,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="obsolete">&amp;Zeilen kopieren</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="305"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="300"/>
         <source>Importing data for analysis...</source>
         <translation>Importiere Daten zur Analyse...</translation>
     </message>
@@ -5493,7 +5493,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">Warte auf %1 Serverantworten für Aufträge...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="363"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="358"/>
         <source>Saving %1 imported orders...</source>
         <translation>Speichere %1 importierte Aufträge...</translation>
     </message>

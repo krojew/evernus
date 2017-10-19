@@ -37,8 +37,7 @@ namespace Evernus
             }
 
             const auto requestsPerRegion = 30; // assuming 30 requests typical worst case, as with The Forge
-            const auto serialFetchPenaltyFactor = 4;
-            const auto wholeImportScore = regions.size() * requestsPerRegion * serialFetchPenaltyFactor;
+            const auto wholeImportScore = regions.size() * requestsPerRegion;
 
             qDebug() << "Auto importer values:" << wholeImportScore << "vs" << typeRegions.size();
             return wholeImportScore < typeRegions.size();

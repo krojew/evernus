@@ -5720,32 +5720,32 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Zapisanie zleceń spowoduje, że będą dostępne w innych miejscach w aplikacji, nawet po restarcie.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="108"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="107"/>
         <source>Ignore types with existing orders</source>
         <translation>Ignoruj typy z istniejącymi zleceniami</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="110"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="109"/>
         <source>Ignore item types which have active market orders.</source>
         <translation>Ignoruj typy z aktywnymi zleceniami na rynku.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="120"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="119"/>
         <source>Discard bogus orders (causes recalculation)</source>
         <translation>Odrzuć fałszywe zlecenia (powoduje przeliczenie danych)</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="123"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="122"/>
         <source>Use heuristics based on average price to determine if a given order is legit.</source>
         <translation>Użyj heurystyki bazującej na średniej cenie, aby stwierdzić czy zlecenie jest poprawne.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="147"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="146"/>
         <source>How much a price can deviate from the average price to consider it legit.</source>
         <translation>Jak bardzo cena może odstawać od średniej ceny, aby uznać ją za poprawną.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="308"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="303"/>
         <source>Making %1 history requests...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5758,27 +5758,27 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Kupno</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="174"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="173"/>
         <source>Source price:</source>
         <translation>Cena źródła:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="179"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="178"/>
         <source>Type of orders used for buying items.</source>
         <translation>Typ zleceń użyty do kupna przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="181"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="180"/>
         <source>Destination price:</source>
         <translation>Cena celu:</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="183"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="182"/>
         <source>Type of orders used for selling items.</source>
         <translation>Typ zleceń użyty do sprzedaży przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="185"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="184"/>
         <source>Use skills and taxes for difference calculation (causes recalculation)</source>
         <translation>Uwzględnij umiejętności i podatki przy obliczaniu różnic</translation>
     </message>
@@ -5811,7 +5811,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="obsolete">Filtr</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="92"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="91"/>
         <source>Import data</source>
         <translation>Importuj dane</translation>
     </message>
@@ -5856,7 +5856,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">&amp;Kopiuj</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="305"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="300"/>
         <source>Importing data for analysis...</source>
         <translation>Importowanie danych do analizy...</translation>
     </message>
@@ -5865,7 +5865,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="obsolete">Błąd CREST</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="135"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="134"/>
         <source>Bogus order threshold:</source>
         <translation>Tolerancja fałszywych zleceń:</translation>
     </message>
@@ -5874,27 +5874,27 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Uwzględnij umiejętności przy obliczaniu różnic</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="240"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="239"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="241"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="240"/>
         <source>Inter-Region</source>
         <translation>Między regionami</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="242"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="241"/>
         <source>Importing</source>
         <translation>Importowanie</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="243"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="242"/>
         <source>Ore reprocessing arbitrage</source>
         <translation>Arbitraż przetwarzania rudy</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="244"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="243"/>
         <source>Scrapmetal reprocessing arbitrage</source>
         <translation>Arbitraż przetwarzania złomu</translation>
     </message>
@@ -5919,7 +5919,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Oczekiwanie na %1 odpowiedzi ze zleceniami...</translation>
     </message>
     <message>
-        <location filename="../MarketAnalysisWidget.cpp" line="363"/>
+        <location filename="../MarketAnalysisWidget.cpp" line="358"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
