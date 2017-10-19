@@ -85,6 +85,9 @@ namespace Evernus
             { { 2, 15 }, [](auto &citadelAccessCache) {
                 migrateCoreTo214(citadelAccessCache);
             } },
+            { {2, 17}, [](auto &) {
+                migrateCoreTo217();
+            } },
         }
         , mDbUpdateSteps{
             { {0, 5}, [](const auto &provider) {
@@ -679,6 +682,11 @@ namespace Evernus
         settings.beginGroup(SSOSettings::refreshTokenGroup);
         settings.remove(QStringLiteral(""));
         settings.endGroup();
+    }
+
+    void Updater::migrateCoreTo217()
+    {
+        removeRefreshTokens();
     }
 
     void Updater::fixRegionTypePresets(const RegionTypePresetRepository &repo, const EveDataProvider &dataProvider)

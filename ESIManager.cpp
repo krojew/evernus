@@ -862,7 +862,8 @@ namespace Evernus
                         "esi-markets.structure_markets.v1 "
                         "esi-markets.read_character_orders.v1 "
                         "esi-characters.read_blueprints.v1 "
-                        "esi-contracts.read_character_contracts.v1"
+                        "esi-contracts.read_character_contracts.v1 "
+                        "esi-industry.read_character_mining.v1"
                     )
                 );
 
@@ -904,7 +905,7 @@ namespace Evernus
                         if (url.host() == redirectDomain)
                         {
                             QUrlQuery query{url};
-                            processAuthorizationCode(charId, query.queryItemValue("code").toLatin1());
+                            processAuthorizationCode(charId, query.queryItemValue(QStringLiteral("code")).toLatin1());
                         }
                     }
                     catch (...)
