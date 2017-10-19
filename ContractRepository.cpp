@@ -84,7 +84,7 @@ namespace Evernus
 
     void ContractRepository::create() const
     {
-        exec(QStringLiteral("CREATE TABLE IF NOT EXISTS %1 (QStringLiteral("
+        exec(QStringLiteral("CREATE TABLE IF NOT EXISTS %1 ("
             "id BIGINT PRIMARY KEY,"
             "issuer_id BIGINT NOT NULL,"
             "issuer_corp_id BIGINT NOT NULL,"
@@ -107,7 +107,7 @@ namespace Evernus
             "collateral DOUBLE NOT NULL,"
             "buyout DOUBLE NOT NULL,"
             "volume DOUBLE NOT NULL"
-        "))").arg(getTableName()));
+        ")").arg(getTableName()));
 
         exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_issuer ON %1(issuer_id)").arg(getTableName()));
         exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_issuer_corp ON %1(issuer_corp_id)").arg(getTableName()));
