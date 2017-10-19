@@ -299,6 +299,11 @@ namespace Evernus
             if (it == std::end(mLMeveUtcCacheTimes))
                 return QDateTime::currentDateTime();
             break;
+        case TimerType::MiningLedger:
+            it = mMiningLedgerUtcCacheTimes.find(id);
+            if (it == std::end(mMiningLedgerUtcCacheTimes))
+                return QDateTime::currentDateTime();
+            break;
         default:
             BOOST_THROW_EXCEPTION(std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()});
         }
