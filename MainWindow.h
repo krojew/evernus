@@ -124,6 +124,7 @@ namespace Evernus
         void importCharacterWalletTransactions(Character::IdType id);
         void importCharacterMarketOrdersFromAPI(Character::IdType id);
         void importCharacterMarketOrdersFromLogs(Character::IdType id);
+        void importCharacterMiningLedger(Character::IdType id);
         void importCorpAssets(Character::IdType id);
         void importCorpContracts(Character::IdType id);
         void importCorpWalletJournal(Character::IdType id);
@@ -173,6 +174,7 @@ namespace Evernus
         void refreshWalletTransactions();
         void refreshMarketOrdersFromAPI();
         void refreshMarketOrdersFromLogs();
+        void refreshMiningLedger();
         void refreshAll();
 
         void characterDataChanged();
@@ -274,5 +276,8 @@ namespace Evernus
 
         template<class T>
         void enumerateEnabledCharacters(T &&func) const;
+
+        template<void (MainWindow::* CharRefresh)(Character::IdType), void (MainWindow::* CorpRefresh)(Character::IdType)>
+        void refreshData();
     };
 }

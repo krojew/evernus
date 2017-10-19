@@ -1214,7 +1214,7 @@ namespace Evernus
 
     void EvernusApplication::refreshCharacterMarketOrdersFromLogs(Character::IdType id, uint parentTask)
     {
-        qDebug() << "Refreshing market orders from logs: " << id;
+        qDebug() << "Refreshing market orders from logs:" << id;
 
         const auto task = startTask(tr("Fetching market orders for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);
@@ -1224,9 +1224,14 @@ namespace Evernus
         emit taskEnded(task, QString{});
     }
 
+    void EvernusApplication::refreshCharacterMiningLedger(Character::IdType id, uint parentTask)
+    {
+        qDebug() << "Refreshing mining ledger:" << id;
+    }
+
     void EvernusApplication::refreshCorpAssets(Character::IdType id, uint parentTask)
     {
-        qDebug() << "Refreshing corp assets: " << id;
+        qDebug() << "Refreshing corp assets:" << id;
 
         const auto assetSubtask = startTask(parentTask, tr("Fetching corporation assets for character %1...").arg(id));
         processEvents(QEventLoop::ExcludeUserInputEvents);

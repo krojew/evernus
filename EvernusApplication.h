@@ -223,6 +223,7 @@ namespace Evernus
         void refreshCharacterWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask, bool force = false);
         void refreshCharacterMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCharacterMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
+        void refreshCharacterMiningLedger(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpAssets(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpContracts(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpWalletJournal(Character::IdType id, uint parentTask = TaskConstants::invalidTask);

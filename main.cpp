@@ -350,6 +350,8 @@ int main(int argc, char *argv[])
                              &app, [&app](auto id) { app.refreshCharacterMarketOrdersFromAPI(id); });
             QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacterMarketOrdersFromLogs,
                              &app, [&app](auto id) { app.refreshCharacterMarketOrdersFromLogs(id); });
+            QObject::connect(&mainWnd, &Evernus::MainWindow::importCharacterMiningLedger,
+                             &app, [&app](auto id) { app.refreshCharacterMiningLedger(id); });
             QObject::connect(&mainWnd, &Evernus::MainWindow::importCorpAssets,
                              &app, [&app](auto id) { app.refreshCorpAssets(id); });
             QObject::connect(&mainWnd, &Evernus::MainWindow::importCorpContracts,

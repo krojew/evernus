@@ -317,130 +317,46 @@ namespace Evernus
 
     void MainWindow::refreshAssets()
     {
-        QSettings settings;
-        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
-        {
-            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
-            enumerateEnabledCharacters([corp, this](auto id) {
-                if (corp)
-                    emit importCorpAssets(id);
-
-                emit importCharacterAssets(id);
-            });
-        }
-        else if (mCurrentCharacterId != Character::invalidId)
-        {
-            emit importCharacterAssets(mCurrentCharacterId);
-        }
+        refreshData<&MainWindow::importCharacterAssets, &MainWindow::importCorpAssets>();
     }
 
     void MainWindow::refreshContracts()
     {
-        QSettings settings;
-        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
-        {
-            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
-            enumerateEnabledCharacters([corp, this](auto id) {
-                if (corp)
-                    emit importCorpContracts(id);
-
-                emit importCharacterContracts(id);
-            });
-        }
-        else if (mCurrentCharacterId != Character::invalidId)
-        {
-            if (settings.value(ImportSettings::updateCorpDataKey).toBool())
-                emit importCorpContracts(mCurrentCharacterId);
-
-            emit importCharacterContracts(mCurrentCharacterId);
-        }
+        refreshData<&MainWindow::importCharacterContracts, &MainWindow::importCorpContracts>();
     }
 
     void MainWindow::refreshWalletJournal()
     {
-        QSettings settings;
-        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
-        {
-            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
-            enumerateEnabledCharacters([corp, this](auto id) {
-                if (corp)
-                    emit importCorpWalletJournal(id);
-
-                emit importCharacterWalletJournal(id);
-            });
-        }
-        else if (mCurrentCharacterId != Character::invalidId)
-        {
-            if (settings.value(ImportSettings::updateCorpDataKey).toBool())
-                emit importCorpWalletJournal(mCurrentCharacterId);
-
-            emit importCharacterWalletJournal(mCurrentCharacterId);
-        }
+        refreshData<&MainWindow::importCharacterWalletJournal, &MainWindow::importCorpWalletJournal>();
     }
 
     void MainWindow::refreshWalletTransactions()
     {
-        QSettings settings;
-        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
-        {
-            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
-            enumerateEnabledCharacters([corp, this](auto id) {
-                if (corp)
-                    emit importCorpWalletTransactions(id);
-
-                emit importCharacterWalletTransactions(id);
-            });
-        }
-        else if (mCurrentCharacterId != Character::invalidId)
-        {
-            if (settings.value(ImportSettings::updateCorpDataKey).toBool())
-                emit importCorpWalletTransactions(mCurrentCharacterId);
-
-            emit importCharacterWalletTransactions(mCurrentCharacterId);
-        }
+        refreshData<&MainWindow::importCharacterWalletTransactions, &MainWindow::importCorpWalletTransactions>();
     }
 
     void MainWindow::refreshMarketOrdersFromAPI()
     {
-        QSettings settings;
-        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
-        {
-            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
-            enumerateEnabledCharacters([corp, this](auto id) {
-                if (corp)
-                    emit importCorpMarketOrdersFromAPI(id);
-
-                emit importCharacterMarketOrdersFromAPI(id);
-            });
-        }
-        else if (mCurrentCharacterId != Character::invalidId)
-        {
-            if (settings.value(ImportSettings::updateCorpDataKey).toBool())
-                emit importCorpMarketOrdersFromAPI(mCurrentCharacterId);
-
-            emit importCharacterMarketOrdersFromAPI(mCurrentCharacterId);
-        }
+        refreshData<&MainWindow::importCharacterMarketOrdersFromAPI, &MainWindow::importCorpMarketOrdersFromAPI>();
     }
 
     void MainWindow::refreshMarketOrdersFromLogs()
     {
+        refreshData<&MainWindow::importCharacterMarketOrdersFromLogs, &MainWindow::importCorpMarketOrdersFromLogs>();
+    }
+
+    void MainWindow::refreshMiningLedger()
+    {
         QSettings settings;
         if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
         {
-            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
-            enumerateEnabledCharacters([corp, this](auto id) {
-                if (corp)
-                    emit importCorpMarketOrdersFromLogs(id);
-
-                emit importCharacterMarketOrdersFromLogs(id);
+            enumerateEnabledCharacters([=](auto id) {
+                emit importCharacterMiningLedger(id);
             });
         }
         else if (mCurrentCharacterId != Character::invalidId)
         {
-            if (settings.value(ImportSettings::updateCorpDataKey).toBool())
-                emit importCorpMarketOrdersFromLogs(mCurrentCharacterId);
-
-            emit importCharacterMarketOrdersFromLogs(mCurrentCharacterId);
+            emit importCharacterMiningLedger(mCurrentCharacterId);
         }
     }
 
@@ -451,6 +367,7 @@ namespace Evernus
         emit refreshCitadels();
 
         refreshWalletJournal();
+        refreshMiningLedger();
 
         QSettings settings;
 
@@ -1122,5 +1039,25 @@ namespace Evernus
 
         while (query.next())
             std::forward<T>(func)(query.value(idName).value<Character::IdType>());
+    }
+
+    template<void (MainWindow::* CharRefresh)(Character::IdType), void (MainWindow::* CorpRefresh)(Character::IdType)>
+    void MainWindow::refreshData()
+    {
+        QSettings settings;
+        if (settings.value(ImportSettings::importAllCharactersKey, ImportSettings::importAllCharactersDefault).toBool())
+        {
+            const auto corp = settings.value(ImportSettings::updateCorpDataKey).toBool();
+            enumerateEnabledCharacters([corp, this](auto id) {
+                if (corp)
+                    emit (this->*CorpRefresh)(id);
+
+                emit (this->*CharRefresh)(id);
+            });
+        }
+        else if (mCurrentCharacterId != Character::invalidId)
+        {
+            emit (this->*CharRefresh)(mCurrentCharacterId);
+        }
     }
 }
