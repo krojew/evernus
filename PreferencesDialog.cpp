@@ -21,6 +21,7 @@
 #include <QTreeWidget>
 
 #include "CharacterImportPreferencesWidget.h"
+#include "IndustryImportPreferencesWidget.h"
 #include "ContractImportPreferencesWidget.h"
 #include "AssetsImportPreferencesWidget.h"
 #include "ImportSourcePreferencesWidget.h"
@@ -94,6 +95,7 @@ namespace Evernus
         importCategories.emplace_back(std::make_pair(tr("Character"), new CharacterImportPreferencesWidget{this}));
         importCategories.emplace_back(std::make_pair(tr("Assets"), new AssetsImportPreferencesWidget{this}));
         importCategories.emplace_back(std::make_pair(tr("Contracts"), new ContractImportPreferencesWidget{this}));
+        importCategories.emplace_back(std::make_pair(tr("Industry"), new IndustryImportPreferencesWidget{this}));
 
         auto page = new CorpImportPreferencesWidget{this};
         importCategories.emplace_back(std::make_pair(tr("Corporation"), page));

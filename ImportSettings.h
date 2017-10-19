@@ -76,6 +76,7 @@ namespace Evernus
         const auto csvSeparatorDefault = QChar(',');
         const auto eveImportSourceDefault = EveImportSource::ESI;
         const auto maxCitadelAccessAgeDefault = 7;
+        const auto importMiningLedgerDefault = false;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -114,5 +115,6 @@ namespace Evernus
         const auto csvSeparatorKey = QStringLiteral("import/csvSeparator");
         const auto eveImportSourceKey = QStringLiteral("import/source/eve");
         const auto maxCitadelAccessAgeKey = QStringLiteral("import/citadelAccess/maxAge");
+        const auto importMiningLedgerKey = QStringLiteral("import/character/importMiningLedger");
     }
 }

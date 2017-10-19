@@ -367,7 +367,6 @@ namespace Evernus
         emit refreshCitadels();
 
         refreshWalletJournal();
-        refreshMiningLedger();
 
         QSettings settings;
 
@@ -385,6 +384,8 @@ namespace Evernus
             refreshAssets();
         if (settings.value(ImportSettings::importContractsKey, ImportSettings::importContractsDefault).toBool())
             refreshContracts();
+        if (settings.value(ImportSettings::importMiningLedgerKey, ImportSettings::importMiningLedgerDefault).toBool())
+            refreshMiningLedger();
     }
 
     void MainWindow::characterDataChanged()

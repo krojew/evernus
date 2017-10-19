@@ -4353,6 +4353,14 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
 </context>
 <context>
+    <name>Evernus::IndustryImportPreferencesWidget</name>
+    <message>
+        <location filename="../IndustryImportPreferencesWidget.cpp" line="38"/>
+        <source>Import mining ledger</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::IndustryManufacturingWidget</name>
     <message>
         <location filename="../IndustryManufacturingWidget.cpp" line="91"/>
@@ -5274,7 +5282,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Wysyłanie zleceń: %1</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="569"/>
+        <location filename="../MainWindow.cpp" line="570"/>
         <source>Show/hide table columns</source>
         <translation>Pokaż/ukryj kolumny tabel</translation>
     </message>
@@ -5294,7 +5302,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="267"/>
-        <location filename="../MainWindow.cpp" line="444"/>
+        <location filename="../MainWindow.cpp" line="445"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -5309,73 +5317,73 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Aktywne zadania: %1</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="444"/>
+        <location filename="../MainWindow.cpp" line="445"/>
         <source>HTTP link was copied to the clipboard.</source>
         <translation>Link do usługi został skopiowany do schowka.</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="541"/>
+        <location filename="../MainWindow.cpp" line="542"/>
         <source>&amp;File</source>
         <translation>&amp;Plik</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="542"/>
+        <location filename="../MainWindow.cpp" line="543"/>
         <source>Select character</source>
         <translation>Wybierz postać</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="543"/>
+        <location filename="../MainWindow.cpp" line="544"/>
         <source>&amp;Manage characters...</source>
         <translation>&amp;Zarządzaj postaciami...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="545"/>
-        <location filename="../MainWindow.cpp" line="547"/>
+        <location filename="../MainWindow.cpp" line="546"/>
+        <location filename="../MainWindow.cpp" line="548"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Ustawienia...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="550"/>
+        <location filename="../MainWindow.cpp" line="551"/>
         <source>Import EVE Mentat order history...</source>
         <translation>Zaimportuj historię z EVE Mentat...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="552"/>
+        <location filename="../MainWindow.cpp" line="553"/>
         <source>E&amp;xit</source>
         <translation>Za&amp;kończ</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="554"/>
+        <location filename="../MainWindow.cpp" line="555"/>
         <source>&amp;Tools</source>
         <translation>&amp;Narzędzia</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="555"/>
+        <location filename="../MainWindow.cpp" line="556"/>
         <source>Import conquerable stations</source>
         <translation>Importuj stacje graczy</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="556"/>
+        <location filename="../MainWindow.cpp" line="557"/>
         <source>Import citadels</source>
         <translation>Importuj cytadele</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="557"/>
+        <location filename="../MainWindow.cpp" line="558"/>
         <source>Citadel manager</source>
         <translation>Menadżer cytadel</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="558"/>
+        <location filename="../MainWindow.cpp" line="559"/>
         <source>Ma&amp;rgin tool...</source>
         <translation>Narzędzie &amp;marży...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="559"/>
+        <location filename="../MainWindow.cpp" line="560"/>
         <source>Custom &amp;Fast Price Copy</source>
         <translation>Własne &amp;szybkie kopiowanie ceny</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="561"/>
+        <location filename="../MainWindow.cpp" line="562"/>
         <source>Copy HTTP link</source>
         <translation>Skopiuj link HTTP</translation>
     </message>
@@ -5384,117 +5392,117 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Skopiuj link IGB</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="564"/>
+        <location filename="../MainWindow.cpp" line="565"/>
         <source>Upload data to cloud...</source>
         <translation>Wyślij dane do chmury...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="567"/>
+        <location filename="../MainWindow.cpp" line="568"/>
         <source>&amp;View</source>
         <translation>&amp;Widok</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="568"/>
+        <location filename="../MainWindow.cpp" line="569"/>
         <source>Show/hide tabs</source>
         <translation>Pokaż/ukryj zakładki</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="571"/>
+        <location filename="../MainWindow.cpp" line="572"/>
         <source>Always on top</source>
         <translation>Zawsze na wierzchu</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="595"/>
+        <location filename="../MainWindow.cpp" line="596"/>
         <source>&amp;Help</source>
         <translation>Pomo&amp;c</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="596"/>
+        <location filename="../MainWindow.cpp" line="597"/>
         <source>&amp;Online help...</source>
         <translation>Pomoc &amp;online...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="597"/>
+        <location filename="../MainWindow.cpp" line="598"/>
         <source>Check for &amp;updates</source>
         <translation>Sprawdź &amp;akutalizacje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="599"/>
+        <location filename="../MainWindow.cpp" line="600"/>
         <source>&amp;About...</source>
         <translation>&amp;O programie...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="638"/>
+        <location filename="../MainWindow.cpp" line="639"/>
         <source>Character</source>
         <translation>Postać</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="652"/>
+        <location filename="../MainWindow.cpp" line="653"/>
         <source>Statistics</source>
         <translation>Statystyki</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="674"/>
+        <location filename="../MainWindow.cpp" line="675"/>
         <source>Assets</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="698"/>
+        <location filename="../MainWindow.cpp" line="699"/>
         <source>Character orders</source>
         <translation>Zlecenia postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="747"/>
+        <location filename="../MainWindow.cpp" line="748"/>
         <source>Character contracts</source>
         <translation>Kontrakty postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="757"/>
+        <location filename="../MainWindow.cpp" line="758"/>
         <source>Corporation assets</source>
         <translation>Aktywa korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="781"/>
+        <location filename="../MainWindow.cpp" line="782"/>
         <source>Corporation orders</source>
         <translation>Zlecenia korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="829"/>
+        <location filename="../MainWindow.cpp" line="830"/>
         <source>Corporation contracts</source>
         <translation>Kontrakty korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="840"/>
+        <location filename="../MainWindow.cpp" line="841"/>
         <source>Item history</source>
         <translation>Historia przedmiotów</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="860"/>
+        <location filename="../MainWindow.cpp" line="861"/>
         <source>Market browser</source>
         <translation>Rynek</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="882"/>
+        <location filename="../MainWindow.cpp" line="883"/>
         <source>LMeve</source>
         <translation>LMeve</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="906"/>
+        <location filename="../MainWindow.cpp" line="907"/>
         <source>Market analysis</source>
         <translation>Analiza rynku</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="921"/>
+        <location filename="../MainWindow.cpp" line="922"/>
         <source>Industry</source>
         <translation>Przemysł</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="945"/>
+        <location filename="../MainWindow.cpp" line="946"/>
         <source>Toggle character tabs</source>
         <translation>Zakładki postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="951"/>
+        <location filename="../MainWindow.cpp" line="952"/>
         <source>Toggle corporation tabs</source>
         <translation>Zakładki korporacji</translation>
     </message>
@@ -5511,22 +5519,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Wysyłanie zleceń:</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="722"/>
+        <location filename="../MainWindow.cpp" line="723"/>
         <source>Character journal</source>
         <translation>Dziennik postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="804"/>
+        <location filename="../MainWindow.cpp" line="805"/>
         <source>Corporation journal</source>
         <translation>Dziennik korporacji</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="734"/>
+        <location filename="../MainWindow.cpp" line="735"/>
         <source>Character transactions</source>
         <translation>Transakcje postaci</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="816"/>
+        <location filename="../MainWindow.cpp" line="817"/>
         <source>Corporation transactions</source>
         <translation>Transakcje korporacji</translation>
     </message>
@@ -5543,7 +5551,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Transakcje</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="873"/>
+        <location filename="../MainWindow.cpp" line="874"/>
         <source>Item costs</source>
         <translation>Koszty</translation>
     </message>
@@ -7457,56 +7465,61 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::PreferencesDialog</name>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="63"/>
+        <location filename="../PreferencesDialog.cpp" line="64"/>
         <source>General</source>
         <translation>Ogólne</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="70"/>
+        <location filename="../PreferencesDialog.cpp" line="71"/>
         <source>Synchronization</source>
         <translation>Synchronizacja</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="64"/>
+        <location filename="../PreferencesDialog.cpp" line="65"/>
         <source>Paths</source>
         <translation>Ścieżki</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="65"/>
+        <location filename="../PreferencesDialog.cpp" line="66"/>
         <source>Sounds</source>
         <translation>Dźwięki</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="66"/>
+        <location filename="../PreferencesDialog.cpp" line="67"/>
         <source>Prices</source>
         <translation>Ceny</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="67"/>
+        <location filename="../PreferencesDialog.cpp" line="68"/>
         <source>Orders</source>
         <translation>Zlecenia</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="68"/>
+        <location filename="../PreferencesDialog.cpp" line="69"/>
         <source>Statistics</source>
         <translation>Statystyki</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="69"/>
+        <location filename="../PreferencesDialog.cpp" line="70"/>
         <source>Network</source>
         <translation>Sieć</translation>
+    </message>
+    <message>
+        <location filename="../PreferencesDialog.cpp" line="98"/>
+        <source>Industry</source>
+        <translation type="unfinished">Przemysł</translation>
     </message>
     <message>
         <source>In-Game Browser</source>
         <translation type="vanished">Przeglądarka IGB</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="71"/>
+        <location filename="../PreferencesDialog.cpp" line="72"/>
         <source>Web Service</source>
         <translation>Usługa sieciowa</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="72"/>
+        <location filename="../PreferencesDialog.cpp" line="73"/>
         <source>Wallet</source>
         <translation>Portfel</translation>
     </message>
@@ -7515,27 +7528,27 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Uploader</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="73"/>
+        <location filename="../PreferencesDialog.cpp" line="74"/>
         <source>LMeve</source>
         <translation>LMeve</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="90"/>
+        <location filename="../PreferencesDialog.cpp" line="91"/>
         <source>Import</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="94"/>
+        <location filename="../PreferencesDialog.cpp" line="95"/>
         <source>Character</source>
         <translation>Postać</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="95"/>
+        <location filename="../PreferencesDialog.cpp" line="96"/>
         <source>Assets</source>
         <translation>Aktywa</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="96"/>
+        <location filename="../PreferencesDialog.cpp" line="97"/>
         <source>Contracts</source>
         <translation>Kontrakty</translation>
     </message>
@@ -7544,17 +7557,17 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <translation type="vanished">Kontrakt</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="99"/>
+        <location filename="../PreferencesDialog.cpp" line="101"/>
         <source>Corporation</source>
         <translation>Korporacja</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="102"/>
+        <location filename="../PreferencesDialog.cpp" line="104"/>
         <source>Source</source>
         <translation>Źródło</translation>
     </message>
     <message>
-        <location filename="../PreferencesDialog.cpp" line="127"/>
+        <location filename="../PreferencesDialog.cpp" line="129"/>
         <source>Preferences</source>
         <translation>Ustawienia</translation>
     </message>
