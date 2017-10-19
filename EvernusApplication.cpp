@@ -352,6 +352,9 @@ namespace Evernus
         case TimerType::LMeveTasks:
             mLMeveUtcCacheTimes[id] = dt;
             break;
+        case TimerType::MiningLedger:
+            mMiningLedgerUtcCacheTimes[id] = dt;
+            break;
         default:
             BOOST_THROW_EXCEPTION(std::logic_error{tr("Unknown cache timer type: %1").arg(static_cast<int>(type)).toStdString()});
         }
