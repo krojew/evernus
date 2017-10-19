@@ -28,50 +28,50 @@ namespace Evernus
 
     QString MarketOrderRepository::getTableName() const
     {
-        return (mCorp) ? ("corp_market_orders") : ("market_orders");
+        return (mCorp) ? (QStringLiteral("corp_market_orders")) : (QStringLiteral("market_orders"));
     }
 
     QString MarketOrderRepository::getIdColumn() const
     {
-        return "id";
+        return QStringLiteral("id");
     }
 
     MarketOrderRepository::EntityPtr MarketOrderRepository::populate(const QSqlRecord &record) const
     {
-        auto issued = record.value("issued").toDateTime();
+        auto issued = record.value(QStringLiteral("issued")).toDateTime();
         issued.setTimeSpec(Qt::UTC);
 
-        auto firstSeen = record.value("first_seen").toDateTime();
+        auto firstSeen = record.value(QStringLiteral("first_seen")).toDateTime();
         firstSeen.setTimeSpec(Qt::UTC);
 
-        auto lastSeen = record.value("last_seen").toDateTime();
+        auto lastSeen = record.value(QStringLiteral("last_seen")).toDateTime();
         lastSeen.setTimeSpec(Qt::UTC);
 
-        auto marketOrder = std::make_shared<MarketOrder>(record.value("id").value<MarketOrder::IdType>());
-        marketOrder->setCharacterId(record.value("character_id").value<Character::IdType>());
-        marketOrder->setStationId(record.value("location_id").toULongLong());
-        marketOrder->setVolumeEntered(record.value("volume_entered").toUInt());
-        marketOrder->setVolumeRemaining(record.value("volume_remaining").toUInt());
-        marketOrder->setMinVolume(record.value("min_volume").toUInt());
-        marketOrder->setDelta(record.value("delta").toInt());
-        marketOrder->setState(static_cast<MarketOrder::State>(record.value("state").toInt()));
-        marketOrder->setTypeId(record.value("type_id").value<EveType::IdType>());
-        marketOrder->setRange(record.value("range").value<short>());
-        marketOrder->setAccountKey(record.value("account_key").value<short>());
-        marketOrder->setDuration(record.value("duration").value<short>());
-        marketOrder->setEscrow(record.value("escrow").toDouble());
-        marketOrder->setPrice(record.value("price").toDouble());
-        marketOrder->setType(static_cast<MarketOrder::Type>(record.value("type").toInt()));
+        auto marketOrder = std::make_shared<MarketOrder>(record.value(getIdColumn()).value<MarketOrder::IdType>());
+        marketOrder->setCharacterId(record.value(QStringLiteral("character_id")).value<Character::IdType>());
+        marketOrder->setStationId(record.value(QStringLiteral("location_id")).toULongLong());
+        marketOrder->setVolumeEntered(record.value(QStringLiteral("volume_entered")).toUInt());
+        marketOrder->setVolumeRemaining(record.value(QStringLiteral("volume_remaining")).toUInt());
+        marketOrder->setMinVolume(record.value(QStringLiteral("min_volume")).toUInt());
+        marketOrder->setDelta(record.value(QStringLiteral("delta")).toInt());
+        marketOrder->setState(static_cast<MarketOrder::State>(record.value(QStringLiteral("state")).toInt()));
+        marketOrder->setTypeId(record.value(QStringLiteral("type_id")).value<EveType::IdType>());
+        marketOrder->setRange(record.value(QStringLiteral("range")).value<short>());
+        marketOrder->setAccountKey(record.value(QStringLiteral("account_key")).value<short>());
+        marketOrder->setDuration(record.value(QStringLiteral("duration")).value<short>());
+        marketOrder->setEscrow(record.value(QStringLiteral("escrow")).toDouble());
+        marketOrder->setPrice(record.value(QStringLiteral("price")).toDouble());
+        marketOrder->setType(static_cast<MarketOrder::Type>(record.value(QStringLiteral("type")).toInt()));
         marketOrder->setIssued(issued);
         marketOrder->setFirstSeen(firstSeen);
         marketOrder->setLastSeen(lastSeen);
-        marketOrder->setCorporationId(record.value("corporation_id").toULongLong());
-        if (!record.value("notes").isNull())
-            marketOrder->setNotes(record.value("notes").toString());
-        if (!record.value("custom_location_id").isNull())
-            marketOrder->setCustomStationId(record.value("custom_location_id").toULongLong());
-        if (!record.value("color_tag").isNull())
-            marketOrder->setColorTag(record.value("color_tag").toString());
+        marketOrder->setCorporationId(record.value(QStringLiteral("corporation_id")).toULongLong());
+        if (!record.value(QStringLiteral("notes")).isNull())
+            marketOrder->setNotes(record.value(QStringLiteral("notes")).toString());
+        if (!record.value(QStringLiteral("custom_location_id")).isNull())
+            marketOrder->setCustomStationId(record.value(QStringLiteral("custom_location_id")).toULongLong());
+        if (!record.value(QStringLiteral("color_tag")).isNull())
+            marketOrder->setColorTag(record.value(QStringLiteral("color_tag")).toString());
         marketOrder->setNew(false);
 
         return marketOrder;
@@ -204,10 +204,10 @@ namespace Evernus
 
         switch (groupingColumn) {
         case AggregateColumn::TypeId:
-            queryStr = queryStr.arg("type_id");
+            queryStr = queryStr.arg(QStringLiteral("type_id"));
             break;
         case AggregateColumn::LocationId:
-            queryStr = queryStr.arg("location_id");
+            queryStr = queryStr.arg(QStringLiteral("location_id"));
             break;
         default:
             return result;
@@ -218,11 +218,11 @@ namespace Evernus
         if (includeActive && includeNotFulfilled)
             queryStr = queryStr.arg(QString{});
         else if (includeActive)
-            queryStr = queryStr.arg("AND state IN (?, ?)");
+            queryStr = queryStr.arg(QStringLiteral("AND state IN (?, ?)"));
         else if (includeNotFulfilled)
-            queryStr = queryStr.arg("AND state != ?");
+            queryStr = queryStr.arg(QStringLiteral("AND state != ?"));
         else
-            queryStr = queryStr.arg("AND state = ?");
+            queryStr = queryStr.arg(QStringLiteral("AND state = ?"));
 
         queryStr = queryStr.arg(static_cast<int>(orderColumn) + 1);
 
@@ -469,56 +469,56 @@ namespace Evernus
     QStringList MarketOrderRepository::getColumns() const
     {
         return QStringList{}
-            << "id"
-            << "character_id"
-            << "location_id"
-            << "volume_entered"
-            << "volume_remaining"
-            << "min_volume"
-            << "delta"
-            << "state"
-            << "type_id"
-            << "range"
-            << "account_key"
-            << "duration"
-            << "escrow"
-            << "price"
-            << "type"
-            << "issued"
-            << "first_seen"
-            << "last_seen"
-            << "corporation_id"
-            << "notes"
-            << "custom_location_id"
-            << "color_tag";
+            << QStringLiteral("id")
+            << QStringLiteral("character_id")
+            << QStringLiteral("location_id")
+            << QStringLiteral("volume_entered")
+            << QStringLiteral("volume_remaining")
+            << QStringLiteral("min_volume")
+            << QStringLiteral("delta")
+            << QStringLiteral("state")
+            << QStringLiteral("type_id")
+            << QStringLiteral("range")
+            << QStringLiteral("account_key")
+            << QStringLiteral("duration")
+            << QStringLiteral("escrow")
+            << QStringLiteral("price")
+            << QStringLiteral("type")
+            << QStringLiteral("issued")
+            << QStringLiteral("first_seen")
+            << QStringLiteral("last_seen")
+            << QStringLiteral("corporation_id")
+            << QStringLiteral("notes")
+            << QStringLiteral("custom_location_id")
+            << QStringLiteral("color_tag");
     }
 
     void MarketOrderRepository::bindValues(const MarketOrder &entity, QSqlQuery &query) const
     {
         if (entity.getId() != MarketOrder::invalidId)
-            query.bindValue(":id", entity.getId());
+            query.bindValue(QStringLiteral(":id"), entity.getId());
 
-        query.bindValue(":character_id", entity.getCharacterId());
-        query.bindValue(":location_id", entity.getStationId());
-        query.bindValue(":volume_entered", entity.getVolumeEntered());
-        query.bindValue(":volume_remaining", entity.getVolumeRemaining());
-        query.bindValue(":min_volume", entity.getMinVolume());
-        query.bindValue(":delta", entity.getDelta());
-        query.bindValue(":state", static_cast<int>(entity.getState()));
-        query.bindValue(":type_id", entity.getTypeId());
-        query.bindValue(":range", entity.getRange());
-        query.bindValue(":account_key", entity.getAccountKey());
-        query.bindValue(":duration", entity.getDuration());
-        query.bindValue(":escrow", entity.getEscrow());
-        query.bindValue(":price", entity.getPrice());
-        query.bindValue(":type", static_cast<int>(entity.getType()));
-        query.bindValue(":issued", entity.getIssued());
-        query.bindValue(":first_seen", entity.getFirstSeen());
-        query.bindValue(":last_seen", entity.getLastSeen());
-        query.bindValue(":corporation_id", entity.getCorporationId());
-        query.bindValue(":notes", entity.getNotes());
-        query.bindValue(":custom_location_id", (entity.getCustomStationId()) ? (*entity.getCustomStationId()) : (QVariant{QVariant::ULongLong}));
-        query.bindValue(":color_tag", (entity.getColorTag().isValid()) ? (entity.getColorTag().name()) : (QVariant{QVariant::String}));
+        query.bindValue(QStringLiteral(":character_id"), entity.getCharacterId());
+        query.bindValue(QStringLiteral(":location_id"), entity.getStationId());
+        query.bindValue(QStringLiteral(":volume_entered"), entity.getVolumeEntered());
+        query.bindValue(QStringLiteral(":volume_remaining"), entity.getVolumeRemaining());
+        query.bindValue(QStringLiteral(":min_volume"), entity.getMinVolume());
+        query.bindValue(QStringLiteral(":delta"), entity.getDelta());
+        query.bindValue(QStringLiteral(":state"), static_cast<int>(entity.getState()));
+        query.bindValue(QStringLiteral(":type_id"), entity.getTypeId());
+        query.bindValue(QStringLiteral(":range"), entity.getRange());
+        query.bindValue(QStringLiteral(":account_key"), entity.getAccountKey());
+        query.bindValue(QStringLiteral(":duration"), entity.getDuration());
+        query.bindValue(QStringLiteral(":escrow"), entity.getEscrow());
+        query.bindValue(QStringLiteral(":price"), entity.getPrice());
+        query.bindValue(QStringLiteral(":type"), static_cast<int>(entity.getType()));
+        query.bindValue(QStringLiteral(":issued"), entity.getIssued());
+        query.bindValue(QStringLiteral(":first_seen"), entity.getFirstSeen());
+        query.bindValue(QStringLiteral(":last_seen"), entity.getLastSeen());
+        query.bindValue(QStringLiteral(":corporation_id"), entity.getCorporationId());
+        query.bindValue(QStringLiteral(":notes"), entity.getNotes());
+        query.bindValue(QStringLiteral(":custom_location_id"), (entity.getCustomStationId()) ? (*entity.getCustomStationId()) : (QVariant{QVariant::ULongLong}));
+        query.bindValue(QStringLiteral(":color_tag"), (entity.getColorTag().isValid()) ? (entity.getColorTag().name()) : (QVariant{QVariant::String}));
     }
 
     void MarketOrderRepository::bindPositionalValues(const MarketOrder &entity, QSqlQuery &query) const
@@ -559,9 +559,9 @@ namespace Evernus
 
         QStringList list;
         for (auto i = 0u; i < std::min(maxBatchSize, ids.size()); ++i)
-            list << "?";
+            list << QStringLiteral("?");
 
-        auto query = prepare(baseQuery.arg(list.join(", ")));
+        auto query = prepare(baseQuery.arg(list.join(QStringLiteral(", "))));
 
         auto executeBatch = [&](auto begin, auto end) {
             for (auto it = begin; it != end; ++it)
@@ -585,7 +585,7 @@ namespace Evernus
             for (auto it = reminderBegin; it != std::end(ids); ++it)
                 list << "?";
 
-            query = prepare(baseQuery.arg(list.join(", ")));
+            query = prepare(baseQuery.arg(list.join(QStringLiteral(", "))));
 
             valueBinder(query);
             executeBatch(reminderBegin, std::end(ids));
