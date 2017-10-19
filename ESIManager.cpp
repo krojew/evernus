@@ -43,6 +43,7 @@
 #include "NetworkSettings.h"
 #include "ExternalOrder.h"
 #include "ReplyTimeout.h"
+#include "MiningLedger.h"
 #include "SSOSettings.h"
 #include "Blueprint.h"
 #include "Defines.h"
@@ -588,6 +589,41 @@ namespace Evernus
     {
         Q_ASSERT(thread() == QThread::currentThread());
         fetchCharacterWalletTransactions(charId, boost::none, tillId, std::make_shared<WalletTransactions>(), callback);
+    }
+
+    void ESIManager::fetchCharacterMiningLedger(Character::IdType charId, const Callback<MiningLedgerList> &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+
+        auto ledgerResult = std::make_shared<MiningLedgerList>();
+        selectNextInterface().fetchCharacterMiningLedger(charId, [=, ledgerResult = std::move(ledgerResult)]
+                                                                 (auto &&data, auto atEnd, const auto &error, const auto &expires) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            const auto ledgerArray = data.array();
+            const auto curSize = ledgerResult->size();
+            ledgerResult->resize(curSize + ledgerArray.size());
+
+            std::atomic_size_t nextIndex{curSize};
+
+            QtConcurrent::blockingMap(ledgerArray, [&, charId](const auto &ledger) {
+                const auto ledgerObj = ledger.toObject();
+
+                auto &curLedger = (*ledgerResult)[nextIndex++];
+                curLedger.setCharacterId(charId);
+                curLedger.setDate(QDate::fromString(ledgerObj.value(QStringLiteral("date")).toString(), Qt::ISODate));
+                curLedger.setQuantity(ledgerObj.value(QStringLiteral("quantity")).toDouble());
+                curLedger.setSolarSystemId(ledgerObj.value(QStringLiteral("solar_system_id")).toDouble());
+                curLedger.setTypeId(ledgerObj.value(QStringLiteral("type_id")).toDouble());
+            });
+
+            if (atEnd)
+                callback(std::move(*ledgerResult), {}, expires);
+        });
     }
 
     void ESIManager::fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const

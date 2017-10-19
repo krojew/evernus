@@ -380,6 +380,19 @@ namespace Evernus
         });
     }
 
+    void ESIInterface::fetchCharacterMiningLedger(Character::IdType charId, const PaginatedCallback &callback) const
+    {
+        qDebug() << "Fetching character mining ledger for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, true, tr("Cannot fetch character mining ledger with no character selected."), {});
+            return;
+        }
+
+        fetchPaginatedData(QStringLiteral("/v1/characters/%1/mining/").arg(charId), {}, 1, callback);
+    }
+
     void ESIInterface::fetchGenericName(quint64 id, const PersistentStringCallback &callback) const
     {
         qDebug() << "Fetching generic name:" << id;
