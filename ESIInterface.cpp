@@ -390,7 +390,7 @@ namespace Evernus
             return;
         }
 
-        fetchPaginatedData(QStringLiteral("/v1/characters/%1/mining/").arg(charId), {}, 1, callback);
+        fetchPaginatedData(charId, QStringLiteral("/v1/characters/%1/mining/").arg(charId), 1, callback);
     }
 
     void ESIInterface::fetchGenericName(quint64 id, const PersistentStringCallback &callback) const
