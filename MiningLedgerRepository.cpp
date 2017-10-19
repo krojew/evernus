@@ -41,7 +41,7 @@ namespace Evernus
     void MiningLedgerRepository::create(const Repository<Character> &characterRepo) const
     {
         exec(QStringLiteral("CREATE TABLE IF NOT EXISTS %1 ("
-            "id BIGINT PRIMARY KEY,"
+            "id INTEGER PRIMARY KEY,"
             "character_id BIGINT NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,"
             "date DATE NOT NULL,"
             "quantity INTEGER NOT NULL,"
