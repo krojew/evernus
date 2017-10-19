@@ -651,8 +651,6 @@ namespace Evernus
 
             connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
             connect(reply, &QNetworkReply::finished, this, [=] {
-                reply->deleteLater();
-
                 const auto error = reply->error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
@@ -663,6 +661,7 @@ namespace Evernus
 
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
+                        reply->deleteLater();
                         schedulePostErrorLimitRequest([=] {
                             asyncGet<T, ResultTag>(charId, url, query, continuation, retries, importingCitadels, citadelId);
                         }, *reply);
@@ -674,6 +673,7 @@ namespace Evernus
                         {
                             // expired token?
                             tryAuthAndContinue(charId, [=](const auto &error) {
+                                reply->deleteLater();
                                 if (error.isEmpty())
                                     asyncGet<T, ResultTag>(charId, url, query, continuation, retries, importingCitadels);
                                 else
@@ -682,6 +682,7 @@ namespace Evernus
                         }
                         else
                         {
+                            reply->deleteLater();
                             if (error == QNetworkReply::ContentAccessDenied)
                             {
                                 if (importingCitadels)
@@ -712,6 +713,7 @@ namespace Evernus
                 }
                 else
                 {
+                    reply->deleteLater();
                     TaggedInvoke<ResultTag>::invoke(reply->readAll(), *reply, continuation);
                 }
             });
