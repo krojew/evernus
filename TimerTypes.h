@@ -30,5 +30,6 @@ namespace Evernus
         CorpContracts,
         LMeveTasks,
         CorpAssetList,
+        MiningLedger,
     };
 }

@@ -341,6 +341,7 @@ namespace Evernus
         CharacterTimerMap mWalletTransactionsUtcCacheTimes;
         CharacterTimerMap mMarketOrdersUtcCacheTimes;
         CharacterTimerMap mContractsUtcCacheTimes;
+        CharacterTimerMap mMiningLedgerUtcCacheTimes;
         CharacterTimerMap mCorpAssetsUtcCacheTimes;
         CharacterTimerMap mCorpWalletJournalUtcCacheTimes;
         CharacterTimerMap mCorpWalletTransactionsUtcCacheTimes;
@@ -354,6 +355,7 @@ namespace Evernus
         CharacterTimerMap mWalletTransactionsUtcUpdateTimes;
         CharacterTimerMap mMarketOrdersUtcUpdateTimes;
         CharacterTimerMap mContractsUtcUpdateTimes;
+        CharacterTimerMap mMiningLedgerUtcUpdateTimes;
         CharacterTimerMap mCorpAssetsUtcUpdateTimes;
         CharacterTimerMap mCorpWalletJournalUtcUpdateTimes;
         CharacterTimerMap mCorpWalletTransactionsUtcUpdateTimes;

@@ -423,6 +423,11 @@ namespace Evernus
             if (it == std::end(mCorpContractsUtcUpdateTimes))
                 return QDateTime{};
             break;
+        case TimerType::MiningLedger:
+            it = mMiningLedgerUtcUpdateTimes.find(id);
+            if (it == std::end(mMiningLedgerUtcUpdateTimes))
+                return QDateTime{};
+            break;
         default:
             BOOST_THROW_EXCEPTION(std::logic_error{tr("Unknown update timer type: %1").arg(static_cast<int>(type)).toStdString()});
         }
@@ -1227,6 +1232,12 @@ namespace Evernus
     void EvernusApplication::refreshCharacterMiningLedger(Character::IdType id, uint parentTask)
     {
         qDebug() << "Refreshing mining ledger:" << id;
+
+        const auto task = startTask(tr("Fetching mining ledger for character %1...").arg(id));
+        processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        if (!checkImportAndEndTask(id, TimerType::MiningLedger, task))
+            return;
     }
 
     void EvernusApplication::refreshCorpAssets(Character::IdType id, uint parentTask)
@@ -2094,6 +2105,9 @@ namespace Evernus
             case TimerType::LMeveTasks:
                 mLMeveUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
                 break;
+            case TimerType::MiningLedger:
+                mMiningLedgerUtcCacheTimes[timer->getCharacterId()] = timer->getCacheUntil();
+                break;
             }
         }
     }
@@ -2138,6 +2152,9 @@ namespace Evernus
                 mCorpContractsUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
                 break;
             case TimerType::LMeveTasks:
+                break;
+            case TimerType::MiningLedger:
+                mMiningLedgerUtcUpdateTimes[timer->getCharacterId()] = timer->getUpdateTime();
                 break;
             }
         }
