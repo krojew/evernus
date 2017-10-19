@@ -689,6 +689,11 @@ namespace Evernus
         return *mIndustryManufacturingSetupRepository;
     }
 
+    const MiningLedgerRepository &EvernusApplication::getMiningLedgerRepository() const noexcept
+    {
+        return *mMiningLedgerRepository;
+    }
+
     std::vector<std::shared_ptr<LMeveTask>> EvernusApplication::getTasks(Character::IdType characterId) const
     {
         const auto it = mLMeveTaskCache.find(characterId);

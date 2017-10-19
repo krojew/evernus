@@ -399,6 +399,8 @@ add_executable(
     IndustryManufacturingSetupRepository.h
     IndustryManufacturingWidget.cpp
     IndustryManufacturingWidget.h
+    IndustryMiningLedgerWidget.cpp
+    IndustryMiningLedgerWidget.h
     IndustrySettings.h
     IndustryUtils.cpp
     IndustryUtils.h

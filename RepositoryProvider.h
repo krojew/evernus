@@ -31,6 +31,7 @@ namespace Evernus
     class WalletSnapshotRepository;
     class ExternalOrderRepository;
     class FavoriteItemRepository;
+    class MiningLedgerRepository;
     class MarketOrderRepository;
     class OrderScriptRepository;
     class MarketGroupRepository;
@@ -82,5 +83,6 @@ namespace Evernus
         virtual const ItemRepository &getCorpItemRepository() const noexcept = 0;
         virtual const RegionStationPresetRepository &getRegionStationPresetRepository() const noexcept = 0;
         virtual const IndustryManufacturingSetupRepository &getIndustryManufacturingSetupRepository() const noexcept = 0;
+        virtual const MiningLedgerRepository &getMiningLedgerRepository() const noexcept = 0;
     };
 }

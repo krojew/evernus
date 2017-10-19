@@ -158,6 +158,7 @@ namespace Evernus
         virtual const ItemRepository &getCorpItemRepository() const noexcept override;
         virtual const RegionStationPresetRepository &getRegionStationPresetRepository() const noexcept override;
         virtual const IndustryManufacturingSetupRepository &getIndustryManufacturingSetupRepository() const noexcept override;
+        virtual const MiningLedgerRepository &getMiningLedgerRepository() const noexcept override;
 
         virtual std::vector<std::shared_ptr<LMeveTask>> getTasks(Character::IdType characterId) const override;
 
