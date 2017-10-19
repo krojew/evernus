@@ -27,6 +27,8 @@ namespace Evernus
     {
     public:
         using Entity::Entity;
+
+        MiningLedger() = default;
         MiningLedger(const MiningLedger &) = default;
         MiningLedger(MiningLedger &&) = default;
         virtual ~MiningLedger() = default;
