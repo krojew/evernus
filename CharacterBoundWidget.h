@@ -32,7 +32,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        typedef std::function<QDateTime (Character::IdType)> TimeGetter;
+        using TimeGetter = std::function<QDateTime (Character::IdType)>;
 
         CharacterBoundWidget(const TimeGetter &apiTimeGetter,
                              const TimeGetter &updateTimeGetter,

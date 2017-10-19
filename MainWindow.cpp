@@ -916,6 +916,7 @@ namespace Evernus
                                                     taskManager,
                                                     charAssetProvider,
                                                     mItemCostProvider,
+                                                    cacheTimerProvider,
                                                     clientId,
                                                     clientSecret,
                                                     this};

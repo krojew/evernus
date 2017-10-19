@@ -12,12 +12,43 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QtDebug>
+
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+
+#include "CacheTimerProvider.h"
+#include "WarningBarWidget.h"
+#include "ButtonWithTimer.h"
+#include "ImportSettings.h"
+#include "TimerTypes.h"
+
 #include "IndustryMiningLedgerWidget.h"
 
 namespace Evernus
 {
-    IndustryMiningLedgerWidget::IndustryMiningLedgerWidget(QWidget *parent)
-        : QWidget{parent}
+    IndustryMiningLedgerWidget::IndustryMiningLedgerWidget(const CacheTimerProvider &cacheTimerProvider,
+                                                           QWidget *parent)
+        : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MiningLedger),
+                               std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MiningLedger),
+                               ImportSettings::maxCharacterAgeKey,parent}
     {
+        const auto mainLayout = new QVBoxLayout{this};
+
+        const auto toolBarLayout = new QHBoxLayout{};
+        mainLayout->addLayout(toolBarLayout);
+
+        auto &importBtn = getAPIImportButton();
+        toolBarLayout->addWidget(&importBtn);
+
+        toolBarLayout->addStretch();
+
+        auto &warningBar = getWarningBarWidget();
+        mainLayout->addWidget(&warningBar);
+    }
+
+    void IndustryMiningLedgerWidget::handleNewCharacter(Character::IdType id)
+    {
+        qDebug() << "Switching character to" << id;
     }
 }

@@ -14,22 +14,28 @@
  */
 #pragma once
 
-#include <QWidget>
+#include "CharacterBoundWidget.h"
 
 namespace Evernus
 {
+    class CacheTimerProvider;
+
     class IndustryMiningLedgerWidget
-        : public QWidget
+        : public CharacterBoundWidget
     {
+        Q_OBJECT
+
     public:
-        explicit IndustryMiningLedgerWidget(QWidget *parent = nullptr);
+        explicit IndustryMiningLedgerWidget(const CacheTimerProvider &cacheTimerProvider,
+                                            QWidget *parent = nullptr);
         IndustryMiningLedgerWidget(const IndustryMiningLedgerWidget &) = default;
         IndustryMiningLedgerWidget(IndustryMiningLedgerWidget &&) = default;
         virtual ~IndustryMiningLedgerWidget() = default;
 
-
-
         IndustryMiningLedgerWidget &operator =(const IndustryMiningLedgerWidget &) = default;
         IndustryMiningLedgerWidget &operator =(IndustryMiningLedgerWidget &&) = default;
+
+    private:
+        virtual void handleNewCharacter(Character::IdType id) override;
     };
 }

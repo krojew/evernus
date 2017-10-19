@@ -16,6 +16,7 @@
 #include <QTabWidget>
 
 #include "IndustryManufacturingWidget.h"
+#include "IndustryMiningLedgerWidget.h"
 
 #include "IndustryWidget.h"
 
@@ -31,6 +32,7 @@ namespace Evernus
                                    TaskManager &taskManager,
                                    const AssetProvider &assetProvider,
                                    const ItemCostProvider &costProvider,
+                                   const CacheTimerProvider &cacheTimerProvider,
                                    QByteArray clientId,
                                    QByteArray clientSecret,
                                    QWidget *parent)
@@ -57,6 +59,9 @@ namespace Evernus
         tabs->addTab(mManufacturingWidget, tr("Manufacturing planner"));
         connect(mManufacturingWidget, &IndustryManufacturingWidget::updateExternalOrders,
                 this, &IndustryWidget::updateExternalOrders);
+
+        mMiningLedgerWidget = new IndustryMiningLedgerWidget{cacheTimerProvider, this};
+        tabs->addTab(mMiningLedgerWidget, tr("Mining ledger"));
     }
 
     void IndustryWidget::handleNewPreferences()
@@ -67,6 +72,7 @@ namespace Evernus
     void IndustryWidget::setCharacter(Character::IdType id)
     {
         mManufacturingWidget->setCharacter(id);
+        mMiningLedgerWidget->setCharacter(id);
     }
 
     void IndustryWidget::refreshAssets()

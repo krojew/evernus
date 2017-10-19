@@ -116,5 +116,6 @@ namespace Evernus
         const auto eveImportSourceKey = QStringLiteral("import/source/eve");
         const auto maxCitadelAccessAgeKey = QStringLiteral("import/citadelAccess/maxAge");
         const auto importMiningLedgerKey = QStringLiteral("import/character/importMiningLedger");
+        const auto maxMiningLedgerAgeKey = QStringLiteral("import/miningLedger/maxAge");
     }
 }

@@ -27,10 +27,12 @@ namespace Evernus
     class IndustryManufacturingSetupRepository;
     class RegionStationPresetRepository;
     class IndustryManufacturingWidget;
+    class IndustryMiningLedgerWidget;
     class TradeableTypesTreeView;
     class MarketGroupRepository;
     class CharacterRepository;
     class ESIInterfaceManager;
+    class CacheTimerProvider;
     class EveTypeRepository;
     class ItemCostProvider;
     class EveDataProvider;
@@ -55,6 +57,7 @@ namespace Evernus
                        TaskManager &taskManager,
                        const AssetProvider &assetProvider,
                        const ItemCostProvider &costProvider,
+                       const CacheTimerProvider &cacheTimerProvider,
                        QByteArray clientId,
                        QByteArray clientSecret,
                        QWidget *parent = nullptr);
@@ -76,5 +79,6 @@ namespace Evernus
 
     private:
         IndustryManufacturingWidget *mManufacturingWidget = nullptr;
+        IndustryMiningLedgerWidget *mMiningLedgerWidget = nullptr;
     };
 }

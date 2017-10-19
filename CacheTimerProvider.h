@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <QDateTime>
+
 #include "TimerTypes.h"
 #include "Character.h"
 
