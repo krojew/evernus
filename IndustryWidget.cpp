@@ -54,7 +54,7 @@ namespace Evernus
                                                                std::move(clientId),
                                                                std::move(clientSecret),
                                                                this};
-        tabs->addTab(mManufacturingWidget, tr("Manufacturing analysis"));
+        tabs->addTab(mManufacturingWidget, tr("Manufacturing planner"));
         connect(mManufacturingWidget, &IndustryManufacturingWidget::updateExternalOrders,
                 this, &IndustryWidget::updateExternalOrders);
     }
