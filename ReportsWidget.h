@@ -15,12 +15,14 @@
 #pragma once
 
 #include <QSortFilterProxyModel>
+#include <QSharedPointer>
 #include <QWidget>
 
 #include "MarketOrderPerformanceModel.h"
 #include "TypePerformanceModel.h"
 #include "Character.h"
 
+class QCPAxisTickerText;
 class QCustomPlot;
 class QCheckBox;
 class QCPBars;
@@ -74,6 +76,8 @@ namespace Evernus
 
         AdjustableTableView *mBestItemsView = nullptr;
         AdjustableTableView *mFastestOrdersView = nullptr;
+
+        QSharedPointer<QCPAxisTickerText> mStationNamesTicker;
 
         QCustomPlot *mStationProfitPlot = nullptr;
         QCPBars *mStationProfitGraph = nullptr;

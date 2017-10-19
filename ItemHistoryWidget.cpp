@@ -67,16 +67,15 @@ namespace Evernus
 
         itemLayout->addStretch();
 
+        QSharedPointer<QCPAxisTickerDateTime> xTicker{new QCPAxisTickerDateTime{}};
+        xTicker->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+
         mPlot = new QCustomPlot{this};
         mainLayout->addWidget(mPlot);
         mPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
         mPlot->setMinimumHeight(300);
-        mPlot->xAxis->setAutoTicks(false);
-        mPlot->xAxis->setAutoTickLabels(true);
         mPlot->xAxis->setTickLabelRotation(60);
-        mPlot->xAxis->setSubTickCount(0);
-        mPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
-        mPlot->xAxis->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+        mPlot->xAxis->setTicker(std::move(xTicker));
         mPlot->xAxis->grid()->setVisible(false);
         mPlot->yAxis->setNumberPrecision(2);
         mPlot->yAxis->setLabel("ISK");
@@ -92,10 +91,7 @@ namespace Evernus
         mPlot->yAxis->setNumberFormat(
             settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString());
 
-        auto graph = std::make_unique<QCPBars>(mPlot->xAxis, mPlot->yAxis2);
-        mVolumeGraph = graph.get();
-        mPlot->addPlottable(mVolumeGraph);
-        graph.release();
+        mVolumeGraph = new QCPBars{mPlot->xAxis, mPlot->yAxis2};
 
         mVolumeGraph->setName(tr("Volume"));
         mVolumeGraph->setPen(QPen{Qt::cyan});
@@ -262,8 +258,6 @@ namespace Evernus
 
         mBalanceGraph->setData(ticks, balance);
         mVolumeGraph->setData(ticks, volume);
-
-        mPlot->xAxis->setTickVector(ticks);
 
         mPlot->rescaleAxes();
         mPlot->replot();

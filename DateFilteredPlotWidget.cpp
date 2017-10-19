@@ -66,17 +66,16 @@ namespace Evernus
 
         filterLayout->addStretch();
 
+        QSharedPointer<QCPAxisTickerDateTime> xTicker{new QCPAxisTickerDateTime{}};
+        xTicker->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+
         mPlot = new QCustomPlot{this};
         mainLayout->addWidget(mPlot);
         mPlot->setMinimumHeight(300);
         mPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
         mPlot->legend->setVisible(true);
-        mPlot->xAxis->setAutoTicks(false);
-        mPlot->xAxis->setAutoTickLabels(true);
         mPlot->xAxis->setTickLabelRotation(60);
-        mPlot->xAxis->setSubTickCount(0);
-        mPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
-        mPlot->xAxis->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+        mPlot->xAxis->setTicker(std::move(xTicker));
         connect(mPlot, &QCustomPlot::mouseMove, this, &DateFilteredPlotWidget::mouseMove);
         connect(legendBtn, &QCheckBox::stateChanged, this, [this](bool checked) {
             mPlot->legend->setVisible(checked);
@@ -111,6 +110,16 @@ namespace Evernus
     QCustomPlot &DateFilteredPlotWidget::getPlot() const
     {
         return *mPlot;
+    }
+
+    QString DateFilteredPlotWidget::getDateTimeFormat() const
+    {
+        return qSharedPointerCast<QCPAxisTickerDateTime>(mPlot->xAxis->ticker())->dateTimeFormat();
+    }
+
+    void DateFilteredPlotWidget::setDateTimeFormat(const QString &format)
+    {
+        qSharedPointerCast<QCPAxisTickerDateTime>(mPlot->xAxis->ticker())->setDateTimeFormat(format);
     }
 
     void DateFilteredPlotWidget::saveBalancePlot()

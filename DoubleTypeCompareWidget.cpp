@@ -40,6 +40,9 @@ namespace Evernus
 
         const auto current = QDate::currentDate().addDays(-1);
 
+        QSharedPointer<QCPAxisTickerDateTime> xTicker{new QCPAxisTickerDateTime{}};
+        xTicker->setDateTimeFormat(locale().dateFormat(QLocale::NarrowFormat));
+
         mHistoryPlot = new DateFilteredPlotWidget{this};
         mainLayout->addWidget(mHistoryPlot);
         mHistoryPlot->setTo(current);
@@ -68,12 +71,7 @@ namespace Evernus
 
         mVolumeDateAxis = volumeAxisRect->axis(QCPAxis::atBottom);
         mVolumeDateAxis->setLayer("axes");
-        mVolumeDateAxis->setTickLabelType(QCPAxis::ltDateTime);
-        mVolumeDateAxis->setAutoTicks(plot.xAxis->autoTicks());
-        mVolumeDateAxis->setAutoTickLabels(plot.xAxis->autoTickLabels());
-        mVolumeDateAxis->setTickLabelRotation(plot.xAxis->tickLabelRotation());
-        mVolumeDateAxis->setSubTickCount(plot.xAxis->subTickCount());
-        mVolumeDateAxis->setDateTimeFormat(plot.xAxis->dateTimeFormat());
+        mVolumeDateAxis->setTicker(xTicker);
         mVolumeDateAxis->grid()->setLayer("grid");
 
         connect(plot.xAxis, QOverload<const QCPRange &>::of(&QCPAxis::rangeChanged),
@@ -152,9 +150,6 @@ namespace Evernus
         mFirstVolumeGraph->setData(dates, firstVolumes);
         mSecondVolumeGraph->setData(dates, secondVolumes);
 
-        plot.xAxis->setTickVector(dates);
-        mVolumeDateAxis->setTickVector(dates);
-
         plot.xAxis->rescale();
         plot.yAxis->rescale();
         mFirstVolumeGraph->keyAxis()->rescale();
@@ -173,9 +168,10 @@ namespace Evernus
 
         if (settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool())
         {
-            const auto dateFormat = settings.value(UISettings::dateTimeFormatKey, plot.xAxis->dateTimeFormat()).toString();
-            plot.xAxis->setDateTimeFormat(dateFormat);
-            mVolumeDateAxis->setDateTimeFormat(dateFormat);
+            auto ticker = qSharedPointerCast<QCPAxisTickerDateTime>(plot.xAxis->ticker());
+            ticker->setDateTimeFormat(settings.value(UISettings::dateTimeFormatKey, ticker->dateTimeFormat()).toString());
+            ticker = qSharedPointerCast<QCPAxisTickerDateTime>(mVolumeDateAxis->ticker());
+            ticker->setDateTimeFormat(settings.value(UISettings::dateTimeFormatKey, ticker->dateTimeFormat()).toString());
         }
     }
 }

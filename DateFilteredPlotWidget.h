@@ -39,6 +39,9 @@ namespace Evernus
 
         QCustomPlot &getPlot() const;
 
+        QString getDateTimeFormat() const;
+        void setDateTimeFormat(const QString &format);
+
     signals:
         void filterChanged();
 

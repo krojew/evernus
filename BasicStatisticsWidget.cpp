@@ -223,14 +223,14 @@ namespace Evernus
         auto sellGraph = mBalancePlot->getPlot().graph(sellOrdersGraph);
         auto sumGraph = mBalancePlot->getPlot().graph(totalValueGraph);
 
-        auto assetValues = std::make_unique<QCPDataMap>();
-        auto walletValues = std::make_unique<QCPDataMap>();
-        auto corpWalletValues = std::make_unique<QCPDataMap>();
-        auto corpAssetValues = std::make_unique<QCPDataMap>();
-        auto buyValues = std::make_unique<QCPDataMap>();
-        auto sellValues = std::make_unique<QCPDataMap>();;
+        QSharedPointer<QCPGraphDataContainer> assetValues{new QCPGraphDataContainer{}};
+        QSharedPointer<QCPGraphDataContainer> walletValues{new QCPGraphDataContainer{}};
+        QSharedPointer<QCPGraphDataContainer> corpWalletValues{new QCPGraphDataContainer{}};
+        QSharedPointer<QCPGraphDataContainer> corpAssetValues{new QCPGraphDataContainer{}};
+        QSharedPointer<QCPGraphDataContainer> buyValues{new QCPGraphDataContainer{}};
+        QSharedPointer<QCPGraphDataContainer> sellValues{new QCPGraphDataContainer{}};
 
-        QCPDataMap buyAndSellValues;
+        QCPGraphDataContainer buyAndSellValues;
 
         auto yMax = -1.;
 
@@ -240,18 +240,15 @@ namespace Evernus
 
         const auto dataInserter = [&convertTimestamp](auto &values, const auto &range) {
             for (const auto &shot : range)
-            {
-                const auto secs = convertTimestamp(shot);
-                values.insert(secs, QCPData{secs, shot->getBalance()});
-            }
+                values.add(QCPGraphData{convertTimestamp(shot), shot->getBalance()});
         };
 
-        auto sumData = std::make_unique<QCPDataMap>();
-        const auto merger = [&yMax](const auto &values1, const auto &values2) -> QCPDataMap {
-            QCPDataMap result;
+        QSharedPointer<QCPGraphDataContainer> sumData{new QCPGraphDataContainer{}};
+        const auto merger = [&yMax](const auto &values1, const auto &values2) -> QCPGraphDataContainer {
+            QCPGraphDataContainer result;
 
-            auto value1It = std::begin(values1);
-            auto value2It = std::begin(values2);
+            auto value1It = values1.constBegin();
+            auto value2It = values2.constBegin();
             auto prevValue1 = 0.;
             auto prevValue2 = 0.;
 
@@ -259,25 +256,25 @@ namespace Evernus
                 return a + (b - a) * t;
             };
 
-            while (value1It != std::end(values1) || value2It != std::end(values2))
+            while (value1It != values1.constEnd() || value2It != values2.constEnd())
             {
-                if (value1It == std::end(values1))
+                if (value1It == values1.constEnd())
                 {
                     const auto value = prevValue1 + value2It->value;
                     if (value > yMax)
                         yMax = value;
 
-                    result.insert(value2It->key, QCPData{value2It->key, value});
+                    result.add(QCPGraphData{value2It->key, value});
 
                     ++value2It;
                 }
-                else if (value2It == std::end(values2))
+                else if (value2It == values2.constEnd())
                 {
                     const auto value = prevValue2 + value1It->value;
                     if (value > yMax)
                         yMax = value;
 
-                    result.insert(value1It->key, QCPData{value1It->key, value});
+                    result.add(QCPGraphData{value1It->key, value});
 
                     ++value1It;
                 }
@@ -285,9 +282,9 @@ namespace Evernus
                 {
                     if (value1It->key < value2It->key)
                     {
-                        const auto prevTick = (value2It == std::begin(values2)) ? (values1.firstKey()) : (std::prev(value2It)->key);
+                        const auto prevTick = (value2It == values2.constBegin()) ? (values1.constBegin()->key) : (std::prev(value2It)->key);
                         const auto div = value2It->key - prevTick;
-                        while (value1It->key < value2It->key && value1It != std::end(values1))
+                        while (value1It->key < value2It->key && value1It != values1.constEnd())
                         {
                             prevValue1 = value1It->value;
 
@@ -295,16 +292,16 @@ namespace Evernus
                             if (value > yMax)
                                 yMax = value;
 
-                            result.insert(value1It->key, QCPData{value1It->key, value});
+                            result.add(QCPGraphData{value1It->key, value});
 
                             ++value1It;
                         }
                     }
                     else if (value1It->key > value2It->key)
                     {
-                        const auto prevTick = (value1It == std::begin(values1)) ? (values2.firstKey()) : (std::prev(value1It)->key);
+                        const auto prevTick = (value1It == values1.constBegin()) ? (values2.constBegin()->key) : (std::prev(value1It)->key);
                         const auto div = value1It->key - prevTick;
-                        while (value1It->key > value2It->key && value2It != std::end(values2))
+                        while (value1It->key > value2It->key && value2It != values2.constEnd())
                         {
                             prevValue2 = value2It->value;
 
@@ -312,7 +309,7 @@ namespace Evernus
                             if (value > yMax)
                                 yMax = value;
 
-                            result.insert(value2It->key, QCPData{value2It->key, value});
+                            result.add(QCPGraphData{value2It->key, value});
 
                             ++value2It;
                         }
@@ -326,7 +323,7 @@ namespace Evernus
                         if (value > yMax)
                             yMax = value;
 
-                        result.insert(value1It->key, QCPData{value1It->key, value});
+                        result.add(QCPGraphData{value1It->key, value});
 
                         ++value1It;
                         ++value2It;
@@ -348,11 +345,11 @@ namespace Evernus
         };
 
         const auto combineShots = [&convertTimestamp, &combineMaps](auto &target, const auto &snapshots) {
-            std::unordered_map<Evernus::Character::IdType, QCPDataMap> map;
+            std::unordered_map<Evernus::Character::IdType, QCPGraphDataContainer> map;
             for (const auto &snapshot : snapshots)
             {
                 const auto secs = convertTimestamp(snapshot);
-                map[snapshot->getCharacterId()].insert(secs, QCPData{secs, snapshot->getBalance()});
+                map[snapshot->getCharacterId()].add(QCPGraphData{secs, snapshot->getBalance()});
             }
 
             combineMaps(target, map);
@@ -363,12 +360,12 @@ namespace Evernus
             combineShots(*assetValues, assetShots);
             combineShots(*walletValues, walletShots);
 
-            std::unordered_map<Character::IdType, QCPDataMap> buyMap, sellMap;
+            std::unordered_map<Character::IdType, QCPGraphDataContainer> buyMap, sellMap;
             for (const auto &order : orderShots)
             {
                 const auto secs = convertTimestamp(order);
-                buyMap[order->getCharacterId()].insert(secs, QCPData{secs, order->getBuyValue()});
-                sellMap[order->getCharacterId()].insert(secs, QCPData{secs, order->getSellValue()});
+                buyMap[order->getCharacterId()].add(QCPGraphData{secs, order->getBuyValue()});
+                sellMap[order->getCharacterId()].add(QCPGraphData{secs, order->getSellValue()});
             }
 
             combineMaps(*buyValues, buyMap);
@@ -376,9 +373,8 @@ namespace Evernus
 
             for (auto bIt = std::begin(*buyValues), sIt = std::begin(*sellValues); bIt != std::end(*buyValues); ++bIt, ++sIt)
             {
-                Q_ASSERT(bIt.key() == sIt.key());
-                buyAndSellValues.insert(bIt.key(),
-                                        QCPData{bIt.key(), bIt.value().value + sIt.value().value});
+                Q_ASSERT(bIt->key == sIt->key);
+                buyAndSellValues.add(QCPGraphData{bIt->key, bIt->value + sIt->value});
             }
         }
         else
@@ -390,10 +386,10 @@ namespace Evernus
             {
                 const auto secs = convertTimestamp(order);
 
-                buyValues->insert(secs, QCPData{secs, order->getBuyValue()});
-                sellValues->insert(secs, QCPData{secs, order->getSellValue()});
+                buyValues->add(QCPGraphData{secs, order->getBuyValue()});
+                sellValues->add(QCPGraphData{secs, order->getSellValue()});
 
-                buyAndSellValues.insert(secs, QCPData{secs, order->getBuyValue() + order->getSellValue()});
+                buyAndSellValues.add(QCPGraphData{secs, order->getBuyValue() + order->getSellValue()});
             }
         }
 
@@ -423,15 +419,15 @@ namespace Evernus
             const auto corpOrderShots = mCorpMarketOrderSnapshotRepository.fetchRange(corpId, from.toUTC(), to.toUTC());
             if (!corpOrderShots.empty())
             {
-                QCPDataMap corpBuyValues, corpSellValues, corpBuyAndSellValues;
+                QCPGraphDataContainer corpBuyValues, corpSellValues, corpBuyAndSellValues;
                 for (const auto &order : corpOrderShots)
                 {
                     const auto secs = order->getTimestamp().toMSecsSinceEpoch() / 1000.;
 
-                    corpBuyValues.insert(secs, QCPData{secs, order->getBuyValue()});
-                    corpSellValues.insert(secs, QCPData{secs, order->getSellValue()});
+                    corpBuyValues.add(QCPGraphData{secs, order->getBuyValue()});
+                    corpSellValues.add(QCPGraphData{secs, order->getSellValue()});
 
-                    corpBuyAndSellValues.insert(secs, QCPData{secs, order->getBuyValue() + order->getSellValue()});
+                    corpBuyAndSellValues.add(QCPGraphData{secs, order->getBuyValue() + order->getSellValue()});
                 }
 
                 *buyValues = merger(*buyValues, corpBuyValues);
@@ -445,32 +441,13 @@ namespace Evernus
 
         *sumData = merger(*sumData, buyAndSellValues);
 
-        QVector<double> sumTicks;
-        for (const auto &entry : *sumData)
-            sumTicks << entry.key;
-
-        mBalancePlot->getPlot().xAxis->setTickVector(sumTicks);
-
-        assetGraph->setData(assetValues.get(), false);
-        assetValues.release();
-
-        walletGraph->setData(walletValues.get(), false);
-        walletValues.release();
-
-        corpWalletGraph->setData(corpWalletValues.get(), false);
-        corpWalletValues.release();
-
-        corpAssetGraph->setData(corpAssetValues.get(), false);
-        corpAssetValues.release();
-
-        buyGraph->setData(buyValues.get(), false);
-        buyValues.release();
-
-        sellGraph->setData(sellValues.get(), false);
-        sellValues.release();
-
-        sumGraph->setData(sumData.get(), false);
-        sumData.release();
+        assetGraph->setData(assetValues);
+        walletGraph->setData(walletValues);
+        corpWalletGraph->setData(corpWalletValues);
+        corpAssetGraph->setData(corpAssetValues);
+        buyGraph->setData(buyValues);
+        sellGraph->setData(sellValues);
+        sumGraph->setData(sumData);
 
         mBalancePlot->getPlot().xAxis->rescale();
         mBalancePlot->getPlot().yAxis->setRange(0., yMax);
@@ -546,8 +523,6 @@ namespace Evernus
 
         mIncomingPlot->setData(incomingTicks, incomingValues);
         mOutgoingPlot->setData(outgoingTicks, outgoingValues);
-
-        mJournalPlot->getPlot().xAxis->setTickVector(ticks);
 
         mJournalPlot->getPlot().rescaleAxes();
         mJournalPlot->getPlot().replot();
@@ -626,8 +601,6 @@ namespace Evernus
         mSellPlot->setData(incomingTicks, incomingValues);
         mBuyPlot->setData(outgoingTicks, outgoingValues);
 
-        mTransactionPlot->getPlot().xAxis->setTickVector(ticks);
-
         mTransactionPlot->getPlot().rescaleAxes();
         mTransactionPlot->getPlot().replot();
 
@@ -651,7 +624,7 @@ namespace Evernus
         const auto numberFormat
             = settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString();
         const auto dateFormat
-            = settings.value(UISettings::dateTimeFormatKey, mBalancePlot->getPlot().xAxis->dateTimeFormat()).toString();
+            = settings.value(UISettings::dateTimeFormatKey, mBalancePlot->getDateTimeFormat()).toString();
 
         mBalancePlot->getPlot().yAxis->setNumberFormat(numberFormat);
         mJournalPlot->getPlot().yAxis->setNumberFormat(numberFormat);
@@ -659,9 +632,9 @@ namespace Evernus
 
         if (settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool())
         {
-            mBalancePlot->getPlot().xAxis->setDateTimeFormat(dateFormat);
-            mJournalPlot->getPlot().xAxis->setDateTimeFormat(dateFormat);
-            mTransactionPlot->getPlot().xAxis->setDateTimeFormat(dateFormat);
+            mBalancePlot->setDateTimeFormat(dateFormat);
+            mJournalPlot->setDateTimeFormat(dateFormat);
+            mTransactionPlot->setDateTimeFormat(dateFormat);
         }
 
         updateJournalData();
@@ -678,13 +651,13 @@ namespace Evernus
         auto getValue = [=](const QCPGraph *graph) {
             const auto x = graph->keyAxis()->pixelToCoord(event->pos().x());
             const auto data = graph->data();
-            const auto b = data->lowerBound(x);
+            const auto b = data->findBegin(x);
 
             if (b == std::end(*data))
                 return 0.;
 
-            const auto a = (b.key() == x || b == std::begin(*data)) ? (b) : (std::prev(b));
-            const auto coeff = (qFuzzyCompare(a.key(), b.key())) ? (1.) : (x - a.key()) / (b.key() - a.key());
+            const auto a = (b->key == x || b == std::begin(*data)) ? (b) : (std::prev(b));
+            const auto coeff = (qFuzzyCompare(a->key, b->key)) ? (1.) : (x - a->key) / (b->key - a->key);
             return b->value * coeff + a->value * (1 - coeff);
         };
 
@@ -786,10 +759,7 @@ namespace Evernus
             settings.value(UISettings::plotNumberFormatKey, UISettings::plotNumberFormatDefault).toString());
 
         if (settings.value(UISettings::applyDateFormatToGraphsKey, UISettings::applyDateFormatToGraphsDefault).toBool())
-        {
-            plot->getPlot().xAxis->setDateTimeFormat(
-                settings.value(UISettings::dateTimeFormatKey, plot->getPlot().xAxis->dateTimeFormat()).toString());
-        }
+            plot->setDateTimeFormat(settings.value(UISettings::dateTimeFormatKey, plot->getDateTimeFormat()).toString());
 
         return plot;
     }
@@ -802,7 +772,6 @@ namespace Evernus
         graphPtr->setName(name);
         graphPtr->setPen(QPen{color});
         graphPtr->setBrush(color);
-        plot->getPlot().addPlottable(graphPtr);
         graph.release();
 
         return graphPtr;

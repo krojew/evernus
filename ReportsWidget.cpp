@@ -58,6 +58,7 @@ namespace Evernus
                                        repositoryProvider.getCorpMarketOrderRepository(),
                                        mCharacterRepository,
                                        mDataProvider}
+        , mStationNamesTicker{new QCPAxisTickerText{}}
     {
         const auto mainLayout = new QGridLayout{this};
 
@@ -135,9 +136,7 @@ namespace Evernus
         stationProfitGroupLayout->addWidget(mStationProfitPlot);
         mStationProfitPlot->axisRect(0)->setMinimumSize(500, 300);
         mStationProfitPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-        mStationProfitPlot->xAxis->setAutoTicks(false);
-        mStationProfitPlot->xAxis->setAutoTickLabels(false);
-        mStationProfitPlot->xAxis->setAutoSubTicks(false);
+        mStationProfitPlot->xAxis->setTicker(mStationNamesTicker);
         mStationProfitPlot->yAxis->setNumberPrecision(2);
         mStationProfitPlot->yAxis->setLabel("ISK");
         mStationProfitPlot->yAxis2->setLabel(tr("Size [m³]"));
@@ -145,21 +144,18 @@ namespace Evernus
         mStationProfitPlot->legend->setVisible(true);
 
         mStationProfitGraph = new QCPBars{mStationProfitPlot->xAxis, mStationProfitPlot->yAxis};
-        mStationProfitPlot->addPlottable(mStationProfitGraph);
         mStationProfitGraph->setPen(QPen{Qt::green});
         mStationProfitGraph->setBrush(Qt::green);
         mStationProfitGraph->setName(tr("Total profit"));
         mStationProfitGraph->setWidth(0.2);
 
         mStationCostGraph = new QCPBars{mStationProfitPlot->xAxis, mStationProfitPlot->yAxis};
-        mStationProfitPlot->addPlottable(mStationCostGraph);
         mStationCostGraph->setPen(QPen{Qt::red});
         mStationCostGraph->setBrush(Qt::red);
         mStationCostGraph->setName(tr("Total costs"));
         mStationCostGraph->setWidth(0.2);
 
         mStationVolumeGraph = new QCPBars{mStationProfitPlot->xAxis, mStationProfitPlot->yAxis2};
-        mStationProfitPlot->addPlottable(mStationVolumeGraph);
         mStationVolumeGraph->setPen(QPen{Qt::cyan});
         mStationVolumeGraph->setBrush(Qt::cyan);
         mStationVolumeGraph->setName(tr("Total size"));
@@ -267,7 +263,6 @@ namespace Evernus
         }
 
         QVector<double> incoming, outgoing, volume, incomingStations, outgoingStations, volumeStations, stations;
-        QVector<QString> stationNames;
 
         const auto size = static_cast<int>(aggregatedEntries.size());
 
@@ -276,7 +271,8 @@ namespace Evernus
         incomingStations.reserve(size);
         outgoingStations.reserve(size);
         stations.reserve(size);
-        stationNames.reserve(size);
+
+        mStationNamesTicker->clear();
 
         auto stationIndex = 0;
 
@@ -289,7 +285,8 @@ namespace Evernus
             outgoingStations << stationIndex;
             volumeStations << stationIndex + 0.25;
             stations << stationIndex;
-            stationNames << mDataProvider.getLocationName(entry.first);
+
+            mStationNamesTicker->addTick(stationIndex, mDataProvider.getLocationName(entry.first));
 
             ++stationIndex;
         }
@@ -297,9 +294,6 @@ namespace Evernus
         mStationProfitGraph->setData(incomingStations, incoming);
         mStationCostGraph->setData(outgoingStations, outgoing);
         mStationVolumeGraph->setData(volumeStations, volume);
-
-        mStationProfitPlot->xAxis->setTickVector(stations);
-        mStationProfitPlot->xAxis->setTickVectorLabels(stationNames);
 
         mStationProfitPlot->xAxis->rescale();
         mStationProfitPlot->yAxis->rescale();
