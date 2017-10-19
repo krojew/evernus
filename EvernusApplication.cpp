@@ -820,8 +820,8 @@ namespace Evernus
 
         if (keys.empty())
         {
-            mCharacterRepository->exec(QString{"UPDATE %1 SET key_id = NULL, enabled = 0"}.arg(mCharacterRepository->getTableName()));
-            emit taskEnded(task, QString{});
+            mCharacterRepository->exec(QStringLiteral("UPDATE %1 SET key_id = NULL, enabled = 0").arg(mCharacterRepository->getTableName()));
+            emit taskEnded(task, {});
         }
         else
         {
@@ -1594,11 +1594,11 @@ namespace Evernus
         TypeLocationPairs target;
 
         QSqlQuery query{mMainDb};
-        query.prepare(QString{"SELECT DISTINCT ids.type_id, ids.location_id FROM ("
+        query.prepare(QStringLiteral("SELECT DISTINCT ids.type_id, ids.location_id FROM ("
             "SELECT type_id, location_id FROM %1 WHERE state = ? "
             "UNION "
             "SELECT type_id, location_id FROM %2 WHERE state = ?"
-        ") ids"}.arg(mMarketOrderRepository->getTableName()).arg(mCorpMarketOrderRepository->getTableName()));
+        ") ids").arg(mMarketOrderRepository->getTableName()).arg(mCorpMarketOrderRepository->getTableName()));
 
         query.addBindValue(static_cast<int>(MarketOrder::State::Active));
         query.addBindValue(static_cast<int>(MarketOrder::State::Active));
@@ -1703,7 +1703,7 @@ namespace Evernus
         const auto charIds = mCharacterRepository->fetchAllIds();
 
         auto query = db.exec(
-            "SELECT * FROM mentatOrders o INNER JOIN mentatOrdersHistory h ON h.orderID = o.orderID WHERE o.orderState != 0 AND o.isCorp = 0");
+            QStringLiteral("SELECT * FROM mentatOrders o INNER JOIN mentatOrdersHistory h ON h.orderID = o.orderID WHERE o.orderState != 0 AND o.isCorp = 0"));
 
         std::vector<MarketOrder> orders;
         if (query.size() > 0)
@@ -1711,37 +1711,37 @@ namespace Evernus
 
         while (query.next())
         {
-            const auto charId = query.value("charID").value<Character::IdType>();
+            const auto charId = query.value(QStringLiteral("charID")).value<Character::IdType>();
             if (charIds.find(charId) == std::end(charIds))
                 continue;
 
-            auto issued = query.value("issued").toDateTime();
+            auto issued = query.value(QStringLiteral("issued")).toDateTime();
             issued.setTimeSpec(Qt::UTC);
 
-            auto lastSeen = query.value("referenceTime").toDateTime();
+            auto lastSeen = query.value(QStringLiteral("referenceTime")).toDateTime();
             lastSeen.setTimeSpec(Qt::UTC);
 
-            auto intState = query.value("orderState").toInt();
+            auto intState = query.value(QStringLiteral("orderState")).toInt();
             if (intState < static_cast<int>(MarketOrder::State::Active) || intState > static_cast<int>(MarketOrder::State::CharacterDeleted))
                 intState = static_cast<int>(MarketOrder::State::Fulfilled);
 
-            MarketOrder order{query.value("orderID").value<MarketOrder::IdType>()};
-            order.setAccountKey(query.value("accountID").value<short>());
+            MarketOrder order{query.value(QStringLiteral("orderID")).value<MarketOrder::IdType>()};
+            order.setAccountKey(query.value(QStringLiteral("accountID")).value<short>());
             order.setCharacterId(charId);
-            order.setDuration(query.value("duration").value<short>());
-            order.setEscrow(query.value("escrow").toDouble() / 100.);
+            order.setDuration(query.value(QStringLiteral("duration")).value<short>());
+            order.setEscrow(query.value(QStringLiteral("escrow")).toDouble() / 100.);
             order.setFirstSeen(issued);
             order.setIssued(issued);
             order.setLastSeen(lastSeen);
-            order.setStationId(query.value("stationID").toULongLong());
-            order.setMinVolume(query.value("minVolume").toUInt());
-            order.setPrice(query.value("price").toDouble() / 100.);
-            order.setRange(query.value("range").value<short>());
+            order.setStationId(query.value(QStringLiteral("stationID")).toULongLong());
+            order.setMinVolume(query.value(QStringLiteral("minVolume")).toUInt());
+            order.setPrice(query.value(QStringLiteral("price")).toDouble() / 100.);
+            order.setRange(query.value(QStringLiteral("range")).value<short>());
             order.setState(static_cast<MarketOrder::State>(intState));
-            order.setType((query.value("bid").toBool()) ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
-            order.setTypeId(query.value("typeID").value<EveType::IdType>());
-            order.setVolumeEntered(query.value("volEntered").toUInt());
-            order.setVolumeRemaining(query.value("volRemaining").toUInt());
+            order.setType((query.value(QStringLiteral("bid")).toBool()) ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
+            order.setTypeId(query.value(QStringLiteral("typeID")).value<EveType::IdType>());
+            order.setVolumeEntered(query.value(QStringLiteral("volEntered")).toUInt());
+            order.setVolumeRemaining(query.value(QStringLiteral("volRemaining")).toUInt());
 
             orders.emplace_back(std::move(order));
 
@@ -1948,11 +1948,11 @@ namespace Evernus
         removeTranslator(&mTranslator);
         removeTranslator(&mQtTranslator);
 
-        mTranslator.load(locale, "lang", "_", applicationDirPath() + UISettings::translationPath);
-        mQtTranslator.load(locale, "qt", "_", applicationDirPath() + UISettings::translationPath);
-        mQtBaseTranslator.load(locale, "qtbase", "_", applicationDirPath() + UISettings::translationPath);
-        mQtScriptTranslator.load(locale, "qtscript", "_", applicationDirPath() + UISettings::translationPath);
-        mQtXmlPatternsTranslator.load(locale, "qtxmlpatterns", "_", applicationDirPath() + UISettings::translationPath);
+        mTranslator.load(locale, QStringLiteral("lang"), QStringLiteral("_"), applicationDirPath() + UISettings::translationPath);
+        mQtTranslator.load(locale, QStringLiteral("qt"), QStringLiteral("_"), applicationDirPath() + UISettings::translationPath);
+        mQtBaseTranslator.load(locale, QStringLiteral("qtbase"), QStringLiteral("_"), applicationDirPath() + UISettings::translationPath);
+        mQtScriptTranslator.load(locale, QStringLiteral("qtscript"), QStringLiteral("_"), applicationDirPath() + UISettings::translationPath);
+        mQtXmlPatternsTranslator.load(locale, QStringLiteral("qtxmlpatterns"), QStringLiteral("_"), applicationDirPath() + UISettings::translationPath);
 
         installTranslator(&mQtXmlPatternsTranslator);
         installTranslator(&mQtScriptTranslator);
@@ -2350,10 +2350,10 @@ namespace Evernus
                     order.setPrice(values[priceColumn].toDouble());
                     order.setType((values[typeColumn] == "True") ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
 
-                    auto issued = QDateTime::fromString(values[issuedColumn], "yyyy-MM-dd HH:mm:ss.zzz");
+                    auto issued = QDateTime::fromString(values[issuedColumn], QStringLiteral("yyyy-MM-dd HH:mm:ss.zzz"));
                     if (!issued.isValid())
                     {
-                        issued = QDateTime::fromString(values[issuedColumn], "yyyy-MM-dd");
+                        issued = QDateTime::fromString(values[issuedColumn], QStringLiteral("yyyy-MM-dd"));
                         if (!issued.isValid())
                         {
                             // thank CCP
