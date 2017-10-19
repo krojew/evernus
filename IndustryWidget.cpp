@@ -62,6 +62,8 @@ namespace Evernus
 
         mMiningLedgerWidget = new IndustryMiningLedgerWidget{cacheTimerProvider, this};
         tabs->addTab(mMiningLedgerWidget, tr("Mining ledger"));
+        connect(mMiningLedgerWidget, &IndustryMiningLedgerWidget::importFromAPI,
+                this, &IndustryWidget::importMiningLedger);
     }
 
     void IndustryWidget::handleNewPreferences()

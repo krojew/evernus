@@ -922,6 +922,7 @@ namespace Evernus
                                                     this};
         addTab(industryTab, tr("Industry"), TabType::Other);
         connect(industryTab, &IndustryWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
+        connect(industryTab, &IndustryWidget::importMiningLedger, this, &MainWindow::importCharacterMiningLedger);
         connect(this, &MainWindow::preferencesChanged, industryTab, &IndustryWidget::handleNewPreferences);
         connect(this, &MainWindow::characterAssetsChanged, industryTab, &IndustryWidget::refreshAssets);
 
