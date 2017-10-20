@@ -26,6 +26,7 @@
 #include "StationSelectButton.h"
 #include "CacheTimerProvider.h"
 #include "LookupActionGroup.h"
+#include "TypeLocationPairs.h"
 #include "WarningBarWidget.h"
 #include "IndustrySettings.h"
 #include "DateRangeWidget.h"
@@ -33,6 +34,8 @@
 #include "EveDataProvider.h"
 #include "RegionComboBox.h"
 #include "ImportSettings.h"
+#include "SSOMessageBox.h"
+#include "TaskManager.h"
 #include "FlowLayout.h"
 #include "TimerTypes.h"
 
@@ -43,12 +46,20 @@ namespace Evernus
     IndustryMiningLedgerWidget::IndustryMiningLedgerWidget(const CacheTimerProvider &cacheTimerProvider,
                                                            const EveDataProvider &dataProvider,
                                                            const MiningLedgerRepository &ledgerRepo,
+                                                           const CharacterRepository &characterRepo,
+                                                           TaskManager &taskManager,
+                                                           ESIInterfaceManager &interfaceManager,
+                                                           QByteArray clientId,
+                                                           QByteArray clientSecret,
                                                            QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MiningLedger),
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MiningLedger),
                                ImportSettings::maxCharacterAgeKey,parent}
         , EveTypeProvider{}
-        , mDetailsModel{dataProvider, ledgerRepo}
+        , mDataProvider{dataProvider}
+        , mTaskManager{taskManager}
+        , mDetailsModel{mDataProvider, ledgerRepo}
+        , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
@@ -83,11 +94,11 @@ namespace Evernus
         const auto importForSelectedBtn = new QRadioButton{tr("Import for custom regions"), this};
         toolBarLayout->addWidget(importForSelectedBtn);
 
-        mImportRegionsCombo = new RegionComboBox{dataProvider, IndustrySettings::miningLedgerImportRegionsKey, this};
+        mImportRegionsCombo = new RegionComboBox{mDataProvider, IndustrySettings::miningLedgerImportRegionsKey, this};
         toolBarLayout->addWidget(mImportRegionsCombo);
         mImportRegionsCombo->setEnabled(false);
 
-        mSellStationBtn = new StationSelectButton{dataProvider, sellStationPath, this};
+        mSellStationBtn = new StationSelectButton{mDataProvider, sellStationPath, this};
         toolBarLayout->addWidget(mSellStationBtn);
         mSellStationBtn->setEnabled(false);
         connect(mSellStationBtn, &StationSelectButton::stationChanged,
@@ -123,6 +134,15 @@ namespace Evernus
         mLookupGroup = new LookupActionGroup{*this, this};
         mLookupGroup->setEnabled(false);
         mDetailsView->addActions(mLookupGroup->actions());
+
+        connect(&mDataFetcher, &MarketOrderDataFetcher::orderStatusUpdated,
+                this, &IndustryMiningLedgerWidget::updateOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
+                this, &IndustryMiningLedgerWidget::endOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::genericError,
+                this, [=](const auto &text) {
+            SSOMessageBox::showMessage(text, this);
+        });
     }
 
     EveType::IdType IndustryMiningLedgerWidget::getTypeId() const
@@ -138,7 +158,34 @@ namespace Evernus
 
     void IndustryMiningLedgerWidget::importData()
     {
+        const auto types = mDetailsModel.getAllTypes();
 
+        TypeLocationPairs toImport;
+        toImport.reserve(types.size());
+
+        if (mImportForSourceBtn->isChecked())
+        {
+            const auto systems = mDetailsModel.getAllSolarSystems();
+            for (const auto system : systems)
+            {
+                for (const auto type : types)
+                    toImport.insert(std::make_pair(type, mDataProvider.getSolarSystemRegionId(system)));
+            }
+        }
+        else
+        {
+            const auto regions = mImportRegionsCombo->getSelectedRegionList();
+            for (const auto region : regions)
+            {
+                for (const auto type : types)
+                    toImport.insert(std::make_pair(type, region));
+            }
+        }
+
+        if (!mDataFetcher.hasPendingOrderRequests())
+            mOrderTask = mTaskManager.startTask(tr("Making %1 order requests...").arg(toImport.size()));
+
+        mDataFetcher.importData(toImport, getCharacterId());
     }
 
     void IndustryMiningLedgerWidget::updateSellStation(const QVariantList &path)
@@ -152,6 +199,23 @@ namespace Evernus
     void IndustryMiningLedgerWidget::selectType(const QItemSelection &selected)
     {
         mLookupGroup->setEnabled(!selected.isEmpty());
+    }
+
+    void IndustryMiningLedgerWidget::updateOrderTask(const QString &text)
+    {
+        mTaskManager.updateTask(mOrderTask, text);
+    }
+
+    void IndustryMiningLedgerWidget::endOrderTask(const MarketOrderDataFetcher::OrderResultType &orders, const QString &error)
+    {
+        Q_ASSERT(orders);
+
+        if (error.isEmpty())
+        {
+            emit updateExternalOrders(*orders);
+        }
+
+        mTaskManager.endTask(mOrderTask, error);
     }
 
     void IndustryMiningLedgerWidget::handleNewCharacter(Character::IdType id)

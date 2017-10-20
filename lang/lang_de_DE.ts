@@ -4204,6 +4204,11 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="500"/>
+        <source>Making %1 order requests...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Making %1 Eve-Central order requests...</source>
         <translation type="obsolete">Erstelle %1 Eve-Central Auftragsanfragen...</translation>
     </message>
@@ -4302,23 +4307,28 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryMiningLedgerWidget</name>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="74"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="85"/>
         <source>Import data</source>
         <translation type="unfinished">Importiere Daten</translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="79"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="90"/>
         <source>Import for mined regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="83"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="94"/>
         <source>Import for custom regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="104"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="115"/>
         <source>Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="186"/>
+        <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4330,7 +4340,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryWidget.cpp" line="68"/>
+        <location filename="../IndustryWidget.cpp" line="73"/>
         <source>Mining ledger</source>
         <translation type="unfinished"></translation>
     </message>

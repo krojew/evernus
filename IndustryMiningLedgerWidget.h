@@ -14,12 +14,16 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <QSortFilterProxyModel>
 #include <QVariant>
 
+#include "MarketOrderDataFetcher.h"
 #include "CharacterBoundWidget.h"
 #include "MiningLedgerModel.h"
 #include "EveTypeProvider.h"
+#include "TaskConstants.h"
 
 class QItemSelection;
 class QRadioButton;
@@ -29,11 +33,15 @@ namespace Evernus
     class MiningLedgerRepository;
     class AdjustableTableView;
     class StationSelectButton;
+    class CharacterRepository;
+    class ESIInterfaceManager;
     class CacheTimerProvider;
     class LookupActionGroup;
     class DateRangeWidget;
     class EveDataProvider;
     class RegionComboBox;
+    class ExternalOrder;
+    class TaskManager;
 
     class IndustryMiningLedgerWidget
         : public CharacterBoundWidget
@@ -45,6 +53,11 @@ namespace Evernus
         IndustryMiningLedgerWidget(const CacheTimerProvider &cacheTimerProvider,
                                    const EveDataProvider &dataProvider,
                                    const MiningLedgerRepository &ledgerRepo,
+                                   const CharacterRepository &characterRepo,
+                                   TaskManager &taskManager,
+                                   ESIInterfaceManager &interfaceManager,
+                                   QByteArray clientId,
+                                   QByteArray clientSecret,
                                    QWidget *parent = nullptr);
         IndustryMiningLedgerWidget(const IndustryMiningLedgerWidget &) = default;
         IndustryMiningLedgerWidget(IndustryMiningLedgerWidget &&) = default;
@@ -55,6 +68,9 @@ namespace Evernus
         IndustryMiningLedgerWidget &operator =(const IndustryMiningLedgerWidget &) = default;
         IndustryMiningLedgerWidget &operator =(IndustryMiningLedgerWidget &&) = default;
 
+    signals:
+        void updateExternalOrders(const std::vector<ExternalOrder> &orders);
+
     public slots:
         void refresh();
 
@@ -64,7 +80,13 @@ namespace Evernus
 
         void selectType(const QItemSelection &selected);
 
+        void updateOrderTask(const QString &text);
+        void endOrderTask(const MarketOrderDataFetcher::OrderResultType &orders, const QString &error);
+
     private:
+        const EveDataProvider &mDataProvider;
+        TaskManager &mTaskManager;
+
         DateRangeWidget *mRangeFilter = nullptr;
         QRadioButton *mImportForSourceBtn = nullptr;
         AdjustableTableView *mDetailsView = nullptr;
@@ -77,6 +99,10 @@ namespace Evernus
         QSortFilterProxyModel mDetailsProxy;
 
         quint64 mSellStation = 0;
+
+        MarketOrderDataFetcher mDataFetcher;
+
+        uint mOrderTask = TaskConstants::invalidTask;
 
         virtual void handleNewCharacter(Character::IdType id) override;
     };

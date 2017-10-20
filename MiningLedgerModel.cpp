@@ -125,4 +125,28 @@ namespace Evernus
 
         return EveType::invalidId;
     }
+
+    MiningLedgerModel::TypeList MiningLedgerModel::getAllTypes() const
+    {
+        TypeList result;
+        for (const auto &data : mData)
+        {
+            Q_ASSERT(data);
+            result.insert(data->getTypeId());
+        }
+
+        return result;
+    }
+
+    MiningLedgerModel::SolarSystemList MiningLedgerModel::getAllSolarSystems() const
+    {
+        SolarSystemList result;
+        for (const auto &data : mData)
+        {
+            Q_ASSERT(data);
+            result.insert(data->getSolarSystemId());
+        }
+
+        return result;
+    }
 }

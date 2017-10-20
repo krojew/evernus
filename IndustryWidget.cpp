@@ -54,8 +54,8 @@ namespace Evernus
                                                                taskManager,
                                                                assetProvider,
                                                                costProvider,
-                                                               std::move(clientId),
-                                                               std::move(clientSecret),
+                                                               clientId,
+                                                               clientSecret,
                                                                this};
         tabs->addTab(mManufacturingWidget, tr("Manufacturing planner"));
         connect(mManufacturingWidget, &IndustryManufacturingWidget::updateExternalOrders,
@@ -64,10 +64,17 @@ namespace Evernus
         mMiningLedgerWidget = new IndustryMiningLedgerWidget{cacheTimerProvider,
                                                              dataProvider,
                                                              ledgerRepo,
+                                                             characterRepo,
+                                                             taskManager,
+                                                             interfaceManager,
+                                                             std::move(clientId),
+                                                             std::move(clientSecret),
                                                              this};
         tabs->addTab(mMiningLedgerWidget, tr("Mining ledger"));
         connect(mMiningLedgerWidget, &IndustryMiningLedgerWidget::importFromAPI,
                 this, &IndustryWidget::importMiningLedger);
+        connect(mMiningLedgerWidget, &IndustryMiningLedgerWidget::updateExternalOrders,
+                this, &IndustryWidget::updateExternalOrders);
     }
 
     void IndustryWidget::handleNewPreferences()

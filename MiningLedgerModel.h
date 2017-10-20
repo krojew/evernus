@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <unordered_set>
+
 #include <QAbstractTableModel>
 
 #include "MiningLedgerRepository.h"
@@ -33,6 +35,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        using TypeList = std::unordered_set<EveType::IdType>;
+        using SolarSystemList = std::unordered_set<uint>;
+
         explicit MiningLedgerModel(const EveDataProvider &dataProvider,
                                    const MiningLedgerRepository &ledgerRepo,
                                    QObject *parent = nullptr);
@@ -48,6 +53,8 @@ namespace Evernus
         void refresh(Character::IdType charId, const QDate &from, const QDate &to);
 
         EveType::IdType getTypeId(const QModelIndex &index) const;
+        TypeList getAllTypes() const;
+        SolarSystemList getAllSolarSystems() const;
 
         MiningLedgerModel &operator =(const MiningLedgerModel &) = default;
         MiningLedgerModel &operator =(MiningLedgerModel &&) = default;

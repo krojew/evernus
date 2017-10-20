@@ -497,7 +497,7 @@ namespace Evernus
         {
             const auto mainTask = mTaskManager.startTask(tr("Importing data..."));
 
-            mOrderSubtask = mTaskManager.startTask(mainTask, QStringLiteral("Making %1 order requests...").arg(pairs.size()));
+            mOrderSubtask = mTaskManager.startTask(mainTask, tr("Making %1 order requests...").arg(pairs.size()));
             mMarketPricesSubtask = mTaskManager.startTask(mainTask, tr("Importing industry market prices..."));
             mCostIndicesSubtask = mTaskManager.startTask(mainTask, tr("Importing system cost indices..."));
         }

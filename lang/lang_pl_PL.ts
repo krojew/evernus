@@ -4584,6 +4584,11 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Indeks kosztów systemu:</translation>
     </message>
     <message>
+        <location filename="../IndustryManufacturingWidget.cpp" line="500"/>
+        <source>Making %1 order requests...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Large setup</source>
         <translation type="vanished">Duży układ</translation>
     </message>
@@ -4699,23 +4704,28 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::IndustryMiningLedgerWidget</name>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="74"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="85"/>
         <source>Import data</source>
         <translation type="unfinished">Importuj dane</translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="79"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="90"/>
         <source>Import for mined regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="83"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="94"/>
         <source>Import for custom regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="104"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="115"/>
         <source>Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="186"/>
+        <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4731,7 +4741,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryWidget.cpp" line="68"/>
+        <location filename="../IndustryWidget.cpp" line="73"/>
         <source>Mining ledger</source>
         <translation type="unfinished"></translation>
     </message>

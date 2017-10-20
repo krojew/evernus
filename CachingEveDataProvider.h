@@ -91,7 +91,7 @@ namespace Evernus
 
         virtual double getSolarSystemSecurityStatus(uint solarSystemId) const override;
         virtual uint getSolarSystemConstellationId(uint solarSystemId) const override;
-        virtual uint getSolarSystemRegionId(uint stationId) const override;
+        virtual uint getSolarSystemRegionId(uint systemId) const override;
 
         virtual uint getStationRegionId(quint64 stationId) const override;
         virtual uint getStationSolarSystemId(quint64 stationId) const override;
