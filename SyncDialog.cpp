@@ -423,7 +423,7 @@ namespace Evernus
                 return;
             }
 
-            asyncExec([&, this] {
+            asyncExec([&] {
                 file.write(qUncompress(mainDb.readAll()));
             });
             mCancelBtn->setEnabled(true);
