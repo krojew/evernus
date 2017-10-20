@@ -727,7 +727,7 @@ namespace Evernus
 
     QVersionNumber Updater::getCurrentCoreVersion()
     {
-        return { version::major(), version::minor() };
+        return { version::majorNum(), version::minorNum() };
     }
 
     QVersionNumber Updater::getDbVersion(const QSqlDatabase &db, const QVersionNumber &defaultVersion)

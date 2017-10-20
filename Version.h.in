@@ -8,8 +8,8 @@ inline constexpr const char *fullStr() noexcept { return MAJOR "." MINOR; }
 
 inline constexpr const char *dbTableName() noexcept { return "version"; }
 
-inline constexpr int major() noexcept { return ${MAJOR_VERSION}; }
-inline constexpr int minor() noexcept { return ${MINOR_VERSION}; }
+inline constexpr int majorNum() noexcept { return ${MAJOR_VERSION}; }
+inline constexpr int minorNum() noexcept { return ${MINOR_VERSION}; }
 }
 
 #undef MINOR
