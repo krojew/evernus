@@ -203,22 +203,17 @@ namespace Evernus
         });
     }
 
-    void ESIInterface::fetchCharacterAssets(Character::IdType charId, const JsonCallback &callback) const
+    void ESIInterface::fetchCharacterAssets(Character::IdType charId, const PaginatedCallback &callback) const
     {
         qDebug() << "Fetching assets for" << charId;
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, tr("Cannot fetch assets with no character selected."), {});
+            callback({}, true, tr("Cannot fetch assets with no character selected."), {});
             return;
         }
 
-        checkAuth(charId, [=](const auto &error) {
-            if (!error.isEmpty())
-                callback({}, error, {});
-            else
-                asyncGet(charId, QStringLiteral("/v1/characters/%1/assets/").arg(charId), {}, callback, getNumRetries());
-        });
+        fetchPaginatedData(charId, QStringLiteral("/v1/characters/%1/assets/").arg(charId), 1, callback);
     }
 
     void ESIInterface::fetchCharacter(Character::IdType charId, const JsonCallback &callback) const

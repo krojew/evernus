@@ -187,7 +187,16 @@ namespace Evernus
     void ESIManager::fetchCharacterAssets(Character::IdType charId, const Callback<AssetList> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterAssets(charId, [=](auto &&data, const auto &error, const auto &expires) {
+
+        struct AssetProcessingData
+        {
+            std::vector<AssetList::ItemType> mAllItems;
+            std::unordered_map<Item::IdType, Item *> mItemMap;
+        };
+
+        auto allItems = std::make_shared<AssetProcessingData>();
+        selectNextInterface().fetchCharacterAssets(charId, [=, allItems = std::move(allItems)]
+                                                           (auto &&data, auto atEnd, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
@@ -196,11 +205,8 @@ namespace Evernus
 
             const auto assets = data.array();
 
-            std::vector<AssetList::ItemType> allItems;
-            allItems.reserve(assets.size());
-
-            std::unordered_map<Item::IdType, Item *> itemMap;
-            itemMap.reserve(assets.size());
+            allItems->mAllItems.reserve(allItems->mAllItems.size() + assets.size());
+            allItems->mItemMap.reserve(allItems->mItemMap.size() + assets.size());
 
             for (const auto &itemObj : assets)
             {
@@ -214,29 +220,32 @@ namespace Evernus
                 // https://forums.eveonline.com/t/esi-assets-blueprints-and-quantities/19345/4
                 newItem->setQuantity((rawQuantity < 0) ? (1) : (rawQuantity));
 
-                itemMap.emplace(newItem->getId(), newItem.get());
-                allItems.emplace_back(std::move(newItem));
+                allItems->mItemMap.emplace(newItem->getId(), newItem.get());
+                allItems->mAllItems.emplace_back(std::move(newItem));
             }
 
-            AssetList list;
-            list.setCharacterId(charId);
-
-            // make tree
-            for (auto &item : allItems)
+            if (atEnd)
             {
-                const auto parent = itemMap.find(*item->getLocationId());
-                if (parent != std::end(itemMap))
-                {
-                    item->setLocationId({});
-                    parent->second->addItem(std::move(item));
-                }
-                else
-                {
-                    list.addItem(std::move(item));
-                }
-            }
+                AssetList list;
+                list.setCharacterId(charId);
 
-            callback(std::move(list), {}, expires);
+                // make tree
+                for (auto &item : allItems->mAllItems)
+                {
+                    const auto parent = allItems->mItemMap.find(*item->getLocationId());
+                    if (parent != std::end(allItems->mItemMap))
+                    {
+                        item->setLocationId({});
+                        parent->second->addItem(std::move(item));
+                    }
+                    else
+                    {
+                        list.addItem(std::move(item));
+                    }
+                }
+
+                callback(std::move(list), {}, expires);
+            }
         });
     }
 

@@ -67,7 +67,7 @@ namespace Evernus
         void fetchMarketOrders(uint regionId, const PaginatedCallback &callback) const;
         void fetchMarketHistory(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const;
         void fetchCitadelMarketOrders(quint64 citadelId, Character::IdType charId, const PaginatedCallback &callback) const;
-        void fetchCharacterAssets(Character::IdType charId, const JsonCallback &callback) const;
+        void fetchCharacterAssets(Character::IdType charId, const PaginatedCallback &callback) const;
         void fetchCharacter(Character::IdType charId, const JsonCallback &callback) const;
         void fetchCharacterSkills(Character::IdType charId, const JsonCallback &callback) const;
         void fetchCorporation(quint64 corpId, const JsonCallback &callback) const;
