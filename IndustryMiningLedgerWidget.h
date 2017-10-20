@@ -15,19 +15,24 @@
 #pragma once
 
 #include <QSortFilterProxyModel>
+#include <QVariant>
 
 #include "CharacterBoundWidget.h"
 #include "MiningLedgerModel.h"
 #include "EveTypeProvider.h"
 
+class QRadioButton;
+
 namespace Evernus
 {
     class MiningLedgerRepository;
     class AdjustableTableView;
+    class StationSelectButton;
     class CacheTimerProvider;
     class LookupActionGroup;
     class DateRangeWidget;
     class EveDataProvider;
+    class RegionComboBox;
 
     class IndustryMiningLedgerWidget
         : public CharacterBoundWidget
@@ -54,15 +59,21 @@ namespace Evernus
 
     private slots:
         void importData();
+        void updateSellStation(const QVariantList &path);
 
     private:
         DateRangeWidget *mRangeFilter = nullptr;
+        QRadioButton *mImportForSourceBtn = nullptr;
         AdjustableTableView *mDetailsView = nullptr;
+        RegionComboBox *mImportRegionsCombo = nullptr;
+        StationSelectButton *mSellStationBtn = nullptr;
 
         LookupActionGroup *mLookupGroup = nullptr;
 
         MiningLedgerModel mDetailsModel;
         QSortFilterProxyModel mDetailsProxy;
+
+        quint64 mSellStation = 0;
 
         virtual void handleNewCharacter(Character::IdType id) override;
     };

@@ -4699,12 +4699,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::IndustryMiningLedgerWidget</name>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="63"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="74"/>
         <source>Import data</source>
         <translation type="unfinished">Importuj dane</translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="71"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="79"/>
+        <source>Import for mined regions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="83"/>
+        <source>Import for custom regions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="104"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>

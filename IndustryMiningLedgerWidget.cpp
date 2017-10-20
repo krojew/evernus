@@ -14,18 +14,24 @@
  */
 #include <QtDebug>
 
+#include <QRadioButton>
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
 #include <QGroupBox>
+#include <QSettings>
 #include <QDate>
 
 #include "AdjustableTableView.h"
+#include "StationSelectButton.h"
 #include "CacheTimerProvider.h"
 #include "LookupActionGroup.h"
 #include "WarningBarWidget.h"
+#include "IndustrySettings.h"
 #include "DateRangeWidget.h"
 #include "ButtonWithTimer.h"
+#include "EveDataProvider.h"
+#include "RegionComboBox.h"
 #include "ImportSettings.h"
 #include "FlowLayout.h"
 #include "TimerTypes.h"
@@ -52,6 +58,11 @@ namespace Evernus
         auto &importBtn = getAPIImportButton();
         toolBarLayout->addWidget(&importBtn);
 
+        QSettings settings;
+
+        const auto sellStationPath = settings.value(IndustrySettings::miningLedgerSellStationKey).toList();
+        mSellStation = EveDataProvider::getStationIdFromPath(sellStationPath);
+
         const auto tillDate = QDate::currentDate();
         const auto fromDate = tillDate.addDays(-7);
 
@@ -64,6 +75,28 @@ namespace Evernus
         toolBarLayout->addWidget(importFromWeb);
         importFromWeb->setFlat(true);
         connect(importFromWeb, &QPushButton::clicked, this, &IndustryMiningLedgerWidget::importData);
+
+        mImportForSourceBtn = new QRadioButton{tr("Import for mined regions"), this};
+        toolBarLayout->addWidget(mImportForSourceBtn);
+        mImportForSourceBtn->setChecked(true);
+
+        const auto importForSelectedBtn = new QRadioButton{tr("Import for custom regions"), this};
+        toolBarLayout->addWidget(importForSelectedBtn);
+
+        mImportRegionsCombo = new RegionComboBox{dataProvider, IndustrySettings::miningLedgerImportRegionsKey, this};
+        toolBarLayout->addWidget(mImportRegionsCombo);
+        mImportRegionsCombo->setEnabled(false);
+
+        mSellStationBtn = new StationSelectButton{dataProvider, sellStationPath, this};
+        toolBarLayout->addWidget(mSellStationBtn);
+        mSellStationBtn->setEnabled(false);
+        connect(mSellStationBtn, &StationSelectButton::stationChanged,
+                this, &IndustryMiningLedgerWidget::updateSellStation);
+
+        connect(mImportForSourceBtn, &QRadioButton::toggled, this, [=](auto checked) {
+            mImportRegionsCombo->setDisabled(checked);
+            mSellStationBtn->setDisabled(checked);
+        });
 
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
@@ -103,6 +136,14 @@ namespace Evernus
     void IndustryMiningLedgerWidget::importData()
     {
 
+    }
+
+    void IndustryMiningLedgerWidget::updateSellStation(const QVariantList &path)
+    {
+        QSettings settings;
+        settings.setValue(IndustrySettings::miningLedgerSellStationKey, path);
+
+        mSellStation = EveDataProvider::getStationIdFromPath(path);
     }
 
     void IndustryMiningLedgerWidget::handleNewCharacter(Character::IdType id)

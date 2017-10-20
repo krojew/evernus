@@ -4302,12 +4302,22 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::IndustryMiningLedgerWidget</name>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="63"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="74"/>
         <source>Import data</source>
         <translation type="unfinished">Importiere Daten</translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="71"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="79"/>
+        <source>Import for mined regions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="83"/>
+        <source>Import for custom regions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="104"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>

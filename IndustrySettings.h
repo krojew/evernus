@@ -43,5 +43,7 @@ namespace Evernus
         const auto manufacturingFacilitySizeKey = QStringLiteral("industry/manufacturing/facilitySize");
         const auto manufacturingFacilityTaxKey = QStringLiteral("industry/manufacturing/facilityTax");
         const auto dontSaveLargeOrdersKey = QStringLiteral("industry/dontSaveOrders");
+        const auto miningLedgerImportRegionsKey = QStringLiteral("industry/miningLedger/importRegions");
+        const auto miningLedgerSellStationKey = QStringLiteral("industry/miningLedger/sellStation");
     }
 }
