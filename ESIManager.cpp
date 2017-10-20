@@ -613,9 +613,13 @@ namespace Evernus
             QtConcurrent::blockingMap(ledgerArray, [&, charId](const auto &ledger) {
                 const auto ledgerObj = ledger.toObject();
 
+                auto date = QDate::fromString(ledgerObj.value(QStringLiteral("date")).toString(), Qt::ISODate);
+                if (Q_UNLIKELY(!date.isValid()))
+                    date = QDate::currentDate();
+
                 auto &curLedger = (*ledgerResult)[nextIndex++];
                 curLedger.setCharacterId(charId);
-                curLedger.setDate(QDate::fromString(ledgerObj.value(QStringLiteral("date")).toString(), Qt::ISODate));
+                curLedger.setDate(std::move(date));
                 curLedger.setQuantity(ledgerObj.value(QStringLiteral("quantity")).toDouble());
                 curLedger.setSolarSystemId(ledgerObj.value(QStringLiteral("solar_system_id")).toDouble());
                 curLedger.setTypeId(ledgerObj.value(QStringLiteral("type_id")).toDouble());

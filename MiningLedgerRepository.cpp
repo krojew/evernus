@@ -50,6 +50,7 @@ namespace Evernus
         ")").arg(getTableName()).arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()));
 
         exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(character_id)").arg(getTableName()).arg(characterRepo.getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_character_date ON %1(character_id, date)").arg(getTableName()));
     }
 
     void MiningLedgerRepository::removeForCharacter(Character::IdType characterId) const
@@ -58,6 +59,29 @@ namespace Evernus
         query.bindValue(0, characterId);
 
         DatabaseUtils::execQuery(query);
+    }
+
+    MiningLedgerRepository::EntityList MiningLedgerRepository::fetchForCharacter(Character::IdType characterId,
+                                                                                 const QDate &from,
+                                                                                 const QDate &to) const
+    {
+        auto query = prepare(QStringLiteral("SELECT * FROM %1 WHERE character_id = ? AND date BETWEEN ? AND ?").arg(getTableName()));
+        query.bindValue(0, characterId);
+        query.bindValue(1, from);
+        query.bindValue(2, to);
+
+        DatabaseUtils::execQuery(query);
+
+        EntityList result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+            result.emplace_back(populate(query.record()));
+
+        return result;
     }
 
     QStringList MiningLedgerRepository::getColumns() const

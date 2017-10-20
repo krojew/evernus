@@ -14,28 +14,56 @@
  */
 #pragma once
 
+#include <QSortFilterProxyModel>
+
 #include "CharacterBoundWidget.h"
+#include "MiningLedgerModel.h"
+#include "EveTypeProvider.h"
 
 namespace Evernus
 {
+    class MiningLedgerRepository;
+    class AdjustableTableView;
     class CacheTimerProvider;
+    class LookupActionGroup;
+    class DateRangeWidget;
+    class EveDataProvider;
 
     class IndustryMiningLedgerWidget
         : public CharacterBoundWidget
+        , public EveTypeProvider
     {
         Q_OBJECT
 
     public:
-        explicit IndustryMiningLedgerWidget(const CacheTimerProvider &cacheTimerProvider,
-                                            QWidget *parent = nullptr);
+        IndustryMiningLedgerWidget(const CacheTimerProvider &cacheTimerProvider,
+                                   const EveDataProvider &dataProvider,
+                                   const MiningLedgerRepository &ledgerRepo,
+                                   QWidget *parent = nullptr);
         IndustryMiningLedgerWidget(const IndustryMiningLedgerWidget &) = default;
         IndustryMiningLedgerWidget(IndustryMiningLedgerWidget &&) = default;
         virtual ~IndustryMiningLedgerWidget() = default;
 
+        virtual EveType::IdType getTypeId() const override;
+
         IndustryMiningLedgerWidget &operator =(const IndustryMiningLedgerWidget &) = default;
         IndustryMiningLedgerWidget &operator =(IndustryMiningLedgerWidget &&) = default;
 
+    public slots:
+        void refresh();
+
+    private slots:
+        void importData();
+
     private:
+        DateRangeWidget *mRangeFilter = nullptr;
+        AdjustableTableView *mDetailsView = nullptr;
+
+        LookupActionGroup *mLookupGroup = nullptr;
+
+        MiningLedgerModel mDetailsModel;
+        QSortFilterProxyModel mDetailsProxy;
+
         virtual void handleNewCharacter(Character::IdType id) override;
     };
 }

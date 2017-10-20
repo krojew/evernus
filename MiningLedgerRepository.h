@@ -38,6 +38,10 @@ namespace Evernus
 
         void removeForCharacter(Character::IdType characterId) const;
 
+        EntityList fetchForCharacter(Character::IdType characterId,
+                                     const QDate &from,
+                                     const QDate &to) const;
+
         MiningLedgerRepository &operator =(const MiningLedgerRepository &) = default;
         MiningLedgerRepository &operator =(MiningLedgerRepository &&) = default;
 

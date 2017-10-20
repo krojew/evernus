@@ -1263,6 +1263,8 @@ namespace Evernus
                 asyncBatchStore(*mMiningLedgerRepository, std::move(data), false);
 
                 saveUpdateTimer(Evernus::TimerType::MiningLedger, mMiningLedgerUtcUpdateTimes, id);
+
+                emit characterMiningLedgerChanged();
             }
 
             emit taskEnded(task, error);

@@ -560,6 +560,8 @@ add_executable(
     MetaGroupRepository.h
     MiningLedger.cpp
     MiningLedger.h
+    MiningLedgerModel.cpp
+    MiningLedgerModel.h
     MiningLedgerRepository.cpp
     MiningLedgerRepository.h
     ModelUtils.cpp

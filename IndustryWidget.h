@@ -29,6 +29,7 @@ namespace Evernus
     class IndustryManufacturingWidget;
     class IndustryMiningLedgerWidget;
     class TradeableTypesTreeView;
+    class MiningLedgerRepository;
     class MarketGroupRepository;
     class CharacterRepository;
     class ESIInterfaceManager;
@@ -53,6 +54,7 @@ namespace Evernus
                        const MarketGroupRepository &groupRepo,
                        const CharacterRepository &characterRepo,
                        const IndustryManufacturingSetupRepository &setupRepo,
+                       const MiningLedgerRepository &ledgerRepo,
                        ESIInterfaceManager &interfaceManager,
                        TaskManager &taskManager,
                        const AssetProvider &assetProvider,
@@ -78,6 +80,7 @@ namespace Evernus
         void setCharacter(Character::IdType id);
 
         void refreshAssets();
+        void refreshMiningLedger();
 
     private:
         IndustryManufacturingWidget *mManufacturingWidget = nullptr;

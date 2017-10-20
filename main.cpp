@@ -414,6 +414,8 @@ int main(int argc, char *argv[])
                              &mainWnd, &Evernus::MainWindow::characterMarketOrdersChanged);
             QObject::connect(&app, &Evernus::EvernusApplication::characterContractsChanged,
                              &mainWnd, &Evernus::MainWindow::characterContractsChanged);
+            QObject::connect(&app, &Evernus::EvernusApplication::characterMiningLedgerChanged,
+                             &mainWnd, &Evernus::MainWindow::characterMiningLedgerChanged);
             QObject::connect(&app, &Evernus::EvernusApplication::corpAssetsChanged,
                              &mainWnd, &Evernus::MainWindow::corpAssetsChanged);
             QObject::connect(&app, &Evernus::EvernusApplication::corpWalletJournalChanged,

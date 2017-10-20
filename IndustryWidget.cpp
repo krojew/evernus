@@ -28,6 +28,7 @@ namespace Evernus
                                    const MarketGroupRepository &groupRepo,
                                    const CharacterRepository &characterRepo,
                                    const IndustryManufacturingSetupRepository &setupRepo,
+                                   const MiningLedgerRepository &ledgerRepo,
                                    ESIInterfaceManager &interfaceManager,
                                    TaskManager &taskManager,
                                    const AssetProvider &assetProvider,
@@ -60,7 +61,10 @@ namespace Evernus
         connect(mManufacturingWidget, &IndustryManufacturingWidget::updateExternalOrders,
                 this, &IndustryWidget::updateExternalOrders);
 
-        mMiningLedgerWidget = new IndustryMiningLedgerWidget{cacheTimerProvider, this};
+        mMiningLedgerWidget = new IndustryMiningLedgerWidget{cacheTimerProvider,
+                                                             dataProvider,
+                                                             ledgerRepo,
+                                                             this};
         tabs->addTab(mMiningLedgerWidget, tr("Mining ledger"));
         connect(mMiningLedgerWidget, &IndustryMiningLedgerWidget::importFromAPI,
                 this, &IndustryWidget::importMiningLedger);
@@ -80,5 +84,10 @@ namespace Evernus
     void IndustryWidget::refreshAssets()
     {
         mManufacturingWidget->refreshAssets();
+    }
+
+    void IndustryWidget::refreshMiningLedger()
+    {
+        mMiningLedgerWidget->refresh();
     }
 }

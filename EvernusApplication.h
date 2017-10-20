@@ -201,6 +201,7 @@ namespace Evernus
         void characterWalletTransactionsChanged();
         void characterMarketOrdersChanged();
         void characterContractsChanged();
+        void characterMiningLedgerChanged();
         void corpAssetsChanged();
         void corpWalletJournalChanged();
         void corpWalletTransactionsChanged();
