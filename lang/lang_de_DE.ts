@@ -6770,22 +6770,22 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::MiningLedgerModel</name>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="73"/>
+        <location filename="../MiningLedgerModel.cpp" line="89"/>
         <source>Name</source>
         <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="75"/>
+        <location filename="../MiningLedgerModel.cpp" line="91"/>
         <source>Date</source>
         <translation type="unfinished">Datum</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="77"/>
+        <location filename="../MiningLedgerModel.cpp" line="93"/>
         <source>Quantity</source>
         <translation type="unfinished">Menge</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="79"/>
+        <location filename="../MiningLedgerModel.cpp" line="95"/>
         <source>Solar system</source>
         <translation type="unfinished">Sternensystem</translation>
     </message>

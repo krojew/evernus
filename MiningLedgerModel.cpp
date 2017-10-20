@@ -44,21 +44,37 @@ namespace Evernus
         if (Q_UNLIKELY(!index.isValid()))
             return {};
 
-        if (role != Qt::DisplayRole)
-            return {};
+        if (role == Qt::DisplayRole)
+        {
+            const auto &data = mData[index.row()];
+            Q_ASSERT(data);
 
-        const auto &data = mData[index.row()];
-        Q_ASSERT(data);
+            switch (index.column()) {
+            case nameColumn:
+                return mDataProvider.getTypeName(data->getTypeId());
+            case dateColumn:
+                return data->getDate();
+            case quantityColumn:
+                return QLocale{}.toString(data->getQuantity());
+            case solarSystemColumn:
+                return mDataProvider.getSolarSystemName(data->getSolarSystemId());
+            }
+        }
+        else if (role == Qt::UserRole)
+        {
+            const auto &data = mData[index.row()];
+            Q_ASSERT(data);
 
-        switch (index.column()) {
-        case nameColumn:
-            return mDataProvider.getTypeName(data->getTypeId());
-        case dateColumn:
-            return data->getDate();
-        case quantityColumn:
-            return QLocale{}.toString(data->getQuantity());
-        case solarSystemColumn:
-            return mDataProvider.getSolarSystemName(data->getSolarSystemId());
+            switch (index.column()) {
+            case nameColumn:
+                return mDataProvider.getTypeName(data->getTypeId());
+            case dateColumn:
+                return data->getDate();
+            case quantityColumn:
+                return data->getQuantity();
+            case solarSystemColumn:
+                return mDataProvider.getSolarSystemName(data->getSolarSystemId());
+            }
         }
 
         return {};

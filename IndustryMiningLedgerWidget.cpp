@@ -106,6 +106,7 @@ namespace Evernus
 
         const auto detailsGroupLayout = new QVBoxLayout{detailsGroup};
 
+        mDetailsProxy.setSortRole(Qt::UserRole);
         mDetailsProxy.setSourceModel(&mDetailsModel);
 
         mDetailsView = new AdjustableTableView{QStringLiteral("industryMiningLedgerDetailsView"), this};
