@@ -116,6 +116,8 @@ namespace Evernus
         mDetailsView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         mDetailsView->setContextMenuPolicy(Qt::ActionsContextMenu);
         mDetailsView->restoreHeaderState();
+        connect(mDetailsView->selectionModel(), &QItemSelectionModel::selectionChanged,
+                this, &IndustryMiningLedgerWidget::selectType);
 
         mLookupGroup = new LookupActionGroup{*this, this};
         mLookupGroup->setEnabled(false);
@@ -144,6 +146,11 @@ namespace Evernus
         settings.setValue(IndustrySettings::miningLedgerSellStationKey, path);
 
         mSellStation = EveDataProvider::getStationIdFromPath(path);
+    }
+
+    void IndustryMiningLedgerWidget::selectType(const QItemSelection &selected)
+    {
+        mLookupGroup->setEnabled(!selected.isEmpty());
     }
 
     void IndustryMiningLedgerWidget::handleNewCharacter(Character::IdType id)

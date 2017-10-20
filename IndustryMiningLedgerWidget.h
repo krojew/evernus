@@ -21,6 +21,7 @@
 #include "MiningLedgerModel.h"
 #include "EveTypeProvider.h"
 
+class QItemSelection;
 class QRadioButton;
 
 namespace Evernus
@@ -60,6 +61,8 @@ namespace Evernus
     private slots:
         void importData();
         void updateSellStation(const QVariantList &path);
+
+        void selectType(const QItemSelection &selected);
 
     private:
         DateRangeWidget *mRangeFilter = nullptr;
