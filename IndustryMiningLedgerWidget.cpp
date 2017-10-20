@@ -20,6 +20,7 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QSettings>
+#include <QLabel>
 #include <QDate>
 
 #include "AdjustableTableView.h"
@@ -27,6 +28,7 @@
 #include "CacheTimerProvider.h"
 #include "LookupActionGroup.h"
 #include "TypeLocationPairs.h"
+#include "PriceTypeComboBox.h"
 #include "WarningBarWidget.h"
 #include "IndustrySettings.h"
 #include "DateRangeWidget.h"
@@ -108,6 +110,11 @@ namespace Evernus
             mImportRegionsCombo->setDisabled(checked);
             mSellStationBtn->setDisabled(checked);
         });
+
+        toolBarLayout->addWidget(new QLabel{tr("Sell price type:"), this});
+
+        mSellPriceTypeCombo = new PriceTypeComboBox{this};
+        toolBarLayout->addWidget(mSellPriceTypeCombo);
 
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);

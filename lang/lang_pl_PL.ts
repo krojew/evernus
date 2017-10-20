@@ -4704,27 +4704,32 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::IndustryMiningLedgerWidget</name>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="85"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="87"/>
         <source>Import data</source>
         <translation type="unfinished">Importuj dane</translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="90"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="92"/>
         <source>Import for mined regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="94"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="96"/>
         <source>Import for custom regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="115"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="114"/>
+        <source>Sell price type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="122"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="186"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="193"/>
         <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>

@@ -37,6 +37,7 @@ namespace Evernus
     class ESIInterfaceManager;
     class CacheTimerProvider;
     class LookupActionGroup;
+    class PriceTypeComboBox;
     class DateRangeWidget;
     class EveDataProvider;
     class RegionComboBox;
@@ -92,6 +93,7 @@ namespace Evernus
         AdjustableTableView *mDetailsView = nullptr;
         RegionComboBox *mImportRegionsCombo = nullptr;
         StationSelectButton *mSellStationBtn = nullptr;
+        PriceTypeComboBox *mSellPriceTypeCombo = nullptr;
 
         LookupActionGroup *mLookupGroup = nullptr;
 
