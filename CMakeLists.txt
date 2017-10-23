@@ -17,6 +17,7 @@ option(EVERNUS_CREATE_DUMPS "create crash dumps using Google Breakpad" ON)
 find_package(Boost REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
 find_package(Qt5Core 5.8 REQUIRED)
+find_package(Qt5DataVisualization REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
@@ -562,6 +563,8 @@ add_executable(
     MetaGroupRepository.h
     MiningLedger.cpp
     MiningLedger.h
+    MiningLedgerBarGraph.cpp
+    MiningLedgerBarGraph.h
     MiningLedgerModel.cpp
     MiningLedgerModel.h
     MiningLedgerRepository.cpp
@@ -860,6 +863,7 @@ target_link_libraries(
     Boost::boost
     Qt5::Concurrent
     Qt5::Core
+    Qt5::DataVisualization
     Qt5::Gui
     Qt5::Multimedia
     Qt5::Network

@@ -135,6 +135,38 @@ namespace Evernus
         return result;
     }
 
+    MiningLedgerRepository::SolarSystemTypeAggregatedData MiningLedgerRepository
+    ::fetchAggregatedDataForCharacter(Character::IdType characterId,
+                                      const QDate &from,
+                                      const QDate &to) const
+    {
+        auto query = prepare(QStringLiteral(
+            "SELECT solar_system_id, type_id, SUM(quantity) FROM %1 WHERE character_id = ? AND date BETWEEN ? AND ? GROUP BY solar_system_id, type_id"
+        ).arg(getTableName()));
+        query.bindValue(0, characterId);
+        query.bindValue(1, from);
+        query.bindValue(2, to);
+
+        DatabaseUtils::execQuery(query);
+
+        SolarSystemTypeAggregatedData result;
+
+        const auto size = query.size();
+        if (size > 0)
+            result.reserve(size);
+
+        while (query.next())
+        {
+            result.emplace_back(SolarSystemTypeData{
+                query.value(2).toULongLong(),
+                query.value(1).value<EveType::IdType>(),
+                query.value(0).toUInt()
+            });
+        }
+
+        return result;
+    }
+
     QStringList MiningLedgerRepository::getColumns() const
     {
         return {

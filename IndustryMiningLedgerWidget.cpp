@@ -25,6 +25,7 @@
 #include <QDate>
 
 #include "LookupActionGroupModelConnector.h"
+#include "MiningLedgerBarGraph.h"
 #include "AdjustableTableView.h"
 #include "StationSelectButton.h"
 #include "CacheTimerProvider.h"
@@ -155,6 +156,14 @@ namespace Evernus
         solarSystemsGroupLayout->addWidget(createDataView(mSolarSystemsProxy,
                                                           QStringLiteral("industryMiningLedgerSolarSystemsView")));
 
+        const auto graphGroup = new QGroupBox{this};
+        contentLayout->addWidget(graphGroup, 1, 1);
+
+        const auto graphGroupLayout = new QVBoxLayout{graphGroup};
+
+        mGraphWidget = new MiningLedgerBarGraph{ledgerRepo, mDataProvider, this};
+        graphGroupLayout->addWidget(mGraphWidget);
+
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderStatusUpdated,
                 this, &IndustryMiningLedgerWidget::updateOrderTask);
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
@@ -170,9 +179,13 @@ namespace Evernus
         Q_ASSERT(mRangeFilter != nullptr);
 
         const auto charId = getCharacterId();
-        mDetailsModel.refresh(charId, mRangeFilter->getFrom(), mRangeFilter->getTo());
-        mTypesModel.refresh(charId, mRangeFilter->getFrom(), mRangeFilter->getTo());
-        mSolarSystemsModel.refresh(charId, mRangeFilter->getFrom(), mRangeFilter->getTo());
+        const auto from = mRangeFilter->getFrom();
+        const auto to = mRangeFilter->getTo();
+
+        mDetailsModel.refresh(charId, from, to);
+        mTypesModel.refresh(charId, from, to);
+        mSolarSystemsModel.refresh(charId, from, to);
+        mGraphWidget->refresh(charId, from, to);
     }
 
     void IndustryMiningLedgerWidget::importData()

@@ -32,6 +32,7 @@ class QRadioButton;
 namespace Evernus
 {
     class MiningLedgerRepository;
+    class MiningLedgerBarGraph;
     class StationSelectButton;
     class CharacterRepository;
     class ESIInterfaceManager;
@@ -87,6 +88,7 @@ namespace Evernus
         RegionComboBox *mImportRegionsCombo = nullptr;
         StationSelectButton *mSellStationBtn = nullptr;
         PriceTypeComboBox *mSellPriceTypeCombo = nullptr;
+        MiningLedgerBarGraph *mGraphWidget = nullptr;
 
         MiningLedgerModel mDetailsModel;
         QSortFilterProxyModel mDetailsProxy;

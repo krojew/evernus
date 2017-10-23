@@ -30,6 +30,15 @@ namespace Evernus
         using TypeQuantityMap = std::unordered_map<EveType::IdType, quint64>;
         using SolarSystemQuantityMap = std::unordered_map<uint, quint64>;
 
+        struct SolarSystemTypeData
+        {
+            quint64 mQuantity = 0;
+            EveType::IdType mTypeId = EveType::invalidId;
+            uint mSolarSystemId = 0;
+        };
+
+        using SolarSystemTypeAggregatedData = std::vector<SolarSystemTypeData>;
+
         using Repository::Repository;
         MiningLedgerRepository(const MiningLedgerRepository &) = default;
         MiningLedgerRepository(MiningLedgerRepository &&) = default;
@@ -53,6 +62,9 @@ namespace Evernus
         SolarSystemQuantityMap fetchSolarSystemsForCharacter(Character::IdType characterId,
                                                              const QDate &from,
                                                              const QDate &to) const;
+        SolarSystemTypeAggregatedData fetchAggregatedDataForCharacter(Character::IdType characterId,
+                                                                      const QDate &from,
+                                                                      const QDate &to) const;
 
         MiningLedgerRepository &operator =(const MiningLedgerRepository &) = default;
         MiningLedgerRepository &operator =(MiningLedgerRepository &&) = default;
