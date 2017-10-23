@@ -67,6 +67,8 @@ namespace Evernus
         mSolarSystemAxis->setTitle(tr("Solar system"));
         mSolarSystemAxis->setTitleVisible(true);
 
+        mValueAxis->setLabelFormat(QStringLiteral("%i"));
+
         graph->setColumnAxis(mTypeAxis);
         graph->setRowAxis(mSolarSystemAxis);
         graph->setValueAxis(mValueAxis);
