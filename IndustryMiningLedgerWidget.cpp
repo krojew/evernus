@@ -62,6 +62,7 @@ namespace Evernus
         , mTaskManager{taskManager}
         , mDetailsModel{mDataProvider, ledgerRepo}
         , mTypesModel{mDataProvider, ledgerRepo}
+        , mSolarSystemsModel{mDataProvider, ledgerRepo}
         , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
     {
         const auto mainLayout = new QVBoxLayout{this};
@@ -134,14 +135,25 @@ namespace Evernus
         mTypesProxy.setSortRole(Qt::UserRole);
         mTypesProxy.setSourceModel(&mTypesModel);
 
-        detailsGroupLayout->addWidget(createDataView(mDetailsModel, mDetailsProxy, QStringLiteral("industryMiningLedgerDetailsView")));
+        mSolarSystemsProxy.setSortRole(Qt::UserRole);
+        mSolarSystemsProxy.setSourceModel(&mSolarSystemsModel);
+
+        detailsGroupLayout->addWidget(createAndLinkDataView(mDetailsModel, mDetailsProxy, QStringLiteral("industryMiningLedgerDetailsView")));
 
         const auto typesGroup = new QGroupBox{tr("Mined types"), this};
         contentLayout->addWidget(typesGroup, 0, 1);
 
         const auto typesGroupLayout = new QVBoxLayout{typesGroup};
 
-        typesGroupLayout->addWidget(createDataView(mTypesModel, mTypesProxy, QStringLiteral("industryMiningLedgerTypesView")));
+        typesGroupLayout->addWidget(createAndLinkDataView(mTypesModel, mTypesProxy, QStringLiteral("industryMiningLedgerTypesView")));
+
+        const auto solarSystemsGroup = new QGroupBox{tr("Solar systems"), this};
+        contentLayout->addWidget(solarSystemsGroup, 1, 0);
+
+        const auto solarSystemsGroupLayout = new QVBoxLayout{solarSystemsGroup};
+
+        solarSystemsGroupLayout->addWidget(createDataView(mSolarSystemsProxy,
+                                                          QStringLiteral("industryMiningLedgerSolarSystemsView")));
 
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderStatusUpdated,
                 this, &IndustryMiningLedgerWidget::updateOrderTask);
@@ -160,6 +172,7 @@ namespace Evernus
         const auto charId = getCharacterId();
         mDetailsModel.refresh(charId, mRangeFilter->getFrom(), mRangeFilter->getTo());
         mTypesModel.refresh(charId, mRangeFilter->getFrom(), mRangeFilter->getTo());
+        mSolarSystemsModel.refresh(charId, mRangeFilter->getFrom(), mRangeFilter->getTo());
     }
 
     void IndustryMiningLedgerWidget::importData()
@@ -232,9 +245,8 @@ namespace Evernus
         new LookupActionGroupModelConnector{model, proxy, view, this};
     }
 
-    QWidget *IndustryMiningLedgerWidget::createDataView(ModelWithTypes &model,
-                                                        QSortFilterProxyModel &proxy,
-                                                        const QString &name)
+    QAbstractItemView *IndustryMiningLedgerWidget::createDataView(QSortFilterProxyModel &proxy,
+                                                                  const QString &name)
     {
         const auto view = new AdjustableTableView{name, this};
         view->setModel(&proxy);
@@ -243,6 +255,15 @@ namespace Evernus
         view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         view->setContextMenuPolicy(Qt::ActionsContextMenu);
         view->restoreHeaderState();
+
+        return view;
+    }
+
+    QWidget *IndustryMiningLedgerWidget::createAndLinkDataView(ModelWithTypes &model,
+                                                               QSortFilterProxyModel &proxy,
+                                                               const QString &name)
+    {
+        const auto view = createDataView(proxy, name);
         createLookupActions(*view, model, proxy);
 
         return view;

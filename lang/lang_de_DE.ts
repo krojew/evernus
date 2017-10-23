@@ -4337,7 +4337,12 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="192"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="146"/>
+        <source>Solar systems</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="202"/>
         <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6808,6 +6813,19 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <location filename="../MiningLedgerModel.cpp" line="96"/>
         <source>Solar system</source>
         <translation type="unfinished">Sternensystem</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::MiningLedgerSolarSystemsModel</name>
+    <message>
+        <location filename="../MiningLedgerSolarSystemsModel.cpp" line="78"/>
+        <source>Solar system</source>
+        <translation type="unfinished">Sternensystem</translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerSolarSystemsModel.cpp" line="80"/>
+        <source>Quantity</source>
+        <translation type="unfinished">Menge</translation>
     </message>
 </context>
 <context>

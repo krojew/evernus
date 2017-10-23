@@ -566,6 +566,8 @@ add_executable(
     MiningLedgerModel.h
     MiningLedgerRepository.cpp
     MiningLedgerRepository.h
+    MiningLedgerSolarSystemsModel.cpp
+    MiningLedgerSolarSystemsModel.h
     MiningLedgerTypesModel.cpp
     MiningLedgerTypesModel.h
     ModelUtils.cpp

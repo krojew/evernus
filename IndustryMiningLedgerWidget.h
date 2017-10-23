@@ -19,6 +19,7 @@
 #include <QSortFilterProxyModel>
 #include <QVariant>
 
+#include "MiningLedgerSolarSystemsModel.h"
 #include "MarketOrderDataFetcher.h"
 #include "MiningLedgerTypesModel.h"
 #include "CharacterBoundWidget.h"
@@ -93,6 +94,9 @@ namespace Evernus
         MiningLedgerTypesModel mTypesModel;
         QSortFilterProxyModel mTypesProxy;
 
+        MiningLedgerSolarSystemsModel mSolarSystemsModel;
+        QSortFilterProxyModel mSolarSystemsProxy;
+
         quint64 mSellStation = 0;
 
         MarketOrderDataFetcher mDataFetcher;
@@ -104,8 +108,10 @@ namespace Evernus
         void createLookupActions(QAbstractItemView &view,
                                  ModelWithTypes &model,
                                  const QSortFilterProxyModel &proxy);
-        QWidget *createDataView(ModelWithTypes &model,
-                                QSortFilterProxyModel &proxy,
-                                const QString &name);
+        QAbstractItemView *createDataView(QSortFilterProxyModel &proxy,
+                                          const QString &name);
+        QWidget *createAndLinkDataView(ModelWithTypes &model,
+                                       QSortFilterProxyModel &proxy,
+                                       const QString &name);
     };
 }

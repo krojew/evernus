@@ -4734,7 +4734,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="192"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="146"/>
+        <source>Solar systems</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="202"/>
         <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7323,6 +7328,19 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
         <location filename="../MiningLedgerModel.cpp" line="96"/>
         <source>Solar system</source>
         <translation type="unfinished">System</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::MiningLedgerSolarSystemsModel</name>
+    <message>
+        <location filename="../MiningLedgerSolarSystemsModel.cpp" line="78"/>
+        <source>Solar system</source>
+        <translation type="unfinished">System</translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerSolarSystemsModel.cpp" line="80"/>
+        <source>Quantity</source>
+        <translation type="unfinished">Ilość</translation>
     </message>
 </context>
 <context>
