@@ -4708,42 +4708,42 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="obsolete">Importuj dane</translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="90"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="91"/>
         <source>Import prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="95"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="96"/>
         <source>Import for mined regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="99"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="100"/>
         <source>Import for custom regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="117"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="118"/>
         <source>Sell price type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="128"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="134"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="144"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="150"/>
         <source>Mined types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="151"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="157"/>
         <source>Solar systems</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="218"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="225"/>
         <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>

@@ -21,6 +21,7 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QSettings>
+#include <QSplitter>
 #include <QLabel>
 #include <QDate>
 
@@ -122,8 +123,13 @@ namespace Evernus
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
 
-        const auto contentLayout = new QHBoxLayout{};
-        mainLayout->addLayout(contentLayout);
+        const auto viewSplitter = new QSplitter{Qt::Vertical, this};
+        mainLayout->addWidget(viewSplitter);
+
+        const auto tablesContainer = new QWidget{this};
+        viewSplitter->addWidget(tablesContainer);
+
+        const auto contentLayout = new QHBoxLayout{tablesContainer};
 
         const auto detailsGroup = new QGroupBox{tr("Details"), this};
         contentLayout->addWidget(detailsGroup);
@@ -157,7 +163,8 @@ namespace Evernus
                                                           QStringLiteral("industryMiningLedgerSolarSystemsView")));
 
         const auto graphGroup = new QGroupBox{this};
-        mainLayout->addWidget(graphGroup, 1);
+        viewSplitter->addWidget(graphGroup);
+        viewSplitter->setStretchFactor(1, 1);
 
         const auto graphGroupLayout = new QVBoxLayout{graphGroup};
 
