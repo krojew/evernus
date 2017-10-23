@@ -15,7 +15,7 @@
 #include <QtDebug>
 
 #include <QRadioButton>
-#include <QGridLayout>
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
@@ -122,11 +122,11 @@ namespace Evernus
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
 
-        const auto contentLayout = new QGridLayout{};
+        const auto contentLayout = new QHBoxLayout{};
         mainLayout->addLayout(contentLayout);
 
         const auto detailsGroup = new QGroupBox{tr("Details"), this};
-        contentLayout->addWidget(detailsGroup, 0, 0);
+        contentLayout->addWidget(detailsGroup);
 
         const auto detailsGroupLayout = new QVBoxLayout{detailsGroup};
 
@@ -142,14 +142,14 @@ namespace Evernus
         detailsGroupLayout->addWidget(createAndLinkDataView(mDetailsModel, mDetailsProxy, QStringLiteral("industryMiningLedgerDetailsView")));
 
         const auto typesGroup = new QGroupBox{tr("Mined types"), this};
-        contentLayout->addWidget(typesGroup, 0, 1);
+        contentLayout->addWidget(typesGroup);
 
         const auto typesGroupLayout = new QVBoxLayout{typesGroup};
 
         typesGroupLayout->addWidget(createAndLinkDataView(mTypesModel, mTypesProxy, QStringLiteral("industryMiningLedgerTypesView")));
 
         const auto solarSystemsGroup = new QGroupBox{tr("Solar systems"), this};
-        contentLayout->addWidget(solarSystemsGroup, 1, 0);
+        contentLayout->addWidget(solarSystemsGroup);
 
         const auto solarSystemsGroupLayout = new QVBoxLayout{solarSystemsGroup};
 
@@ -157,7 +157,7 @@ namespace Evernus
                                                           QStringLiteral("industryMiningLedgerSolarSystemsView")));
 
         const auto graphGroup = new QGroupBox{this};
-        contentLayout->addWidget(graphGroup, 1, 1);
+        mainLayout->addWidget(graphGroup, 1);
 
         const auto graphGroupLayout = new QVBoxLayout{graphGroup};
 
