@@ -45,5 +45,6 @@ namespace Evernus
         const auto ignoreSslErrorsKey = QStringLiteral("network/security/ignoreSslErrors");
         const auto maxRetriesKey = QStringLiteral("network/maxRetries");
         const auto maxESIThreadsKey = QStringLiteral("network/maxESIThreads");
+        const auto logESIRepliesKey = QStringLiteral("network/logESIReplies");
     }
 }

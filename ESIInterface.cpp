@@ -154,6 +154,8 @@ namespace Evernus
         , mCitadelAccessCache{citadelAccessCache}
         , mErrorLimiter{errorLimiter}
     {
+        QSettings settings;
+        mLogReplies = settings.value(NetworkSettings::logESIRepliesKey, mLogReplies).toBool();
     }
 
     void ESIInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const PaginatedCallback &callback) const
@@ -620,7 +622,11 @@ namespace Evernus
                 }
                 else
                 {
-                    TaggedInvoke<ResultTag>::invoke(reply->readAll(), *reply, continuation);
+                    const auto data = reply->readAll();
+                    if (mLogReplies)
+                        qDebug() << reply << data;
+
+                    TaggedInvoke<ResultTag>::invoke(data, *reply, continuation);
                 }
             });
         });
@@ -709,7 +715,12 @@ namespace Evernus
                 else
                 {
                     reply->deleteLater();
-                    TaggedInvoke<ResultTag>::invoke(reply->readAll(), *reply, continuation);
+
+                    const auto data = reply->readAll();
+                    if (mLogReplies)
+                        qDebug() << reply << data;
+
+                    TaggedInvoke<ResultTag>::invoke(data, *reply, continuation);
                 }
             });
         });

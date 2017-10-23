@@ -134,6 +134,8 @@ namespace Evernus
         CitadelAccessCache &mCitadelAccessCache;
         ESIInterfaceErrorLimiter &mErrorLimiter;
 
+        bool mLogReplies = false;
+
         mutable std::mutex mObjectStateMutex;
         mutable std::recursive_mutex mAuthMutex;
 
