@@ -28,6 +28,7 @@ namespace Evernus
                                          const MiningLedgerRepository &ledgerRepo,
                                          QObject *parent)
         : QAbstractTableModel{parent}
+        , ModelWithTypes{}
         , mDataProvider{dataProvider}
         , mLedgerRepo{ledgerRepo}
     {
@@ -104,17 +105,6 @@ namespace Evernus
         return (parent.isValid()) ? (0) : (static_cast<int>(mData.size()));
     }
 
-    void MiningLedgerModel::refresh(Character::IdType charId, const QDate &from, const QDate &to)
-    {
-        beginResetModel();
-
-        BOOST_SCOPE_EXIT(this_) {
-            this_->endResetModel();
-        } BOOST_SCOPE_EXIT_END
-
-        mData = mLedgerRepo.fetchForCharacter(charId, from, to);
-    }
-
     EveType::IdType MiningLedgerModel::getTypeId(const QModelIndex &index) const
     {
         if (Q_LIKELY(index.isValid()))
@@ -124,6 +114,17 @@ namespace Evernus
         }
 
         return EveType::invalidId;
+    }
+
+    void MiningLedgerModel::refresh(Character::IdType charId, const QDate &from, const QDate &to)
+    {
+        beginResetModel();
+
+        BOOST_SCOPE_EXIT(this_) {
+            this_->endResetModel();
+        } BOOST_SCOPE_EXIT_END
+
+        mData = mLedgerRepo.fetchForCharacter(charId, from, to);
     }
 
     MiningLedgerModel::TypeList MiningLedgerModel::getAllTypes() const

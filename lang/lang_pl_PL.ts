@@ -4186,103 +4186,103 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::ImportingAnalysisWidget</name>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="62"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="61"/>
         <source>Source:</source>
         <translation>Źródło:</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="77"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="76"/>
         <source>Destination:</source>
         <translation>Cel:</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="93"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="92"/>
         <source>Analysis period:</source>
         <translation>Okres analizy:</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="98"/>
-        <location filename="../ImportingAnalysisWidget.cpp" line="108"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="97"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="107"/>
         <source> days</source>
         <translation> dni</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="99"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="98"/>
         <source>The number of days going back from today, to use for analysis. If the destination has been in use for shorter time, be sure to adjust this accordingly.</source>
         <translation>Ilość dni wstecz od dziś do użycia podczas analizy. Jeśli rynek w miejscu docelowym istnieje krócej, odpowiednio dostosuj to ustawienie.</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="103"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="102"/>
         <source>Aggregate over:</source>
         <translation>Agreguj po:</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="109"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="108"/>
         <source>The number of days to aggregate movement over. This should reflect how fast you want your stock to sell.</source>
         <translation>Ilość dni do agregacji sprzedaży. Powinien odzwierciedlać docelową szybkość sprzedaży inwentarza.</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="113"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="112"/>
         <source>Price per m³:</source>
         <translation>Koszt za m³:</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="119"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="118"/>
         <source>Addtional cost added to buy price. This is multiplied by item size and desired volume to move (which in turn is based on aggregation days).</source>
         <translation>Dodatkowy koszt dodany do ceny kupna. Jest on pomnożony przez wielkość przedmiotu i wybrany wolumen do sprzedaży (który z kolei zależy od dni agrgacji).</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="122"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="121"/>
         <source>Collateral:</source>
         <translation>Zabezpieczenie:</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="128"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="127"/>
         <source>Addtional cost added to buy price. This is the percetange of the base price.</source>
         <translation>Dodatkowy koszt dodany do ceny kupna. Jest to procent z ceny bazowej.</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="134"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="133"/>
         <source>buy</source>
         <translation>kupno</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="138"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="137"/>
         <source>sell</source>
         <translation>sprzedaż</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="142"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="141"/>
         <source>Hide empty source sell orders</source>
         <translation>Ukryj dane bez zleceń sprzedaży u źródła</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="144"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="143"/>
         <source>Hide item types which have 0 source orders when source price type is set to &quot;Sell&quot;.</source>
         <translation>Ukryj dane, które mają 0 zleceń sprzedaży kiedy typ źródła to &quot;Kupno&quot;.</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="148"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="147"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="152"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="151"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation>Naciśnij &quot;Zastosuj&quot; aby zobaczyć wynik. Dodatkowe akcje są dostępne z menu kontekstowego.</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="175"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="174"/>
         <source>Show details</source>
         <translation>Pokaż szczegóły</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="329"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="320"/>
         <source>Station change</source>
         <translation>Zmiana stacji</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="329"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="320"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation>Zmiana stacji wymaga ponownego przeliczenia danych. Zrobić to teraz?</translation>
     </message>
@@ -4704,32 +4704,37 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::IndustryMiningLedgerWidget</name>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="87"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="88"/>
         <source>Import data</source>
         <translation type="unfinished">Importuj dane</translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="92"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="93"/>
         <source>Import for mined regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="96"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="97"/>
         <source>Import for custom regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="114"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="115"/>
         <source>Sell price type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="122"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="126"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="193"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="139"/>
+        <source>Mined types</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="192"/>
         <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4787,12 +4792,12 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Pokaż szczegóły</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="299"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="291"/>
         <source>Station change</source>
         <translation>Zmiana stacji</translation>
     </message>
     <message>
-        <location filename="../InterRegionAnalysisWidget.cpp" line="299"/>
+        <location filename="../InterRegionAnalysisWidget.cpp" line="291"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation>Zmiana stacji wymaga ponownego przeliczenia danych. Zrobić to teraz?</translation>
     </message>
@@ -7300,24 +7305,37 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MiningLedgerModel</name>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="89"/>
+        <location filename="../MiningLedgerModel.cpp" line="90"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="91"/>
+        <location filename="../MiningLedgerModel.cpp" line="92"/>
         <source>Date</source>
         <translation type="unfinished">Data</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="93"/>
+        <location filename="../MiningLedgerModel.cpp" line="94"/>
         <source>Quantity</source>
         <translation type="unfinished">Ilość</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="95"/>
+        <location filename="../MiningLedgerModel.cpp" line="96"/>
         <source>Solar system</source>
         <translation type="unfinished">System</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::MiningLedgerTypesModel</name>
+    <message>
+        <location filename="../MiningLedgerTypesModel.cpp" line="77"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerTypesModel.cpp" line="79"/>
+        <source>Quantity</source>
+        <translation type="unfinished">Ilość</translation>
     </message>
 </context>
 <context>
@@ -7834,82 +7852,82 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::RegionAnalysisWidget</name>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="63"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="62"/>
         <source>Region:</source>
         <translation>Region:</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="84"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="83"/>
         <source>Limit to solar system:</source>
         <translation>Ogranicz do systemu:</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="98"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="97"/>
         <source>Volume:</source>
         <translation>Wolumen:</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="116"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="115"/>
         <source>Margin:</source>
         <translation>Marża:</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="137"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="136"/>
         <source>Buy price:</source>
         <translation>Cena kupna:</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="153"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="152"/>
         <source>Sell price:</source>
         <translation>Cena sprzedaży:</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="169"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="168"/>
         <source>Avg. period:</source>
         <translation>Okres dla średnich:</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="173"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="172"/>
         <source> days</source>
         <translation> dni</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="174"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="173"/>
         <source>The number of days used to calculate averages.</source>
         <translation>Ilość dni do obliczenia średnich.</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="178"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="177"/>
         <source>Ignore price percentiles</source>
         <translation>Ignoruj procentowe wolumeny przy cenach</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="180"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="179"/>
         <source>Use simple min/max prices from market orders, instead of calculating volume-based percetiles.</source>
         <translation>Uży min./maks. wartości ze zleceń, zamiast obliczać procent zależny od wolumenu.</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="185"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="184"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="189"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="188"/>
         <source>Double-click an item for additional information. Additional actions are available via the right-click menu. Remember to select desired &lt;b&gt;source price&lt;/b&gt; and &lt;b&gt;destination price&lt;/b&gt; from the dropdowns at the top, otherwise your differences might be skewed.</source>
         <translation>Kliknij dwa razy, aby zobaczyć dodatkowe informacje. Dodatkowe akcje są dostępne z menu kontekstowego. Pamiętaj, aby wybrać &lt;b&gt;typ ceny źródła&lt;/b&gt; i &lt;b&gt;typ ceny celu&lt;/b&gt; dostępne wyżej, w przeciwnym razie wartości mogą być inne niż zakładane.</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="213"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="212"/>
         <source>Show details</source>
         <translation>Pokaż szczegóły</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="362"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="354"/>
         <source>%1 in %2</source>
         <translation>%1 w %2</translation>
     </message>
     <message>
-        <location filename="../RegionAnalysisWidget.cpp" line="385"/>
+        <location filename="../RegionAnalysisWidget.cpp" line="376"/>
         <source>- all -</source>
         <translation>- wszystkie -</translation>
     </message>

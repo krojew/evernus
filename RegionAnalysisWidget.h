@@ -20,7 +20,6 @@
 #include "StandardModelProxyWidget.h"
 #include "ExternalOrderImporter.h"
 #include "MarketDataProvider.h"
-#include "EveTypeProvider.h"
 #include "ExternalOrder.h"
 #include "TaskConstants.h"
 #include "PriceType.h"
@@ -36,13 +35,11 @@ class QSpinBox;
 namespace Evernus
 {
     class AdjustableTableView;
-    class LookupActionGroup;
     class EveTypeRepository;
     class EveDataProvider;
 
     class RegionAnalysisWidget
         : public StandardModelProxyWidget
-        , public EveTypeProvider
     {
         Q_OBJECT
 
@@ -53,8 +50,6 @@ namespace Evernus
                              const MarketDataProvider &marketDataProvider,
                              QWidget *parent = nullptr);
         virtual ~RegionAnalysisWidget() = default;
-
-        virtual EveType::IdType getTypeId() const override;
 
         void setPriceTypes(PriceType src, PriceType dst) noexcept;
 
@@ -91,7 +86,6 @@ namespace Evernus
         PriceType mDstPriceType = PriceType::Buy;
 
         QAction *mShowDetailsAct = nullptr;
-        LookupActionGroup *mLookupGroup = nullptr;
 
         QComboBox *mRegionCombo = nullptr;
         QComboBox *mSolarSystemCombo = nullptr;

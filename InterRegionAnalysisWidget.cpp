@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QtDebug>
+
 #include <QStandardItemModel>
 #include <QDoubleValidator>
 #include <QStackedWidget>
@@ -29,8 +31,8 @@
 #include <QSettings>
 #include <QAction>
 #include <QLabel>
-#include <QtDebug>
 
+#include "LookupActionGroupModelConnector.h"
 #include "SourceDestinationSelectWidget.h"
 #include "InterRegionTypeDetailsWidget.h"
 #include "MarketAnalysisSettings.h"
@@ -38,7 +40,6 @@
 #include "AdjustableTableView.h"
 #include "MarketAnalysisUtils.h"
 #include "MarketDataProvider.h"
-#include "LookupActionGroup.h"
 #include "EveDataProvider.h"
 #include "ImportSettings.h"
 #include "PriceSettings.h"
@@ -56,7 +57,6 @@ namespace Evernus
                                                          const RegionStationPresetRepository &regionStationPresetRepository,
                                                          QWidget *parent)
         : StandardModelProxyWidget{mInterRegionDataModel, mInterRegionViewProxy, parent}
-        , EveTypeProvider{}
         , mDataProvider{dataProvider}
         , mMarketDataProvider{marketDataProvider}
         , mInterRegionDataModel{mDataProvider}
@@ -158,16 +158,9 @@ namespace Evernus
         mInterRegionTypeDataView->addAction(mShowDetailsAct);
         connect(mShowDetailsAct, &QAction::triggered, this, &InterRegionAnalysisWidget::showDetailsForCurrent);
 
-        mLookupGroup = new LookupActionGroup{*this, this};
-        mLookupGroup->setEnabled(false);
-        mInterRegionTypeDataView->addActions(mLookupGroup->actions());
+        new LookupActionGroupModelConnector{mInterRegionDataModel, mInterRegionViewProxy, *mInterRegionTypeDataView, this};
 
         installOnView(mInterRegionTypeDataView);
-    }
-
-    EveType::IdType InterRegionAnalysisWidget::getTypeId() const
-    {
-        return mInterRegionDataModel.getTypeId(mInterRegionViewProxy.mapToSource(mInterRegionTypeDataView->currentIndex()));
     }
 
     void InterRegionAnalysisWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
@@ -288,7 +281,6 @@ namespace Evernus
     {
         const auto enabled = !selected.isEmpty();
         mShowDetailsAct->setEnabled(enabled);
-        mLookupGroup->setEnabled(enabled);
     }
 
     void InterRegionAnalysisWidget::changeStations(const QVariantList &srcPath, const QVariantList &dstPath)

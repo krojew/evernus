@@ -15,6 +15,7 @@
 #include <QtDebug>
 
 #include <QRadioButton>
+#include <QGridLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QPushButton>
@@ -23,10 +24,10 @@
 #include <QLabel>
 #include <QDate>
 
+#include "LookupActionGroupModelConnector.h"
 #include "AdjustableTableView.h"
 #include "StationSelectButton.h"
 #include "CacheTimerProvider.h"
-#include "LookupActionGroup.h"
 #include "TypeLocationPairs.h"
 #include "PriceTypeComboBox.h"
 #include "WarningBarWidget.h"
@@ -57,10 +58,10 @@ namespace Evernus
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MiningLedger),
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MiningLedger),
                                ImportSettings::maxCharacterAgeKey,parent}
-        , EveTypeProvider{}
         , mDataProvider{dataProvider}
         , mTaskManager{taskManager}
         , mDetailsModel{mDataProvider, ledgerRepo}
+        , mTypesModel{mDataProvider, ledgerRepo}
         , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
     {
         const auto mainLayout = new QVBoxLayout{this};
@@ -119,28 +120,28 @@ namespace Evernus
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
 
+        const auto contentLayout = new QGridLayout{};
+        mainLayout->addLayout(contentLayout);
+
         const auto detailsGroup = new QGroupBox{tr("Details"), this};
-        mainLayout->addWidget(detailsGroup);
+        contentLayout->addWidget(detailsGroup, 0, 0);
 
         const auto detailsGroupLayout = new QVBoxLayout{detailsGroup};
 
         mDetailsProxy.setSortRole(Qt::UserRole);
         mDetailsProxy.setSourceModel(&mDetailsModel);
 
-        mDetailsView = new AdjustableTableView{QStringLiteral("industryMiningLedgerDetailsView"), this};
-        detailsGroupLayout->addWidget(mDetailsView);
-        mDetailsView->setModel(&mDetailsProxy);
-        mDetailsView->setSortingEnabled(true);
-        mDetailsView->setAlternatingRowColors(true);
-        mDetailsView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        mDetailsView->setContextMenuPolicy(Qt::ActionsContextMenu);
-        mDetailsView->restoreHeaderState();
-        connect(mDetailsView->selectionModel(), &QItemSelectionModel::selectionChanged,
-                this, &IndustryMiningLedgerWidget::selectType);
+        mTypesProxy.setSortRole(Qt::UserRole);
+        mTypesProxy.setSourceModel(&mTypesModel);
 
-        mLookupGroup = new LookupActionGroup{*this, this};
-        mLookupGroup->setEnabled(false);
-        mDetailsView->addActions(mLookupGroup->actions());
+        detailsGroupLayout->addWidget(createDataView(mDetailsModel, mDetailsProxy, QStringLiteral("industryMiningLedgerDetailsView")));
+
+        const auto typesGroup = new QGroupBox{tr("Mined types"), this};
+        contentLayout->addWidget(typesGroup, 0, 1);
+
+        const auto typesGroupLayout = new QVBoxLayout{typesGroup};
+
+        typesGroupLayout->addWidget(createDataView(mTypesModel, mTypesProxy, QStringLiteral("industryMiningLedgerTypesView")));
 
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderStatusUpdated,
                 this, &IndustryMiningLedgerWidget::updateOrderTask);
@@ -152,15 +153,13 @@ namespace Evernus
         });
     }
 
-    EveType::IdType IndustryMiningLedgerWidget::getTypeId() const
-    {
-        return mDetailsModel.getTypeId(mDetailsProxy.mapToSource(mDetailsView->currentIndex()));
-    }
-
     void IndustryMiningLedgerWidget::refresh()
     {
         Q_ASSERT(mRangeFilter != nullptr);
-        mDetailsModel.refresh(getCharacterId(), mRangeFilter->getFrom(), mRangeFilter->getTo());
+
+        const auto charId = getCharacterId();
+        mDetailsModel.refresh(charId, mRangeFilter->getFrom(), mRangeFilter->getTo());
+        mTypesModel.refresh(charId, mRangeFilter->getFrom(), mRangeFilter->getTo());
     }
 
     void IndustryMiningLedgerWidget::importData()
@@ -203,11 +202,6 @@ namespace Evernus
         mSellStation = EveDataProvider::getStationIdFromPath(path);
     }
 
-    void IndustryMiningLedgerWidget::selectType(const QItemSelection &selected)
-    {
-        mLookupGroup->setEnabled(!selected.isEmpty());
-    }
-
     void IndustryMiningLedgerWidget::updateOrderTask(const QString &text)
     {
         mTaskManager.updateTask(mOrderTask, text);
@@ -229,5 +223,28 @@ namespace Evernus
     {
         qDebug() << "Switching character to" << id;
         refresh();
+    }
+
+    void IndustryMiningLedgerWidget::createLookupActions(QAbstractItemView &view,
+                                                         ModelWithTypes &model,
+                                                         const QSortFilterProxyModel &proxy)
+    {
+        new LookupActionGroupModelConnector{model, proxy, view, this};
+    }
+
+    QWidget *IndustryMiningLedgerWidget::createDataView(ModelWithTypes &model,
+                                                        QSortFilterProxyModel &proxy,
+                                                        const QString &name)
+    {
+        const auto view = new AdjustableTableView{name, this};
+        view->setModel(&proxy);
+        view->setSortingEnabled(true);
+        view->setAlternatingRowColors(true);
+        view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        view->setContextMenuPolicy(Qt::ActionsContextMenu);
+        view->restoreHeaderState();
+        createLookupActions(*view, model, proxy);
+
+        return view;
     }
 }

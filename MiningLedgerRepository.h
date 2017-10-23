@@ -14,9 +14,12 @@
  */
 #pragma once
 
+#include <unordered_map>
+
 #include "MiningLedger.h"
 #include "Repository.h"
 #include "Character.h"
+#include "EveType.h"
 
 namespace Evernus
 {
@@ -24,6 +27,8 @@ namespace Evernus
         : public Repository<MiningLedger>
     {
     public:
+        using TypeQuantityMap = std::unordered_map<EveType::IdType, quint64>;
+
         using Repository::Repository;
         MiningLedgerRepository(const MiningLedgerRepository &) = default;
         MiningLedgerRepository(MiningLedgerRepository &&) = default;
@@ -41,6 +46,9 @@ namespace Evernus
         EntityList fetchForCharacter(Character::IdType characterId,
                                      const QDate &from,
                                      const QDate &to) const;
+        TypeQuantityMap fetchTypesForCharacter(Character::IdType characterId,
+                                               const QDate &from,
+                                               const QDate &to) const;
 
         MiningLedgerRepository &operator =(const MiningLedgerRepository &) = default;
         MiningLedgerRepository &operator =(MiningLedgerRepository &&) = default;

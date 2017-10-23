@@ -20,23 +20,21 @@
 #include <QVariant>
 
 #include "MarketOrderDataFetcher.h"
+#include "MiningLedgerTypesModel.h"
 #include "CharacterBoundWidget.h"
 #include "MiningLedgerModel.h"
-#include "EveTypeProvider.h"
 #include "TaskConstants.h"
 
-class QItemSelection;
+class QAbstractItemView;
 class QRadioButton;
 
 namespace Evernus
 {
     class MiningLedgerRepository;
-    class AdjustableTableView;
     class StationSelectButton;
     class CharacterRepository;
     class ESIInterfaceManager;
     class CacheTimerProvider;
-    class LookupActionGroup;
     class PriceTypeComboBox;
     class DateRangeWidget;
     class EveDataProvider;
@@ -46,7 +44,6 @@ namespace Evernus
 
     class IndustryMiningLedgerWidget
         : public CharacterBoundWidget
-        , public EveTypeProvider
     {
         Q_OBJECT
 
@@ -64,8 +61,6 @@ namespace Evernus
         IndustryMiningLedgerWidget(IndustryMiningLedgerWidget &&) = default;
         virtual ~IndustryMiningLedgerWidget() = default;
 
-        virtual EveType::IdType getTypeId() const override;
-
         IndustryMiningLedgerWidget &operator =(const IndustryMiningLedgerWidget &) = default;
         IndustryMiningLedgerWidget &operator =(IndustryMiningLedgerWidget &&) = default;
 
@@ -79,8 +74,6 @@ namespace Evernus
         void importData();
         void updateSellStation(const QVariantList &path);
 
-        void selectType(const QItemSelection &selected);
-
         void updateOrderTask(const QString &text);
         void endOrderTask(const MarketOrderDataFetcher::OrderResultType &orders, const QString &error);
 
@@ -90,15 +83,15 @@ namespace Evernus
 
         DateRangeWidget *mRangeFilter = nullptr;
         QRadioButton *mImportForSourceBtn = nullptr;
-        AdjustableTableView *mDetailsView = nullptr;
         RegionComboBox *mImportRegionsCombo = nullptr;
         StationSelectButton *mSellStationBtn = nullptr;
         PriceTypeComboBox *mSellPriceTypeCombo = nullptr;
 
-        LookupActionGroup *mLookupGroup = nullptr;
-
         MiningLedgerModel mDetailsModel;
         QSortFilterProxyModel mDetailsProxy;
+
+        MiningLedgerTypesModel mTypesModel;
+        QSortFilterProxyModel mTypesProxy;
 
         quint64 mSellStation = 0;
 
@@ -107,5 +100,12 @@ namespace Evernus
         uint mOrderTask = TaskConstants::invalidTask;
 
         virtual void handleNewCharacter(Character::IdType id) override;
+
+        void createLookupActions(QAbstractItemView &view,
+                                 ModelWithTypes &model,
+                                 const QSortFilterProxyModel &proxy);
+        QWidget *createDataView(ModelWithTypes &model,
+                                QSortFilterProxyModel &proxy,
+                                const QString &name);
     };
 }

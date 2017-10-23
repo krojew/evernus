@@ -28,11 +28,11 @@
 #include <QLabel>
 #include <QtDebug>
 
+#include "LookupActionGroupModelConnector.h"
 #include "TypeAggregatedDetailsWidget.h"
 #include "MarketAnalysisSettings.h"
 #include "CalculatingDataWidget.h"
 #include "AdjustableTableView.h"
-#include "LookupActionGroup.h"
 #include "EveDataProvider.h"
 #include "FlowLayout.h"
 
@@ -46,7 +46,6 @@ namespace Evernus
                                                const MarketDataProvider &marketDataProvider,
                                                QWidget *parent)
         : StandardModelProxyWidget{mTypeDataModel, mTypeViewProxy, parent}
-        , EveTypeProvider{}
         , mDataProvider{dataProvider}
         , mMarketDataProvider{marketDataProvider}
         , mTypeDataModel{mDataProvider}
@@ -215,16 +214,9 @@ namespace Evernus
         mRegionTypeDataView->addAction(mShowDetailsAct);
         connect(mShowDetailsAct, &QAction::triggered, this, &RegionAnalysisWidget::showDetailsForCurrent);
 
-        mLookupGroup = new LookupActionGroup{*this, this};
-        mLookupGroup->setEnabled(false);
-        mRegionTypeDataView->addActions(mLookupGroup->actions());
+        new LookupActionGroupModelConnector{mTypeDataModel, mTypeViewProxy, *mRegionTypeDataView, this};
 
         installOnView(mRegionTypeDataView);
-    }
-
-    EveType::IdType RegionAnalysisWidget::getTypeId() const
-    {
-        return mTypeDataModel.getTypeId(mTypeViewProxy.mapToSource(mRegionTypeDataView->currentIndex()));
     }
 
     void RegionAnalysisWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
@@ -369,7 +361,6 @@ namespace Evernus
     {
         const auto enabled = !selected.isEmpty();
         mShowDetailsAct->setEnabled(enabled);
-        mLookupGroup->setEnabled(enabled);
     }
 
     void RegionAnalysisWidget::showDetailsForCurrent()

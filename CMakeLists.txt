@@ -480,6 +480,8 @@ add_executable(
     LocationBookmarkSelectDialog.h
     LookupActionGroup.cpp
     LookupActionGroup.h
+    LookupActionGroupModelConnector.cpp
+    LookupActionGroupModelConnector.h
     main.cpp
     MainWindow.cpp
     MainWindow.h
@@ -564,6 +566,8 @@ add_executable(
     MiningLedgerModel.h
     MiningLedgerRepository.cpp
     MiningLedgerRepository.h
+    MiningLedgerTypesModel.cpp
+    MiningLedgerTypesModel.h
     ModelUtils.cpp
     ModelUtils.h
     ModelWithTypes.h

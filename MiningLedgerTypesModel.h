@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <unordered_set>
+#include <vector>
 
 #include <QAbstractTableModel>
 
@@ -30,22 +30,19 @@ namespace Evernus
     class MiningLedgerRepository;
     class EveDataProvider;
 
-    class MiningLedgerModel
+    class MiningLedgerTypesModel
         : public QAbstractTableModel
         , public ModelWithTypes
     {
         Q_OBJECT
 
     public:
-        using TypeList = std::unordered_set<EveType::IdType>;
-        using SolarSystemList = std::unordered_set<uint>;
-
-        explicit MiningLedgerModel(const EveDataProvider &dataProvider,
-                                   const MiningLedgerRepository &ledgerRepo,
-                                   QObject *parent = nullptr);
-        MiningLedgerModel(const MiningLedgerModel &) = default;
-        MiningLedgerModel(MiningLedgerModel &&) = default;
-        virtual ~MiningLedgerModel() = default;
+        explicit MiningLedgerTypesModel(const EveDataProvider &dataProvider,
+                                        const MiningLedgerRepository &ledgerRepo,
+                                        QObject *parent = nullptr);
+        MiningLedgerTypesModel(const MiningLedgerTypesModel &) = default;
+        MiningLedgerTypesModel(MiningLedgerTypesModel &&) = default;
+        virtual ~MiningLedgerTypesModel() = default;
 
         virtual int columnCount(const QModelIndex &parent = QModelIndex{}) const override;
         virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -55,26 +52,28 @@ namespace Evernus
         virtual EveType::IdType getTypeId(const QModelIndex &index) const override;
 
         void refresh(Character::IdType charId, const QDate &from, const QDate &to);
-        TypeList getAllTypes() const;
-        SolarSystemList getAllSolarSystems() const;
 
-        MiningLedgerModel &operator =(const MiningLedgerModel &) = default;
-        MiningLedgerModel &operator =(MiningLedgerModel &&) = default;
+        MiningLedgerTypesModel &operator =(const MiningLedgerTypesModel &) = default;
+        MiningLedgerTypesModel &operator =(MiningLedgerTypesModel &&) = default;
 
     private:
         enum
         {
             nameColumn,
-            dateColumn,
             quantityColumn,
-            solarSystemColumn,
 
             numColumns
+        };
+
+        struct AggregatedData
+        {
+            EveType::IdType mTypeId = EveType::invalidId;
+            quint64 mQuantity = 0;
         };
 
         const EveDataProvider &mDataProvider;
         const MiningLedgerRepository &mLedgerRepo;
 
-        MiningLedgerRepository::EntityList mData;
+        std::vector<AggregatedData> mData;
     };
 }

@@ -19,7 +19,6 @@
 #include "InterRegionMarketDataFilterProxyModel.h"
 #include "InterRegionMarketDataModel.h"
 #include "StandardModelProxyWidget.h"
-#include "EveTypeProvider.h"
 #include "ExternalOrder.h"
 #include "TaskConstants.h"
 #include "PriceType.h"
@@ -38,12 +37,10 @@ namespace Evernus
     class RegionStationPresetRepository;
     class AdjustableTableView;
     class MarketDataProvider;
-    class LookupActionGroup;
     class EveDataProvider;
 
     class InterRegionAnalysisWidget
         : public StandardModelProxyWidget
-        , public EveTypeProvider
     {
         Q_OBJECT
 
@@ -55,8 +52,6 @@ namespace Evernus
                                   const RegionStationPresetRepository &regionStationPresetRepository,
                                   QWidget *parent = nullptr);
         virtual ~InterRegionAnalysisWidget() = default;
-
-        virtual EveType::IdType getTypeId() const override;
 
         void setPriceTypes(PriceType src, PriceType dst) noexcept;
 
@@ -89,7 +84,6 @@ namespace Evernus
         const MarketDataProvider &mMarketDataProvider;
 
         QAction *mShowDetailsAct = nullptr;
-        LookupActionGroup *mLookupGroup = nullptr;
 
         SourceDestinationSelectWidget *mSelectWidget = nullptr;
         QLineEdit *mMinInterRegionVolumeEdit = nullptr;

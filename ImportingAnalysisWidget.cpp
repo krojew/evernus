@@ -28,6 +28,7 @@
 #include <QAction>
 #include <QLabel>
 
+#include "LookupActionGroupModelConnector.h"
 #include "InterRegionTypeDetailsWidget.h"
 #include "FavoriteLocationsButton.h"
 #include "MarketAnalysisSettings.h"
@@ -36,7 +37,6 @@
 #include "AdjustableTableView.h"
 #include "MarketAnalysisUtils.h"
 #include "MarketDataProvider.h"
-#include "LookupActionGroup.h"
 #include "EveDataProvider.h"
 #include "FlowLayout.h"
 
@@ -49,7 +49,6 @@ namespace Evernus
                                                      const RegionStationPresetRepository &regionStationPresetRepository,
                                                      QWidget *parent)
         : StandardModelProxyWidget(mDataModel, mDataProxy, parent)
-        , EveTypeProvider{}
         , mDataProvider(dataProvider)
         , mMarketDataProvider(marketDataProvider)
         , mDataModel(mDataProvider)
@@ -177,16 +176,9 @@ namespace Evernus
         mDataView->addAction(mShowDetailsAct);
         connect(mShowDetailsAct, &QAction::triggered, this, &ImportingAnalysisWidget::showDetailsForCurrent);
 
-        mLookupGroup = new LookupActionGroup{*this, this};
-        mLookupGroup->setEnabled(false);
-        mDataView->addActions(mLookupGroup->actions());
+        new LookupActionGroupModelConnector{mDataModel, mDataProxy, *mDataView, this};
 
         installOnView(mDataView);
-    }
-
-    EveType::IdType ImportingAnalysisWidget::getTypeId() const
-    {
-        return mDataModel.getTypeId(mDataProxy.mapToSource(mDataView->currentIndex()));
     }
 
     void ImportingAnalysisWidget::setPriceTypes(PriceType src, PriceType dst) noexcept
@@ -314,7 +306,6 @@ namespace Evernus
     {
         const auto enabled = !selected.isEmpty();
         mShowDetailsAct->setEnabled(enabled);
-        mLookupGroup->setEnabled(enabled);
     }
 
     void ImportingAnalysisWidget::changeStation(quint64 &destination, const QVariantList &path, const QString &settingName)
