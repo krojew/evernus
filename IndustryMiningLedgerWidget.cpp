@@ -87,7 +87,7 @@ namespace Evernus
         mRangeFilter->setRange(fromDate, tillDate);
         connect(mRangeFilter, &DateRangeWidget::rangeChanged, this, &IndustryMiningLedgerWidget::refresh);
 
-        const auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import data"), this};
+        const auto importFromWeb = new QPushButton{QIcon{":/images/world.png"}, tr("Import prices"), this};
         toolBarLayout->addWidget(importFromWeb);
         importFromWeb->setFlat(true);
         connect(importFromWeb, &QPushButton::clicked, this, &IndustryMiningLedgerWidget::importData);
