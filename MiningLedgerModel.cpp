@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <functional>
+
 #include <boost/range/adaptor/filtered.hpp>
 #include <boost/scope_exit.hpp>
 
@@ -19,6 +21,7 @@
 #include <QDate>
 
 #include "EveDataProvider.h"
+#include "ExternalOrder.h"
 #include "MiningLedger.h"
 #include "TextUtils.h"
 
@@ -180,6 +183,25 @@ namespace Evernus
     void MiningLedgerModel::refreshPrices()
     {
         mPrices.clear();
+
+        if (Q_LIKELY(mOrders))
+        {
+            const auto orderFilter = [=](const auto &order) {
+                return (order.getType() == mSellPriceType) && (mSellStation == 0 || mSellStation == order.getStationId());
+            };
+
+            std::function<bool(const ExternalOrder &, double)> isBetter;
+            if (mSellPriceType == PriceType::Buy)
+                isBetter = [](const auto &order, auto price) { return order.getPrice() > price; };
+            else
+                isBetter = [](const auto &order, auto price) { return order.getPrice() < price; };
+
+            for (const auto &order : *mOrders | boost::adaptors::filtered(orderFilter))
+            {
+                if (isBetter(order, mPrices[order.getTypeId()]))
+                    mPrices[order.getTypeId()] = order.getPrice();
+            }
+        }
 
         if (!mData.empty())
         {

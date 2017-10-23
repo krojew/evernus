@@ -33,6 +33,7 @@ namespace Evernus
 {
     class MiningLedgerRepository;
     class EveDataProvider;
+    class ExternalOrder;
 
     class MiningLedgerModel
         : public QAbstractTableModel
