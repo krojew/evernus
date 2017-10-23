@@ -75,6 +75,7 @@ namespace Evernus
     private slots:
         void importData();
         void updateSellStation(const QVariantList &path);
+        void updatePriceType();
 
         void updateOrderTask(const QString &text);
         void endOrderTask(const MarketOrderDataFetcher::OrderResultType &orders, const QString &error);
@@ -98,8 +99,6 @@ namespace Evernus
 
         MiningLedgerSolarSystemsModel mSolarSystemsModel;
         QSortFilterProxyModel mSolarSystemsProxy;
-
-        quint64 mSellStation = 0;
 
         MarketOrderDataFetcher mDataFetcher;
 

@@ -12,6 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <boost/range/adaptor/filtered.hpp>
 #include <boost/scope_exit.hpp>
 
 #include <QLocale>
@@ -19,6 +20,7 @@
 
 #include "EveDataProvider.h"
 #include "MiningLedger.h"
+#include "TextUtils.h"
 
 #include "MiningLedgerModel.h"
 
@@ -59,6 +61,8 @@ namespace Evernus
                 return QLocale{}.toString(data->getQuantity());
             case solarSystemColumn:
                 return mDataProvider.getSolarSystemName(data->getSolarSystemId());
+            case profitColumn:
+                return TextUtils::currencyToString(getPrice(*data), QLocale{});
             }
         }
         else if (role == Qt::UserRole)
@@ -75,6 +79,8 @@ namespace Evernus
                 return data->getQuantity();
             case solarSystemColumn:
                 return mDataProvider.getSolarSystemName(data->getSolarSystemId());
+            case profitColumn:
+                return getPrice(*data);
             }
         }
 
@@ -94,6 +100,8 @@ namespace Evernus
                 return tr("Quantity");
             case solarSystemColumn:
                 return tr("Solar system");
+            case profitColumn:
+                return tr("Profit");
             }
         }
 
@@ -149,5 +157,39 @@ namespace Evernus
         }
 
         return result;
+    }
+
+    void MiningLedgerModel::setOrders(OrderList orders)
+    {
+        mOrders = std::move(orders);
+        refreshPrices();
+    }
+
+    void MiningLedgerModel::setSellPriceType(PriceType type)
+    {
+        mSellPriceType = type;
+        refreshPrices();
+    }
+
+    void MiningLedgerModel::setSellStation(quint64 stationId)
+    {
+        mSellStation = stationId;
+        refreshPrices();
+    }
+
+    void MiningLedgerModel::refreshPrices()
+    {
+        mPrices.clear();
+
+        if (!mData.empty())
+        {
+            emit dataChanged(index(0, profitColumn), index(static_cast<int>(mData.size()) - 1, profitColumn), { Qt::DisplayRole, Qt::UserRole });
+        }
+    }
+
+    double MiningLedgerModel::getPrice(const MiningLedger &data) const
+    {
+        const auto price = mPrices.find(data.getTypeId());
+        return (price == std::end(mPrices)) ? (0.) : (price->second * data.getQuantity());
     }
 }

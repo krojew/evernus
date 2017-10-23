@@ -14,13 +14,17 @@
  */
 #pragma once
 
+#include <unordered_map>
 #include <unordered_set>
+#include <vector>
+#include <memory>
 
 #include <QAbstractTableModel>
 
 #include "MiningLedgerRepository.h"
 #include "ModelWithTypes.h"
 #include "Character.h"
+#include "PriceType.h"
 #include "EveType.h"
 
 class QDate;
@@ -40,6 +44,8 @@ namespace Evernus
         using TypeList = std::unordered_set<EveType::IdType>;
         using SolarSystemList = std::unordered_set<uint>;
 
+        using OrderList = std::shared_ptr<std::vector<ExternalOrder>>;
+
         explicit MiningLedgerModel(const EveDataProvider &dataProvider,
                                    const MiningLedgerRepository &ledgerRepo,
                                    QObject *parent = nullptr);
@@ -58,6 +64,10 @@ namespace Evernus
         TypeList getAllTypes() const;
         SolarSystemList getAllSolarSystems() const;
 
+        void setOrders(OrderList orders);
+        void setSellPriceType(PriceType type);
+        void setSellStation(quint64 stationId);
+
         MiningLedgerModel &operator =(const MiningLedgerModel &) = default;
         MiningLedgerModel &operator =(MiningLedgerModel &&) = default;
 
@@ -68,6 +78,7 @@ namespace Evernus
             dateColumn,
             quantityColumn,
             solarSystemColumn,
+            profitColumn,
 
             numColumns
         };
@@ -76,5 +87,14 @@ namespace Evernus
         const MiningLedgerRepository &mLedgerRepo;
 
         MiningLedgerRepository::EntityList mData;
+
+        OrderList mOrders;
+        std::unordered_map<EveType::IdType, double> mPrices;
+
+        PriceType mSellPriceType = PriceType::Sell;
+        quint64 mSellStation = 0;
+
+        void refreshPrices();
+        double getPrice(const MiningLedger &data) const;
     };
 }

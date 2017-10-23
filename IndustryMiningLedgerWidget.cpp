@@ -78,7 +78,7 @@ namespace Evernus
         QSettings settings;
 
         const auto sellStationPath = settings.value(IndustrySettings::miningLedgerSellStationKey).toList();
-        mSellStation = EveDataProvider::getStationIdFromPath(sellStationPath);
+        mDetailsModel.setSellStation(EveDataProvider::getStationIdFromPath(sellStationPath));
 
         const auto tillDate = QDate::currentDate();
         const auto fromDate = tillDate.addDays(-7);
@@ -119,6 +119,9 @@ namespace Evernus
 
         mSellPriceTypeCombo = new PriceTypeComboBox{this};
         toolBarLayout->addWidget(mSellPriceTypeCombo);
+        updatePriceType();
+        connect(mSellPriceTypeCombo, QOverload<int>::of(&PriceTypeComboBox::currentIndexChanged),
+                this, &IndustryMiningLedgerWidget::updatePriceType);
 
         auto &warningBar = getWarningBarWidget();
         mainLayout->addWidget(&warningBar);
@@ -232,7 +235,13 @@ namespace Evernus
         QSettings settings;
         settings.setValue(IndustrySettings::miningLedgerSellStationKey, path);
 
-        mSellStation = EveDataProvider::getStationIdFromPath(path);
+        mDetailsModel.setSellStation(EveDataProvider::getStationIdFromPath(path));
+    }
+
+    void IndustryMiningLedgerWidget::updatePriceType()
+    {
+        Q_ASSERT(mSellPriceTypeCombo != nullptr);
+        mDetailsModel.setSellPriceType(mSellPriceTypeCombo->getPriceType());
     }
 
     void IndustryMiningLedgerWidget::updateOrderTask(const QString &text)
@@ -246,6 +255,7 @@ namespace Evernus
 
         if (error.isEmpty())
         {
+            mDetailsModel.setOrders(orders);
             emit updateExternalOrders(*orders);
         }
 
