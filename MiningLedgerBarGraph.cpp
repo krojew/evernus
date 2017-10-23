@@ -97,7 +97,7 @@ namespace Evernus
         }
 
         auto dataSet = std::make_unique<QBarDataArray>();
-        dataSet->reserve(mappedData.size());
+        dataSet->reserve(static_cast<int>(mappedData.size()));
 
         QStringList rowLabels;
         rowLabels.reserve(dataSet->size());
@@ -106,7 +106,7 @@ namespace Evernus
         {
             rowLabels << systemData.first;
 
-            auto row = std::make_unique<QBarDataRow>(allTypes.size());
+            auto row = std::make_unique<QBarDataRow>(static_cast<int>(allTypes.size()));
             auto curCol = std::begin(*row);
 
             for (const auto &typeName : allTypes)
@@ -119,7 +119,7 @@ namespace Evernus
         }
 
         QStringList colLabels;
-        colLabels.reserve(allTypes.size());
+        colLabels.reserve(static_cast<int>(allTypes.size()));
 
         for (const auto &typeName : allTypes)
             colLabels << typeName;

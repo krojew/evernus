@@ -5021,22 +5021,22 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="134"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="137"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="150"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="153"/>
         <source>Mined types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="157"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="160"/>
         <source>Solar systems</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="225"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="228"/>
         <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7630,24 +7630,29 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MiningLedgerModel</name>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="90"/>
+        <location filename="../MiningLedgerModel.cpp" line="96"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="92"/>
+        <location filename="../MiningLedgerModel.cpp" line="98"/>
         <source>Date</source>
         <translation type="unfinished">Data</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="94"/>
+        <location filename="../MiningLedgerModel.cpp" line="100"/>
         <source>Quantity</source>
         <translation type="unfinished">Ilość</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="96"/>
+        <location filename="../MiningLedgerModel.cpp" line="102"/>
         <source>Solar system</source>
         <translation type="unfinished">System</translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerModel.cpp" line="104"/>
+        <source>Profit</source>
+        <translation type="unfinished">Zysk</translation>
     </message>
 </context>
 <context>
