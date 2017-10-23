@@ -23,6 +23,8 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QStringList>
+#include <Q3DCamera>
+#include <Q3DScene>
 #include <Q3DBars>
 
 #include "MiningLedgerRepository.h"
@@ -73,13 +75,15 @@ namespace Evernus
         mMinedTypesSeries->setMesh(QAbstract3DSeries::MeshBevelBar);
 
         graph->addSeries(mMinedTypesSeries);
+
+        graph->scene()->activeCamera()->setCameraPreset(Q3DCamera::CameraPresetIsometricRightHigh);
     }
 
     void MiningLedgerBarGraph::refresh(Character::IdType charId, const QDate &from, const QDate &to)
     {
         const auto data = mLedgerRepo.fetchAggregatedDataForCharacter(charId, from, to);
 
-        std::map<QString, std::map<QString, quint64>> mappedData;
+        std::map<QString, std::map<QString, quint64>, std::greater<QString>> mappedData;
         std::set<QString> allTypes;
 
         for (const auto &datum : data)

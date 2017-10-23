@@ -4704,9 +4704,13 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 <context>
     <name>Evernus::IndustryMiningLedgerWidget</name>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="90"/>
         <source>Import data</source>
-        <translation type="unfinished">Importuj dane</translation>
+        <translation type="obsolete">Importuj dane</translation>
+    </message>
+    <message>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="90"/>
+        <source>Import prices</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../IndustryMiningLedgerWidget.cpp" line="95"/>
@@ -7310,22 +7314,22 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::MiningLedgerBarGraph</name>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="56"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="60"/>
         <source>Mining ledger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="56"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="60"/>
         <source>Couldn&apos;t initialize graph!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="60"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="64"/>
         <source>Mined type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="63"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="67"/>
         <source>Solar system</source>
         <translation type="unfinished">System</translation>
     </message>
