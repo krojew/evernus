@@ -29,6 +29,7 @@ namespace Evernus
         const auto manufacturingFacilitySizeDefault = static_cast<int>(IndustryUtils::Size::Medium);
         const auto manufacturingFacilityTaxDefault = 10.;
         const auto dontSaveLargeOrdersDefault = true;
+        const auto miningLedgerImportForMiningRegionsDefault = true;
 
         const auto srcManufacturingRegionKey = QStringLiteral("industry/manufacturing/srcRegion");
         const auto dstManufacturingRegionKey = QStringLiteral("industry/manufacturing/dstRegion");
@@ -45,5 +46,6 @@ namespace Evernus
         const auto dontSaveLargeOrdersKey = QStringLiteral("industry/dontSaveOrders");
         const auto miningLedgerImportRegionsKey = QStringLiteral("industry/miningLedger/importRegions");
         const auto miningLedgerSellStationKey = QStringLiteral("industry/miningLedger/sellStation");
+        const auto miningLedgerImportForMiningRegionsKey = QStringLiteral("industry/miningLedger/importForMiningRegions");
     }
 }

@@ -4713,37 +4713,37 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="96"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="99"/>
         <source>Import for mined regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="100"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="103"/>
         <source>Import for custom regions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="118"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="125"/>
         <source>Sell price type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="137"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="144"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="153"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="160"/>
         <source>Mined types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="160"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="167"/>
         <source>Solar systems</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="228"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="235"/>
         <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>

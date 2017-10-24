@@ -93,26 +93,33 @@ namespace Evernus
         importFromWeb->setFlat(true);
         connect(importFromWeb, &QPushButton::clicked, this, &IndustryMiningLedgerWidget::importData);
 
+        const auto importForSource
+            = settings.value(IndustrySettings::miningLedgerImportForMiningRegionsKey, IndustrySettings::miningLedgerImportForMiningRegionsDefault).toBool();
+
         mImportForSourceBtn = new QRadioButton{tr("Import for mined regions"), this};
         toolBarLayout->addWidget(mImportForSourceBtn);
-        mImportForSourceBtn->setChecked(true);
+        mImportForSourceBtn->setChecked(importForSource);
 
         const auto importForSelectedBtn = new QRadioButton{tr("Import for custom regions"), this};
         toolBarLayout->addWidget(importForSelectedBtn);
+        importForSelectedBtn->setChecked(!importForSource);
 
         mImportRegionsCombo = new RegionComboBox{mDataProvider, IndustrySettings::miningLedgerImportRegionsKey, this};
         toolBarLayout->addWidget(mImportRegionsCombo);
-        mImportRegionsCombo->setEnabled(false);
+        mImportRegionsCombo->setEnabled(!importForSource);
 
         mSellStationBtn = new StationSelectButton{mDataProvider, sellStationPath, this};
         toolBarLayout->addWidget(mSellStationBtn);
-        mSellStationBtn->setEnabled(false);
+        mSellStationBtn->setEnabled(!importForSource);
         connect(mSellStationBtn, &StationSelectButton::stationChanged,
                 this, &IndustryMiningLedgerWidget::updateSellStation);
 
         connect(mImportForSourceBtn, &QRadioButton::toggled, this, [=](auto checked) {
             mImportRegionsCombo->setDisabled(checked);
             mSellStationBtn->setDisabled(checked);
+
+            QSettings settings;
+            settings.setValue(IndustrySettings::miningLedgerImportForMiningRegionsKey, checked);
         });
 
         toolBarLayout->addWidget(new QLabel{tr("Sell price type:"), this});
