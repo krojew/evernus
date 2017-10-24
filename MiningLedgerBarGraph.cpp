@@ -291,8 +291,10 @@ namespace Evernus
         endTarget.setX((selectedBar.y() - xMin) / xRange * 2.0f - 1.0f);
         endTarget.setZ((selectedBar.x() - zMin) / zRange * 2.0f - 1.0f);
 
+        const auto pi = 3.14159265359;
+
         // Rotate the camera so that it always points approximately to the graph center
-        auto endAngleX = std::atan(qreal(endTarget.z() / endTarget.x())) / M_PI * -180.0 + 90.0;
+        auto endAngleX = std::atan(static_cast<qreal>(endTarget.z() / endTarget.x())) / pi * -180.0 + 90.0;
         if (endTarget.x() > 0.0f)
             endAngleX -= 180.0f;
         const auto barValue = mGraph->selectedSeries()->dataProxy()->itemAt(selectedBar.x(), selectedBar.y())->value();
