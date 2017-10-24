@@ -14,14 +14,12 @@
  */
 #pragma once
 
-#include <unordered_map>
 #include <unordered_set>
-#include <vector>
-#include <memory>
 
 #include <QAbstractTableModel>
 
 #include "MiningLedgerRepository.h"
+#include "TypeSellPriceResolver.h"
 #include "ModelWithTypes.h"
 #include "Character.h"
 #include "PriceType.h"
@@ -33,7 +31,6 @@ namespace Evernus
 {
     class MiningLedgerRepository;
     class EveDataProvider;
-    class ExternalOrder;
 
     class MiningLedgerModel
         : public QAbstractTableModel
@@ -45,7 +42,7 @@ namespace Evernus
         using TypeList = std::unordered_set<EveType::IdType>;
         using SolarSystemList = std::unordered_set<uint>;
 
-        using OrderList = std::shared_ptr<std::vector<ExternalOrder>>;
+        using OrderList = TypeSellPriceResolver::OrderList;
 
         explicit MiningLedgerModel(const EveDataProvider &dataProvider,
                                    const MiningLedgerRepository &ledgerRepo,
@@ -89,11 +86,7 @@ namespace Evernus
 
         MiningLedgerRepository::EntityList mData;
 
-        OrderList mOrders;
-        std::unordered_map<EveType::IdType, double> mPrices;
-
-        PriceType mSellPriceType = PriceType::Sell;
-        quint64 mSellStation = 0;
+        TypeSellPriceResolver mPriceResolver;
 
         void refreshPrices();
         double getPrice(const MiningLedger &data) const;

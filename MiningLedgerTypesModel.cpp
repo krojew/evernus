@@ -18,6 +18,7 @@
 
 #include "EveDataProvider.h"
 #include "MiningLedger.h"
+#include "TextUtils.h"
 
 #include "MiningLedgerTypesModel.h"
 
@@ -52,6 +53,8 @@ namespace Evernus
                 return mDataProvider.getTypeName(data.mTypeId);
             case quantityColumn:
                 return QLocale{}.toString(data.mQuantity);
+            case profitColumn:
+                return TextUtils::currencyToString(getPrice(data), QLocale{});
             }
         }
         else if (role == Qt::UserRole)
@@ -62,6 +65,8 @@ namespace Evernus
                 return mDataProvider.getTypeName(data.mTypeId);
             case quantityColumn:
                 return data.mQuantity;
+            case profitColumn:
+                return getPrice(data);
             }
         }
 
@@ -77,6 +82,8 @@ namespace Evernus
                 return tr("Name");
             case quantityColumn:
                 return tr("Quantity");
+            case profitColumn:
+                return tr("Profit");
             }
         }
 
@@ -112,5 +119,36 @@ namespace Evernus
         const auto data = mLedgerRepo.fetchTypesForCharacter(charId, from, to);
         for (const auto &type : data)
             mData.emplace_back(AggregatedData{type.first, type.second});
+    }
+
+    void MiningLedgerTypesModel::setOrders(OrderList orders)
+    {
+        mPriceResolver.setOrders(std::move(orders));
+        refreshPrices();
+    }
+
+    void MiningLedgerTypesModel::setSellPriceType(PriceType type)
+    {
+        mPriceResolver.setSellPriceType(type);
+        refreshPrices();
+    }
+
+    void MiningLedgerTypesModel::setSellStation(quint64 stationId)
+    {
+        mPriceResolver.setSellStation(stationId);
+        refreshPrices();
+    }
+
+    void MiningLedgerTypesModel::refreshPrices()
+    {
+        if (!mData.empty())
+        {
+            emit dataChanged(index(0, profitColumn), index(static_cast<int>(mData.size()) - 1, profitColumn), { Qt::DisplayRole, Qt::UserRole });
+        }
+    }
+
+    double MiningLedgerTypesModel::getPrice(const AggregatedData &data) const
+    {
+        return mPriceResolver.getPrice(data.mTypeId, data.mQuantity);
     }
 }

@@ -785,6 +785,8 @@ add_executable(
     TypeLocationPairs.h
     TypePerformanceModel.cpp
     TypePerformanceModel.h
+    TypeSellPriceResolver.cpp
+    TypeSellPriceResolver.h
     UISettings.h
     Updater.cpp
     Updater.h

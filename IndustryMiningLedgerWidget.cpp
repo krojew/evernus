@@ -241,7 +241,10 @@ namespace Evernus
     void IndustryMiningLedgerWidget::updatePriceType()
     {
         Q_ASSERT(mSellPriceTypeCombo != nullptr);
-        mDetailsModel.setSellPriceType(mSellPriceTypeCombo->getPriceType());
+
+        const auto type = mSellPriceTypeCombo->getPriceType();
+        mDetailsModel.setSellPriceType(type);
+        mTypesModel.setSellPriceType(type);
     }
 
     void IndustryMiningLedgerWidget::updateOrderTask(const QString &text)
@@ -256,6 +259,8 @@ namespace Evernus
         if (error.isEmpty())
         {
             mDetailsModel.setOrders(orders);
+            mTypesModel.setOrders(orders);
+
             emit updateExternalOrders(*orders);
         }
 

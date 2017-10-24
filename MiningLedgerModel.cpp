@@ -12,16 +12,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <functional>
-
-#include <boost/range/adaptor/filtered.hpp>
 #include <boost/scope_exit.hpp>
 
 #include <QLocale>
 #include <QDate>
 
 #include "EveDataProvider.h"
-#include "ExternalOrder.h"
 #include "MiningLedger.h"
 #include "TextUtils.h"
 
@@ -164,50 +160,24 @@ namespace Evernus
 
     void MiningLedgerModel::setOrders(OrderList orders)
     {
-        mOrders = std::move(orders);
+        mPriceResolver.setOrders(std::move(orders));
         refreshPrices();
     }
 
     void MiningLedgerModel::setSellPriceType(PriceType type)
     {
-        mSellPriceType = type;
+        mPriceResolver.setSellPriceType(type);
         refreshPrices();
     }
 
     void MiningLedgerModel::setSellStation(quint64 stationId)
     {
-        mSellStation = stationId;
+        mPriceResolver.setSellStation(stationId);
         refreshPrices();
     }
 
     void MiningLedgerModel::refreshPrices()
     {
-        mPrices.clear();
-
-        if (mOrders)
-        {
-            const auto orderFilter = [=](const auto &order) {
-                return (order.getType() == mSellPriceType) && (mSellStation == 0 || mSellStation == order.getStationId());
-            };
-
-            std::function<bool(const ExternalOrder &, double)> isBetter;
-            if (mSellPriceType == PriceType::Buy)
-                isBetter = [](const auto &order, auto price) { return order.getPrice() > price; };
-            else
-                isBetter = [](const auto &order, auto price) { return order.getPrice() < price; };
-
-            for (const auto &order : *mOrders | boost::adaptors::filtered(orderFilter))
-            {
-                const auto typeId = order.getTypeId();
-                const auto existingPrice = mPrices.find(typeId);
-
-                if (existingPrice == std::end(mPrices))
-                    mPrices[typeId] = order.getPrice();
-                else if (isBetter(order, existingPrice->second))
-                    mPrices[order.getTypeId()] = order.getPrice();
-            }
-        }
-
         if (!mData.empty())
         {
             emit dataChanged(index(0, profitColumn), index(static_cast<int>(mData.size()) - 1, profitColumn), { Qt::DisplayRole, Qt::UserRole });
@@ -216,7 +186,6 @@ namespace Evernus
 
     double MiningLedgerModel::getPrice(const MiningLedger &data) const
     {
-        const auto price = mPrices.find(data.getTypeId());
-        return (price == std::end(mPrices)) ? (0.) : (price->second * data.getQuantity());
+        return mPriceResolver.getPrice(data.getTypeId(), data.getQuantity());
     }
 }

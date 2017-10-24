@@ -19,6 +19,7 @@
 #include <QAbstractTableModel>
 
 #include "MiningLedgerRepository.h"
+#include "TypeSellPriceResolver.h"
 #include "ModelWithTypes.h"
 #include "Character.h"
 #include "EveType.h"
@@ -37,9 +38,11 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit MiningLedgerTypesModel(const EveDataProvider &dataProvider,
-                                        const MiningLedgerRepository &ledgerRepo,
-                                        QObject *parent = nullptr);
+        using OrderList = TypeSellPriceResolver::OrderList;
+
+        MiningLedgerTypesModel(const EveDataProvider &dataProvider,
+                               const MiningLedgerRepository &ledgerRepo,
+                               QObject *parent = nullptr);
         MiningLedgerTypesModel(const MiningLedgerTypesModel &) = default;
         MiningLedgerTypesModel(MiningLedgerTypesModel &&) = default;
         virtual ~MiningLedgerTypesModel() = default;
@@ -53,6 +56,10 @@ namespace Evernus
 
         void refresh(Character::IdType charId, const QDate &from, const QDate &to);
 
+        void setOrders(OrderList orders);
+        void setSellPriceType(PriceType type);
+        void setSellStation(quint64 stationId);
+
         MiningLedgerTypesModel &operator =(const MiningLedgerTypesModel &) = default;
         MiningLedgerTypesModel &operator =(MiningLedgerTypesModel &&) = default;
 
@@ -61,6 +68,7 @@ namespace Evernus
         {
             nameColumn,
             quantityColumn,
+            profitColumn,
 
             numColumns
         };
@@ -75,5 +83,10 @@ namespace Evernus
         const MiningLedgerRepository &mLedgerRepo;
 
         std::vector<AggregatedData> mData;
+
+        TypeSellPriceResolver mPriceResolver;
+
+        void refreshPrices();
+        double getPrice(const AggregatedData &data) const;
     };
 }
