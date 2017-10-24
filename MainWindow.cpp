@@ -454,7 +454,7 @@ namespace Evernus
 
         connect(mAuthView.get(), &SSOAuthDialog::acquiredCode, this, [=](const auto &code) {
             mAuthView->disconnect(this);
-            mAuthView->close();
+            mAuthView.reset();
 
             emit gotSSOAuthorizationCode(charId, code);
         });
@@ -467,6 +467,9 @@ namespace Evernus
             {
                 if (url.host() == redirectDomain)
                 {
+                    mAuthView->disconnect(this);
+                    mAuthView.reset();
+
                     QUrlQuery query{url};
                     emit gotSSOAuthorizationCode(charId, query.queryItemValue(QStringLiteral("code")).toLatin1());
                 }
