@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <memory>
+#include <cmath>
 #include <map>
 #include <set>
 
@@ -24,6 +25,7 @@
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <QStringList>
+#include <QPushButton>
 #include <QCheckBox>
 #include <QComboBox>
 #include <Q3DCamera>
@@ -55,14 +57,14 @@ namespace Evernus
     {
         const auto mainLayout = new QHBoxLayout{this};
 
-        const auto graph = new Q3DBars{};
+        mGraph = new Q3DBars{};
 
-        const auto container = QWidget::createWindowContainer(graph, this);
+        const auto container = QWidget::createWindowContainer(mGraph, this);
         mainLayout->addWidget(container, 1);
 
-        if (!graph->hasContext())
+        if (!mGraph->hasContext())
         {
-            QMessageBox::warning(nullptr, tr("Mining ledger"), tr("Couldn't initialize graph!"));
+            QMessageBox::warning(nullptr, tr("Mining ledger"), tr("Couldn't initialize mGraph!"));
             return;
         }
 
@@ -74,16 +76,39 @@ namespace Evernus
 
         mValueAxis->setLabelFormat(QStringLiteral("%i"));
 
-        graph->setColumnAxis(mTypeAxis);
-        graph->setRowAxis(mSolarSystemAxis);
-        graph->setValueAxis(mValueAxis);
+        mGraph->setColumnAxis(mTypeAxis);
+        mGraph->setRowAxis(mSolarSystemAxis);
+        mGraph->setValueAxis(mValueAxis);
 
         mMinedTypesSeries->setItemLabelFormat(QStringLiteral("(@rowLabel, @colLabel): %i"));
         mMinedTypesSeries->setMesh(QAbstract3DSeries::MeshBevelBar);
 
-        graph->addSeries(mMinedTypesSeries);
+        mGraph->addSeries(mMinedTypesSeries);
 
-        graph->scene()->activeCamera()->setCameraPreset(Q3DCamera::CameraPresetIsometricRightHigh);
+        const auto camera = mGraph->scene()->activeCamera();
+        camera->setCameraPreset(Q3DCamera::CameraPresetIsometricRightHigh);
+
+        mCameraXAnim.setTargetObject(camera);
+        mCameraYAnim.setTargetObject(camera);
+        mCameraZoomAnim.setTargetObject(camera);
+        mCameraTargetAnim.setTargetObject(camera);
+
+        mCameraXAnim.setPropertyName("xRotation");
+        mCameraYAnim.setPropertyName("yRotation");
+        mCameraZoomAnim.setPropertyName("zoomLevel");
+        mCameraTargetAnim.setPropertyName("target");
+
+        const auto animDuration = 1700;
+        mCameraXAnim.setDuration(animDuration);
+        mCameraYAnim.setDuration(animDuration);
+        mCameraZoomAnim.setDuration(animDuration);
+        mCameraTargetAnim.setDuration(animDuration);
+
+        const auto zoomOutFraction = 0.3;
+        mCameraXAnim.setKeyValueAt(zoomOutFraction, QVariant::fromValue(0.0f));
+        mCameraYAnim.setKeyValueAt(zoomOutFraction, QVariant::fromValue(90.0f));
+        mCameraZoomAnim.setKeyValueAt(zoomOutFraction, QVariant::fromValue(50.0f));
+        mCameraTargetAnim.setKeyValueAt(zoomOutFraction, QVariant::fromValue(QVector3D{0.0f, 0.0f, 0.0f}));
 
         const auto infoLayout = new QVBoxLayout{};
         mainLayout->addLayout(infoLayout);
@@ -122,7 +147,12 @@ namespace Evernus
         cameraPresetCombo->addItem(tr("Directly Above CCW45"), Q3DCamera::CameraPresetDirectlyAboveCCW45);
         connect(cameraPresetCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
                 this, [=] {
-            graph->scene()->activeCamera()->setCameraPreset(static_cast<Q3DCamera::CameraPreset>(cameraPresetCombo->currentData().toInt()));
+            stopCameraAnimations();
+
+            const auto camera = mGraph->scene()->activeCamera();
+
+            camera->setTarget({ 0.f, 0.f, 0.f });
+            camera->setCameraPreset(static_cast<Q3DCamera::CameraPreset>(cameraPresetCombo->currentData().toInt()));
         });
 
         infoLayout->addWidget(new QLabel{tr("Bar style"), this});
@@ -146,29 +176,22 @@ namespace Evernus
         const auto fontSizeSlider = new QSlider{Qt::Horizontal, this};
         infoLayout->addWidget(fontSizeSlider);
         fontSizeSlider->setRange(1, 100);
-        fontSizeSlider->setValue(graph->activeTheme()->font().pointSize());
-        connect(fontSizeSlider, &QSlider::valueChanged, this, [=](auto value) {
-            const auto theme = graph->activeTheme();
-
-            auto font = theme->font();
-            font.setPointSize(value);
-
-            theme->setFont(font);
-        });
+        fontSizeSlider->setValue(mGraph->activeTheme()->font().pointSize());
+        connect(fontSizeSlider, &QSlider::valueChanged, this, &MiningLedgerBarGraph::setFontSize);
 
         const auto gridBtn = new QCheckBox{tr("Show grid"), this};
         infoLayout->addWidget(gridBtn);
-        gridBtn->setChecked(graph->activeTheme()->isGridEnabled());
-        connect(gridBtn, &QCheckBox::stateChanged, this, [=](auto state) {
-            graph->activeTheme()->setGridEnabled(state == Qt::Checked);
-        });
+        gridBtn->setChecked(mGraph->activeTheme()->isGridEnabled());
+        connect(gridBtn, &QCheckBox::stateChanged, this, &MiningLedgerBarGraph::setGridEnabled);
 
         const auto smoothBtn = new QCheckBox{tr("Smooth bars"), this};
         infoLayout->addWidget(smoothBtn);
         smoothBtn->setChecked(mMinedTypesSeries->isMeshSmooth());
-        connect(smoothBtn, &QCheckBox::stateChanged, this, [=](auto state) {
-            mMinedTypesSeries->setMeshSmooth(state == Qt::Checked);
-        });
+        connect(smoothBtn, &QCheckBox::stateChanged, this, &MiningLedgerBarGraph::setMeshSmooth);
+
+        const auto zoomBtn = new QPushButton{tr("Zoom to selection"), this};
+        infoLayout->addWidget(zoomBtn);
+        connect(zoomBtn, &QPushButton::clicked, this, &MiningLedgerBarGraph::zoomToSelectedBar);
     }
 
     void MiningLedgerBarGraph::refresh(Character::IdType charId, const QDate &from, const QDate &to)
@@ -215,5 +238,84 @@ namespace Evernus
             colLabels << typeName;
 
         mMinedTypesSeries->dataProxy()->resetArray(dataSet.release(), rowLabels, colLabels);
+    }
+
+    void MiningLedgerBarGraph::setFontSize(int size)
+    {
+        const auto theme = mGraph->activeTheme();
+
+        auto font = theme->font();
+        font.setPointSize(size);
+
+        theme->setFont(font);
+    }
+
+    void MiningLedgerBarGraph::setGridEnabled(int state)
+    {
+        mGraph->activeTheme()->setGridEnabled(state == Qt::Checked);
+    }
+
+    void MiningLedgerBarGraph::setMeshSmooth(int state)
+    {
+        mMinedTypesSeries->setMeshSmooth(state == Qt::Checked);
+    }
+
+    void MiningLedgerBarGraph::zoomToSelectedBar()
+    {
+        const auto selectedBar = (mGraph->selectedSeries()) ?
+                                 (mGraph->selectedSeries()->selectedBar()) :
+                                 (QBar3DSeries::invalidSelectionPosition());
+        if (selectedBar == QBar3DSeries::invalidSelectionPosition())
+            return;
+
+        stopCameraAnimations();
+
+        const auto camera = mGraph->scene()->activeCamera();
+
+        const auto currentX = camera->xRotation();
+        const auto currentY = camera->yRotation();
+        const auto currentZoom = camera->zoomLevel();
+        const auto currentTarget = camera->target();
+
+        mCameraXAnim.setStartValue(QVariant::fromValue(currentX));
+        mCameraYAnim.setStartValue(QVariant::fromValue(currentY));
+        mCameraZoomAnim.setStartValue(QVariant::fromValue(currentZoom));
+        mCameraTargetAnim.setStartValue(QVariant::fromValue(currentTarget));
+
+        // Normalize selected bar position within axis range to determine target coordinates
+        QVector3D endTarget;
+        const auto xMin = mGraph->columnAxis()->min();
+        const auto xRange = mGraph->columnAxis()->max() - xMin;
+        const auto zMin = mGraph->rowAxis()->min();
+        const auto zRange = mGraph->rowAxis()->max() - zMin;
+        endTarget.setX((selectedBar.y() - xMin) / xRange * 2.0f - 1.0f);
+        endTarget.setZ((selectedBar.x() - zMin) / zRange * 2.0f - 1.0f);
+
+        // Rotate the camera so that it always points approximately to the graph center
+        auto endAngleX = std::atan(qreal(endTarget.z() / endTarget.x())) / M_PI * -180.0 + 90.0;
+        if (endTarget.x() > 0.0f)
+            endAngleX -= 180.0f;
+        const auto barValue = mGraph->selectedSeries()->dataProxy()->itemAt(selectedBar.x(), selectedBar.y())->value();
+        auto endAngleY = (barValue >= 0.0f) ? (30.0f) : (-30.0f);
+        if (mGraph->valueAxis()->reversed())
+            endAngleY *= -1.0f;
+
+        mCameraXAnim.setEndValue(QVariant::fromValue(float(endAngleX)));
+        mCameraYAnim.setEndValue(QVariant::fromValue(endAngleY));
+        mCameraZoomAnim.setEndValue(QVariant::fromValue(250));
+        mCameraTargetAnim.setEndValue(QVariant::fromValue(endTarget));
+
+        mCameraXAnim.start();
+        mCameraYAnim.start();
+        mCameraZoomAnim.start();
+        mCameraTargetAnim.start();
+    }
+
+    void MiningLedgerBarGraph::stopCameraAnimations()
+    {
+        mCameraXAnim.stop();
+        mCameraYAnim.stop();
+        mCameraZoomAnim.stop();
+        mCameraTargetAnim.stop();
     }
 }

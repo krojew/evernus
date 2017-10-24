@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <QPropertyAnimation>
 #include <QWidget>
 
 #include "Character.h"
@@ -25,6 +26,7 @@ namespace QtDataVisualization
     class QCategory3DAxis;
     class QValue3DAxis;
     class QBar3DSeries;
+    class Q3DBars;
 }
 
 namespace Evernus
@@ -50,13 +52,27 @@ namespace Evernus
         MiningLedgerBarGraph &operator =(const MiningLedgerBarGraph &) = default;
         MiningLedgerBarGraph &operator =(MiningLedgerBarGraph &&) = default;
 
+    private slots:
+        void setFontSize(int size);
+        void setGridEnabled(int state);
+        void setMeshSmooth(int state);
+        void zoomToSelectedBar();
+
     private:
         const MiningLedgerRepository &mLedgerRepo;
         const EveDataProvider &mDataProvider;
 
+        QtDataVisualization::Q3DBars *mGraph = nullptr;
         QtDataVisualization::QCategory3DAxis *mTypeAxis = nullptr;
         QtDataVisualization::QCategory3DAxis *mSolarSystemAxis = nullptr;
         QtDataVisualization::QValue3DAxis *mValueAxis = nullptr;
         QtDataVisualization::QBar3DSeries *mMinedTypesSeries = nullptr;
+
+        QPropertyAnimation mCameraXAnim;
+        QPropertyAnimation mCameraYAnim;
+        QPropertyAnimation mCameraZoomAnim;
+        QPropertyAnimation mCameraTargetAnim;
+
+        void stopCameraAnimations();
     };
 }
