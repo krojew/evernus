@@ -459,8 +459,8 @@ namespace Evernus
             emit gotSSOAuthorizationCode(charId, code);
         });
         connect(mAuthView.get(), &SSOAuthDialog::aboutToClose, this, [=] {
-            emit ssoAuthCanceled(charId);
             mAuthView.reset();
+            emit ssoAuthCanceled(charId);
         });
         connect(mAuthView->page(), &QWebEnginePage::urlChanged, this, [=](const QUrl &url) {
             try
