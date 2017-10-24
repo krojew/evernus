@@ -184,7 +184,7 @@ namespace Evernus
     {
         mPrices.clear();
 
-        if (Q_LIKELY(mOrders))
+        if (mOrders)
         {
             const auto orderFilter = [=](const auto &order) {
                 return (order.getType() == mSellPriceType) && (mSellStation == 0 || mSellStation == order.getStationId());
@@ -198,7 +198,12 @@ namespace Evernus
 
             for (const auto &order : *mOrders | boost::adaptors::filtered(orderFilter))
             {
-                if (isBetter(order, mPrices[order.getTypeId()]))
+                const auto typeId = order.getTypeId();
+                const auto existingPrice = mPrices.find(typeId);
+
+                if (existingPrice == std::end(mPrices))
+                    mPrices[typeId] = order.getPrice();
+                else if (isBetter(order, existingPrice->second))
                     mPrices[order.getTypeId()] = order.getPrice();
             }
         }
