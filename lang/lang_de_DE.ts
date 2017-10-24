@@ -187,327 +187,58 @@
 <context>
     <name>DefaultColorDialog</name>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="280"/>
-        <source>Hue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="301"/>
-        <source>Saturation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="317"/>
-        <source>Luminosity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="335"/>
-        <source>Alpha</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="394"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbruch</translation>
+        <translation type="obsolete">Abbruch</translation>
     </message>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="399"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
-    </message>
-</context>
-<context>
-    <name>DefaultDialogWrapper</name>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultDialogWrapper.qml" line="118"/>
-        <source>Show Details...</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">OK</translation>
     </message>
 </context>
 <context>
     <name>DefaultFileDialog</name>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="148"/>
-        <source>Go up to the folder containing this one</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="269"/>
-        <source>Remove favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="311"/>
-        <source>Add the current directory as a favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="349"/>
-        <source>Filename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="376"/>
         <source>Type</source>
         <comment>file type (extension)</comment>
-        <translation type="unfinished">Typ</translation>
+        <translation type="obsolete">Typ</translation>
     </message>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="399"/>
-        <source>Size</source>
-        <comment>file size</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="402"/>
-        <source>Modified</source>
-        <comment>last-modified time</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="403"/>
-        <source>Accessed</source>
-        <comment>last-accessed time</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="468"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbruch</translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="473"/>
-        <source>Choose</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="473"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="473"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Abbruch</translation>
     </message>
 </context>
 <context>
     <name>DefaultFontDialog</name>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="120"/>
-        <source>Font</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="121"/>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="202"/>
-        <source>Weight</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="122"/>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="276"/>
-        <source>Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="135"/>
-        <source>Font Family</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="205"/>
-        <source>Thin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="206"/>
-        <source>ExtraLight</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="207"/>
-        <source>Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="208"/>
-        <source>Normal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="209"/>
-        <source>Medium</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="210"/>
-        <source>DemiBold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="211"/>
-        <source>Bold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="212"/>
-        <source>ExtraBold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="213"/>
-        <source>Black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="303"/>
-        <source>Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="306"/>
-        <source>Italic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="312"/>
-        <source>Underline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="318"/>
-        <source>Overline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="324"/>
-        <source>Strikeout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="329"/>
-        <source>Writing System</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="338"/>
-        <source>Sample</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="390"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbruch</translation>
+        <translation type="obsolete">Abbruch</translation>
     </message>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="394"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="obsolete">OK</translation>
     </message>
 </context>
 <context>
     <name>DefaultMessageDialog</name>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="142"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="148"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="154"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="160"/>
-        <source>Save All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="166"/>
-        <source>Retry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="172"/>
-        <source>Ignore</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="178"/>
         <source>Apply</source>
-        <translation type="unfinished">Anwenden</translation>
+        <translation type="obsolete">Anwenden</translation>
     </message>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="184"/>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="190"/>
-        <source>Yes to All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="196"/>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="202"/>
-        <source>No to All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="208"/>
-        <source>Discard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="214"/>
         <source>Reset</source>
-        <translation type="unfinished">Zurücksetzen</translation>
+        <translation type="obsolete">Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="220"/>
-        <source>Restore Defaults</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="226"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbruch</translation>
+        <translation type="obsolete">Abbruch</translation>
     </message>
     <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="232"/>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="238"/>
         <source>Close</source>
-        <translation type="unfinished">Schließen</translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="244"/>
-        <source>Show Details...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="250"/>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="306"/>
-        <source>Hide Details</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Schließen</translation>
     </message>
 </context>
 <context>
@@ -524,44 +255,8 @@
 <context>
     <name>EditMenu_base</name>
     <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="51"/>
-        <source>&amp;Undo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="62"/>
-        <source>&amp;Redo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="73"/>
-        <source>Cu&amp;t</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="87"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished">&amp;Kopieren</translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="101"/>
-        <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="112"/>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="123"/>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="134"/>
-        <source>Select All</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Kopieren</translation>
     </message>
 </context>
 <context>
@@ -7104,50 +6799,210 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::MiningLedgerBarGraph</name>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="60"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="65"/>
         <source>Mining ledger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="60"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="65"/>
         <source>Couldn&apos;t initialize graph!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="64"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="69"/>
         <source>Mined type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="67"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="72"/>
         <source>Solar system</source>
         <translation type="unfinished">Sternensystem</translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="93"/>
+        <source>Hold the right mouse button to rotate the camera. Use the mouse wheel to zoom, and the left button to select data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="99"/>
+        <source>Camera preset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="103"/>
+        <source>None</source>
+        <translation type="unfinished">Keine</translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="104"/>
+        <source>Front Low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="105"/>
+        <source>Front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="106"/>
+        <source>Front High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="107"/>
+        <source>Left Low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="108"/>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="109"/>
+        <source>Left High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="110"/>
+        <source>Right Low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="111"/>
+        <source>Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="112"/>
+        <source>Right High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="113"/>
+        <source>Behind Low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="114"/>
+        <source>Behind</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="115"/>
+        <source>Behind High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="116"/>
+        <source>Isometric Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="117"/>
+        <source>Isometric Left High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="118"/>
+        <source>Isometric Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="119"/>
+        <source>Isometric Right High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="120"/>
+        <source>Directly Above</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="121"/>
+        <source>Directly Above CW45</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="122"/>
+        <source>Directly Above CCW45</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="128"/>
+        <source>Bar style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="132"/>
+        <source>Bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="133"/>
+        <source>Pyramid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="134"/>
+        <source>Cone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="135"/>
+        <source>Cylinder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="136"/>
+        <source>Bevel Bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="137"/>
+        <source>Sphere</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="144"/>
+        <source>Font size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="159"/>
+        <source>Show grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerBarGraph.cpp" line="166"/>
+        <source>Smooth bars</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Evernus::MiningLedgerModel</name>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="96"/>
+        <location filename="../MiningLedgerModel.cpp" line="95"/>
         <source>Name</source>
         <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="98"/>
+        <location filename="../MiningLedgerModel.cpp" line="97"/>
         <source>Date</source>
         <translation type="unfinished">Datum</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="100"/>
+        <location filename="../MiningLedgerModel.cpp" line="99"/>
         <source>Quantity</source>
         <translation type="unfinished">Menge</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="102"/>
+        <location filename="../MiningLedgerModel.cpp" line="101"/>
         <source>Solar system</source>
         <translation type="unfinished">Sternensystem</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerModel.cpp" line="104"/>
+        <location filename="../MiningLedgerModel.cpp" line="103"/>
         <source>Profit</source>
         <translation type="unfinished">Profit</translation>
     </message>
@@ -7168,14 +7023,19 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::MiningLedgerTypesModel</name>
     <message>
-        <location filename="../MiningLedgerTypesModel.cpp" line="77"/>
+        <location filename="../MiningLedgerTypesModel.cpp" line="82"/>
         <source>Name</source>
         <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerTypesModel.cpp" line="79"/>
+        <location filename="../MiningLedgerTypesModel.cpp" line="84"/>
         <source>Quantity</source>
         <translation type="unfinished">Menge</translation>
+    </message>
+    <message>
+        <location filename="../MiningLedgerTypesModel.cpp" line="86"/>
+        <source>Profit</source>
+        <translation type="unfinished">Profit</translation>
     </message>
 </context>
 <context>

@@ -21,11 +21,17 @@
 #include <QValue3DAxis>
 #include <QBar3DSeries>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QMessageBox>
 #include <QStringList>
+#include <QCheckBox>
+#include <QComboBox>
 #include <Q3DCamera>
 #include <Q3DScene>
+#include <Q3DTheme>
+#include <QSlider>
 #include <Q3DBars>
+#include <QLabel>
 
 #include "MiningLedgerRepository.h"
 #include "EveDataProvider.h"
@@ -48,12 +54,11 @@ namespace Evernus
         , mMinedTypesSeries{new QBar3DSeries{this}}
     {
         const auto mainLayout = new QHBoxLayout{this};
-        mainLayout->setContentsMargins(0, 0, 0, 0);     // remove if adding something else to the layout
 
         const auto graph = new Q3DBars{};
 
         const auto container = QWidget::createWindowContainer(graph, this);
-        mainLayout->addWidget(container);
+        mainLayout->addWidget(container, 1);
 
         if (!graph->hasContext())
         {
@@ -79,6 +84,91 @@ namespace Evernus
         graph->addSeries(mMinedTypesSeries);
 
         graph->scene()->activeCamera()->setCameraPreset(Q3DCamera::CameraPresetIsometricRightHigh);
+
+        const auto infoLayout = new QVBoxLayout{};
+        mainLayout->addLayout(infoLayout);
+        infoLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+        const auto infoText = new QLabel{
+            tr("Hold the right mouse button to rotate the camera. Use the mouse wheel to zoom, and the left button to select data."),
+            this
+        };
+        infoText->setWordWrap(true);
+        infoLayout->addWidget(infoText);
+
+        infoLayout->addWidget(new QLabel{tr("Camera preset"), this});
+
+        const auto cameraPresetCombo = new QComboBox{this};
+        infoLayout->addWidget(cameraPresetCombo);
+        cameraPresetCombo->addItem(tr("None"), Q3DCamera::CameraPresetNone);
+        cameraPresetCombo->addItem(tr("Front Low"), Q3DCamera::CameraPresetFrontLow);
+        cameraPresetCombo->addItem(tr("Front"), Q3DCamera::CameraPresetFront);
+        cameraPresetCombo->addItem(tr("Front High"), Q3DCamera::CameraPresetFrontHigh);
+        cameraPresetCombo->addItem(tr("Left Low"), Q3DCamera::CameraPresetLeftLow);
+        cameraPresetCombo->addItem(tr("Left"), Q3DCamera::CameraPresetLeft);
+        cameraPresetCombo->addItem(tr("Left High"), Q3DCamera::CameraPresetLeftHigh);
+        cameraPresetCombo->addItem(tr("Right Low"), Q3DCamera::CameraPresetRightLow);
+        cameraPresetCombo->addItem(tr("Right"), Q3DCamera::CameraPresetRight);
+        cameraPresetCombo->addItem(tr("Right High"), Q3DCamera::CameraPresetRightHigh);
+        cameraPresetCombo->addItem(tr("Behind Low"), Q3DCamera::CameraPresetBehindLow);
+        cameraPresetCombo->addItem(tr("Behind"), Q3DCamera::CameraPresetBehind);
+        cameraPresetCombo->addItem(tr("Behind High"), Q3DCamera::CameraPresetBehindHigh);
+        cameraPresetCombo->addItem(tr("Isometric Left"), Q3DCamera::CameraPresetIsometricLeft);
+        cameraPresetCombo->addItem(tr("Isometric Left High"), Q3DCamera::CameraPresetIsometricLeftHigh);
+        cameraPresetCombo->addItem(tr("Isometric Right"), Q3DCamera::CameraPresetIsometricRight);
+        cameraPresetCombo->addItem(tr("Isometric Right High"), Q3DCamera::CameraPresetIsometricRightHigh);
+        cameraPresetCombo->addItem(tr("Directly Above"), Q3DCamera::CameraPresetDirectlyAbove);
+        cameraPresetCombo->addItem(tr("Directly Above CW45"), Q3DCamera::CameraPresetDirectlyAboveCW45);
+        cameraPresetCombo->addItem(tr("Directly Above CCW45"), Q3DCamera::CameraPresetDirectlyAboveCCW45);
+        connect(cameraPresetCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                this, [=] {
+            graph->scene()->activeCamera()->setCameraPreset(static_cast<Q3DCamera::CameraPreset>(cameraPresetCombo->currentData().toInt()));
+        });
+
+        infoLayout->addWidget(new QLabel{tr("Bar style"), this});
+
+        const auto barStyleCombo = new QComboBox{this};
+        infoLayout->addWidget(barStyleCombo);
+        barStyleCombo->addItem(tr("Bar"), QAbstract3DSeries::MeshBar);
+        barStyleCombo->addItem(tr("Pyramid"), QAbstract3DSeries::MeshPyramid);
+        barStyleCombo->addItem(tr("Cone"), QAbstract3DSeries::MeshCone);
+        barStyleCombo->addItem(tr("Cylinder"), QAbstract3DSeries::MeshCylinder);
+        barStyleCombo->addItem(tr("Bevel Bar"), QAbstract3DSeries::MeshBevelBar);
+        barStyleCombo->addItem(tr("Sphere"), QAbstract3DSeries::MeshSphere);
+        barStyleCombo->setCurrentIndex(4);
+        connect(barStyleCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                this, [=] {
+            mMinedTypesSeries->setMesh(static_cast<QAbstract3DSeries::Mesh>(barStyleCombo->currentData().toInt()));
+        });
+
+        infoLayout->addWidget(new QLabel{tr("Font size"), this});
+
+        const auto fontSizeSlider = new QSlider{Qt::Horizontal, this};
+        infoLayout->addWidget(fontSizeSlider);
+        fontSizeSlider->setRange(1, 100);
+        fontSizeSlider->setValue(graph->activeTheme()->font().pointSize());
+        connect(fontSizeSlider, &QSlider::valueChanged, this, [=](auto value) {
+            const auto theme = graph->activeTheme();
+
+            auto font = theme->font();
+            font.setPointSize(value);
+
+            theme->setFont(font);
+        });
+
+        const auto gridBtn = new QCheckBox{tr("Show grid"), this};
+        infoLayout->addWidget(gridBtn);
+        gridBtn->setChecked(graph->activeTheme()->isGridEnabled());
+        connect(gridBtn, &QCheckBox::stateChanged, this, [=](auto state) {
+            graph->activeTheme()->setGridEnabled(state == Qt::Checked);
+        });
+
+        const auto smoothBtn = new QCheckBox{tr("Smooth bars"), this};
+        infoLayout->addWidget(smoothBtn);
+        smoothBtn->setChecked(mMinedTypesSeries->isMeshSmooth());
+        connect(smoothBtn, &QCheckBox::stateChanged, this, [=](auto state) {
+            mMinedTypesSeries->setMeshSmooth(state == Qt::Checked);
+        });
     }
 
     void MiningLedgerBarGraph::refresh(Character::IdType charId, const QDate &from, const QDate &to)
