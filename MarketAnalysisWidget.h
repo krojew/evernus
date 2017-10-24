@@ -76,9 +76,14 @@ namespace Evernus
 
         void showInEve(EveType::IdType id, Character::IdType ownerId);
 
+        void ssoAuthRequested(Character::IdType charId);
+
     public slots:
         void setCharacter(Character::IdType id);
         void showForCurrentRegion();
+
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
 
     private slots:
         void prepareOrderImport();

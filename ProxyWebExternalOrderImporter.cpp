@@ -59,6 +59,24 @@ namespace Evernus
         }
     }
 
+    void ProxyWebExternalOrderImporter::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        Q_ASSERT(mESIIndividualImporter);
+        Q_ASSERT(mESIWholeImporter);
+
+        mESIIndividualImporter->processAuthorizationCode(charId, code);
+        mESIWholeImporter->processAuthorizationCode(charId, code);
+    }
+
+    void ProxyWebExternalOrderImporter::cancelSSOAuth(Character::IdType charId)
+    {
+        Q_ASSERT(mESIIndividualImporter);
+        Q_ASSERT(mESIWholeImporter);
+
+        mESIIndividualImporter->cancelSSOAuth(charId);
+        mESIWholeImporter->cancelSSOAuth(charId);
+    }
+
     void ProxyWebExternalOrderImporter::handleNewPreferences()
     {
         setCurrentImporter();
@@ -73,6 +91,8 @@ namespace Evernus
                 this, &ProxyWebExternalOrderImporter::error);
         connect(&importer, &T::statusChanged,
                 this, &ProxyWebExternalOrderImporter::statusChanged);
+        connect(&importer, &T::ssoAuthRequested,
+                this, &ProxyWebExternalOrderImporter::ssoAuthRequested);
     }
 
     void ProxyWebExternalOrderImporter::setCurrentImporter()

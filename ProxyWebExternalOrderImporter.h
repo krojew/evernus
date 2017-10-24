@@ -40,7 +40,13 @@ namespace Evernus
 
         virtual void fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const override;
 
+    signals:
+        void ssoAuthRequested(Character::IdType charId);
+
     public slots:
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
+
         void handleNewPreferences();
 
     private:

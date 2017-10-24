@@ -54,14 +54,16 @@ namespace Evernus
 
     signals:
         void orderStatusUpdated(const QString &text);
-
         void orderImportEnded(const OrderResultType &result, const QString &error);
-
         void genericError(const QString &text);
+        void ssoAuthRequested(Character::IdType charId);
 
     public slots:
         void importData(const TypeLocationPairs &pairs,
                         Character::IdType charId);
+
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
 
     private:
         const EveDataProvider &mDataProvider;

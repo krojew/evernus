@@ -185,6 +185,8 @@ namespace Evernus
                 this, &IndustryMiningLedgerWidget::updateOrderTask);
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
                 this, &IndustryMiningLedgerWidget::endOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::ssoAuthRequested,
+                this, &IndustryMiningLedgerWidget::ssoAuthRequested);
         connect(&mDataFetcher, &MarketOrderDataFetcher::genericError,
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
@@ -194,6 +196,7 @@ namespace Evernus
     void IndustryMiningLedgerWidget::refresh()
     {
         Q_ASSERT(mRangeFilter != nullptr);
+        Q_ASSERT(mGraphWidget != nullptr);
 
         const auto charId = getCharacterId();
         const auto from = mRangeFilter->getFrom();
@@ -203,6 +206,16 @@ namespace Evernus
         mTypesModel.refresh(charId, from, to);
         mSolarSystemsModel.refresh(charId, from, to);
         mGraphWidget->refresh(charId, from, to);
+    }
+
+    void IndustryMiningLedgerWidget::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mDataFetcher.processAuthorizationCode(charId, code);
+    }
+
+    void IndustryMiningLedgerWidget::cancelSSOAuth(Character::IdType charId)
+    {
+        mDataFetcher.cancelSSOAuth(charId);
     }
 
     void IndustryMiningLedgerWidget::importData()

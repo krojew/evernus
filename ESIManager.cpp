@@ -21,8 +21,6 @@
 #include <QtDebug>
 
 #include <QFutureWatcher>
-#include <QDesktopWidget>
-#include <QWebEnginePage>
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QApplication>
@@ -30,7 +28,6 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QByteArray>
-#include <QUrlQuery>
 #include <QSettings>
 #include <QThread>
 #include <QHash>
@@ -58,7 +55,6 @@ namespace Evernus
     const QString ESIManager::loginUrl = "https://login.eveonline.com";
 #endif
 
-    const QString ESIManager::redirectDomain = "evernus.com";
     const QString ESIManager::firstTimeCitadelOrderImportKey = "import/firstTimeCitadelOrderImport";
 
     std::unordered_map<Character::IdType, QString> ESIManager::mRefreshTokens;
@@ -893,86 +889,7 @@ namespace Evernus
             if (it == std::end(mRefreshTokens))
             {
                 qDebug() << "No refresh token - requesting access.";
-
-                QUrl url{loginUrl + "/oauth/authorize"};
-
-                QUrlQuery query;
-                query.addQueryItem(QStringLiteral("response_type"), QStringLiteral("code"));
-                query.addQueryItem(QStringLiteral("redirect_uri"), QStringLiteral("http://%1/sso-authentication/").arg(redirectDomain));
-                query.addQueryItem(QStringLiteral("client_id"), mClientId);
-                query.addQueryItem(
-                    QStringLiteral("scope"),
-                    QStringLiteral(
-                        "esi-skills.read_skills.v1 "
-                        "esi-wallet.read_character_wallet.v1 "
-                        "esi-assets.read_assets.v1 "
-                        "esi-ui.open_window.v1 "
-                        "esi-ui.write_waypoint.v1 "
-                        "esi-markets.structure_markets.v1 "
-                        "esi-markets.read_character_orders.v1 "
-                        "esi-characters.read_blueprints.v1 "
-                        "esi-contracts.read_character_contracts.v1 "
-                        "esi-industry.read_character_mining.v1"
-                    )
-                );
-
-                url.setQuery(query);
-
-                mAuthView.reset(new SSOAuthWidget{url});
-
-                QString charName;
-                auto charNameFound = false;
-
-                std::tie(charName, charNameFound) = getCharacterName(charId);
-
-                if (charName.isEmpty())
-                    mAuthView->setWindowTitle(tr("SSO Authentication for unknown character: %1").arg(charId));
-                else
-                    mAuthView->setWindowTitle(getAuthWidowTitle(charName));
-
-                mAuthView->setWindowModality(Qt::ApplicationModal);
-                mAuthView->adjustSize();
-                mAuthView->move(QApplication::desktop()->screenGeometry(mAuthView.get()).center() -
-                                mAuthView->rect().center());
-                mAuthView->show();
-
-                connect(mAuthView.get(), &SSOAuthWidget::acquiredCode, this, [=](const auto &code) {
-                    processAuthorizationCode(charId, code);
-                });
-                connect(mAuthView.get(), &SSOAuthWidget::aboutToClose, this, [=] {
-                    mPendingTokenRefresh.erase(charId);
-                    mFetchingToken = false;
-
-                    qDebug() << "Auth window closed.";
-                    emit tokenError(charId, tr("SSO authorization failed."));
-
-                    scheduleNextTokenFetch();
-
-                    mAuthView.reset();
-                });
-                connect(mAuthView->page(), &QWebEnginePage::urlChanged, this, [=](const QUrl &url) {
-                    try
-                    {
-                        if (url.host() == redirectDomain)
-                        {
-                            QUrlQuery query{url};
-                            processAuthorizationCode(charId, query.queryItemValue(QStringLiteral("code")).toLatin1());
-                        }
-                    }
-                    catch (...)
-                    {
-                        mPendingTokenRefresh.clear();
-                        mFetchingToken = false;
-                        throw;
-                    }
-                });
-
-                if (!charNameFound)
-                {
-                    connect(&mDataProvider, &EveDataProvider::namesChanged, mAuthView.get(), [=] {
-                        mAuthView->setWindowTitle(getAuthWidowTitle(mDataProvider.getGenericName(charId)));
-                    });
-                }
+                emit ssoAuthRequested(charId);
             }
             else
             {
@@ -1049,6 +966,17 @@ namespace Evernus
             mFetchingToken = false;
             throw;
         }
+    }
+
+    void ESIManager::cancelSSOAuth(Character::IdType charId)
+    {
+        mPendingTokenRefresh.erase(charId);
+        mFetchingToken = false;
+
+        qDebug() << "Auth window closed.";
+        emit tokenError(charId, tr("SSO authorization failed."));
+
+        scheduleNextTokenFetch();
     }
 
     void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
@@ -1217,9 +1145,6 @@ namespace Evernus
     {
         try
         {
-            mAuthView->disconnect(this);
-            mAuthView->close();
-
             qDebug() << "Requesting access token...";
 
             QByteArray data = "grant_type=authorization_code&code=" + code;
@@ -1465,10 +1390,5 @@ namespace Evernus
         request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
         return request;
-    }
-
-    QString ESIManager::getAuthWidowTitle(const QString &charName)
-    {
-        return tr("SSO Authentication for character: %1").arg(charName);
     }
 }

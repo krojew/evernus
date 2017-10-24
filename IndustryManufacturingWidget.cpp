@@ -406,6 +406,8 @@ namespace Evernus
                 this, &IndustryManufacturingWidget::updateOrderTask);
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
                 this, &IndustryManufacturingWidget::endOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::ssoAuthRequested,
+                this, &IndustryManufacturingWidget::ssoAuthRequested);
         connect(&mDataFetcher, &MarketOrderDataFetcher::genericError,
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
@@ -429,6 +431,8 @@ namespace Evernus
             if (!started)
                 mSetupModel.blockInteractions(false);
         });
+
+        connect(&mESIManager, &ESIManager::ssoAuthRequested, this, &IndustryManufacturingWidget::ssoAuthRequested);
     }
 
     void IndustryManufacturingWidget::refreshAssets()
@@ -448,6 +452,18 @@ namespace Evernus
         mSetup.clear();
         mSetupModel.setCharacter(mCharacterId);
         mTypeView->deselectAll();
+    }
+
+    void IndustryManufacturingWidget::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mESIManager.processAuthorizationCode(charId, code);
+        mDataFetcher.processAuthorizationCode(charId, code);
+    }
+
+    void IndustryManufacturingWidget::cancelSSOAuth(Character::IdType charId)
+    {
+        mESIManager.cancelSSOAuth(charId);
+        mDataFetcher.cancelSSOAuth(charId);
     }
 
     void IndustryManufacturingWidget::refreshTypes()

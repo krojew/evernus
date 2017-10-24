@@ -32,11 +32,9 @@ namespace Evernus
                                                                  const CharacterRepository &characterRepo,
                                                                  ESIInterfaceManager &interfaceManager,
                                                                  QObject *parent)
-        : CallbackExternalOrderImporter{parent}
+        : ESIExternalOrderImporter{std::move(clientId), std::move(clientSecret), dataProvider, characterRepo, interfaceManager, parent}
         , mDataProvider{dataProvider}
-        , mManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
     {
-        connect(&mManager, &ESIManager::error, this, &ESIWholeExternalOrderImporter::genericError);
     }
 
     void ESIWholeExternalOrderImporter::fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const

@@ -23,8 +23,10 @@
 #include <QTimer>
 #include <QMovie>
 
+#include "QObjectDeleteLaterDeleter.h"
 #include "ExternalOrderImporter.h"
 #include "FPCController.h"
+#include "SSOAuthWidget.h"
 #include "Character.h"
 
 class QSystemTrayIcon;
@@ -149,6 +151,9 @@ namespace Evernus
 
         void makeValueSnapshots(Character::IdType id);
 
+        void gotSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void ssoAuthCanceled(Character::IdType charId);
+
     public slots:
         void showActiveTasks();
         void showCharacterManagement();
@@ -181,6 +186,7 @@ namespace Evernus
         void characterDataChanged();
 
         void showSSOError(const QString &info);
+        void requestSSOAuth(Character::IdType charId);
 
     private slots:
         void updateCurrentTab(int index);
@@ -210,6 +216,10 @@ namespace Evernus
         static const QString settingsMaximizedKey;
         static const QString settingsPosKey;
         static const QString settingsSizeKey;
+
+        static const QString redirectDomain;
+
+        QByteArray mClientId;
 
         const RepositoryProvider &mRepositoryProvider;
         ItemCostProvider &mItemCostProvider;
@@ -253,12 +263,13 @@ namespace Evernus
 
         FPCController mFPCController;
 
+        std::unique_ptr<SSOAuthWidget, QObjectDeleteLaterDeleter> mAuthView;
+
         void readSettings();
         void writeSettings();
 
         void createMenu();
-        void createMainView(QByteArray clientId,
-                            QByteArray clientSecret,
+        void createMainView(QByteArray clientSecret,
                             MarketOrderProvider &charOrderProvider,
                             MarketOrderProvider &corpOrderProvider,
                             AssetProvider &charAssetProvider,
@@ -282,5 +293,9 @@ namespace Evernus
 
         template<void (MainWindow::* CharRefresh)(Character::IdType), void (MainWindow::* CorpRefresh)(Character::IdType)>
         void refreshData();
+
+        std::pair<QString, bool> getCharacterName(Character::IdType id) const;
+
+        static QString getAuthWidowTitle(const QString &charName);
     };
 }

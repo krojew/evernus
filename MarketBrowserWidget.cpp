@@ -378,6 +378,8 @@ namespace Evernus
                 this, &MarketBrowserWidget::updateOrderTask);
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
                 this, &MarketBrowserWidget::endOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::ssoAuthRequested,
+                this, &MarketBrowserWidget::ssoAuthRequested);
         connect(&mDataFetcher, &MarketOrderDataFetcher::genericError,
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
@@ -449,6 +451,16 @@ namespace Evernus
             mExternalOrderSellModel.reset();
             mExternalOrderBuyModel.reset();
         }
+    }
+
+    void MarketBrowserWidget::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mDataFetcher.processAuthorizationCode(charId, code);
+    }
+
+    void MarketBrowserWidget::cancelSSOAuth(Character::IdType charId)
+    {
+        mDataFetcher.cancelSSOAuth(charId);
     }
 
     void MarketBrowserWidget::prepareItemImportFromWeb()

@@ -68,9 +68,13 @@ namespace Evernus
 
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
+        void ssoAuthRequested(Character::IdType charId);
 
     public slots:
         void refresh();
+
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
 
     private slots:
         void importData();

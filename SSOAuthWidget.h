@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <QWidget>
+#include <QDialog>
 #include <QUrl>
 
 class QWebEngineView;
@@ -25,12 +25,13 @@ class QLineEdit;
 namespace Evernus
 {
     class SSOAuthWidget
-        : public QWidget
+        : public QDialog
     {
         Q_OBJECT
 
     public:
         explicit SSOAuthWidget(const QUrl &url, QWidget *parent = nullptr);
+        virtual ~SSOAuthWidget() = default;
 
         QWebEnginePage *page() const;
 

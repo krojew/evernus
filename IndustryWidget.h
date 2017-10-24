@@ -75,12 +75,17 @@ namespace Evernus
 
         void importMiningLedger(Character::IdType id);
 
+        void ssoAuthRequested(Character::IdType charId);
+
     public slots:
         void handleNewPreferences();
         void setCharacter(Character::IdType id);
 
         void refreshAssets();
         void refreshMiningLedger();
+
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
 
     private:
         IndustryManufacturingWidget *mManufacturingWidget = nullptr;

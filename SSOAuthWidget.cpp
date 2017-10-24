@@ -30,7 +30,7 @@
 namespace Evernus
 {
     SSOAuthWidget::SSOAuthWidget(const QUrl &url, QWidget *parent)
-        : QWidget{parent}
+        : QDialog{parent}
         , mAuthUrl{url}
     {
         auto mainLayout = new QVBoxLayout{this};
@@ -81,6 +81,9 @@ namespace Evernus
         auto authBtn = new QPushButton{tr("Authorize"), this};
         codeLayout->addWidget(authBtn);
         connect(authBtn, &QPushButton::clicked, this, &SSOAuthWidget::applyCode);
+
+        setModal(true);
+        adjustSize();
     }
 
     QWebEnginePage *SSOAuthWidget::page() const

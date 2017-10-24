@@ -14,21 +14,13 @@
  */
 #pragma once
 
-#include <QByteArray>
-
-#include "CallbackExternalOrderImporter.h"
-#include "ESIManager.h"
+#include "ESIExternalOrderImporter.h"
 
 namespace Evernus
 {
-    class CharacterRepository;
-    class EveDataProvider;
-
     class ESIWholeExternalOrderImporter
-        : public CallbackExternalOrderImporter
+        : public ESIExternalOrderImporter
     {
-        Q_OBJECT
-
     public:
         ESIWholeExternalOrderImporter(QByteArray clientId,
                                       QByteArray clientSecret,
@@ -43,7 +35,6 @@ namespace Evernus
     private:
         const EveDataProvider &mDataProvider;
 
-        ESIManager mManager;
         mutable TypeLocationPairs mCurrentTarget;
 
         virtual void filterOrders(std::vector<ExternalOrder> &orders) const override;

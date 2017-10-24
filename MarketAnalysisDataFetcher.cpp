@@ -40,6 +40,7 @@ namespace Evernus
         , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
     {
         connect(&mESIManager, &ESIManager::error, this, &MarketAnalysisDataFetcher::genericError);
+        connect(&mESIManager, &ESIManager::ssoAuthRequested, this, &MarketAnalysisDataFetcher::ssoAuthRequested);
     }
 
     bool MarketAnalysisDataFetcher::hasPendingOrderRequests() const noexcept
@@ -98,6 +99,16 @@ namespace Evernus
             finishOrderImport();
         if (mHistoryCounter.isEmpty())
             finishHistoryImport();
+    }
+
+    void MarketAnalysisDataFetcher::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mESIManager.processAuthorizationCode(charId, code);
+    }
+
+    void MarketAnalysisDataFetcher::cancelSSOAuth(Character::IdType charId)
+    {
+        mESIManager.cancelSSOAuth(charId);
     }
 
     void MarketAnalysisDataFetcher::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)

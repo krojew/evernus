@@ -60,6 +60,8 @@ namespace Evernus
         tabs->addTab(mManufacturingWidget, tr("Manufacturing planner"));
         connect(mManufacturingWidget, &IndustryManufacturingWidget::updateExternalOrders,
                 this, &IndustryWidget::updateExternalOrders);
+        connect(mManufacturingWidget, &IndustryManufacturingWidget::ssoAuthRequested,
+                this, &IndustryWidget::ssoAuthRequested);
 
         mMiningLedgerWidget = new IndustryMiningLedgerWidget{cacheTimerProvider,
                                                              dataProvider,
@@ -75,26 +77,52 @@ namespace Evernus
                 this, &IndustryWidget::importMiningLedger);
         connect(mMiningLedgerWidget, &IndustryMiningLedgerWidget::updateExternalOrders,
                 this, &IndustryWidget::updateExternalOrders);
+        connect(mMiningLedgerWidget, &IndustryMiningLedgerWidget::ssoAuthRequested,
+                this, &IndustryWidget::ssoAuthRequested);
     }
 
     void IndustryWidget::handleNewPreferences()
     {
+        Q_ASSERT(mManufacturingWidget != nullptr);
         mManufacturingWidget->handleNewPreferences();
     }
 
     void IndustryWidget::setCharacter(Character::IdType id)
     {
+        Q_ASSERT(mManufacturingWidget != nullptr);
+        Q_ASSERT(mMiningLedgerWidget != nullptr);
+
         mManufacturingWidget->setCharacter(id);
         mMiningLedgerWidget->setCharacter(id);
     }
 
     void IndustryWidget::refreshAssets()
     {
+        Q_ASSERT(mMiningLedgerWidget != nullptr);
         mManufacturingWidget->refreshAssets();
     }
 
     void IndustryWidget::refreshMiningLedger()
     {
+        Q_ASSERT(mMiningLedgerWidget != nullptr);
         mMiningLedgerWidget->refresh();
+    }
+
+    void IndustryWidget::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        Q_ASSERT(mManufacturingWidget != nullptr);
+        Q_ASSERT(mMiningLedgerWidget != nullptr);
+
+        mManufacturingWidget->processAuthorizationCode(charId, code);
+        mMiningLedgerWidget->processAuthorizationCode(charId, code);
+    }
+
+    void IndustryWidget::cancelSSOAuth(Character::IdType charId)
+    {
+        Q_ASSERT(mManufacturingWidget != nullptr);
+        Q_ASSERT(mMiningLedgerWidget != nullptr);
+
+        mManufacturingWidget->cancelSSOAuth(charId);
+        mMiningLedgerWidget->cancelSSOAuth(charId);
     }
 }

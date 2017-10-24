@@ -308,6 +308,8 @@ add_executable(
     DumpUploader.cpp
     DumpUploader.h
     Entity.h
+    ESIExternalOrderImporter.cpp
+    ESIExternalOrderImporter.h
     ESIIndividualExternalOrderImporter.cpp
     ESIIndividualExternalOrderImporter.h
     ESIInterface.cpp

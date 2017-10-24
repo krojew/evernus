@@ -78,6 +78,8 @@ namespace Evernus
                 this, &MarketAnalysisWidget::endOrderTask);
         connect(&mDataFetcher, &MarketAnalysisDataFetcher::historyImportEnded,
                 this, &MarketAnalysisWidget::endHistoryTask);
+        connect(&mDataFetcher, &MarketAnalysisDataFetcher::ssoAuthRequested,
+                this, &MarketAnalysisWidget::ssoAuthRequested);
         connect(&mDataFetcher, &MarketAnalysisDataFetcher::genericError,
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
@@ -333,7 +335,18 @@ namespace Evernus
 
     void MarketAnalysisWidget::showForCurrentRegion()
     {
+        Q_ASSERT(mRegionAnalysisWidget != nullptr);
         mRegionAnalysisWidget->showForCurrentRegion();
+    }
+
+    void MarketAnalysisWidget::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mDataFetcher.processAuthorizationCode(charId, code);
+    }
+
+    void MarketAnalysisWidget::cancelSSOAuth(Character::IdType charId)
+    {
+        mDataFetcher.cancelSSOAuth(charId);
     }
 
     void MarketAnalysisWidget::updateOrderTask(const QString &text)

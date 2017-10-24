@@ -17,8 +17,7 @@
 #include <QNetworkAccessManager>
 #include <QStringList>
 
-#include "CallbackExternalOrderImporter.h"
-#include "ESIManager.h"
+#include "ESIExternalOrderImporter.h"
 
 namespace Evernus
 {
@@ -26,10 +25,8 @@ namespace Evernus
     class EveDataProvider;
 
     class ESIIndividualExternalOrderImporter
-        : public CallbackExternalOrderImporter
+        : public ESIExternalOrderImporter
     {
-        Q_OBJECT
-
     public:
         ESIIndividualExternalOrderImporter(QByteArray clientId,
                                            QByteArray clientSecret,
@@ -43,7 +40,5 @@ namespace Evernus
 
     private:
         const EveDataProvider &mDataProvider;
-
-        ESIManager mManager;
     };
 }

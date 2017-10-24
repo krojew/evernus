@@ -85,9 +85,14 @@ namespace Evernus
 
         void setupRefreshChanged(bool started);
 
+        void ssoAuthRequested(Character::IdType charId);
+
     public slots:
         void handleNewPreferences();
         void setCharacter(Character::IdType id);
+
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
 
     private slots:
         void refreshTypes();

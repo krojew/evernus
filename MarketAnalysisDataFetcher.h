@@ -64,10 +64,15 @@ namespace Evernus
 
         void genericError(const QString &text);
 
+        void ssoAuthRequested(Character::IdType charId);
+
     public slots:
         void importData(const TypeLocationPairs &pairs,
                         const TypeLocationPairs &ignored,
                         Character::IdType charId);
+
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
 
     private:
         const EveDataProvider &mDataProvider;

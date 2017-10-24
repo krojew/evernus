@@ -28,13 +28,11 @@
 #include <QString>
 #include <QDate>
 
-#include "QObjectDeleteLaterDeleter.h"
 #include "IndustryCostIndices.h"
 #include "MarketHistoryEntry.h"
 #include "WalletJournalEntry.h"
 #include "WalletTransactions.h"
 #include "WalletTransaction.h"
-#include "SSOAuthWidget.h"
 #include "WalletJournal.h"
 #include "ESIInterface.h"
 #include "MarketOrders.h"
@@ -73,6 +71,8 @@ namespace Evernus
         using MarketOrderCallback = Callback<ExternalOrderList>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
         using NameMap = std::unordered_map<quint64, QString>;
+
+        static const QString loginUrl;
 
         ESIManager(QByteArray clientId,
                    QByteArray clientSecret,
@@ -127,12 +127,15 @@ namespace Evernus
         void tokenError(Character::IdType charId, const QString &error);
         void acquiredToken(Character::IdType charId, const QString &accessToken, const QDateTime &expiry);
 
+        void ssoAuthRequested(Character::IdType charId);
+
     public slots:
         void fetchToken(Character::IdType charId);
 
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
+
     private:
-        static const QString loginUrl;
-        static const QString redirectDomain;
         static const QString firstTimeCitadelOrderImportKey;
 
         static std::unordered_map<Character::IdType, QString> mRefreshTokens;
@@ -154,8 +157,6 @@ namespace Evernus
 
         QNetworkAccessManager mNetworkManager;
 
-        std::unique_ptr<SSOAuthWidget, QObjectDeleteLaterDeleter> mAuthView;
-
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          const boost::optional<WalletJournalEntry::IdType> &fromId,
                                          WalletJournalEntry::IdType tillId,
@@ -165,8 +166,6 @@ namespace Evernus
                                               WalletTransaction::IdType tillId,
                                               std::shared_ptr<WalletTransactions> &&transactions,
                                               const Callback<WalletTransactions> &callback) const;
-
-        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
 
         QNetworkRequest getAuthRequest() const;
 
@@ -184,7 +183,5 @@ namespace Evernus
         static QDateTime getDateTimeFromString(const QString &value);
 
         static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
-
-        static QString getAuthWidowTitle(const QString &charName);
     };
 }
