@@ -136,6 +136,8 @@ namespace Evernus
         void cancelSSOAuth(Character::IdType charId);
 
     private:
+        using CharacterSet = std::unordered_set<Character::IdType>;
+
         static const QString firstTimeCitadelOrderImportKey;
 
         static std::unordered_map<Character::IdType, QString> mRefreshTokens;
@@ -143,7 +145,7 @@ namespace Evernus
 
         static bool mFirstTimeCitadelOrderImport;
 
-        static std::unordered_set<Character::IdType> mPendingTokenRefresh;
+        static CharacterSet mPendingTokenRefresh;
 
         const EveDataProvider &mDataProvider;
         const CharacterRepository &mCharacterRepo;
@@ -156,6 +158,7 @@ namespace Evernus
         ESIInterfaceManager &mInterfaceManager;
 
         QNetworkAccessManager mNetworkManager;
+        CharacterSet mRequestedCharacterAuth;
 
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          const boost::optional<WalletJournalEntry::IdType> &fromId,

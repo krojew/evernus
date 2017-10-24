@@ -889,6 +889,8 @@ namespace Evernus
             if (it == std::end(mRefreshTokens))
             {
                 qDebug() << "No refresh token - requesting access.";
+
+                mRequestedCharacterAuth.emplace(charId);
                 emit ssoAuthRequested(charId);
             }
             else
@@ -1143,6 +1145,14 @@ namespace Evernus
 
     void ESIManager::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
     {
+        if (mRequestedCharacterAuth.find(charId) == std::end(mRequestedCharacterAuth))
+        {
+            qDebug() << "Ignoring auth code for:" << charId;
+            return;
+        }
+
+        mRequestedCharacterAuth.erase(charId);
+
         try
         {
             qDebug() << "Requesting access token...";
