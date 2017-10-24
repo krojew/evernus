@@ -8488,41 +8488,68 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
     </message>
 </context>
 <context>
-    <name>Evernus::SSOAuthWidget</name>
+    <name>Evernus::SSOAuthDialog</name>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="45"/>
+        <location filename="../SSOAuthDialog.cpp" line="45"/>
         <source>Clear cookies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="49"/>
+        <location filename="../SSOAuthDialog.cpp" line="49"/>
         <source>Toggle external browser</source>
-        <translation>Przełącz przeglądarkę</translation>
+        <translation type="unfinished">Przełącz przeglądarkę</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="67"/>
+        <location filename="../SSOAuthDialog.cpp" line="67"/>
         <source>To authorize inside the browser, use the following link and paste the resulting code below: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
-        <translation>Aby uwierzytelnić się przez przeglądarkę, użynij podanego linku i wklej poniżej wynikowy kod: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
+        <translation type="unfinished">Aby uwierzytelnić się przez przeglądarkę, użynij podanego linku i wklej poniżej wynikowy kod: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="79"/>
+        <location filename="../SSOAuthDialog.cpp" line="79"/>
         <source>paste the resulting code here</source>
-        <translation>wklej wynikowy kod tutaj</translation>
+        <translation type="unfinished">wklej wynikowy kod tutaj</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="81"/>
+        <location filename="../SSOAuthDialog.cpp" line="81"/>
         <source>Authorize</source>
-        <translation>Uwierzytelnij</translation>
+        <translation type="unfinished">Uwierzytelnij</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="106"/>
+        <location filename="../SSOAuthDialog.cpp" line="106"/>
         <source>SSO Authentication</source>
-        <translation>Uwierzytelnianie SSO</translation>
+        <translation type="unfinished">Uwierzytelnianie SSO</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="107"/>
+        <location filename="../SSOAuthDialog.cpp" line="107"/>
         <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
-        <translation>Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
+        <translation type="unfinished">Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::SSOAuthWidget</name>
+    <message>
+        <source>Toggle external browser</source>
+        <translation type="vanished">Przełącz przeglądarkę</translation>
+    </message>
+    <message>
+        <source>To authorize inside the browser, use the following link and paste the resulting code below: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
+        <translation type="vanished">Aby uwierzytelnić się przez przeglądarkę, użynij podanego linku i wklej poniżej wynikowy kod: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>paste the resulting code here</source>
+        <translation type="vanished">wklej wynikowy kod tutaj</translation>
+    </message>
+    <message>
+        <source>Authorize</source>
+        <translation type="vanished">Uwierzytelnij</translation>
+    </message>
+    <message>
+        <source>SSO Authentication</source>
+        <translation type="vanished">Uwierzytelnianie SSO</translation>
+    </message>
+    <message>
+        <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
+        <translation type="vanished">Wprowadzony kod jest nieprawidłowy. Upewnij się, że skopiowałeś wszystkie znaki, lub użyj wewnętrznej przeglądarki.</translation>
     </message>
 </context>
 <context>

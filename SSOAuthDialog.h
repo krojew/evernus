@@ -24,14 +24,14 @@ class QLineEdit;
 
 namespace Evernus
 {
-    class SSOAuthWidget
+    class SSOAuthDialog
         : public QDialog
     {
         Q_OBJECT
 
     public:
-        explicit SSOAuthWidget(const QUrl &url, QWidget *parent = nullptr);
-        virtual ~SSOAuthWidget() = default;
+        explicit SSOAuthDialog(const QUrl &url, QWidget *parent = nullptr);
+        virtual ~SSOAuthDialog() = default;
 
         QWebEnginePage *page() const;
 

@@ -25,11 +25,11 @@
 #include <QIcon>
 #include <QLabel>
 
-#include "SSOAuthWidget.h"
+#include "SSOAuthDialog.h"
 
 namespace Evernus
 {
-    SSOAuthWidget::SSOAuthWidget(const QUrl &url, QWidget *parent)
+    SSOAuthDialog::SSOAuthDialog(const QUrl &url, QWidget *parent)
         : QDialog{parent}
         , mAuthUrl{url}
     {
@@ -44,18 +44,18 @@ namespace Evernus
 
         const auto clearCookiesBtn = new QPushButton{QIcon{QStringLiteral(":/images/bin.png")}, tr("Clear cookies"), this};
         urlLayout->addWidget(clearCookiesBtn);
-        connect(clearCookiesBtn, &QPushButton::clicked, this, &SSOAuthWidget::clearCookies);
+        connect(clearCookiesBtn, &QPushButton::clicked, this, &SSOAuthDialog::clearCookies);
 
         const auto useExternalBtn = new QPushButton{QIcon{QStringLiteral(":/images/world.png")}, tr("Toggle external browser"), this};
         urlLayout->addWidget(useExternalBtn);
-        connect(useExternalBtn, &QPushButton::clicked, this, &SSOAuthWidget::toggleViews);
+        connect(useExternalBtn, &QPushButton::clicked, this, &SSOAuthDialog::toggleViews);
 
         mAuthWidgetStack = new QStackedWidget{this};
         mainLayout->addWidget(mAuthWidgetStack);
 
         mView = new QWebEngineView{this};
         mAuthWidgetStack->addWidget(mView);
-        connect(mView, &QWebEngineView::urlChanged, this, &SSOAuthWidget::updateUrl);
+        connect(mView, &QWebEngineView::urlChanged, this, &SSOAuthDialog::updateUrl);
         mView->setUrl(mAuthUrl);
 
         auto externalAuthWidget = new QWidget{this};
@@ -80,24 +80,24 @@ namespace Evernus
 
         auto authBtn = new QPushButton{tr("Authorize"), this};
         codeLayout->addWidget(authBtn);
-        connect(authBtn, &QPushButton::clicked, this, &SSOAuthWidget::applyCode);
+        connect(authBtn, &QPushButton::clicked, this, &SSOAuthDialog::applyCode);
 
         setModal(true);
         adjustSize();
     }
 
-    QWebEnginePage *SSOAuthWidget::page() const
+    QWebEnginePage *SSOAuthDialog::page() const
     {
         return mView->page();
     }
 
-    void SSOAuthWidget::closeEvent(QCloseEvent *event)
+    void SSOAuthDialog::closeEvent(QCloseEvent *event)
     {
         Q_UNUSED(event);
         emit aboutToClose();
     }
 
-    void SSOAuthWidget::applyCode()
+    void SSOAuthDialog::applyCode()
     {
         const auto code = mCodeEdit->text().toLatin1();
         if (code.isEmpty())
@@ -111,19 +111,19 @@ namespace Evernus
         emit acquiredCode(code);
     }
 
-    void SSOAuthWidget::updateUrl(const QUrl &url)
+    void SSOAuthDialog::updateUrl(const QUrl &url)
     {
         mUrlEdit->setText(url.toString());
         mUrlEdit->setCursorPosition(0);
     }
 
-    void SSOAuthWidget::toggleViews()
+    void SSOAuthDialog::toggleViews()
     {
         mAuthWidgetStack->setCurrentIndex(mAuthWidgetStack->currentIndex() ^ 1);
         adjustSize();
     }
 
-    void SSOAuthWidget::clearCookies()
+    void SSOAuthDialog::clearCookies()
     {
         const auto page = mView->page();
         if (Q_UNLIKELY(page == nullptr))

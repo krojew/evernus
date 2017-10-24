@@ -437,7 +437,7 @@ namespace Evernus
 
         url.setQuery(query);
 
-        mAuthView.reset(new SSOAuthWidget{url, this});
+        mAuthView.reset(new SSOAuthDialog{url, this});
 
         QString charName;
         auto charNameFound = false;
@@ -452,13 +452,13 @@ namespace Evernus
         mAuthView->move(rect().center() - mAuthView->rect().center());
         mAuthView->show();
 
-        connect(mAuthView.get(), &SSOAuthWidget::acquiredCode, this, [=](const auto &code) {
+        connect(mAuthView.get(), &SSOAuthDialog::acquiredCode, this, [=](const auto &code) {
             mAuthView->disconnect(this);
             mAuthView->close();
 
             emit gotSSOAuthorizationCode(charId, code);
         });
-        connect(mAuthView.get(), &SSOAuthWidget::aboutToClose, this, [=] {
+        connect(mAuthView.get(), &SSOAuthDialog::aboutToClose, this, [=] {
             emit ssoAuthCanceled(charId);
             mAuthView.reset();
         });

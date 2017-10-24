@@ -7923,41 +7923,64 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
     </message>
 </context>
 <context>
-    <name>Evernus::SSOAuthWidget</name>
+    <name>Evernus::SSOAuthDialog</name>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="45"/>
+        <location filename="../SSOAuthDialog.cpp" line="45"/>
         <source>Clear cookies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="49"/>
+        <location filename="../SSOAuthDialog.cpp" line="49"/>
         <source>Toggle external browser</source>
         <translation type="unfinished">Externen Browser verwenden</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="67"/>
+        <location filename="../SSOAuthDialog.cpp" line="67"/>
         <source>To authorize inside the browser, use the following link and paste the resulting code below: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
         <translation type="unfinished">Um sich im Browser anzumelden, benetze den folgenden Link und füge den erzeugten Code nachstehend ein: &lt;a href=&apos;%1%&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="79"/>
+        <location filename="../SSOAuthDialog.cpp" line="79"/>
         <source>paste the resulting code here</source>
         <translation type="unfinished">Hier den erzeugten Code einfügen</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="81"/>
+        <location filename="../SSOAuthDialog.cpp" line="81"/>
         <source>Authorize</source>
         <translation type="unfinished">Authorisieren</translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="106"/>
+        <location filename="../SSOAuthDialog.cpp" line="106"/>
         <source>SSO Authentication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SSOAuthWidget.cpp" line="107"/>
+        <location filename="../SSOAuthDialog.cpp" line="107"/>
         <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
         <translation type="unfinished">Der angegeben Code ist ungültig. Bitte stelle sicher das alle Zeichen kopiert wurden oder verwende die interne Browseranmeldung.</translation>
+    </message>
+</context>
+<context>
+    <name>Evernus::SSOAuthWidget</name>
+    <message>
+        <source>Toggle external browser</source>
+        <translation type="obsolete">Externen Browser verwenden</translation>
+    </message>
+    <message>
+        <source>To authorize inside the browser, use the following link and paste the resulting code below: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
+        <translation type="obsolete">Um sich im Browser anzumelden, benetze den folgenden Link und füge den erzeugten Code nachstehend ein: &lt;a href=&apos;%1%&apos;&gt;%1&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>paste the resulting code here</source>
+        <translation type="obsolete">Hier den erzeugten Code einfügen</translation>
+    </message>
+    <message>
+        <source>Authorize</source>
+        <translation type="obsolete">Authorisieren</translation>
+    </message>
+    <message>
+        <source>The supplied code is invalid. Please make sure all characters were copied or use internal browser authorization.</source>
+        <translation type="obsolete">Der angegeben Code ist ungültig. Bitte stelle sicher das alle Zeichen kopiert wurden oder verwende die interne Browseranmeldung.</translation>
     </message>
 </context>
 <context>

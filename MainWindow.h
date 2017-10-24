@@ -26,7 +26,7 @@
 #include "QObjectDeleteLaterDeleter.h"
 #include "ExternalOrderImporter.h"
 #include "FPCController.h"
-#include "SSOAuthWidget.h"
+#include "SSOAuthDialog.h"
 #include "Character.h"
 
 class QSystemTrayIcon;
@@ -263,7 +263,7 @@ namespace Evernus
 
         FPCController mFPCController;
 
-        std::unique_ptr<SSOAuthWidget, QObjectDeleteLaterDeleter> mAuthView;
+        std::unique_ptr<SSOAuthDialog, QObjectDeleteLaterDeleter> mAuthView;
 
         void readSettings();
         void writeSettings();
