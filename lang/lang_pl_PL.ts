@@ -513,116 +513,116 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="unfinished">(nieznane)</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="267"/>
-        <location filename="../Updater.cpp" line="278"/>
-        <location filename="../Updater.cpp" line="288"/>
+        <location filename="../Updater.cpp" line="270"/>
+        <location filename="../Updater.cpp" line="281"/>
+        <location filename="../Updater.cpp" line="291"/>
         <source>Error</source>
         <translation type="unfinished">Błąd</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="267"/>
+        <location filename="../Updater.cpp" line="270"/>
         <source>Error contacting update server: %1</source>
         <translation type="unfinished">Błąd odpytywania serwera akutalizacji: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="278"/>
+        <location filename="../Updater.cpp" line="281"/>
         <source>Error parsing response from the update server: %1</source>
         <translation type="unfinished">Błąd parsowania odpowiedzi serwera: %1</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="288"/>
+        <location filename="../Updater.cpp" line="291"/>
         <source>Missing update version information!</source>
         <translation type="unfinished">Brak informacji o wersji!</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="301"/>
+        <location filename="../Updater.cpp" line="304"/>
         <source>No update found</source>
         <translation type="unfinished">Brak aktualizacji</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="301"/>
+        <location filename="../Updater.cpp" line="304"/>
         <source>Your current version is up-to-date.</source>
         <translation type="unfinished">Twoja wersja jest najbardziej aktualna.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="310"/>
-        <location filename="../Updater.cpp" line="315"/>
-        <location filename="../Updater.cpp" line="326"/>
+        <location filename="../Updater.cpp" line="313"/>
+        <location filename="../Updater.cpp" line="318"/>
+        <location filename="../Updater.cpp" line="329"/>
         <source>Update found</source>
         <translation type="unfinished">Znaleziono aktualizację</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="310"/>
+        <location filename="../Updater.cpp" line="313"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation type="unfinished">Znaleziono nową wersję: %1
 Czy chcesz ściągnąć ją teraz?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="315"/>
+        <location filename="../Updater.cpp" line="318"/>
         <source>A new version is available: %1
 Do you wish to launch the updater?</source>
         <translation type="unfinished">Znaleziono nową wersję: %1
 Czy chcesz rozpocząć aktualizację?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="326"/>
+        <location filename="../Updater.cpp" line="329"/>
         <source>Couldn&apos;t launch updater. Download manually?</source>
         <translation type="unfinished">Nie udało się rozpocząć aktualizacji. Pobrać ręcznie?</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="383"/>
-        <location filename="../Updater.cpp" line="408"/>
-        <location filename="../Updater.cpp" line="415"/>
-        <location filename="../Updater.cpp" line="427"/>
-        <location filename="../Updater.cpp" line="504"/>
-        <location filename="../Updater.cpp" line="531"/>
-        <location filename="../Updater.cpp" line="630"/>
-        <location filename="../Updater.cpp" line="643"/>
+        <location filename="../Updater.cpp" line="386"/>
+        <location filename="../Updater.cpp" line="411"/>
+        <location filename="../Updater.cpp" line="418"/>
+        <location filename="../Updater.cpp" line="430"/>
+        <location filename="../Updater.cpp" line="507"/>
+        <location filename="../Updater.cpp" line="534"/>
+        <location filename="../Updater.cpp" line="633"/>
+        <location filename="../Updater.cpp" line="646"/>
         <source>Update</source>
         <translation type="unfinished">Aktualizacja</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="383"/>
+        <location filename="../Updater.cpp" line="386"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation type="unfinished">Wystąpił błąd podczas akutalizacji.
 Kopia zapasowa bazay danych została zapisana jako %1. Zajrzyj do pomocy online w celu uzyskania informacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="408"/>
+        <location filename="../Updater.cpp" line="411"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished">Ta akutalizacja wymaga ponownego zaimportowania wszystkich danych.
 Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="415"/>
+        <location filename="../Updater.cpp" line="418"/>
         <source>This update requires re-importing all item prices.</source>
         <translation type="unfinished">Ta aktualizacja wymaga ponownego zaimportowania cen przedmiotów.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="427"/>
+        <location filename="../Updater.cpp" line="430"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation type="unfinished">Ta akutalizacja wymaga ponownego zaimportowania dziennika i transakcji korporacji.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="504"/>
+        <location filename="../Updater.cpp" line="507"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation type="unfinished">Ta akutalizacja wymaga ustawienia własnego broker fee od nowa.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="531"/>
+        <location filename="../Updater.cpp" line="534"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished">Ta aktualizacja wymaga ponownego importu cytadel.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="630"/>
+        <location filename="../Updater.cpp" line="633"/>
         <source>This update requires re-importing wallet journal.</source>
         <translation type="unfinished">Ta aktualizacja wymaga ponownego importu dziennika portfela.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="643"/>
+        <location filename="../Updater.cpp" line="646"/>
         <source>This update requires importing wallet transactions again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10533,9 +10533,9 @@ Czy chcesz rozpocząć aktualizację?</translation>
         <translation type="vanished">Ta aktualizacja wymaga ponownego importu dziennika portfela.</translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="216"/>
-        <location filename="../Updater.cpp" line="225"/>
-        <location filename="../Updater.cpp" line="231"/>
+        <location filename="../Updater.cpp" line="219"/>
+        <location filename="../Updater.cpp" line="228"/>
+        <location filename="../Updater.cpp" line="234"/>
         <source>Error updating db version: %1</source>
         <translation>Błąd aktualizacji wersji bazy danych: %1</translation>
     </message>
