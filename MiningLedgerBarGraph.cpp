@@ -125,7 +125,6 @@ namespace Evernus
 
         const auto cameraPresetCombo = new QComboBox{this};
         infoLayout->addWidget(cameraPresetCombo);
-        cameraPresetCombo->addItem(tr("None"), Q3DCamera::CameraPresetNone);
         cameraPresetCombo->addItem(tr("Front Low"), Q3DCamera::CameraPresetFrontLow);
         cameraPresetCombo->addItem(tr("Front"), Q3DCamera::CameraPresetFront);
         cameraPresetCombo->addItem(tr("Front High"), Q3DCamera::CameraPresetFrontHigh);
@@ -145,6 +144,7 @@ namespace Evernus
         cameraPresetCombo->addItem(tr("Directly Above"), Q3DCamera::CameraPresetDirectlyAbove);
         cameraPresetCombo->addItem(tr("Directly Above CW45"), Q3DCamera::CameraPresetDirectlyAboveCW45);
         cameraPresetCombo->addItem(tr("Directly Above CCW45"), Q3DCamera::CameraPresetDirectlyAboveCCW45);
+        cameraPresetCombo->setCurrentIndex(15);
         connect(cameraPresetCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
                 this, [=] {
             stopCameraAnimations();

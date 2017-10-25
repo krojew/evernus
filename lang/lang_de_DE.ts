@@ -6829,102 +6829,101 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="128"/>
         <source>None</source>
-        <translation type="unfinished">Keine</translation>
+        <translation type="obsolete">Keine</translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="129"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="128"/>
         <source>Front Low</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="130"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="129"/>
         <source>Front</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="131"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="130"/>
         <source>Front High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="132"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="131"/>
         <source>Left Low</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="133"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="132"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="134"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="133"/>
         <source>Left High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="135"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="134"/>
         <source>Right Low</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="136"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="135"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="137"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="136"/>
         <source>Right High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="138"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="137"/>
         <source>Behind Low</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="139"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="138"/>
         <source>Behind</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="140"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="139"/>
         <source>Behind High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="141"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="140"/>
         <source>Isometric Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="142"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="141"/>
         <source>Isometric Left High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="143"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="142"/>
         <source>Isometric Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="144"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="143"/>
         <source>Isometric Right High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="145"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="144"/>
         <source>Directly Above</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="146"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="145"/>
         <source>Directly Above CW45</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MiningLedgerBarGraph.cpp" line="147"/>
+        <location filename="../MiningLedgerBarGraph.cpp" line="146"/>
         <source>Directly Above CCW45</source>
         <translation type="unfinished"></translation>
     </message>
