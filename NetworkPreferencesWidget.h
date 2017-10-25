@@ -38,6 +38,9 @@ namespace Evernus
     public slots:
         void applySettings();
 
+    private slots:
+        void clearRefreshTokens();
+
     private:
         SimpleCrypt mCrypt;
 

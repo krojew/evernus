@@ -53,8 +53,8 @@
 #include "PriceSettings.h"
 #include "OrderSettings.h"
 #include "PathSettings.h"
-#include "SSOSettings.h"
 #include "UISettings.h"
+#include "SSOUtils.h"
 #include "Version.h"
 
 #include "Updater.h"
@@ -674,17 +674,14 @@ namespace Evernus
         citadelAccessCache.clear();
     }
 
-    void Updater::removeRefreshTokens()
-    {
-        QSettings settings;
-        settings.beginGroup(SSOSettings::refreshTokenGroup);
-        settings.remove(QStringLiteral(""));
-        settings.endGroup();
-    }
-
     void Updater::migrateCoreTo217()
     {
         removeRefreshTokens();
+    }
+
+    void Updater::removeRefreshTokens()
+    {
+        SSOUtils::clearRefreshTokens();
     }
 
     void Updater::fixRegionTypePresets(const RegionTypePresetRepository &repo, const EveDataProvider &dataProvider)

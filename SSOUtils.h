@@ -24,5 +24,6 @@ namespace Evernus
     {
         bool useWholeMarketImport(const TypeLocationPairs &target,
                                   const EveDataProvider &dataProvider);
+        void clearRefreshTokens();
     }
 }

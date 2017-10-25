@@ -14,7 +14,10 @@
  */
 #include <QtDebug>
 
+#include <QSettings>
+
 #include "EveDataProvider.h"
+#include "SSOSettings.h"
 
 #include "SSOUtils.h"
 
@@ -41,6 +44,14 @@ namespace Evernus
 
             qDebug() << "Auto importer values:" << wholeImportScore << "vs" << typeRegions.size();
             return wholeImportScore < typeRegions.size();
+        }
+
+        void clearRefreshTokens()
+        {
+            QSettings settings;
+            settings.beginGroup(SSOSettings::refreshTokenGroup);
+            settings.remove(QStringLiteral(""));
+            settings.endGroup();
         }
     }
 }

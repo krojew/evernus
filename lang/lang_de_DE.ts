@@ -7046,74 +7046,79 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
 <context>
     <name>Evernus::NetworkPreferencesWidget</name>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="54"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="56"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="61"/>
         <source>No proxy</source>
         <translation>Kein Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="62"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="64"/>
         <source>Custom proxy</source>
         <translation>Benutzerdefinierter Proxy</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="72"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>Type:</source>
         <translation>Typ:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="75"/>
         <source>SOCKS5</source>
         <translation>SOCKS5</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="76"/>
         <source>HTTP</source>
         <translation>HTTP</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="79"/>
         <source>Host:</source>
         <translation>Host:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="80"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="82"/>
         <source>Port:</source>
         <translation>Port:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="88"/>
         <source>User:</source>
         <translation>Benutzer:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="91"/>
         <source>Password:</source>
         <translation>Paßwort:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="92"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="94"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
         <translation>Warnung: Paßwörter werden mit einer schwacher Verschlüsselung gespeichert - benutze keine sensiblen Paßwörter.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="96"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="98"/>
         <source>API provider</source>
         <translation>API Anbieter</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="101"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="103"/>
         <source>Use default provider</source>
         <translation>Standardanbieter benutzen</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="108"/>
         <source>Use custom provider</source>
         <translation>Benutzerdefinierten Anbieter benutzen</translation>
+    </message>
+    <message>
+        <location filename="../NetworkPreferencesWidget.cpp" line="143"/>
+        <source>Clear saved refresh tokens</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>CREST</source>
@@ -7132,22 +7137,22 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation type="vanished">Max. Anfragen pro Sekunde:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="119"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="121"/>
         <source>Max. reply time:</source>
         <translation>Max. Antwortzeit:</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="126"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="128"/>
         <source>Max. retries:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="131"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="133"/>
         <source>Max. ESI network threads:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="136"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="138"/>
         <source>Ignore certificate errors</source>
         <translation>Ignorieren Zertifikatfehler</translation>
     </message>

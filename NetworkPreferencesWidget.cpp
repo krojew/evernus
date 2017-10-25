@@ -18,6 +18,7 @@
 #include <QRadioButton>
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <QPushButton>
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QComboBox>
@@ -27,6 +28,7 @@
 #include <QLabel>
 
 #include "NetworkSettings.h"
+#include "SSOUtils.h"
 
 #include "NetworkPreferencesWidget.h"
 
@@ -138,6 +140,10 @@ namespace Evernus
         mIgnoreSslErrors->setChecked(
             settings.value(NetworkSettings::ignoreSslErrorsKey, NetworkSettings::ignoreSslErrorsDefault).toBool());
 
+        const auto clearTokensBtn = new QPushButton{tr("Clear saved refresh tokens"), this};
+        miscGroupLayout->addRow(clearTokensBtn);
+        connect(clearTokensBtn, &QPushButton::clicked, this, &NetworkPreferencesWidget::clearRefreshTokens);
+
         mainLayout->addStretch();
 
         if (useProxy)
@@ -189,5 +195,10 @@ namespace Evernus
         settings.setValue(NetworkSettings::maxRetriesKey, mMaxRetriesEdit->value());
         settings.setValue(NetworkSettings::maxESIThreadsKey, mMaxESIThreadsEdit->value());
         settings.setValue(NetworkSettings::ignoreSslErrorsKey, mIgnoreSslErrors->isChecked());
+    }
+
+    void NetworkPreferencesWidget::clearRefreshTokens()
+    {
+        SSOUtils::clearRefreshTokens();
     }
 }
