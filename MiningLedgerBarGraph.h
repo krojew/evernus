@@ -14,10 +14,16 @@
  */
 #pragma once
 
+#include <map>
+#include <set>
+
 #include <QPropertyAnimation>
 #include <QWidget>
 
+#include "TypeSellPriceResolver.h"
+#include "PriceType.h"
 #include "Character.h"
+#include "EveType.h"
 
 class QDate;
 
@@ -40,6 +46,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        using OrderList = TypeSellPriceResolver::OrderList;
+
         MiningLedgerBarGraph(const MiningLedgerRepository &ledgerRepo,
                              const EveDataProvider &dataProvider,
                              QWidget *parent = nullptr);
@@ -48,6 +56,10 @@ namespace Evernus
         virtual ~MiningLedgerBarGraph() = default;
 
         void refresh(Character::IdType charId, const QDate &from, const QDate &to);
+
+        void setOrders(OrderList orders);
+        void setSellPriceType(PriceType type);
+        void setSellStation(quint64 stationId);
 
         MiningLedgerBarGraph &operator =(const MiningLedgerBarGraph &) = default;
         MiningLedgerBarGraph &operator =(MiningLedgerBarGraph &&) = default;
@@ -59,6 +71,12 @@ namespace Evernus
         void zoomToSelectedBar();
 
     private:
+        struct TypeInfo
+        {
+            EveType::IdType mTypeId;
+            quint64 mQunatity;
+        };
+
         const MiningLedgerRepository &mLedgerRepo;
         const EveDataProvider &mDataProvider;
 
@@ -66,13 +84,20 @@ namespace Evernus
         QtDataVisualization::QCategory3DAxis *mTypeAxis = nullptr;
         QtDataVisualization::QCategory3DAxis *mSolarSystemAxis = nullptr;
         QtDataVisualization::QValue3DAxis *mValueAxis = nullptr;
-        QtDataVisualization::QBar3DSeries *mMinedTypesSeries = nullptr;
+        QtDataVisualization::QBar3DSeries *mQuantitySeries = nullptr;
+        QtDataVisualization::QBar3DSeries *mProfitSeries = nullptr;
 
         QPropertyAnimation mCameraXAnim;
         QPropertyAnimation mCameraYAnim;
         QPropertyAnimation mCameraZoomAnim;
         QPropertyAnimation mCameraTargetAnim;
 
+        TypeSellPriceResolver mPriceResolver;
+
+        std::map<QString, std::map<QString, TypeInfo>, std::greater<QString>> mMappedData;
+        std::set<QString> mAllTypes;
+
         void stopCameraAnimations();
+        void refreshProfit();
     };
 }

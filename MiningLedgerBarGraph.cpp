@@ -14,8 +14,6 @@
  */
 #include <memory>
 #include <cmath>
-#include <map>
-#include <set>
 
 #include <QCategory3DAxis>
 #include <QBarDataProxy>
@@ -26,6 +24,7 @@
 #include <QMessageBox>
 #include <QStringList>
 #include <QPushButton>
+#include <QGroupBox>
 #include <QCheckBox>
 #include <QComboBox>
 #include <Q3DCamera>
@@ -53,7 +52,8 @@ namespace Evernus
         , mTypeAxis{new QCategory3DAxis{this}}
         , mSolarSystemAxis{new QCategory3DAxis{this}}
         , mValueAxis{new QValue3DAxis{this}}
-        , mMinedTypesSeries{new QBar3DSeries{this}}
+        , mQuantitySeries{new QBar3DSeries{this}}
+        , mProfitSeries{new QBar3DSeries{this}}
     {
         const auto mainLayout = new QHBoxLayout{this};
 
@@ -80,10 +80,15 @@ namespace Evernus
         mGraph->setRowAxis(mSolarSystemAxis);
         mGraph->setValueAxis(mValueAxis);
 
-        mMinedTypesSeries->setItemLabelFormat(QStringLiteral("(@rowLabel, @colLabel): %i"));
-        mMinedTypesSeries->setMesh(QAbstract3DSeries::MeshBevelBar);
+        mQuantitySeries->setItemLabelFormat(QStringLiteral("(@rowLabel, @colLabel): %i"));
+        mQuantitySeries->setMesh(QAbstract3DSeries::MeshBevelBar);
 
-        mGraph->addSeries(mMinedTypesSeries);
+        mProfitSeries->setItemLabelFormat(QStringLiteral("(@rowLabel, @colLabel): %dISK"));
+        mProfitSeries->setMesh(QAbstract3DSeries::MeshBevelBar);
+        mProfitSeries->setVisible(false);
+
+        mGraph->addSeries(mQuantitySeries);
+        mGraph->addSeries(mProfitSeries);
 
         const auto camera = mGraph->scene()->activeCamera();
         camera->setCameraPreset(Q3DCamera::CameraPresetIsometricRightHigh);
@@ -120,6 +125,24 @@ namespace Evernus
         };
         infoText->setWordWrap(true);
         infoLayout->addWidget(infoText);
+
+        const auto dataTypeGroup = new QGroupBox{tr("Show"), this};
+        infoLayout->addWidget(dataTypeGroup);
+
+        const auto dataTypeLayout = new QHBoxLayout{dataTypeGroup};
+
+        const auto showQuantityBtn = new QCheckBox{tr("Quantity"), this};
+        dataTypeLayout->addWidget(showQuantityBtn);
+        showQuantityBtn->setChecked(true);
+        connect(showQuantityBtn, &QCheckBox::stateChanged, this, [=](auto state) {
+            mQuantitySeries->setVisible(state == Qt::Checked);
+        });
+
+        const auto showProfitBtn = new QCheckBox{tr("Profit"), this};
+        dataTypeLayout->addWidget(showProfitBtn);
+        connect(showProfitBtn, &QCheckBox::stateChanged, this, [=](auto state) {
+            mProfitSeries->setVisible(state == Qt::Checked);
+        });
 
         infoLayout->addWidget(new QLabel{tr("Camera preset"), this});
 
@@ -168,7 +191,9 @@ namespace Evernus
         barStyleCombo->setCurrentIndex(4);
         connect(barStyleCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
                 this, [=] {
-            mMinedTypesSeries->setMesh(static_cast<QAbstract3DSeries::Mesh>(barStyleCombo->currentData().toInt()));
+            const auto mesh = static_cast<QAbstract3DSeries::Mesh>(barStyleCombo->currentData().toInt());
+            mQuantitySeries->setMesh(mesh);
+            mProfitSeries->setMesh(mesh);
         });
 
         infoLayout->addWidget(new QLabel{tr("Font size"), this});
@@ -186,7 +211,7 @@ namespace Evernus
 
         const auto smoothBtn = new QCheckBox{tr("Smooth bars"), this};
         infoLayout->addWidget(smoothBtn);
-        smoothBtn->setChecked(mMinedTypesSeries->isMeshSmooth());
+        smoothBtn->setChecked(mQuantitySeries->isMeshSmooth());
         connect(smoothBtn, &QCheckBox::stateChanged, this, &MiningLedgerBarGraph::setMeshSmooth);
 
         const auto zoomBtn = new QPushButton{tr("Zoom to selection"), this};
@@ -198,46 +223,68 @@ namespace Evernus
     {
         const auto data = mLedgerRepo.fetchAggregatedDataForCharacter(charId, from, to);
 
-        std::map<QString, std::map<QString, quint64>, std::greater<QString>> mappedData;
-        std::set<QString> allTypes;
-
         for (const auto &datum : data)
         {
             const auto typeName = mDataProvider.getTypeName(datum.mTypeId);
-            mappedData[mDataProvider.getSolarSystemName(datum.mSolarSystemId)][typeName] += datum.mQuantity;
 
-            allTypes.insert(typeName);
+            auto &info = mMappedData[mDataProvider.getSolarSystemName(datum.mSolarSystemId)][typeName];
+            info.mQunatity += datum.mQuantity;
+            info.mTypeId = datum.mTypeId;
+
+            mAllTypes.insert(typeName);
         }
 
-        auto dataSet = std::make_unique<QBarDataArray>();
-        dataSet->reserve(static_cast<int>(mappedData.size()));
+        auto quantityDataSet = std::make_unique<QBarDataArray>();
+        quantityDataSet->reserve(static_cast<int>(mMappedData.size()));
 
         QStringList rowLabels;
-        rowLabels.reserve(dataSet->size());
+        rowLabels.reserve(quantityDataSet->size());
 
-        for (auto &systemData : mappedData)
+        for (auto &systemData : mMappedData)
         {
             rowLabels << systemData.first;
 
-            auto row = std::make_unique<QBarDataRow>(static_cast<int>(allTypes.size()));
-            auto curCol = std::begin(*row);
+            auto quantityRow = std::make_unique<QBarDataRow>(static_cast<int>(mAllTypes.size()));
+            auto curQuantityCol = std::begin(*quantityRow);
 
-            for (const auto &typeName : allTypes)
+            for (const auto &typeName : mAllTypes)
             {
-                curCol->setValue(systemData.second[typeName]);
-                ++curCol;
+                const auto &info = systemData.second[typeName];
+
+                curQuantityCol->setValue(info.mQunatity);
+                ++curQuantityCol;
             }
 
-            dataSet->append(row.release());
+            quantityDataSet->append(quantityRow.release());
         }
 
         QStringList colLabels;
-        colLabels.reserve(static_cast<int>(allTypes.size()));
+        colLabels.reserve(static_cast<int>(mAllTypes.size()));
 
-        for (const auto &typeName : allTypes)
+        for (const auto &typeName : mAllTypes)
             colLabels << typeName;
 
-        mMinedTypesSeries->dataProxy()->resetArray(dataSet.release(), rowLabels, colLabels);
+        mQuantitySeries->dataProxy()->resetArray(quantityDataSet.release(), rowLabels, colLabels);
+
+        refreshProfit();
+    }
+
+    void MiningLedgerBarGraph::setOrders(OrderList orders)
+    {
+        mPriceResolver.setOrders(std::move(orders));
+        refreshProfit();
+    }
+
+    void MiningLedgerBarGraph::setSellPriceType(PriceType type)
+    {
+        mPriceResolver.setSellPriceType(type);
+        refreshProfit();
+    }
+
+    void MiningLedgerBarGraph::setSellStation(quint64 stationId)
+    {
+        mPriceResolver.setSellStation(stationId);
+        refreshProfit();
     }
 
     void MiningLedgerBarGraph::setFontSize(int size)
@@ -257,7 +304,10 @@ namespace Evernus
 
     void MiningLedgerBarGraph::setMeshSmooth(int state)
     {
-        mMinedTypesSeries->setMeshSmooth(state == Qt::Checked);
+        const auto enabled = state == Qt::Checked;
+
+        mQuantitySeries->setMeshSmooth(enabled);
+        mProfitSeries->setMeshSmooth(enabled);
     }
 
     void MiningLedgerBarGraph::zoomToSelectedBar()
@@ -319,5 +369,29 @@ namespace Evernus
         mCameraYAnim.stop();
         mCameraZoomAnim.stop();
         mCameraTargetAnim.stop();
+    }
+
+    void MiningLedgerBarGraph::refreshProfit()
+    {
+        auto profitDataSet = std::make_unique<QBarDataArray>();
+        profitDataSet->reserve(static_cast<int>(mMappedData.size()));
+
+        for (auto &systemData : mMappedData)
+        {
+            auto profitRow = std::make_unique<QBarDataRow>(static_cast<int>(mAllTypes.size()));
+            auto curProfitCol = std::begin(*profitRow);
+
+            for (const auto &typeName : mAllTypes)
+            {
+                const auto &info = systemData.second[typeName];
+
+                curProfitCol->setValue(mPriceResolver.getPrice(info.mTypeId, info.mQunatity));
+                ++curProfitCol;
+            }
+
+            profitDataSet->append(profitRow.release());
+        }
+
+        mProfitSeries->dataProxy()->resetArray(profitDataSet.release());
     }
 }

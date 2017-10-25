@@ -254,10 +254,16 @@ namespace Evernus
 
     void IndustryMiningLedgerWidget::updateSellStation(const QVariantList &path)
     {
+        Q_ASSERT(mGraphWidget != nullptr);
+
         QSettings settings;
         settings.setValue(IndustrySettings::miningLedgerSellStationKey, path);
 
-        mDetailsModel.setSellStation(EveDataProvider::getStationIdFromPath(path));
+        const auto id = EveDataProvider::getStationIdFromPath(path);
+
+        mDetailsModel.setSellStation(id);
+        mTypesModel.setSellStation(id);
+        mGraphWidget->setSellStation(id);
     }
 
     void IndustryMiningLedgerWidget::updatePriceType()
@@ -267,6 +273,9 @@ namespace Evernus
         const auto type = mSellPriceTypeCombo->getPriceType();
         mDetailsModel.setSellPriceType(type);
         mTypesModel.setSellPriceType(type);
+
+        if (Q_LIKELY(mGraphWidget != nullptr))
+            mGraphWidget->setSellPriceType(type);
     }
 
     void IndustryMiningLedgerWidget::updateOrderTask(const QString &text)
@@ -280,8 +289,11 @@ namespace Evernus
 
         if (error.isEmpty())
         {
+            Q_ASSERT(mGraphWidget != nullptr);
+
             mDetailsModel.setOrders(orders);
             mTypesModel.setOrders(orders);
+            mGraphWidget->setOrders(orders);
 
             emit updateExternalOrders(*orders);
         }
