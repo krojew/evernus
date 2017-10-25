@@ -198,6 +198,8 @@ namespace Evernus
         Q_ASSERT(mRangeFilter != nullptr);
         Q_ASSERT(mGraphWidget != nullptr);
 
+        refreshImportTimer();
+
         const auto charId = getCharacterId();
         const auto from = mRangeFilter->getFrom();
         const auto to = mRangeFilter->getTo();

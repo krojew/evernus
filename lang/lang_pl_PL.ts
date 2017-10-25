@@ -4741,7 +4741,7 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="248"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="250"/>
         <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>

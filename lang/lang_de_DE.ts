@@ -4336,7 +4336,7 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../IndustryMiningLedgerWidget.cpp" line="248"/>
+        <location filename="../IndustryMiningLedgerWidget.cpp" line="250"/>
         <source>Making %1 order requests...</source>
         <translation type="unfinished"></translation>
     </message>
