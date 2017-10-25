@@ -677,8 +677,6 @@ namespace Evernus
     void Updater::removeRefreshTokens()
     {
         QSettings settings;
-        settings.remove(RegionTypeSelectDialog::settingsTypesKey);
-
         settings.beginGroup(SSOSettings::refreshTokenGroup);
         settings.remove(QStringLiteral(""));
         settings.endGroup();
