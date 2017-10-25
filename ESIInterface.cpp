@@ -177,7 +177,7 @@ namespace Evernus
     void ESIInterface::fetchMarketHistory(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching market history for" << regionId << "and" << typeId;
-        asyncGet(QStringLiteral("/v1/markets/%1/history/").arg(regionId), QStringLiteral("type_id=%1").arg(typeId), callback, getNumRetries());
+        get(QStringLiteral("/v1/markets/%1/history/").arg(regionId), QStringLiteral("type_id=%1").arg(typeId), callback, getNumRetries());
     }
 
     void ESIInterface::fetchCitadelMarketOrders(quint64 citadelId, Character::IdType charId, const PaginatedCallback &callback) const
@@ -228,7 +228,7 @@ namespace Evernus
             return;
         }
 
-        asyncGet(QStringLiteral("/v4/characters/%1/").arg(charId), {}, callback, getNumRetries());
+        get(QStringLiteral("/v4/characters/%1/").arg(charId), {}, callback, getNumRetries());
     }
 
     void ESIInterface::fetchCharacterSkills(Character::IdType charId, const JsonCallback &callback) const
@@ -245,26 +245,26 @@ namespace Evernus
             if (!error.isEmpty())
                 callback({}, error, {});
             else
-                asyncGet(charId, QStringLiteral("/v3/characters/%1/skills/").arg(charId), {}, callback, getNumRetries());
+                get(charId, QStringLiteral("/v3/characters/%1/skills/").arg(charId), {}, callback, getNumRetries());
         });
     }
 
     void ESIInterface::fetchCorporation(quint64 corpId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching corporation" << corpId;
-        asyncGet(QStringLiteral("/v3/corporations/%1/").arg(corpId), {}, callback, getNumRetries());
+        get(QStringLiteral("/v3/corporations/%1/").arg(corpId), {}, callback, getNumRetries());
     }
 
     void ESIInterface::fetchRaces(const JsonCallback &callback) const
     {
         qDebug() << "Fetching races";
-        asyncGet(QStringLiteral("/v1/universe/races/"), {}, callback, getNumRetries());
+        get(QStringLiteral("/v1/universe/races/"), {}, callback, getNumRetries());
     }
 
     void ESIInterface::fetchBloodlines(const JsonCallback &callback) const
     {
         qDebug() << "Fetching bloodlines";
-        asyncGet(QStringLiteral("/v1/universe/bloodlines/"), {}, callback, getNumRetries());
+        get(QStringLiteral("/v1/universe/bloodlines/"), {}, callback, getNumRetries());
     }
 
     void ESIInterface::fetchCharacterWallet(Character::IdType charId, const StringCallback &callback) const
@@ -281,7 +281,7 @@ namespace Evernus
             if (!error.isEmpty())
                 callback({}, error, {});
             else
-                asyncGet<decltype(callback), StringTag>(charId, QStringLiteral("/v1/characters/%1/wallet/").arg(charId), {}, callback, getNumRetries());
+                get<decltype(callback), StringTag>(charId, QStringLiteral("/v1/characters/%1/wallet/").arg(charId), {}, callback, getNumRetries());
         });
     }
 
@@ -299,7 +299,7 @@ namespace Evernus
             if (!error.isEmpty())
                 callback({}, error, {});
             else
-                asyncGet(charId, QStringLiteral("/v1/characters/%1/orders/").arg(charId), {}, callback, getNumRetries());
+                get(charId, QStringLiteral("/v1/characters/%1/orders/").arg(charId), {}, callback, getNumRetries());
         });
     }
 
@@ -326,7 +326,7 @@ namespace Evernus
                 if (fromId)
                     query = QStringLiteral("from_id=%1").arg(*fromId);
 
-                asyncGet(charId, QStringLiteral("/v1/characters/%1/wallet/journal/").arg(charId), query, callback, getNumRetries());
+                get(charId, QStringLiteral("/v1/characters/%1/wallet/journal/").arg(charId), query, callback, getNumRetries());
             }
         });
     }
@@ -354,7 +354,7 @@ namespace Evernus
                 if (fromId)
                     query = QStringLiteral("from_id=%1").arg(*fromId);
 
-                asyncGet(charId, QStringLiteral("/v1/characters/%1/wallet/transactions/").arg(charId), query, callback, getNumRetries());
+                get(charId, QStringLiteral("/v1/characters/%1/wallet/transactions/").arg(charId), query, callback, getNumRetries());
             }
         });
     }
@@ -373,7 +373,7 @@ namespace Evernus
             if (!error.isEmpty())
                 callback({}, error, {});
             else
-                asyncGet(charId, QStringLiteral("/v1/characters/%1/blueprints/").arg(charId), {}, callback, getNumRetries());
+                get(charId, QStringLiteral("/v1/characters/%1/blueprints/").arg(charId), {}, callback, getNumRetries());
         });
     }
 
@@ -411,7 +411,7 @@ namespace Evernus
     void ESIInterface::fetchMarketPrices(const PersistentJsonCallback &callback) const
     {
         qDebug() << "Fetching market prices.";
-        asyncGet(QStringLiteral("/v1/markets/prices/"), {}, [=](auto &&data, const auto &error, const auto &expires) {
+        get(QStringLiteral("/v1/markets/prices/"), {}, [=](auto &&data, const auto &error, const auto &expires) {
             Q_UNUSED(expires);
             callback(std::move(data), error);
         }, getNumRetries());
@@ -420,7 +420,7 @@ namespace Evernus
     void ESIInterface::fetchIndustryCostIndices(const PersistentJsonCallback &callback) const
     {
         qDebug() << "Fetching industry cost indices.";
-        asyncGet(QStringLiteral("/v1/industry/systems/"), {}, [=](auto &&data, const auto &error, const auto &expires) {
+        get(QStringLiteral("/v1/industry/systems/"), {}, [=](auto &&data, const auto &error, const auto &expires) {
             Q_UNUSED(expires);
             callback(std::move(data), error);
         }, getNumRetries());
@@ -553,7 +553,7 @@ namespace Evernus
         );
 
         query.addQueryItem(QStringLiteral("page"), QString::number(page));
-        asyncGet<decltype(callback), PaginatedJsonTag>(url, query.toString(), callback, getNumRetries());
+        get<decltype(callback), PaginatedJsonTag>(url, query.toString(), callback, getNumRetries());
     }
 
     template<class T>
@@ -572,7 +572,7 @@ namespace Evernus
             }
         );
 
-        asyncGet<decltype(callback), PaginatedJsonTag>(
+        get<decltype(callback), PaginatedJsonTag>(
             charId,
             url,
             QStringLiteral("page=%1").arg(page),
@@ -584,7 +584,7 @@ namespace Evernus
     }
 
     template<class T, class ResultTag>
-    void ESIInterface::asyncGet(const QString &url, const QString &query, const T &continuation, uint retries) const
+    void ESIInterface::get(const QString &url, const QString &query, const T &continuation, uint retries) const
     {
         runNowOrLater([=] {
             auto reply = mNetworkManager.get(prepareRequest(url, query));
@@ -609,13 +609,13 @@ namespace Evernus
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
-                            asyncGet<T, ResultTag>(url, query, continuation, retries);
+                            get<T, ResultTag>(url, query, continuation, retries);
                         }, *reply);
                     }
                     else
                     {
                         if (retries > 0)
-                            asyncGet<T, ResultTag>(url, query, continuation, retries - 1);
+                            get<T, ResultTag>(url, query, continuation, retries - 1);
                         else
                             TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
                     }
@@ -633,7 +633,7 @@ namespace Evernus
     }
 
     template<class T, class ResultTag>
-    void ESIInterface::asyncGet(Character::IdType charId,
+    void ESIInterface::get(Character::IdType charId,
                                 const QString &url,
                                 const QString &query,
                                 const T &continuation,
@@ -664,7 +664,7 @@ namespace Evernus
                     {
                         reply->deleteLater();
                         schedulePostErrorLimitRequest([=] {
-                            asyncGet<T, ResultTag>(charId, url, query, continuation, retries, importingCitadels, citadelId);
+                            get<T, ResultTag>(charId, url, query, continuation, retries, importingCitadels, citadelId);
                         }, *reply);
                     }
                     else
@@ -676,7 +676,7 @@ namespace Evernus
                             tryAuthAndContinue(charId, [=](const auto &error) {
                                 reply->deleteLater();
                                 if (error.isEmpty())
-                                    asyncGet<T, ResultTag>(charId, url, query, continuation, retries, importingCitadels);
+                                    get<T, ResultTag>(charId, url, query, continuation, retries, importingCitadels);
                                 else
                                     TaggedInvoke<ResultTag>::invoke(error, *reply, continuation);
                             });
@@ -703,7 +703,7 @@ namespace Evernus
                             }
                             else if (retries > 0)
                             {
-                                asyncGet<T, ResultTag>(charId, url, query, continuation, retries - 1, importingCitadels, citadelId);
+                                get<T, ResultTag>(charId, url, query, continuation, retries - 1, importingCitadels, citadelId);
                             }
                             else
                             {

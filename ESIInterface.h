@@ -160,15 +160,15 @@ namespace Evernus
                                 quint64 citadelId = 0) const;
 
         template<class T, class ResultTag = JsonTag>
-        void asyncGet(const QString &url, const QString &query, const T &continuation, uint retries) const;
+        void get(const QString &url, const QString &query, const T &continuation, uint retries) const;
         template<class T, class ResultTag = JsonTag>
-        void asyncGet(Character::IdType charId,
-                      const QString &url,
-                      const QString &query,
-                      const T &continuation,
-                      uint retries,
-                      bool importingCitadels = false,
-                      quint64 citadelId = 0) const;
+        void get(Character::IdType charId,
+                 const QString &url,
+                 const QString &query,
+                 const T &continuation,
+                 uint retries,
+                 bool importingCitadels = false,
+                 quint64 citadelId = 0) const;
 
         template<class T>
         void post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const;

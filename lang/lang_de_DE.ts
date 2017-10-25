@@ -2566,22 +2566,22 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="977"/>
+        <location filename="../ESIManager.cpp" line="979"/>
         <source>SSO authorization failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="947"/>
+        <location filename="../ESIManager.cpp" line="949"/>
         <source>Empty access token!</source>
         <translation type="unfinished">Leeres Access Token!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1181"/>
+        <location filename="../ESIManager.cpp" line="1191"/>
         <source>Empty refresh token!</source>
         <translation type="unfinished">Leeres Refresh Token!</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="1218"/>
+        <location filename="../ESIManager.cpp" line="1228"/>
         <source>Please authorize access for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
