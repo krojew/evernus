@@ -22,6 +22,15 @@ RUN apt-get update && \
         libqt5xmlpatterns5-dev \
         cmake
 
+# Data Visualization is missing in Ubuntu
+RUN wget http://download.qt.io/official_releases/qt/5.9/5.9.1/submodules/qtdatavis3d-opensource-src-5.9.1.tar.xz && \
+    tar -xf qtdatavis3d-opensource-src-5.9.1.tar.xz && \
+    cd qtdatavis3d-opensource-src-5.9.1 && \
+    qmake CONFIG+=release && \
+    make -j`ncpus` && \
+    make install && \
+    cd .. && rm -rf qtdatavis3d-opensource-src-5.9.1
+
 # we don't want to use cache for the following layers, but docker cannot selectively disable it
 ADD .cache-bust /root
 
