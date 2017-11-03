@@ -436,6 +436,8 @@ namespace Evernus
 
         connect(&mSetupController, &IndustryManufacturingSetupController::showInEve,
                 this, &IndustryManufacturingWidget::showInEve);
+        connect(&mSetupController, &IndustryManufacturingSetupController::showExternalOrders,
+                this, &IndustryManufacturingWidget::showExternalOrders);
     }
 
     void IndustryManufacturingWidget::refreshAssets()

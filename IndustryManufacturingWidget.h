@@ -85,6 +85,7 @@ namespace Evernus
         void setupRefreshChanged(bool started);
         void ssoAuthRequested(Character::IdType charId);
         void showInEve(EveType::IdType id);
+        void showExternalOrders(EveType::IdType id);
 
     public slots:
         void handleNewPreferences();

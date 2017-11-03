@@ -49,6 +49,7 @@ namespace Evernus
         void toggleViewType();
 
         void showInEve(EveType::IdType id);
+        void showExternalOrders(EveType::IdType id);
 
     private:
         IndustryManufacturingSetupModel &mModel;

@@ -42,6 +42,7 @@ namespace Evernus
     class CharacterManagerDialog;
     class MarketOrderProvider;
     class ESIInterfaceManager;
+    class MarketBrowserWidget;
     class WalletJournalEntry;
     class CacheTimerProvider;
     class RepositoryProvider;
@@ -194,7 +195,7 @@ namespace Evernus
         void activateTrayIcon(QSystemTrayIcon::ActivationReason reason);
         void copyHTTPLink();
 
-        void showMarketBrowser();
+        void showMarketBrowser(EveType::IdType typeId);
 
         void performSync();
 
@@ -259,7 +260,8 @@ namespace Evernus
 
         QTimer mAutoImportTimer;
 
-        int mMarketBrowserTab = -1;
+        MarketBrowserWidget *mMarketBrowserTab = nullptr;
+        int mMarketBrowserTabIndex = -1;
 
         FPCController mFPCController;
 

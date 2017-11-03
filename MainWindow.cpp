@@ -537,9 +537,10 @@ namespace Evernus
         QMessageBox::information(this, tr("Evernus"), tr("HTTP link was copied to the clipboard."));
     }
 
-    void MainWindow::showMarketBrowser()
+    void MainWindow::showMarketBrowser(EveType::IdType typeId)
     {
-        mMainTabs->setCurrentIndex(mMarketBrowserTab);
+        mMainTabs->setCurrentIndex(mMarketBrowserTabIndex);
+        mMarketBrowserTab->showOrdersForType(typeId);
     }
 
     void MainWindow::performSync()
@@ -795,6 +796,7 @@ namespace Evernus
         connect(orderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
         connect(orderTab, &MarketOrderWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(orderTab, &MarketOrderWidget::showInEve, this, &MainWindow::showInEve);
+        connect(orderTab, &MarketOrderWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(orderTab, &MarketOrderWidget::fpcExecutorChanged, &mFPCController, &FPCController::changeExecutor);
         connect(this, &MainWindow::characterMarketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::corpMarketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
@@ -878,6 +880,7 @@ namespace Evernus
         connect(corpOrderTab, &MarketOrderWidget::openMarginTool, this, &MainWindow::showMarginTool);
         connect(corpOrderTab, &MarketOrderWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(corpOrderTab, &MarketOrderWidget::showInEve, this, &MainWindow::showInEve);
+        connect(corpOrderTab, &MarketOrderWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(corpOrderTab, &MarketOrderWidget::fpcExecutorChanged, &mFPCController, &FPCController::changeExecutor);
         connect(this, &MainWindow::corpMarketOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
@@ -931,38 +934,36 @@ namespace Evernus
         connect(this, &MainWindow::preferencesChanged, itemHistoryTab, &ItemHistoriesWidget::handleNewPreferences);
         addTab(itemHistoryTab, tr("Item history"), TabType::Other);
 
-        auto marketBrowserTab = new MarketBrowserWidget{mRepositoryProvider.getExternalOrderRepository(),
-                                                        mRepositoryProvider.getMarketOrderRepository(),
-                                                        mRepositoryProvider.getCorpMarketOrderRepository(),
-                                                        mRepositoryProvider.getCharacterRepository(),
-                                                        mRepositoryProvider.getFavoriteItemRepository(),
-                                                        mRepositoryProvider.getLocationBookmarkRepository(),
-                                                        mRepositoryProvider.getEveTypeRepository(),
-                                                        mRepositoryProvider.getMarketGroupRepository(),
-                                                        mRepositoryProvider.getRegionTypePresetRepository(),
-                                                        charOrderProvider,
-                                                        corpOrderProvider,
-                                                        mEveDataProvider,
-                                                        interfaceManager,
-                                                        taskManager,
-                                                        mItemCostProvider,
-                                                        mClientId,
-                                                        clientSecret,
-                                                        this};
-        mMarketBrowserTab = addTab(marketBrowserTab, tr("Market browser"), TabType::Other);
-        connect(marketBrowserTab, &MarketBrowserWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
-        connect(marketBrowserTab, &MarketBrowserWidget::externalOrdersChanged, this, &MainWindow::externalOrdersChanged);
-        connect(marketBrowserTab, &MarketBrowserWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
-        connect(marketBrowserTab, &MarketBrowserWidget::ssoAuthRequested, this, &MainWindow::requestSSOAuth);
-        connect(corpOrderTab, &MarketOrderWidget::showExternalOrders, marketBrowserTab, &MarketBrowserWidget::showOrdersForType);
-        connect(orderTab, &MarketOrderWidget::showExternalOrders, marketBrowserTab, &MarketBrowserWidget::showOrdersForType);
-        connect(this, &MainWindow::characterMarketOrdersChanged, marketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
-        connect(this, &MainWindow::corpMarketOrdersChanged, marketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
-        connect(this, &MainWindow::externalOrdersChanged, marketBrowserTab, &MarketBrowserWidget::updateData);
-        connect(this, &MainWindow::itemVolumeChanged, marketBrowserTab, &MarketBrowserWidget::updateData);
-        connect(this, &MainWindow::preferencesChanged, marketBrowserTab, &MarketBrowserWidget::preferencesChanged);
-        connect(this, &MainWindow::gotSSOAuthorizationCode, marketBrowserTab, &MarketBrowserWidget::processAuthorizationCode);
-        connect(this, &MainWindow::ssoAuthCanceled, marketBrowserTab, &MarketBrowserWidget::cancelSSOAuth);
+        mMarketBrowserTab = new MarketBrowserWidget{mRepositoryProvider.getExternalOrderRepository(),
+                                                    mRepositoryProvider.getMarketOrderRepository(),
+                                                    mRepositoryProvider.getCorpMarketOrderRepository(),
+                                                    mRepositoryProvider.getCharacterRepository(),
+                                                    mRepositoryProvider.getFavoriteItemRepository(),
+                                                    mRepositoryProvider.getLocationBookmarkRepository(),
+                                                    mRepositoryProvider.getEveTypeRepository(),
+                                                    mRepositoryProvider.getMarketGroupRepository(),
+                                                    mRepositoryProvider.getRegionTypePresetRepository(),
+                                                    charOrderProvider,
+                                                    corpOrderProvider,
+                                                    mEveDataProvider,
+                                                    interfaceManager,
+                                                    taskManager,
+                                                    mItemCostProvider,
+                                                    mClientId,
+                                                    clientSecret,
+                                                    this};
+        mMarketBrowserTabIndex = addTab(mMarketBrowserTab, tr("Market browser"), TabType::Other);
+        connect(mMarketBrowserTab, &MarketBrowserWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
+        connect(mMarketBrowserTab, &MarketBrowserWidget::externalOrdersChanged, this, &MainWindow::externalOrdersChanged);
+        connect(mMarketBrowserTab, &MarketBrowserWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
+        connect(mMarketBrowserTab, &MarketBrowserWidget::ssoAuthRequested, this, &MainWindow::requestSSOAuth);
+        connect(this, &MainWindow::characterMarketOrdersChanged, mMarketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
+        connect(this, &MainWindow::corpMarketOrdersChanged, mMarketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
+        connect(this, &MainWindow::externalOrdersChanged, mMarketBrowserTab, &MarketBrowserWidget::updateData);
+        connect(this, &MainWindow::itemVolumeChanged, mMarketBrowserTab, &MarketBrowserWidget::updateData);
+        connect(this, &MainWindow::preferencesChanged, mMarketBrowserTab, &MarketBrowserWidget::preferencesChanged);
+        connect(this, &MainWindow::gotSSOAuthorizationCode, mMarketBrowserTab, &MarketBrowserWidget::processAuthorizationCode);
+        connect(this, &MainWindow::ssoAuthCanceled, mMarketBrowserTab, &MarketBrowserWidget::cancelSSOAuth);
 
         auto itemCostTab = new ItemCostWidget{mItemCostProvider, mEveDataProvider, this};
         addTab(itemCostTab, tr("Item costs"), TabType::Other);
@@ -1022,6 +1023,7 @@ namespace Evernus
         connect(industryTab, &IndustryWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         connect(industryTab, &IndustryWidget::importMiningLedger, this, &MainWindow::importCharacterMiningLedger);
         connect(industryTab, &IndustryWidget::ssoAuthRequested, this, &MainWindow::requestSSOAuth);
+        connect(industryTab, &IndustryWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(industryTab, &IndustryWidget::showInEve, this, [=](auto typeId) {
             showInEve(typeId, Character::invalidId);
         });

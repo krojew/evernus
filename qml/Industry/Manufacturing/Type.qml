@@ -389,6 +389,10 @@ Item {
             text: qsTr("Show in EVE")
             onTriggered: setupController.showInEve(typeId)
         }
+        MenuItem {
+            text: qsTr("Show in Market Browser")
+            onTriggered: setupController.showExternalOrders(typeId)
+        }
     }
 
     Connections {

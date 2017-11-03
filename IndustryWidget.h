@@ -75,6 +75,7 @@ namespace Evernus
         void importMiningLedger(Character::IdType id);
         void ssoAuthRequested(Character::IdType charId);
         void showInEve(EveType::IdType id);
+        void showExternalOrders(EveType::IdType id);
 
     public slots:
         void handleNewPreferences();
