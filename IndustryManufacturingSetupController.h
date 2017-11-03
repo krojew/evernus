@@ -48,6 +48,8 @@ namespace Evernus
         void outputViewCreated();
         void toggleViewType();
 
+        void showInEve(EveType::IdType id);
+
     private:
         IndustryManufacturingSetupModel &mModel;
     };

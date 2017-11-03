@@ -82,10 +82,9 @@ namespace Evernus
 
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
-
         void setupRefreshChanged(bool started);
-
         void ssoAuthRequested(Character::IdType charId);
+        void showInEve(EveType::IdType id);
 
     public slots:
         void handleNewPreferences();

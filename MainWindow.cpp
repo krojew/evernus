@@ -1022,6 +1022,9 @@ namespace Evernus
         connect(industryTab, &IndustryWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         connect(industryTab, &IndustryWidget::importMiningLedger, this, &MainWindow::importCharacterMiningLedger);
         connect(industryTab, &IndustryWidget::ssoAuthRequested, this, &MainWindow::requestSSOAuth);
+        connect(industryTab, &IndustryWidget::showInEve, this, [=](auto typeId) {
+            showInEve(typeId, Character::invalidId);
+        });
         connect(this, &MainWindow::preferencesChanged, industryTab, &IndustryWidget::handleNewPreferences);
         connect(this, &MainWindow::characterAssetsChanged, industryTab, &IndustryWidget::refreshAssets);
         connect(this, &MainWindow::characterMiningLedgerChanged, industryTab, &IndustryWidget::refreshMiningLedger);

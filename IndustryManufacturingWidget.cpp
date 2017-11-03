@@ -433,6 +433,9 @@ namespace Evernus
         });
 
         connect(&mESIManager, &ESIManager::ssoAuthRequested, this, &IndustryManufacturingWidget::ssoAuthRequested);
+
+        connect(&mSetupController, &IndustryManufacturingSetupController::showInEve,
+                this, &IndustryManufacturingWidget::showInEve);
     }
 
     void IndustryManufacturingWidget::refreshAssets()

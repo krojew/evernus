@@ -62,6 +62,8 @@ namespace Evernus
                 this, &IndustryWidget::updateExternalOrders);
         connect(mManufacturingWidget, &IndustryManufacturingWidget::ssoAuthRequested,
                 this, &IndustryWidget::ssoAuthRequested);
+        connect(mManufacturingWidget, &IndustryManufacturingWidget::showInEve,
+                this, &IndustryWidget::showInEve);
 
         mMiningLedgerWidget = new IndustryMiningLedgerWidget{cacheTimerProvider,
                                                              dataProvider,

@@ -126,7 +126,17 @@ Item {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: selectCurrentType()
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+            onClicked: {
+                if (mouse.button == Qt.LeftButton) {
+                    selectCurrentType();
+                } else if (mouse.button == Qt.RightButton) {
+                    contextMenu.x = mouse.x;
+                    contextMenu.y = mouse.y;
+
+                    contextMenu.open();
+                }
+            }
         }
 
         RowLayout {
@@ -369,6 +379,15 @@ Item {
                 font.bold: true
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
             }
+        }
+    }
+
+    Menu {
+        id: contextMenu
+
+        MenuItem {
+            text: qsTr("Show in EVE")
+            onTriggered: setupController.showInEve(typeId)
         }
     }
 

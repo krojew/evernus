@@ -72,10 +72,9 @@ namespace Evernus
 
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
-
         void importMiningLedger(Character::IdType id);
-
         void ssoAuthRequested(Character::IdType charId);
+        void showInEve(EveType::IdType id);
 
     public slots:
         void handleNewPreferences();
