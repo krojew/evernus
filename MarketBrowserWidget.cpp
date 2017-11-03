@@ -912,11 +912,23 @@ namespace Evernus
         if (mNagivationPointer != std::end(mNavigationStack))
             mNavigationStack.erase(std::next(mNagivationPointer), std::end(mNavigationStack));
 
+        const auto regionItem = mRegionList->currentItem();
+        if (regionItem == nullptr)
+            return;
+
+        const auto systemItem = mSolarSystemList->currentItem();
+        if (systemItem == nullptr)
+            return;
+
+        const auto stationItem = mStationList->currentItem();
+        if (stationItem == nullptr)
+            return;
+
         NavigationState state;
         state.mTypeId = typeId;
-        state.mRegionId = mRegionList->currentItem()->data(Qt::UserRole).toUInt();
-        state.mSolarSystemId = mSolarSystemList->currentItem()->data(Qt::UserRole).toUInt();
-        state.mStationId = mStationList->currentItem()->data(Qt::UserRole).toUInt();
+        state.mRegionId = regionItem->data(Qt::UserRole).toUInt();
+        state.mSolarSystemId = systemItem->data(Qt::UserRole).toUInt();
+        state.mStationId = stationItem->data(Qt::UserRole).toUInt();
 
         mNavigationStack.emplace_back(std::move(state));
         mNagivationPointer = std::prev(std::end(mNavigationStack));
