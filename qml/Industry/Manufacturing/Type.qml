@@ -393,6 +393,14 @@ Item {
             text: qsTr("Show in Market Browser")
             onTriggered: setupController.showExternalOrders(typeId)
         }
+        MenuItem {
+            text: qsTr("Lookup item on eve-marketdata.com")
+            onTriggered: setupController.lookupOnEveMarketdata(typeId)
+        }
+        MenuItem {
+            text: qsTr("Lookup item on evemarketer.com")
+            onTriggered: setupController.lookupOnEveMarketer(typeId)
+        }
     }
 
     Connections {

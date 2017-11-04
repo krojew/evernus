@@ -785,6 +785,8 @@ add_executable(
     TypeAggregatedMarketDataModel.cpp
     TypeAggregatedMarketDataModel.h
     TypeLocationPairs.h
+    TypeLookupUtils.cpp
+    TypeLookupUtils.h
     TypePerformanceModel.cpp
     TypePerformanceModel.h
     TypeSellPriceResolver.cpp

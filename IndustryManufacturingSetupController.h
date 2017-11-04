@@ -42,6 +42,9 @@ namespace Evernus
     public slots:
         void setSource(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);
 
+        void lookupOnEveMarketdata(EveType::IdType id);
+        void lookupOnEveMarketer(EveType::IdType id);
+
     signals:
         void typeSelected(EveType::IdType id);
         void sourceChanged(EveType::IdType id, IndustryManufacturingSetup::InventorySource source);

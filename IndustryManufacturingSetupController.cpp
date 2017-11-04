@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "IndustryManufacturingSetupModel.h"
+#include "TypeLookupUtils.h"
 
 #include "IndustryManufacturingSetupController.h"
 
@@ -27,5 +28,15 @@ namespace Evernus
     {
         mModel.setSource(id, source);
         emit sourceChanged(id, source);
+    }
+
+    void IndustryManufacturingSetupController::lookupOnEveMarketdata(EveType::IdType id)
+    {
+        TypeLookupUtils::lookupType(id, TypeLookupUtils::eveMarketdataUrl);
+    }
+
+    void IndustryManufacturingSetupController::lookupOnEveMarketer(EveType::IdType id)
+    {
+        TypeLookupUtils::lookupType(id, TypeLookupUtils::eveMarketerUrl);
     }
 }

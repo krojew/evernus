@@ -12,10 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QDesktopServices>
-#include <QUrl>
-
 #include "EveTypeProvider.h"
+#include "TypeLookupUtils.h"
 
 #include "LookupActionGroup.h"
 
@@ -34,18 +32,16 @@ namespace Evernus
 
     void LookupActionGroup::lookupOnEveMarketdata()
     {
-        lookupOnWeb(QStringLiteral("http://eve-marketdata.com/price_check.php?type_id=%1"));
+        lookupOnWeb(TypeLookupUtils::eveMarketdataUrl);
     }
 
     void LookupActionGroup::lookupOnEveMarketer()
     {
-        lookupOnWeb(QStringLiteral("https://evemarketer.com/types/%1"));
+        lookupOnWeb(TypeLookupUtils::eveMarketerUrl);
     }
 
     void LookupActionGroup::lookupOnWeb(const QString &baseUrl) const
     {
-        const auto typeId = mTypeProvider.getTypeId();
-        if (typeId != EveType::invalidId)
-            QDesktopServices::openUrl(baseUrl.arg(typeId));
+        TypeLookupUtils::lookupType(mTypeProvider.getTypeId(), baseUrl);
     }
 }
