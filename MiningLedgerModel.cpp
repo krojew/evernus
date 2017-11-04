@@ -116,7 +116,7 @@ namespace Evernus
     {
         if (Q_LIKELY(index.isValid()))
         {
-            Q_ASSERT(mData.size() > index.row());
+            Q_ASSERT(static_cast<int>(mData.size()) > index.row());
             return mData[index.row()]->getTypeId();
         }
 
