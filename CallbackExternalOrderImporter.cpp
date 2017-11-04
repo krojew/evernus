@@ -32,7 +32,9 @@ namespace Evernus
             if (Q_UNLIKELY(mCounter.isEmpty()))
             {
                 emit externalOrdersChanged(mAggregatedErrors.join("\n"), mResult);
+
                 mAggregatedErrors.clear();
+                mResult.clear();
             }
 
             return;
