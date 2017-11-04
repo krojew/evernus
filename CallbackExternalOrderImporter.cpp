@@ -31,9 +31,7 @@ namespace Evernus
 
             if (Q_UNLIKELY(mCounter.isEmpty()))
             {
-                mResult.clear();
-                emit error(mAggregatedErrors.join("\n"));
-
+                emit externalOrdersChanged(mAggregatedErrors.join("\n"), mResult);
                 mAggregatedErrors.clear();
             }
 
@@ -49,16 +47,9 @@ namespace Evernus
 
         if (mCounter.isEmpty() && !mPreparingRequests)
         {
-            if (Q_LIKELY(mAggregatedErrors.isEmpty()))
-            {
-                emit externalOrdersChanged(mResult);
-            }
-            else
-            {
-                emit error(mAggregatedErrors.join("\n"));
-                mAggregatedErrors.clear();
-            }
+            emit externalOrdersChanged(mAggregatedErrors.join("\n"), mResult);
 
+            mAggregatedErrors.clear();
             mResult.clear();
         }
     }

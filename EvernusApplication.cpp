@@ -228,7 +228,6 @@ namespace Evernus
         Q_ASSERT(mExternalOrderImporters.find(name) == std::end(mExternalOrderImporters));
 
         connect(importer.get(), &ExternalOrderImporter::statusChanged, this, &EvernusApplication::showPriceImportStatus, Qt::QueuedConnection);
-        connect(importer.get(), &ExternalOrderImporter::error, this, &EvernusApplication::showPriceImportError, Qt::QueuedConnection);
         connect(importer.get(), &ExternalOrderImporter::genericError, this, &EvernusApplication::ssoError, Qt::QueuedConnection);
         connect(importer.get(), &ExternalOrderImporter::externalOrdersChanged, this, &EvernusApplication::finishExternalOrderImport, Qt::QueuedConnection);
         mExternalOrderImporters.emplace(name, std::move(importer));
@@ -1640,14 +1639,14 @@ namespace Evernus
         importExternalOrders(ExternalOrderImporterNames::logImporter, id, target);
     }
 
-    void EvernusApplication::finishExternalOrderImport(const std::vector<ExternalOrder> &orders)
+    void EvernusApplication::finishExternalOrderImport(const QString &info, const std::vector<ExternalOrder> &orders)
     {
         try
         {
             emit taskInfoChanged(mCurrentExternalOrderImportTask, tr("Saving %1 imported orders...").arg(orders.size()));
 
             updateExternalOrdersAndAssetValue(orders);
-            finishExternalOrderImportTask(QString{});
+            finishExternalOrderImportTask(info);
         }
         catch (const std::exception &e)
         {
@@ -1930,12 +1929,6 @@ namespace Evernus
         emit corpMarketOrdersChanged();
     }
 
-    void EvernusApplication::showPriceImportError(const QString &info)
-    {
-        Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
-        finishExternalOrderImportTask(info);
-    }
-
     void EvernusApplication::showPriceImportStatus(const QString &info)
     {
         Q_ASSERT(mCurrentExternalOrderImportTask != TaskConstants::invalidTask);
@@ -1986,7 +1979,7 @@ namespace Evernus
 
     void EvernusApplication::createDb()
     {
-        DatabaseUtils::createDb(mMainDb, "main.db");
+        DatabaseUtils::createDb(mMainDb, QStringLiteral("main.db"));
 
         if (!mEveDb.isValid())
             BOOST_THROW_EXCEPTION(std::runtime_error{"Error crating Eve DB object!"});
@@ -2679,10 +2672,10 @@ namespace Evernus
 
     void EvernusApplication::finishExternalOrderImportTask(const QString &info)
     {
-        const auto task = mCurrentExternalOrderImportTask;
-        mCurrentExternalOrderImportTask = TaskConstants::invalidTask;
+         const auto task = mCurrentExternalOrderImportTask;
+         mCurrentExternalOrderImportTask = TaskConstants::invalidTask;
 
-        emit taskEnded(task, info);
+         emit taskEnded(task, info);
     }
 
     void EvernusApplication::computeAssetListSellValueSnapshot(const AssetList &list) const

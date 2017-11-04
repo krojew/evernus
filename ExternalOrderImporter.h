@@ -37,8 +37,7 @@ namespace Evernus
         virtual void fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const = 0;
 
     signals:
-        void externalOrdersChanged(const std::vector<ExternalOrder> &orders) const;
-        void error(const QString &info) const;
+        void externalOrdersChanged(const QString &info, const std::vector<ExternalOrder> &orders) const;
         void genericError(const QString &info) const;
         void statusChanged(const QString &status) const;
     };

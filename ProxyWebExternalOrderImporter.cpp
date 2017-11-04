@@ -87,8 +87,6 @@ namespace Evernus
     {
         connect(&importer, &T::externalOrdersChanged,
                 this, &ProxyWebExternalOrderImporter::externalOrdersChanged);
-        connect(&importer, &T::error,
-                this, &ProxyWebExternalOrderImporter::error);
         connect(&importer, &T::statusChanged,
                 this, &ProxyWebExternalOrderImporter::statusChanged);
         connect(&importer, &T::ssoAuthRequested,

@@ -28,11 +28,11 @@ namespace Evernus
 {
     ESIIndividualExternalOrderImporter
     ::ESIIndividualExternalOrderImporter(QByteArray clientId,
-                                           QByteArray clientSecret,
-                                           const EveDataProvider &dataProvider,
-                                           const CharacterRepository &characterRepo,
-                                           ESIInterfaceManager &interfaceManager,
-                                           QObject *parent)
+                                         QByteArray clientSecret,
+                                         const EveDataProvider &dataProvider,
+                                         const CharacterRepository &characterRepo,
+                                         ESIInterfaceManager &interfaceManager,
+                                         QObject *parent)
         : ESIExternalOrderImporter{std::move(clientId), std::move(clientSecret), dataProvider, characterRepo, interfaceManager, parent}
         , mDataProvider{dataProvider}
     {
@@ -42,7 +42,7 @@ namespace Evernus
     {
         if (target.empty())
         {
-            emit externalOrdersChanged(std::vector<ExternalOrder>{});
+            emit externalOrdersChanged({}, {});
             return;
         }
 
@@ -99,7 +99,7 @@ namespace Evernus
 
         if (mCounter.isEmpty())
         {
-            emit externalOrdersChanged(mResult);
+            emit externalOrdersChanged({}, mResult);
             mResult.clear();
         }
     }

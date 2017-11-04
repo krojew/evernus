@@ -52,13 +52,13 @@ namespace Evernus
     void MarketLogExternalOrderImporter::threadFinished(const ExternalOrderList &orders)
     {
         deleteThread(static_cast<MarketLogExternalOrderImporterThread *>(sender()));
-        emit externalOrdersChanged(orders);
+        emit externalOrdersChanged({}, orders);
     }
 
     void MarketLogExternalOrderImporter::threadError(const QString &info)
     {
         deleteThread(static_cast<MarketLogExternalOrderImporterThread *>(sender()));
-        emit error(info);
+        emit externalOrdersChanged(info, {});
     }
 
     void MarketLogExternalOrderImporter::deleteThread(MarketLogExternalOrderImporterThread *thread)

@@ -41,7 +41,7 @@ namespace Evernus
     {
         if (target.empty())
         {
-            emit externalOrdersChanged(std::vector<ExternalOrder>{});
+            emit externalOrdersChanged({}, {});
             return;
         }
 
@@ -103,7 +103,7 @@ namespace Evernus
 
         if (mCounter.isEmpty())
         {
-            emit externalOrdersChanged(mResult);
+            emit externalOrdersChanged({}, mResult);
             mResult.clear();
         }
     }

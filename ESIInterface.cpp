@@ -634,12 +634,12 @@ namespace Evernus
 
     template<class T, class ResultTag>
     void ESIInterface::get(Character::IdType charId,
-                                const QString &url,
-                                const QString &query,
-                                const T &continuation,
-                                uint retries,
-                                bool importingCitadels,
-                                quint64 citadelId) const
+                           const QString &url,
+                           const QString &query,
+                           const T &continuation,
+                           uint retries,
+                           bool importingCitadels,
+                           quint64 citadelId) const
     {
         runNowOrLater([=] {
             auto reply = mNetworkManager.get(prepareRequest(charId, url, query));

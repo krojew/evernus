@@ -240,7 +240,7 @@ namespace Evernus
         void refreshExternalOrdersFromWeb(Character::IdType id, const TypeLocationPairs &target);
         void refreshExternalOrdersFromFile(Character::IdType id, const TypeLocationPairs &target);
 
-        void finishExternalOrderImport(const std::vector<ExternalOrder> &orders);
+        void finishExternalOrderImport(const QString &info, const std::vector<ExternalOrder> &orders);
         void updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &orders);
 
         void handleNewPreferences();
@@ -270,7 +270,6 @@ namespace Evernus
         void scheduleCorpMarketOrderChange();
         void updateCorpMarketOrders();
 
-        void showPriceImportError(const QString &info);
         void showPriceImportStatus(const QString &info);
 
         void emitNewItemCosts();
