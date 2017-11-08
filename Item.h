@@ -17,7 +17,7 @@
 #include <vector>
 #include <memory>
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include "ItemData.h"
 #include "Entity.h"
@@ -34,8 +34,8 @@ namespace Evernus
         using ItemIterator = ItemList::iterator;
         using ConstItemIterator = ItemList::const_iterator;
 
-        using ParentIdType = boost::optional<ItemData::IdType>;
-        using CustomValueType = boost::optional<double>;
+        using ParentIdType = std::optional<ItemData::IdType>;
+        using CustomValueType = std::optional<double>;
 
         static const int magicBPOQuantity = -1;
         static const int magicBPCQuantity = -2;

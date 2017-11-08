@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QDateTime>
 #include <QColor>
@@ -46,7 +46,7 @@ namespace Evernus
         static const short rangeSystem = 0;
         static const short rangeRegion = 32767;
 
-        using CutomLocationType = boost::optional<quint64>;
+        using CutomLocationType = std::optional<quint64>;
         using Type = PriceType;
 
         using Entity::Entity;

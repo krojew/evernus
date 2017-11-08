@@ -196,22 +196,22 @@ namespace Evernus
         mData.mFactionStanding = standing;
     }
 
-    boost::optional<double> Character::getBuyBrokersFee() const
+    std::optional<double> Character::getBuyBrokersFee() const
     {
         return mData.mBuyBrokersFee;
     }
 
-    void Character::setBuyBrokersFee(boost::optional<double> fee)
+    void Character::setBuyBrokersFee(std::optional<double> fee)
     {
         mData.mBuyBrokersFee = std::move(fee);
     }
 
-    boost::optional<double> Character::getSellBrokersFee() const
+    std::optional<double> Character::getSellBrokersFee() const
     {
         return mData.mSellBrokersFee;
     }
 
-    void Character::setSellBrokersFee(boost::optional<double> fee)
+    void Character::setSellBrokersFee(std::optional<double> fee)
     {
         mData.mSellBrokersFee = std::move(fee);
     }

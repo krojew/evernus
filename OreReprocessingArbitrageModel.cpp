@@ -71,7 +71,7 @@ namespace Evernus
                                                      bool onlyHighSec,
                                                      double baseYield,
                                                      double sellVolumeLimit,
-                                                     const boost::optional<double> &customStationTax)
+                                                     const std::optional<double> &customStationTax)
     {
         beginResetModel();
 

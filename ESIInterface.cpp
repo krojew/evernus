@@ -304,7 +304,7 @@ namespace Evernus
     }
 
     void ESIInterface::fetchCharacterWalletJournal(Character::IdType charId,
-                                                   const boost::optional<WalletJournalEntry::IdType> &fromId,
+                                                   const std::optional<WalletJournalEntry::IdType> &fromId,
                                                    const JsonCallback &callback) const
     {
         qDebug() << "Fetching character wallet journal for" << charId;
@@ -332,7 +332,7 @@ namespace Evernus
     }
 
     void ESIInterface::fetchCharacterWalletTransactions(Character::IdType charId,
-                                                        const boost::optional<WalletTransaction::IdType> &fromId,
+                                                        const std::optional<WalletTransaction::IdType> &fromId,
                                                         const JsonCallback &callback) const
     {
         qDebug() << "Fetching character wallet transactions for" << charId;

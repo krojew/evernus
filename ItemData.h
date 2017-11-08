@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include "EveType.h"
 
@@ -22,7 +22,7 @@ namespace Evernus
 {
     struct ItemData
     {
-        typedef boost::optional<quint64> LocationIdType;
+        typedef std::optional<quint64> LocationIdType;
         typedef EveType::IdType TypeIdType;
         typedef quint64 IdType;
 

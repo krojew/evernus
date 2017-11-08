@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QString>
 
@@ -27,7 +27,7 @@ namespace Evernus
         : public Entity<quint64>
     {
     public:
-        typedef boost::optional<Key::IdType> KeyIdType;
+        typedef std::optional<Key::IdType> KeyIdType;
 
         using Entity::Entity;
 
@@ -82,11 +82,11 @@ namespace Evernus
         float getFactionStanding() const noexcept;
         void setFactionStanding(float standing) noexcept;
 
-        boost::optional<double> getBuyBrokersFee() const;
-        void setBuyBrokersFee(boost::optional<double> fee);
+        std::optional<double> getBuyBrokersFee() const;
+        void setBuyBrokersFee(std::optional<double> fee);
 
-        boost::optional<double> getSellBrokersFee() const;
-        void setSellBrokersFee(boost::optional<double> fee);
+        std::optional<double> getSellBrokersFee() const;
+        void setSellBrokersFee(std::optional<double> fee);
 
         float getReprocessingImplantBonus() const noexcept;
         void setReprocessingImplantBonus(float value) noexcept;

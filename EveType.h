@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QString>
 
@@ -27,9 +27,9 @@ namespace Evernus
         : public Entity<uint>
     {
     public:
-        typedef boost::optional<QString> DescriptionType;
-        typedef boost::optional<uint> RaceIdType;
-        typedef boost::optional<MarketGroup::IdType> MarketGroupIdType;
+        typedef std::optional<QString> DescriptionType;
+        typedef std::optional<uint> RaceIdType;
+        typedef std::optional<MarketGroup::IdType> MarketGroupIdType;
 
         using Entity::Entity;
 

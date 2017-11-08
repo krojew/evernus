@@ -233,7 +233,7 @@ namespace Evernus
         mDataStack->setCurrentIndex(waitingLabelIndex);
         mDataStack->repaint();
 
-        boost::optional<double> stationTax;
+        std::optional<double> stationTax;
         if (mCustomStationTaxBtn->isChecked())
             stationTax = mCustomStationTaxEdit->value() / 100.;
 

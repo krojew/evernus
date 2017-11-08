@@ -16,7 +16,7 @@
 
 #include <unordered_set>
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QString>
 
@@ -28,7 +28,7 @@ namespace Evernus
         : public Entity<QString>
     {
     public:
-        using StationId = boost::optional<quint64>;
+        using StationId = std::optional<quint64>;
         using RegionSet = std::unordered_set<uint>;
 
         using Entity::Entity;

@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QDateTime>
 
@@ -26,10 +26,10 @@ namespace Evernus
         : public Entity<quint64>
     {
     public:
-        using TaxReceiverType = boost::optional<quint64>;
-        using ExtraInfoIdType = boost::optional<quint64>;
-        using PartyIdType = boost::optional<quint64>;
-        using ISKType = boost::optional<double>;
+        using TaxReceiverType = std::optional<quint64>;
+        using ExtraInfoIdType = std::optional<quint64>;
+        using PartyIdType = std::optional<quint64>;
+        using ISKType = std::optional<double>;
 
         using Entity::Entity;
 

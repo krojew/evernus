@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include "Character.h"
 #include "EveType.h"
@@ -28,7 +28,7 @@ namespace Evernus
         : public Entity<uint>
     {
     public:
-        typedef boost::optional<uint> Counter;
+        typedef std::optional<uint> Counter;
 
         using Entity::Entity;
 

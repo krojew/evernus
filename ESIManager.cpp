@@ -585,7 +585,7 @@ namespace Evernus
                                                  const Callback<WalletJournal> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        fetchCharacterWalletJournal(charId, boost::none, tillId, callback);
+        fetchCharacterWalletJournal(charId, std::nullopt, tillId, callback);
     }
 
     void ESIManager::fetchCharacterWalletTransactions(Character::IdType charId,
@@ -593,7 +593,7 @@ namespace Evernus
                                                       const Callback<WalletTransactions> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        fetchCharacterWalletTransactions(charId, boost::none, tillId, std::make_shared<WalletTransactions>(), callback);
+        fetchCharacterWalletTransactions(charId, std::nullopt, tillId, std::make_shared<WalletTransactions>(), callback);
     }
 
     void ESIManager::fetchCharacterMiningLedger(Character::IdType charId, const Callback<MiningLedgerList> &callback) const
@@ -982,7 +982,7 @@ namespace Evernus
     }
 
     void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
-                                                 const boost::optional<WalletJournalEntry::IdType> &fromId,
+                                                 const std::optional<WalletJournalEntry::IdType> &fromId,
                                                  WalletJournalEntry::IdType tillId,
                                                  const Callback<WalletJournal> &callback) const
     {
@@ -1063,7 +1063,7 @@ namespace Evernus
     }
 
     void ESIManager::fetchCharacterWalletTransactions(Character::IdType charId,
-                                                      const boost::optional<WalletTransaction::IdType> &fromId,
+                                                      const std::optional<WalletTransaction::IdType> &fromId,
                                                       WalletTransaction::IdType tillId,
                                                       std::shared_ptr<WalletTransactions> &&transactions,
                                                       const Callback<WalletTransactions> &callback) const

@@ -21,7 +21,7 @@
 #include <memory>
 #include <map>
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QNetworkAccessManager>
 #include <QDateTime>
@@ -161,11 +161,11 @@ namespace Evernus
         CharacterSet mRequestedCharacterAuth;
 
         void fetchCharacterWalletJournal(Character::IdType charId,
-                                         const boost::optional<WalletJournalEntry::IdType> &fromId,
+                                         const std::optional<WalletJournalEntry::IdType> &fromId,
                                          WalletJournalEntry::IdType tillId,
                                          const Callback<WalletJournal> &callback) const;
         void fetchCharacterWalletTransactions(Character::IdType charId,
-                                              const boost::optional<WalletTransaction::IdType> &fromId,
+                                              const std::optional<WalletTransaction::IdType> &fromId,
                                               WalletTransaction::IdType tillId,
                                               std::shared_ptr<WalletTransactions> &&transactions,
                                               const Callback<WalletTransactions> &callback) const;

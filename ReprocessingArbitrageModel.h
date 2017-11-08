@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QAbstractTableModel>
 
@@ -70,7 +70,7 @@ namespace Evernus
                                   bool onlyHighSec,
                                   double baseYield,
                                   double sellVolumeLimit,
-                                  const boost::optional<double> &customStationTax) = 0;
+                                  const std::optional<double> &customStationTax) = 0;
 
         ReprocessingArbitrageModel &operator =(const ReprocessingArbitrageModel &) = default;
         ReprocessingArbitrageModel &operator =(ReprocessingArbitrageModel &&) = default;

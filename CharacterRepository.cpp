@@ -166,7 +166,7 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
-    void CharacterRepository::updateBrokersFee(Character::IdType id, const boost::optional<double> &buy, const boost::optional<double> &sell) const
+    void CharacterRepository::updateBrokersFee(Character::IdType id, const std::optional<double> &buy, const std::optional<double> &sell) const
     {
         auto query = prepare(QStringLiteral("UPDATE %1 SET brokers_fee = ?, sell_brokers_fee = ? WHERE %2 = ?")
             .arg(getTableName())

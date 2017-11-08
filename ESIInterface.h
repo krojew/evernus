@@ -18,7 +18,7 @@
 #include <functional>
 #include <mutex>
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QNetworkAccessManager>
 #include <QSettings>
@@ -76,10 +76,10 @@ namespace Evernus
         void fetchCharacterWallet(Character::IdType charId, const StringCallback &callback) const;
         void fetchCharacterMarketOrders(Character::IdType charId, const JsonCallback &callback) const;
         void fetchCharacterWalletJournal(Character::IdType charId,
-                                         const boost::optional<WalletJournalEntry::IdType> &fromId,
+                                         const std::optional<WalletJournalEntry::IdType> &fromId,
                                          const JsonCallback &callback) const;
         void fetchCharacterWalletTransactions(Character::IdType charId,
-                                              const boost::optional<WalletTransaction::IdType> &fromId,
+                                              const std::optional<WalletTransaction::IdType> &fromId,
                                               const JsonCallback &callback) const;
         void fetchCharacterBlueprints(Character::IdType charId, const JsonCallback &callback) const;
         void fetchCharacterMiningLedger(Character::IdType charId, const PaginatedCallback &callback) const;

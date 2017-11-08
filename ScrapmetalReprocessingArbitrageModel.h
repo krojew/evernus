@@ -41,7 +41,7 @@ namespace Evernus
                                   bool onlyHighSec,
                                   double baseYield,
                                   double sellVolumeLimit,
-                                  const boost::optional<double> &customStationTax) override;
+                                  const std::optional<double> &customStationTax) override;
 
         ScrapmetalReprocessingArbitrageModel &operator =(const ScrapmetalReprocessingArbitrageModel &) = default;
         ScrapmetalReprocessingArbitrageModel &operator =(ScrapmetalReprocessingArbitrageModel &&) = default;

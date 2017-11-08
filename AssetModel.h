@@ -16,7 +16,7 @@
 
 #include <unordered_map>
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QAbstractItemModel>
 #include <QDateTime>
@@ -37,7 +37,7 @@ namespace Evernus
 
     public:
         using LocationId = ItemData::LocationIdType::value_type;
-        using CustomValueType = boost::optional<double>;
+        using CustomValueType = std::optional<double>;
 
         AssetModel(const AssetProvider &assetProvider,
                    const EveDataProvider &dataProvider,

@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QString>
 
@@ -113,8 +113,8 @@ namespace Evernus
         ISKType mISK = 0;
         float mCorpStanding = 0.f;
         float mFactionStanding = 0.f;
-        boost::optional<double> mBuyBrokersFee;
-        boost::optional<double> mSellBrokersFee;
+        std::optional<double> mBuyBrokersFee;
+        std::optional<double> mSellBrokersFee;
         float mReprocessingImplantBonus = 0.f;
         float mManufacturingTimeImplantBonus = 0.f;
         bool mAlphaClone = false;

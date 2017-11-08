@@ -45,7 +45,7 @@ namespace Evernus
                                   bool onlyHighSec,
                                   double baseYield,
                                   double sellVolumeLimit,
-                                  const boost::optional<double> &customStationTax) override;
+                                  const std::optional<double> &customStationTax) override;
 
         OreReprocessingArbitrageModel &operator =(const OreReprocessingArbitrageModel &) = default;
         OreReprocessingArbitrageModel &operator =(OreReprocessingArbitrageModel &&) = default;

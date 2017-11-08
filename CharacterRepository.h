@@ -39,7 +39,7 @@ namespace Evernus
 
         void updateSkill(Character::IdType id, const QString &skill, int level) const;
         void updateStanding(Character::IdType id, const QString &type, double value) const;
-        void updateBrokersFee(Character::IdType id, const boost::optional<double> &buy, const boost::optional<double> &sell) const;
+        void updateBrokersFee(Character::IdType id, const std::optional<double> &buy, const std::optional<double> &sell) const;
         void updateReprocessingImplantBonus(Character::IdType id, double value) const;
         void updateManufacturingTimeImplantBonus(Character::IdType id, double value) const;
         void updateAlphaClone(Character::IdType id, bool flag) const;

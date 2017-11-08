@@ -538,8 +538,8 @@ namespace Evernus
         Q_ASSERT(id != Character::invalidId);
 
         const auto enabled = mBrokersFeeBtn->isChecked();
-        const auto buy = (enabled) ? (mBuyBrokersFeeEdit->value() / 100.) : (boost::optional<double>{});
-        const auto sell = (enabled) ? (mSellBrokersFeeEdit->value() / 100.) : (boost::optional<double>{});
+        const auto buy = (enabled) ? (mBuyBrokersFeeEdit->value() / 100.) : (std::optional<double>{});
+        const auto sell = (enabled) ? (mSellBrokersFeeEdit->value() / 100.) : (std::optional<double>{});
 
         mCharacterRepository.updateBrokersFee(id, buy, sell);
 

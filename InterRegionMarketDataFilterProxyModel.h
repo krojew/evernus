@@ -16,7 +16,7 @@
 
 #include <unordered_set>
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QSortFilterProxyModel>
 
@@ -26,8 +26,8 @@ namespace Evernus
         : public QSortFilterProxyModel
     {
     public:
-        using VolumeValueType = boost::optional<uint>;
-        using MarginValueType = boost::optional<double>;
+        using VolumeValueType = std::optional<uint>;
+        using MarginValueType = std::optional<double>;
 
         using RegionList = std::unordered_set<uint>;
 
