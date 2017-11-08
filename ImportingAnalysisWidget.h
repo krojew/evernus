@@ -14,9 +14,9 @@
  */
 #pragma once
 
-#include <QSortFilterProxyModel>
 #include <QWidget>
 
+#include "ImportingDataModelProxyModel.h"
 #include "StandardModelProxyWidget.h"
 #include "ImportingDataModel.h"
 #include "Character.h"
@@ -99,7 +99,7 @@ namespace Evernus
         PriceType mDstPriceType = PriceType::Buy;
 
         ImportingDataModel mDataModel;
-        QSortFilterProxyModel mDataProxy;
+        ImportingDataModelProxyModel mDataProxy;
 
         std::shared_ptr<Character> mCharacter;
 

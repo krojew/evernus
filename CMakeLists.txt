@@ -384,6 +384,8 @@ add_executable(
     ImportingAnalysisWidget.h
     ImportingDataModel.cpp
     ImportingDataModel.h
+    ImportingDataModelProxyModel.cpp
+    ImportingDataModelProxyModel.h
     ImportPreferencesWidget.cpp
     ImportPreferencesWidget.h
     ImportSettings.h

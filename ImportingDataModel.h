@@ -39,6 +39,26 @@ namespace Evernus
         Q_OBJECT
 
     public:
+        enum
+        {
+            nameColumn,
+            avgVolumeColumn,
+            medianDstVolume,
+            madDstVolume,
+            dstVolumeColumn,
+            relativeDstVolumeColumn,
+            srcOrderCountColumn,
+            dstOrderCountColumn,
+            srcPriceColumn,
+            importPriceColumn,
+            dstPriceColumn,
+            priceDifferenceColumn,
+            marginColumn,
+            projectedProfitColumn,
+
+            numColumns
+        };
+
         template<class T>
         using TypeMap = std::unordered_map<EveType::IdType, T>;
         template<class T>
@@ -81,26 +101,6 @@ namespace Evernus
         ImportingDataModel &operator =(ImportingDataModel &&) = default;
 
     private:
-        enum
-        {
-            nameColumn,
-            avgVolumeColumn,
-            medianDstVolume,
-            madDstVolume,
-            dstVolumeColumn,
-            relativeDstVolumeColumn,
-            srcOrderCountColumn,
-            dstOrderCountColumn,
-            srcPriceColumn,
-            importPriceColumn,
-            dstPriceColumn,
-            priceDifferenceColumn,
-            marginColumn,
-            projectedProfitColumn,
-
-            numColumns
-        };
-
         struct TypeData
         {
             EveType::IdType mId = EveType::invalidId;
