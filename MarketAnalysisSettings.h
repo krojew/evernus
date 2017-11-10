@@ -58,6 +58,10 @@ namespace Evernus
         const auto maxBuyPriceFilterKey = QStringLiteral("marketAnalysis/filter/maxBuyPrice");
         const auto minSellPriceFilterKey = QStringLiteral("marketAnalysis/filter/minSellPrice");
         const auto maxSellPriceFilterKey = QStringLiteral("marketAnalysis/filter/maxSellPrice");
+        const auto minAvgVolumeFilterKey = QStringLiteral("marketAnalysis/filter/minAvgVolume");
+        const auto maxAvgVolumeFilterKey = QStringLiteral("marketAnalysis/filter/maxAvgVolume");
+        const auto minPriceDifferenceFilterKey = QStringLiteral("marketAnalysis/filter/minPriceDifference");
+        const auto maxPriceDifferenceFilterKey = QStringLiteral("marketAnalysis/filter/maxPriceDifference");
         const auto ignorePricePercetilesKey = QStringLiteral("marketAnalysis/region/ignorePricePercetiles");
         const auto avgDaysKey = QStringLiteral("marketAnalysis/region/avgDays");
         const auto smaDaysKey = QStringLiteral("marketAnalysis/smaDays");

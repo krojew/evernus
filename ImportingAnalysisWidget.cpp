@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <limits>
 
+#include <QDoubleValidator>
 #include <QStackedWidget>
 #include <QDoubleSpinBox>
 #include <QRadioButton>
@@ -24,6 +25,7 @@
 #include <QMessageBox>
 #include <QCheckBox>
 #include <QSettings>
+#include <QLineEdit>
 #include <QSpinBox>
 #include <QAction>
 #include <QLabel>
@@ -144,6 +146,57 @@ namespace Evernus
         mIgnoreEmptySellBtn->setChecked(
             settings.value(MarketAnalysisSettings::importingHideEmptySellOrdersKey, MarketAnalysisSettings::importingHideEmptySellOrdersDefault).toBool());
 
+        const auto filterValueValidator = new QDoubleValidator{this};
+        filterValueValidator->setBottom(0.);
+
+        toolBarLayout->addWidget(new QLabel{tr("Avg. volume:"), this});
+
+        auto value = settings.value(MarketAnalysisSettings::minAvgVolumeFilterKey);
+
+        mMinAvgVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinAvgVolumeEdit);
+        mMinAvgVolumeEdit->setValidator(filterValueValidator);
+
+        toolBarLayout->addWidget(new QLabel{QStringLiteral("-"), this});
+
+        value = settings.value(MarketAnalysisSettings::maxAvgVolumeFilterKey);
+
+        mMaxAvgVolumeEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxAvgVolumeEdit);
+        mMaxAvgVolumeEdit->setValidator(filterValueValidator);
+
+        toolBarLayout->addWidget(new QLabel{tr("Price diff.:"), this});
+
+        value = settings.value(MarketAnalysisSettings::minPriceDifferenceFilterKey);
+
+        mMinPriceDifferenceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinPriceDifferenceEdit);
+        mMinPriceDifferenceEdit->setValidator(filterValueValidator);
+
+        toolBarLayout->addWidget(new QLabel{QStringLiteral("-"), this});
+
+        value = settings.value(MarketAnalysisSettings::maxPriceDifferenceFilterKey);
+
+        mMaxPriceDifferenceEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxPriceDifferenceEdit);
+        mMaxPriceDifferenceEdit->setValidator(filterValueValidator);
+
+        toolBarLayout->addWidget(new QLabel{tr("Margin:"), this});
+
+        value = settings.value(MarketAnalysisSettings::minMarginFilterKey);
+
+        mMinMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMinMarginEdit);
+        mMinMarginEdit->setValidator(filterValueValidator);
+
+        toolBarLayout->addWidget(new QLabel{QStringLiteral("-"), this});
+
+        value = settings.value(MarketAnalysisSettings::maxMarginFilterKey);
+
+        mMaxMarginEdit = new QLineEdit{(value.isValid()) ? (value.toString()) : (QString{}), this};
+        toolBarLayout->addWidget(mMaxMarginEdit);
+        mMaxMarginEdit->setValidator(filterValueValidator);
+
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
         connect(filterBtn, &QPushButton::clicked, this, &ImportingAnalysisWidget::recalculateData);
@@ -156,6 +209,7 @@ namespace Evernus
         mDataStack->addWidget(new CalculatingDataWidget{this});
 
         mDataProxy.setSortRole(Qt::UserRole);
+        mDataProxy.setFilterRole(Qt::UserRole);
         mDataProxy.setSourceModel(&mDataModel);
 
         mDataView = new AdjustableTableView{QStringLiteral("marketAnalysisImportingView"), this};
@@ -229,6 +283,12 @@ namespace Evernus
         const auto collateral = mCollateralEdit->value() / 100.;
         const auto collateralPriceType = (mCollateralBuyTypeBtn->isChecked()) ? (PriceType::Buy) : (PriceType::Sell);
         const auto hideEmptySell = mIgnoreEmptySellBtn->isChecked();
+        const auto minAvgVolume = mMinAvgVolumeEdit->text();
+        const auto maxAvgVolume = mMaxAvgVolumeEdit->text();
+        const auto minPriceDifference = mMinPriceDifferenceEdit->text();
+        const auto maxPriceDifference = mMaxPriceDifferenceEdit->text();
+        const auto minMargin = mMinMarginEdit->text();
+        const auto maxMargin = mMaxMarginEdit->text();
 
         QSettings settings;
         settings.setValue(MarketAnalysisSettings::importingAnalysisDaysKey, analysisDays);
@@ -237,21 +297,42 @@ namespace Evernus
         settings.setValue(MarketAnalysisSettings::importingCollateralKey, collateral);
         settings.setValue(MarketAnalysisSettings::importingCollateralPriceTypeKey, static_cast<int>(collateralPriceType));
         settings.setValue(MarketAnalysisSettings::importingHideEmptySellOrdersKey, hideEmptySell);
+        settings.setValue(MarketAnalysisSettings::minAvgVolumeFilterKey, minAvgVolume);
+        settings.setValue(MarketAnalysisSettings::maxAvgVolumeFilterKey, maxAvgVolume);
+        settings.setValue(MarketAnalysisSettings::minPriceDifferenceFilterKey, minPriceDifference);
+        settings.setValue(MarketAnalysisSettings::maxPriceDifferenceFilterKey, maxPriceDifference);
+        settings.setValue(MarketAnalysisSettings::minMarginFilterKey, minMargin);
+        settings.setValue(MarketAnalysisSettings::maxMarginFilterKey, maxMargin);
 
-        mDataModel.setOrderData(*orders,
-                                *history,
-                                mSrcStation,
-                                mDstStation,
-                                mSrcPriceType,
-                                mDstPriceType,
-                                analysisDays,
-                                std::min(analysisDays, aggrDays),
-                                pricePerM3,
-                                collateral,
-                                collateralPriceType,
-                                hideEmptySell);
+        const auto optionalValue = [](const auto &value) {
+            return (value.isEmpty()) ? (std::nullopt) : (std::make_optional(value.toDouble()));
+        };
 
-        mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+        mDataProxy.setFilters(optionalValue(minAvgVolume),
+                              optionalValue(maxAvgVolume),
+                              optionalValue(minPriceDifference),
+                              optionalValue(maxPriceDifference),
+                              optionalValue(minMargin),
+                              optionalValue(maxMargin));
+
+        if (mImportedNewData)
+        {
+            mDataModel.setOrderData(*orders,
+                                    *history,
+                                    mSrcStation,
+                                    mDstStation,
+                                    mSrcPriceType,
+                                    mDstPriceType,
+                                    analysisDays,
+                                    std::min(analysisDays, aggrDays),
+                                    pricePerM3,
+                                    collateral,
+                                    collateralPriceType,
+                                    hideEmptySell);
+
+            mDataView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+            mImportedNewData = false;
+        }
 
         mDataStack->setCurrentWidget(mDataView);
     }
@@ -259,6 +340,11 @@ namespace Evernus
     void ImportingAnalysisWidget::clearData()
     {
         mDataModel.reset();
+    }
+
+    void ImportingAnalysisWidget::completeImport()
+    {
+        mImportedNewData = true;
     }
 
     void ImportingAnalysisWidget::showDetails(const QModelIndex &item)

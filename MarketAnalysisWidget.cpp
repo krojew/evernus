@@ -405,6 +405,7 @@ namespace Evernus
         {
             showForCurrentRegion();
             mInterRegionAnalysisWidget->completeImport();
+            mImportingAnalysisWidget->completeImport();
         }
     }
 

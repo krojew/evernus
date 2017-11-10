@@ -56,7 +56,7 @@ namespace Evernus
             if (max && data > *max)
                 return false;
 
-            return false;
+            return true;
         };
 
         return checkRange(ImportingDataModel::avgVolumeColumn, mMinAvgVolume, mMaxAvgVolume) &&

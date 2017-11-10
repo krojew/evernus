@@ -27,6 +27,7 @@ class QStackedWidget;
 class QDoubleSpinBox;
 class QRadioButton;
 class QPushButton;
+class QLineEdit;
 class QCheckBox;
 class QSpinBox;
 class QString;
@@ -61,6 +62,7 @@ namespace Evernus
         void setCharacter(const std::shared_ptr<Character> &character);
         void recalculateData();
         void clearData();
+        void completeImport();
 
         ImportingAnalysisWidget &operator =(const ImportingAnalysisWidget &) = default;
         ImportingAnalysisWidget &operator =(ImportingAnalysisWidget &&) = default;
@@ -87,6 +89,12 @@ namespace Evernus
         QRadioButton *mCollateralBuyTypeBtn = nullptr;
         QRadioButton *mCollateralSellTypeBtn = nullptr;
         QCheckBox *mIgnoreEmptySellBtn = nullptr;
+        QLineEdit *mMinAvgVolumeEdit = nullptr;
+        QLineEdit *mMaxAvgVolumeEdit = nullptr;
+        QLineEdit *mMinPriceDifferenceEdit = nullptr;
+        QLineEdit *mMaxPriceDifferenceEdit = nullptr;
+        QLineEdit *mMinMarginEdit = nullptr;
+        QLineEdit *mMaxMarginEdit = nullptr;
         QStackedWidget *mDataStack = nullptr;
         AdjustableTableView *mDataView = nullptr;
 
@@ -102,6 +110,8 @@ namespace Evernus
         ImportingDataModelProxyModel mDataProxy;
 
         std::shared_ptr<Character> mCharacter;
+
+        bool mImportedNewData = true;
 
         void changeStation(quint64 &destination, const QVariantList &path, const QString &settingName);
     };
