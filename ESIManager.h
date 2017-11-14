@@ -172,7 +172,7 @@ namespace Evernus
 
         QNetworkRequest getAuthRequest() const;
 
-        ExternalOrder getExternalOrderFromJson(const QJsonObject &object, uint regionId) const;
+        ExternalOrder getExternalOrderFromJson(const QJsonObject &object, uint regionId, const QDateTime &updateTime) const;
         ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
 
         void scheduleNextTokenFetch();

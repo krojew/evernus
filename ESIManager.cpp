@@ -1258,7 +1258,7 @@ namespace Evernus
         return request;
     }
 
-    ExternalOrder ESIManager::getExternalOrderFromJson(const QJsonObject &object, uint regionId) const
+    ExternalOrder ESIManager::getExternalOrderFromJson(const QJsonObject &object, uint regionId, const QDateTime &updateTime) const
     {
         const auto range = object.value(QStringLiteral("range")).toString();
 
@@ -1282,7 +1282,7 @@ namespace Evernus
         else
             order.setRange(range.toShort());
 
-        order.setUpdateTime(QDateTime::currentDateTimeUtc());
+        order.setUpdateTime(updateTime);
         order.setPrice(object.value(QStringLiteral("price")).toDouble());
         order.setVolumeEntered(object.value(QStringLiteral("volume_total")).toInt());
         order.setVolumeRemaining(object.value(QStringLiteral("volume_remain")).toInt());
@@ -1307,10 +1307,12 @@ namespace Evernus
             const auto curSize = orders->size();
             orders->resize(curSize + items.size());
 
+            const auto updateTime = QDateTime::currentDateTimeUtc();
+
             std::atomic_size_t nextIndex{curSize};
 
             const auto parseItem = [&](const auto &item) {
-                (*orders)[nextIndex++] = getExternalOrderFromJson(item.toObject(), regionId);
+                (*orders)[nextIndex++] = getExternalOrderFromJson(item.toObject(), regionId, updateTime);
             };
 
             QtConcurrent::blockingMap(items, parseItem);
