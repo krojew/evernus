@@ -15,7 +15,6 @@
 #include <unordered_set>
 #include <memory>
 
-#include <QSortFilterProxyModel>
 #include <QDialogButtonBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -42,12 +41,12 @@ namespace Evernus
                                                    const Repository<Key> &keyRepository,
                                                    const CorpKeyRepository &corpKeyRepository,
                                                    QWidget *parent)
-        : QDialog(parent)
-        , mCharacterRepository(characterRepository)
-        , mKeyRepository(keyRepository)
-        , mCorpKeyRepository(corpKeyRepository)
-        , mCorpKeyModel(nullptr, mCorpKeyRepository.getDatabase())
-        , mCharacterModel(mCharacterRepository)
+        : QDialog{parent}
+        , mCharacterRepository{characterRepository}
+        , mKeyRepository{keyRepository}
+        , mCorpKeyRepository{corpKeyRepository}
+        , mCorpKeyModel{nullptr, mCorpKeyRepository.getDatabase()}
+        , mCharacterModel{mCharacterRepository}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -151,21 +150,23 @@ namespace Evernus
 
     void CharacterManagerDialog::removeCharacter()
     {
-        mCharacterModel.removeRow(mCharacterModelProxy->mapToSource(mSelectedCharacters.first()).row());
-        mCharacterModelProxy->invalidate();
+        Q_ASSERT(!mSelectedCharacters.isEmpty());
+
+        mCharacterModel.removeRow(mCharacterModelProxy.mapToSource(mSelectedCharacters.first()).row());
+        mCharacterModelProxy.invalidate();
 
         emit charactersChanged();
     }
 
     void CharacterManagerDialog::selectCharacter(const QItemSelection &selected)
     {
-        mRemoveCharacterBtn->setEnabled(true);
+        mRemoveCharacterBtn->setEnabled(!selected.isEmpty());
         mSelectedCharacters = selected.indexes();
     }
 
     void CharacterManagerDialog::refreshKeys()
     {
-        mKeyModel.setQuery(QString{"SELECT id, code FROM %1"}.arg(mKeyRepository.getTableName()), mKeyRepository.getDatabase());
+        mKeyModel.setQuery(QStringLiteral("SELECT id, code FROM %1").arg(mKeyRepository.getTableName()), mKeyRepository.getDatabase());
 
         mKeyModel.setHeaderData(0, Qt::Horizontal, tr("Key ID"));
         mKeyModel.setHeaderData(1, Qt::Horizontal, tr("Verification code"));
@@ -289,12 +290,11 @@ namespace Evernus
 
         auto groupLayout = new QVBoxLayout{charGroup};
 
-        mCharacterModelProxy = new QSortFilterProxyModel{this};
-        mCharacterModelProxy->setSourceModel(&mCharacterModel);
+        mCharacterModelProxy.setSourceModel(&mCharacterModel);
 
         auto characterView = new QTreeView{this};
         groupLayout->addWidget(characterView);
-        characterView->setModel(mCharacterModelProxy);
+        characterView->setModel(&mCharacterModelProxy);
         characterView->setMinimumWidth(320);
         characterView->setSortingEnabled(true);
         connect(characterView->selectionModel(), &QItemSelectionModel::selectionChanged,

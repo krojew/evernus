@@ -15,12 +15,12 @@
 #pragma once
 
 #include <QSqlRelationalTableModel>
+#include <QSortFilterProxyModel>
 #include <QModelIndex>
 #include <QDialog>
 
 #include "CharacterModel.h"
 
-class QSortFilterProxyModel;
 class QItemSelection;
 class QPushButton;
 
@@ -77,7 +77,7 @@ namespace Evernus
         QSqlQueryModel mKeyModel;
         QSqlRelationalTableModel mCorpKeyModel;
         CharacterModel mCharacterModel;
-        QSortFilterProxyModel *mCharacterModelProxy = nullptr;
+        QSortFilterProxyModel mCharacterModelProxy;
 
         QPushButton *mEditKeyBtn = nullptr;
         QPushButton *mRemoveKeyBtn = nullptr;

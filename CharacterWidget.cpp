@@ -831,6 +831,8 @@ namespace Evernus
             catch (const Repository<Character>::NotFoundException &)
             {
                 QMessageBox::warning(this, tr("Character error"), tr("Character not found in DB. Refresh characters."));
+                handleNewCharacter(Character::invalidId);
+                return;
             }
         }
 
