@@ -2171,7 +2171,6 @@ namespace Evernus
             }
 
             mCombinedOrderProvider->clearOrdersForCharacter(id);
-            mPendingAutoCostOrders.clear();
 
             QSettings settings;
             const auto autoSetCosts = settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool();
@@ -2658,7 +2657,7 @@ namespace Evernus
             double mPrice;
         };
 
-        std::unordered_map<Evernus::EveType::IdType, ItemCostData> newItemCosts;
+        std::unordered_map<EveType::IdType, ItemCostData> newItemCosts;
 
         for (const auto &order : orders)
         {
@@ -2669,14 +2668,19 @@ namespace Evernus
             const auto lastSeen = std::min(QDateTime::currentDateTimeUtc(), order->getIssued().addDays(order->getDuration()));
             const auto transactions = transFetcher(order->getFirstSeen(), lastSeen, order->getTypeId());
 
-            auto &cost = newItemCosts[order->getTypeId()];
-            for (const auto &transaction : transactions)
+            if (!transactions.empty())
             {
-                cost.mQuantity += transaction->getQuantity();
-                cost.mPrice += transaction->getQuantity() * transaction->getPrice();
-            }
+                // we have a choice - either assume now transactions will ever be present, or assume they will arrive within this session
+                // it's safer to go with the latter
+                auto &cost = newItemCosts[order->getTypeId()];
+                for (const auto &transaction : transactions)
+                {
+                    cost.mQuantity += transaction->getQuantity();
+                    cost.mPrice += transaction->getQuantity() * transaction->getPrice();
+                }
 
-            mPendingAutoCostOrders.erase(it);
+                mPendingAutoCostOrders.erase(it);
+            }
         }
 
 
