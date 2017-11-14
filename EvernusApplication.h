@@ -280,6 +280,7 @@ namespace Evernus
     private:
         using CharacterTypePair =std::pair<Character::IdType, EveType::IdType>;
         using CharacterTimerMap = std::unordered_map<Character::IdType, QDateTime>;
+        using TypedCharacterTimerMap = std::unordered_map<TimerType, CharacterTimerMap>;
         using TransactionFetcher = std::function<WalletTransactionRepository::EntityList (const QDateTime &, const QDateTime &, EveType::IdType)>;
 
         QSqlDatabase mMainDb, mEveDb;
@@ -340,32 +341,8 @@ namespace Evernus
 
         std::unique_ptr<CachingAssetProvider> mCharacterAssetProvider, mCorpAssetProvider;
 
-        CharacterTimerMap mCharacterUtcCacheTimes;
-        CharacterTimerMap mAssetsUtcCacheTimes;
-        CharacterTimerMap mWalletJournalUtcCacheTimes;
-        CharacterTimerMap mWalletTransactionsUtcCacheTimes;
-        CharacterTimerMap mMarketOrdersUtcCacheTimes;
-        CharacterTimerMap mContractsUtcCacheTimes;
-        CharacterTimerMap mMiningLedgerUtcCacheTimes;
-        CharacterTimerMap mCorpAssetsUtcCacheTimes;
-        CharacterTimerMap mCorpWalletJournalUtcCacheTimes;
-        CharacterTimerMap mCorpWalletTransactionsUtcCacheTimes;
-        CharacterTimerMap mCorpMarketOrdersUtcCacheTimes;
-        CharacterTimerMap mCorpContractsUtcCacheTimes;
-        CharacterTimerMap mLMeveUtcCacheTimes;
-
-        CharacterTimerMap mCharacterUtcUpdateTimes;
-        CharacterTimerMap mAssetsUtcUpdateTimes;
-        CharacterTimerMap mWalletJournalUtcUpdateTimes;
-        CharacterTimerMap mWalletTransactionsUtcUpdateTimes;
-        CharacterTimerMap mMarketOrdersUtcUpdateTimes;
-        CharacterTimerMap mContractsUtcUpdateTimes;
-        CharacterTimerMap mMiningLedgerUtcUpdateTimes;
-        CharacterTimerMap mCorpAssetsUtcUpdateTimes;
-        CharacterTimerMap mCorpWalletJournalUtcUpdateTimes;
-        CharacterTimerMap mCorpWalletTransactionsUtcUpdateTimes;
-        CharacterTimerMap mCorpMarketOrdersUtcUpdateTimes;
-        CharacterTimerMap mCorpContractsUtcUpdateTimes;
+        TypedCharacterTimerMap mCacheTimes;
+        TypedCharacterTimerMap mUpdateTimes;
 
         std::unordered_set<std::pair<Character::IdType, TimerType>, boost::hash<std::pair<Character::IdType, TimerType>>>
         mPendingImports;
