@@ -2058,7 +2058,7 @@ namespace Evernus
 
             auto characterFound = false;
 
-            MarketOrders orders;
+            MarketOrders charOrders, corpOrders;
             while (!file.atEnd())
             {
                 const QString line = file.readLine();
@@ -2094,9 +2094,6 @@ namespace Evernus
                         characterFound = true;
                     }
 
-                    if ((corp && values[isCorpColumn] != "True") || (!corp && values[isCorpColumn] != "False"))
-                        continue;
-
                     MarketOrder order{values[idColumn].toULongLong()};
                     order.setCharacterId(characterId);
                     order.setStationId(values[stationIdColumn].toULongLong());
@@ -2127,7 +2124,10 @@ namespace Evernus
                     order.setIssued(issued);
                     order.setFirstSeen(issued);
 
-                    orders.emplace_back(std::move(order));
+                    if (values[isCorpColumn] == "True")
+                        corpOrders.emplace_back(order);
+                    if (!corp && characterId == id)
+                        charOrders.emplace_back(std::move(order));
                 }
             }
 
@@ -2136,15 +2136,19 @@ namespace Evernus
                 if (settings.value(PathSettings::deleteLogsKey, PathSettings::deleteLogsDefault).toBool())
                     file.remove();
 
-                importMarketOrders(id, orders, corp);
-
-                if (corp)
-                    emit corpMarketOrdersChanged();
-                else
+                if (!charOrders.empty())
+                {
+                    importMarketOrders(id, charOrders, false);
                     emit characterMarketOrdersChanged();
+                }
+
+                if (!corpOrders.empty())
+                {
+                    importMarketOrders(id, corpOrders, true);
+                    emit corpMarketOrdersChanged();
+                }
 
                 emit externalOrdersChangedWithMarketOrders();
-
                 break;
             }
         }
