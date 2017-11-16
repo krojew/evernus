@@ -285,39 +285,8 @@ namespace Evernus
         }
     }
 
-    QString WalletJournalModel::translateRefType(const QString &type)
+    QString WalletJournalModel::translateRefType(QString type)
     {
-        static const QHash<QString, QString> mapping{
-            { QStringLiteral("player_trading"), tr("Player Trading") },
-            { QStringLiteral("market_transaction"), tr("Market Transaction") },
-            { QStringLiteral("player_donation"), tr("Player Donation") },
-            { QStringLiteral("office_rental_fee"), tr("Office Rental Fee") },
-            { QStringLiteral("bounty_prize_historical"), tr("Bounty Prize Historical") },
-            { QStringLiteral("insurance"), tr("Insurance") },
-            { QStringLiteral("mission_reward"), tr("Mission Reward") },
-            { QStringLiteral("mission_reward_bonus"), tr("Mission Reward Bonus") },
-            { QStringLiteral("cspa"), tr("CSPA") },
-            { QStringLiteral("corp_account_withdrawal"), tr("Corp Account Withdrawal") },
-            { QStringLiteral("logo_change_fee"), tr("Logo Change Fee") },
-            { QStringLiteral("market_escrow"), tr("Market Escrow") },
-            { QStringLiteral("broker_fee"), tr("Broker Fee") },
-            { QStringLiteral("alliance_maintenance_fee"), tr("Alliance Maintenance Fee") },
-            { QStringLiteral("sales_tax"), tr("Sales Tax") },
-            { QStringLiteral("jump_clone_installation_fee"), tr("Jump Clone Installation Fee") },
-            { QStringLiteral("manufacturing"), tr("Manufacturing") },
-            { QStringLiteral("contract"), tr("Contract") },
-            { QStringLiteral("bounty_prizes"), tr("Bounty Prizes") },
-            { QStringLiteral("medal_creation_fee"), tr("Medal Creation Fee") },
-            { QStringLiteral("medal_issuing_fee"), tr("Medal Issuing Fee") },
-            { QStringLiteral("customs_office_import_duty"), tr("Customs Office Import Duty") },
-            { QStringLiteral("customs_office_export_duty"), tr("Customs Office Export Duty") },
-            { QStringLiteral("corporate_reward_payout"), tr("Corporate Reward Payout") },
-            { QStringLiteral("industry_facility_tax"), tr("Industry Facility Tax") },
-            { QStringLiteral("project_discovery_reward"), tr("Project Discovery Reward") },
-            { QStringLiteral("reprocessing_fee"), tr("Reprocessing Fee") },
-            { QStringLiteral("jump_clone_activation_fee"), tr("Jump Clone Activation Fee") },
-        };
-
-        return mapping.value(type, QStringLiteral("Unknown"));
+        return type.replace('_', ' ');
     }
 }

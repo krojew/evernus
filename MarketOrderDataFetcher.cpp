@@ -194,7 +194,7 @@ namespace Evernus
     {
         qDebug() << "Finished market order import at" << QDateTime::currentDateTime() << mOrders->size();
 
-        emit orderImportEnded(mOrders, mAggregatedOrderErrors.join("\n"));
+        emit orderImportEnded(mOrders, mAggregatedOrderErrors.join(QStringLiteral("\n")));
         mAggregatedOrderErrors.clear();
     }
 

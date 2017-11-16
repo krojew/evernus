@@ -91,6 +91,6 @@ namespace Evernus
 
         void processData(const WalletJournalEntryRepository::EntityList &entries);
 
-        static QString translateRefType(const QString &type);
+        static QString translateRefType(QString type);
     };
 }
