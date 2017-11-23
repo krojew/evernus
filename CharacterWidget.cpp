@@ -35,7 +35,6 @@
 #include "MarketOrderRepository.h"
 #include "CharacterRepository.h"
 #include "CacheTimerProvider.h"
-#include "CorpKeyRepository.h"
 #include "WarningBarWidget.h"
 #include "ButtonWithTimer.h"
 #include "ImportSettings.h"

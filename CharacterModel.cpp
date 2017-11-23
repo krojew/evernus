@@ -43,8 +43,6 @@ namespace Evernus
                 return tr("Id");
             case 1:
                 return tr("Name");
-            case 2:
-                return tr("Key id");
             }
         }
 
@@ -53,7 +51,7 @@ namespace Evernus
 
     int CharacterModel::columnCount(const QModelIndex &parent) const
     {
-        return 3;
+        return 2;
     }
 
     QVariant CharacterModel::data(const QModelIndex &index, int role) const
@@ -69,11 +67,6 @@ namespace Evernus
                 return character->getId();
             case 1:
                 return character->getName();
-            case 2:
-                {
-                    const auto key = character->getKeyId();;
-                    return (key) ? (QString::number(*key)) : (QString{"none"});
-                }
             }
         }
         else if (role == Qt::CheckStateRole && index.column() == 0)

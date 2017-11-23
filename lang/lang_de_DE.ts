@@ -15,89 +15,67 @@
 <context>
     <name>APIXmlReceiver</name>
     <message>
-        <location filename="../APIXmlReceiver.inl" line="105"/>
         <source>Couldn&apos;t convert %1 to %2!</source>
-        <translation>Konnte %1 nicht in %2 umwandeln!</translation>
+        <translation type="vanished">Konnte %1 nicht in %2 umwandeln!</translation>
     </message>
 </context>
 <context>
     <name>CharacterManagerDialog</name>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="56"/>
         <source>Character keys</source>
-        <translation>Charakter Key</translation>
+        <translation type="vanished">Charakter Key</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="57"/>
         <source>Corporation keys</source>
-        <translation>Corporation Key</translation>
+        <translation type="vanished">Corporation Key</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="58"/>
         <source>Characters</source>
-        <translation>Charaktere</translation>
+        <translation type="vanished">Charaktere</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="70"/>
-        <location filename="../CharacterManagerDialog.cpp" line="170"/>
         <source>Key ID</source>
-        <translation>Key ID</translation>
+        <translation type="vanished">Key ID</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="71"/>
         <source>Character</source>
-        <translation>Charakter</translation>
+        <translation type="vanished">Charakter</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="72"/>
-        <location filename="../CharacterManagerDialog.cpp" line="171"/>
         <source>Verification code</source>
-        <translation>Verification Code</translation>
+        <translation type="vanished">Verification Code</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="74"/>
         <source>Character Manager</source>
-        <translation>Charakterverwaltung</translation>
+        <translation type="vanished">Charakterverwaltung</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="213"/>
-        <location filename="../CharacterManagerDialog.cpp" line="250"/>
         <source>Added keys</source>
-        <translation>Hinzugefügte Keys</translation>
+        <translation type="vanished">Hinzugefügte Keys</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="227"/>
-        <location filename="../CharacterManagerDialog.cpp" line="265"/>
         <source>Add...</source>
-        <translation>Hinzufügen...</translation>
+        <translation type="vanished">Hinzufügen...</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="231"/>
-        <location filename="../CharacterManagerDialog.cpp" line="269"/>
         <source>Edit...</source>
-        <translation>Bearbeiten...</translation>
+        <translation type="vanished">Bearbeiten...</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="236"/>
-        <location filename="../CharacterManagerDialog.cpp" line="274"/>
-        <location filename="../CharacterManagerDialog.cpp" line="312"/>
         <source>Remove</source>
-        <translation>Löschen</translation>
+        <translation type="vanished">Löschen</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="287"/>
         <source>Available characters</source>
-        <translation>Verfügbare Charaktere</translation>
+        <translation type="vanished">Verfügbare Charaktere</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="303"/>
         <source>In order to manage characters, add keys first in the Keys tab.</source>
-        <translation>Um Charaktere zu verwalten, füge zuerst ihren Key im Register Keys hinzu.</translation>
+        <translation type="vanished">Um Charaktere zu verwalten, füge zuerst ihren Key im Register Keys hinzu.</translation>
     </message>
     <message>
-        <location filename="../CharacterManagerDialog.cpp" line="308"/>
         <source>Refresh</source>
-        <translation>Aktualisieren</translation>
+        <translation type="vanished">Aktualisieren</translation>
     </message>
 </context>
 <context>
@@ -121,44 +99,36 @@
 <context>
     <name>CorpKeyEditDialog</name>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="44"/>
         <source>Character:</source>
-        <translation>Charakter:</translation>
+        <translation type="vanished">Charakter:</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="62"/>
         <source>Key ID:</source>
-        <translation>Key ID:</translation>
+        <translation type="vanished">Key ID:</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="66"/>
         <source>Verification Code:</source>
-        <translation>Verification Code:</translation>
+        <translation type="vanished">Verification Code:</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="68"/>
         <source>To create a predefined corporation key, use the following link:</source>
-        <translation>Benutze diesen Link, um einen voreingestellten Corporation Key zu erzeugen:</translation>
+        <translation type="vanished">Benutze diesen Link, um einen voreingestellten Corporation Key zu erzeugen:</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="74"/>
         <source>Corporation keys require character keys added first.</source>
-        <translation>Corporation Keys benötigen zuerst einen Charakter Key.</translation>
+        <translation type="vanished">Corporation Keys benötigen zuerst einen Charakter Key.</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="81"/>
         <source>Corporation Key Edit</source>
-        <translation>Corporation Key Bearbeiten</translation>
+        <translation type="vanished">Corporation Key Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="89"/>
         <source>Invalid character</source>
-        <translation>Ungültiger Charakter</translation>
+        <translation type="vanished">Ungültiger Charakter</translation>
     </message>
     <message>
-        <location filename="../CorpKeyEditDialog.cpp" line="89"/>
         <source>Please select a valid character.</source>
-        <translation>Bitte gültigen Charakter auswählen.</translation>
+        <translation type="vanished">Bitte gültigen Charakter auswählen.</translation>
     </message>
 </context>
 <context>
@@ -187,58 +157,327 @@
 <context>
     <name>DefaultColorDialog</name>
     <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Abbruch</translation>
+        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="280"/>
+        <source>Hue</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="301"/>
+        <source>Saturation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="317"/>
+        <source>Luminosity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="335"/>
+        <source>Alpha</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="394"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbruch</translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="399"/>
         <source>OK</source>
-        <translation type="obsolete">OK</translation>
+        <translation type="unfinished">OK</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultDialogWrapper</name>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultDialogWrapper.qml" line="118"/>
+        <source>Show Details...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DefaultFileDialog</name>
     <message>
-        <source>Type</source>
-        <comment>file type (extension)</comment>
-        <translation type="obsolete">Typ</translation>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="148"/>
+        <source>Go up to the folder containing this one</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="269"/>
+        <source>Remove favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="311"/>
+        <source>Add the current directory as a favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="349"/>
+        <source>Filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="376"/>
+        <source>Type</source>
+        <comment>file type (extension)</comment>
+        <translation type="unfinished">Typ</translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="399"/>
+        <source>Size</source>
+        <comment>file size</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="402"/>
+        <source>Modified</source>
+        <comment>last-modified time</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="403"/>
+        <source>Accessed</source>
+        <comment>last-accessed time</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="468"/>
         <source>Cancel</source>
-        <translation type="obsolete">Abbruch</translation>
+        <translation type="unfinished">Abbruch</translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="473"/>
+        <source>Choose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="473"/>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="473"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DefaultFontDialog</name>
     <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Abbruch</translation>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="120"/>
+        <source>Font</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="121"/>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="202"/>
+        <source>Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="122"/>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="276"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="135"/>
+        <source>Font Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="205"/>
+        <source>Thin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="206"/>
+        <source>ExtraLight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="207"/>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="208"/>
+        <source>Normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="209"/>
+        <source>Medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="210"/>
+        <source>DemiBold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="211"/>
+        <source>Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="212"/>
+        <source>ExtraBold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="213"/>
+        <source>Black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="303"/>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="306"/>
+        <source>Italic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="312"/>
+        <source>Underline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="318"/>
+        <source>Overline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="324"/>
+        <source>Strikeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="329"/>
+        <source>Writing System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="338"/>
+        <source>Sample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="390"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbruch</translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="394"/>
         <source>OK</source>
-        <translation type="obsolete">OK</translation>
+        <translation type="unfinished">OK</translation>
     </message>
 </context>
 <context>
     <name>DefaultMessageDialog</name>
     <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="142"/>
         <source>OK</source>
-        <translation type="obsolete">OK</translation>
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="148"/>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="154"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="160"/>
+        <source>Save All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="166"/>
+        <source>Retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="172"/>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="178"/>
         <source>Apply</source>
-        <translation type="obsolete">Anwenden</translation>
+        <translation type="unfinished">Anwenden</translation>
     </message>
     <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="184"/>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="190"/>
+        <source>Yes to All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="196"/>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="202"/>
+        <source>No to All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="208"/>
+        <source>Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="214"/>
         <source>Reset</source>
-        <translation type="obsolete">Zurücksetzen</translation>
+        <translation type="unfinished">Zurücksetzen</translation>
     </message>
     <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="220"/>
+        <source>Restore Defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="226"/>
         <source>Cancel</source>
-        <translation type="obsolete">Abbruch</translation>
+        <translation type="unfinished">Abbruch</translation>
     </message>
     <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="232"/>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="238"/>
         <source>Close</source>
-        <translation type="obsolete">Schließen</translation>
+        <translation type="unfinished">Schließen</translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="244"/>
+        <source>Show Details...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="250"/>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="306"/>
+        <source>Hide Details</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -255,8 +494,44 @@
 <context>
     <name>EditMenu_base</name>
     <message>
+        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="51"/>
+        <source>&amp;Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="62"/>
+        <source>&amp;Redo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="73"/>
+        <source>Cu&amp;t</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="87"/>
         <source>&amp;Copy</source>
-        <translation type="obsolete">&amp;Kopieren</translation>
+        <translation type="unfinished">&amp;Kopieren</translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="101"/>
+        <source>&amp;Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="112"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="123"/>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Release/QtQuick/Controls/Private/EditMenu_base.qml" line="134"/>
+        <source>Select All</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -470,17 +745,15 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="vanished">Ungültiges XML Dokument erhalten!</translation>
     </message>
     <message>
-        <location filename="../APIManager.cpp" line="624"/>
         <source>No XML document received!</source>
-        <translation>Kein XML Dokument erhalten!</translation>
+        <translation type="vanished">Kein XML Dokument erhalten!</translation>
     </message>
 </context>
 <context>
     <name>Evernus::APIResponseCache</name>
     <message>
-        <location filename="../APIResponseCache.cpp" line="56"/>
         <source>Cannot create cache path.</source>
-        <translation>Konnte das Cacheverzeichnis nicht erstellen.</translation>
+        <translation type="vanished">Konnte das Cacheverzeichnis nicht erstellen.</translation>
     </message>
 </context>
 <context>
@@ -1203,8 +1476,9 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Verification Code</translation>
     </message>
     <message>
+        <location filename="../CharacterManagerDialog.cpp" line="78"/>
         <source>Character Manager</source>
-        <translation type="vanished">Charakterverwaltung
+        <translation>Charakterverwaltung
 </translation>
     </message>
     <message>
@@ -1220,20 +1494,23 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation type="vanished">Bearbeiten...</translation>
     </message>
     <message>
+        <location filename="../CharacterManagerDialog.cpp" line="66"/>
         <source>Remove</source>
-        <translation type="vanished">Entfernen</translation>
+        <translation>Entfernen</translation>
     </message>
     <message>
+        <location filename="../CharacterManagerDialog.cpp" line="44"/>
         <source>Available characters</source>
-        <translation type="vanished">Verfügbare Charaktere</translation>
+        <translation>Verfügbare Charaktere</translation>
     </message>
     <message>
         <source>In order to manage characters, add keys first in the Keys tab.</source>
         <translation type="vanished">Um Charaktere zu verwalten, füge zuerst ihren Key im Register Keys hinzu.</translation>
     </message>
     <message>
+        <location filename="../CharacterManagerDialog.cpp" line="62"/>
         <source>Refresh</source>
-        <translation type="vanished">Aktualisieren</translation>
+        <translation>Aktualisieren</translation>
     </message>
 </context>
 <context>
@@ -1731,12 +2008,12 @@ Are you sure you wish to proceed (doing so can compromise your account security)
         <translation>Charakter nicht in der DB gefunden. Aktualisiere die Charaktere.</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="920"/>
+        <location filename="../CharacterWidget.cpp" line="922"/>
         <source>&lt;strong&gt;%1 of %2&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1 von %2&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../CharacterWidget.cpp" line="930"/>
+        <location filename="../CharacterWidget.cpp" line="932"/>
         <source>&lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
@@ -2645,99 +2922,82 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation>Richte den HTTP Dienst ein...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="307"/>
-        <location filename="../EvernusApplication.cpp" line="359"/>
         <source>Unknown cache timer type: %1</source>
-        <translation>Unbekannter Cache Timer Typ: %1</translation>
+        <translation type="vanished">Unbekannter Cache Timer Typ: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="439"/>
         <source>Unknown update timer type: %1</source>
-        <translation>Unbekannter Update Timer Typ: %1</translation>
+        <translation type="vanished">Unbekannter Update Timer Typ: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="820"/>
+        <location filename="../EvernusApplication.cpp" line="639"/>
         <source>Fetching characters...</source>
         <translation>Hole Charaktere...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="833"/>
+        <location filename="../EvernusApplication.cpp" line="652"/>
         <source>Fetching characters for key %1...</source>
         <translation>Hole Charactere für Key %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="846"/>
-        <location filename="../EvernusApplication.cpp" line="852"/>
-        <location filename="../EvernusApplication.cpp" line="2595"/>
-        <location filename="../EvernusApplication.cpp" line="2633"/>
+        <location filename="../EvernusApplication.cpp" line="665"/>
+        <location filename="../EvernusApplication.cpp" line="671"/>
+        <location filename="../EvernusApplication.cpp" line="2156"/>
+        <location filename="../EvernusApplication.cpp" line="2194"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="846"/>
+        <location filename="../EvernusApplication.cpp" line="665"/>
         <source>An error occurred while updating character key information: %1. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Beim Aktualiseren der Informationen zum Charakter Key ist ein Fehler aufgetreten: %1. Die Synchronisation sollte funktionieren, aber das Register Charakter wird falsche Daten anzeigen.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="852"/>
+        <location filename="../EvernusApplication.cpp" line="671"/>
         <source>An error occurred while updating character key information. Data sync should work, but character tab will display incorrect information.</source>
         <translation>Beim Aktualiseren der Informationen zum Charakter Key ist ein Fehler aufgetreten. Die Synchronisation sollte funktionieren, aber das Register Charakter wird falsche Daten anzeigen.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="916"/>
+        <location filename="../EvernusApplication.cpp" line="729"/>
         <source>Fetching assets for character %1...</source>
         <translation>Hole Gegenstände für Charakter %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="946"/>
-        <location filename="../EvernusApplication.cpp" line="981"/>
-        <location filename="../EvernusApplication.cpp" line="1030"/>
-        <location filename="../EvernusApplication.cpp" line="1084"/>
-        <location filename="../EvernusApplication.cpp" line="1171"/>
-        <location filename="../EvernusApplication.cpp" line="1316"/>
-        <location filename="../EvernusApplication.cpp" line="1375"/>
-        <location filename="../EvernusApplication.cpp" line="1451"/>
-        <location filename="../EvernusApplication.cpp" line="1514"/>
-        <location filename="../EvernusApplication.cpp" line="1539"/>
+        <location filename="../EvernusApplication.cpp" line="807"/>
+        <location filename="../EvernusApplication.cpp" line="995"/>
         <source>Key not found!</source>
         <translation>Key nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="950"/>
-        <location filename="../EvernusApplication.cpp" line="985"/>
-        <location filename="../EvernusApplication.cpp" line="1034"/>
-        <location filename="../EvernusApplication.cpp" line="1088"/>
-        <location filename="../EvernusApplication.cpp" line="1175"/>
-        <location filename="../EvernusApplication.cpp" line="1320"/>
-        <location filename="../EvernusApplication.cpp" line="1455"/>
-        <location filename="../EvernusApplication.cpp" line="1518"/>
+        <location filename="../EvernusApplication.cpp" line="811"/>
+        <location filename="../EvernusApplication.cpp" line="999"/>
+        <location filename="../EvernusApplication.cpp" line="1119"/>
+        <location filename="../EvernusApplication.cpp" line="1177"/>
         <source>Character not found!</source>
         <translation>Charakter nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1119"/>
+        <location filename="../EvernusApplication.cpp" line="755"/>
         <source>Fetching contracts for character %1...</source>
         <translation>Hole Verträge für Character %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1183"/>
+        <location filename="../EvernusApplication.cpp" line="819"/>
         <source>Fetching wallet journal for character %1...</source>
         <translation>Hole Konto-Logbuch für Charakter %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1018"/>
-        <location filename="../EvernusApplication.cpp" line="1043"/>
+        <location filename="../EvernusApplication.cpp" line="828"/>
         <source>Fetching wallet journal for character %1 (this may take a while)...</source>
         <translation>Hole Konto-Logbuch für Charakter %1 (dies kann eine Weile dauern)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1199"/>
+        <location filename="../EvernusApplication.cpp" line="850"/>
         <source>Fetching wallet transactions for character %1...</source>
         <translation>Hole Konto-Transaktionen für Charakter %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1069"/>
-        <location filename="../EvernusApplication.cpp" line="1097"/>
+        <location filename="../EvernusApplication.cpp" line="859"/>
         <source>Fetching wallet transactions for character %1 (this may take a while)...</source>
         <translation>Hole Konto-Transaktionen für Charakter %1 (dies kann eine Weile dauern)...</translation>
     </message>
@@ -2747,146 +3007,146 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1215"/>
-        <location filename="../EvernusApplication.cpp" line="1231"/>
+        <location filename="../EvernusApplication.cpp" line="881"/>
+        <location filename="../EvernusApplication.cpp" line="910"/>
         <source>Fetching market orders for character %1...</source>
         <translation>Hole Marktaufträge für Charakter %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1243"/>
+        <location filename="../EvernusApplication.cpp" line="922"/>
         <source>Fetching mining ledger for character %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1278"/>
+        <location filename="../EvernusApplication.cpp" line="957"/>
         <source>Fetching corporation assets for character %1...</source>
         <translation>Hole Corporation Gegenstände für Charakter %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1328"/>
+        <location filename="../EvernusApplication.cpp" line="1007"/>
         <source>Fetching corporation contracts for character %1...</source>
         <translation>Hole Verträge für Corporation %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1383"/>
+        <location filename="../EvernusApplication.cpp" line="1052"/>
         <source>Fetching corporation wallet journal for character %1...</source>
         <translation>Hole Corporation Konto-Logbuch für Charakter %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1395"/>
+        <location filename="../EvernusApplication.cpp" line="1063"/>
         <source>Fetching corporation wallet journal for character %1 (this may take a while)...</source>
         <translation>Hiole Corporation Konto-Logbuch für Charakter %1 (dies kann eine Weile dauern)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1463"/>
+        <location filename="../EvernusApplication.cpp" line="1127"/>
         <source>Fetching corporation wallet transactions for character %1...</source>
         <translation>Hole Corporation Konto-Transaktionen für Charakter %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1476"/>
+        <location filename="../EvernusApplication.cpp" line="1139"/>
         <source>Fetching corporation wallet transactions for character %1 (this may take a while)...</source>
         <translation>Hole Corporation Konto-Transaktionen für Charakter %1 (dies kann eine Weile dauern)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1526"/>
-        <location filename="../EvernusApplication.cpp" line="1547"/>
+        <location filename="../EvernusApplication.cpp" line="1185"/>
+        <location filename="../EvernusApplication.cpp" line="1210"/>
         <source>Fetching corporation market orders for character %1...</source>
         <translation>Hole Corporation Marktaufträge für Charakter %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1559"/>
+        <location filename="../EvernusApplication.cpp" line="1222"/>
         <source>Fetching conquerable stations...</source>
         <translation>Hole Stationsliste...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1581"/>
+        <location filename="../EvernusApplication.cpp" line="1244"/>
         <source>Fetching citadels...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1646"/>
+        <location filename="../EvernusApplication.cpp" line="1309"/>
         <source>Saving %1 imported orders...</source>
         <translation>Speichere %1 importierte Aufträge...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1696"/>
+        <location filename="../EvernusApplication.cpp" line="1359"/>
         <source>Select Mentat directory</source>
         <translation>Wäher Mentat-Verzeichnis aus</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1706"/>
+        <location filename="../EvernusApplication.cpp" line="1369"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1706"/>
+        <location filename="../EvernusApplication.cpp" line="1369"/>
         <source>Error opening %1</source>
         <translation>Fehler beim Öffnen von %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1710"/>
+        <location filename="../EvernusApplication.cpp" line="1373"/>
         <source>Importing order history...</source>
         <translation>Importiere Auftragshistorie...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1756"/>
+        <location filename="../EvernusApplication.cpp" line="1419"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importiere Auftragshistorie: %1 verarbeitet</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1761"/>
+        <location filename="../EvernusApplication.cpp" line="1424"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translatorcomment>#NOTE# Seems you&apos;re missing the &quot;...&quot; at the end of this phrase, denoting a time-consuming activity like you&apos;ve did with similar phrases.</translatorcomment>
         <translation>Importiere Auftragshistorie: speichere %1 Aufträge (dies kann eine Weile dauern)...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1782"/>
+        <location filename="../EvernusApplication.cpp" line="1445"/>
         <source>Synchronizing with LMeve...</source>
         <translation>Synchronisiere mit LMeve...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1946"/>
+        <location filename="../EvernusApplication.cpp" line="1609"/>
         <source>SMTP Error</source>
         <translation>SMTP Fehler</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1946"/>
-        <location filename="../EvernusApplication.cpp" line="1954"/>
+        <location filename="../EvernusApplication.cpp" line="1609"/>
+        <location filename="../EvernusApplication.cpp" line="1617"/>
         <source>Error sending email: %1</source>
         <translation>Fehler beim Emailversnad: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1954"/>
+        <location filename="../EvernusApplication.cpp" line="1617"/>
         <source>Mail Error</source>
         <translation>Emailfehler</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2271"/>
+        <location filename="../EvernusApplication.cpp" line="1829"/>
         <source>Importing item prices...</source>
         <translation>Importiere Warenpreise...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2282"/>
+        <location filename="../EvernusApplication.cpp" line="1840"/>
         <source>Cannot determine market logs path!</source>
         <translation>Verzeichnis mit Mark Logs nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2296"/>
+        <location filename="../EvernusApplication.cpp" line="1854"/>
         <source>No market logs found!</source>
         <translation>Keine Mark Logs gefunden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2307"/>
+        <location filename="../EvernusApplication.cpp" line="1865"/>
         <source>Could not open market log file!</source>
         <translation>Markt Log konnte nicht geöffnet werden!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2596"/>
+        <location filename="../EvernusApplication.cpp" line="2157"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Ausgeführte Marktaufträge</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2600"/>
+        <location filename="../EvernusApplication.cpp" line="2161"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -2895,23 +3155,24 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2603"/>
+        <location filename="../EvernusApplication.cpp" line="2164"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x %2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2633"/>
+        <location filename="../EvernusApplication.cpp" line="2194"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Charakter für Auftragsimport nicht gefunden!</translation>
     </message>
     <message>
+        <location filename="../EvernusApplication.cpp" line="2549"/>
         <source>Fetching contract items for contract %1...</source>
-        <translation type="vanished">Hole Vertragsgegenstände für Vertrag %1...</translation>
+        <translation>Hole Vertragsgegenstände für Vertrag %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="3098"/>
+        <location filename="../EvernusApplication.cpp" line="2608"/>
         <source>Fetching character %1...</source>
         <translation>Hole Charakter %1...</translation>
     </message>
@@ -3749,21 +4010,6 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">Eve-Central</translation>
     </message>
     <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="74"/>
-        <source>ESI</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="71"/>
-        <source>Eve data import type:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ImportSourcePreferencesWidget.cpp" line="73"/>
-        <source>XML</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>CREST</source>
         <translation type="vanished">CREST</translation>
     </message>
@@ -3791,103 +4037,118 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ImportingAnalysisWidget</name>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="61"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="63"/>
         <source>Source:</source>
         <translation type="unfinished">Quelle:</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="76"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="78"/>
         <source>Destination:</source>
         <translation type="unfinished">Ziel:</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="92"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="94"/>
         <source>Analysis period:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="97"/>
-        <location filename="../ImportingAnalysisWidget.cpp" line="107"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="99"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="109"/>
         <source> days</source>
         <translation type="unfinished"> Tage</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="98"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="100"/>
         <source>The number of days going back from today, to use for analysis. If the destination has been in use for shorter time, be sure to adjust this accordingly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="102"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="104"/>
         <source>Aggregate over:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="108"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="110"/>
         <source>The number of days to aggregate movement over. This should reflect how fast you want your stock to sell.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="112"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="114"/>
         <source>Price per m³:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="118"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="120"/>
         <source>Addtional cost added to buy price. This is multiplied by item size and desired volume to move (which in turn is based on aggregation days).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="121"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="123"/>
         <source>Collateral:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="127"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="129"/>
         <source>Addtional cost added to buy price. This is the percetange of the base price.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="133"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="135"/>
         <source>buy</source>
         <translation type="unfinished">Kauf</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="137"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="139"/>
         <source>sell</source>
         <translation type="unfinished">Verkauf</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="141"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="143"/>
         <source>Hide empty source sell orders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="143"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="145"/>
         <source>Hide item types which have 0 source orders when source price type is set to &quot;Sell&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="147"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="152"/>
+        <source>Avg. volume:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="168"/>
+        <source>Price diff.:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="184"/>
+        <source>Margin:</source>
+        <translation type="unfinished">Marge:</translation>
+    </message>
+    <message>
+        <location filename="../ImportingAnalysisWidget.cpp" line="200"/>
         <source>Apply</source>
         <translation type="unfinished">Anwenden</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="151"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="204"/>
         <source>Press &quot;Apply&quot; to show results. Additional actions are available via the right-click menu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="174"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="228"/>
         <source>Show details</source>
         <translation type="unfinished">Details anzeigen</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="320"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="406"/>
         <source>Station change</source>
         <translation type="unfinished">Stationswechsel</translation>
     </message>
     <message>
-        <location filename="../ImportingAnalysisWidget.cpp" line="320"/>
+        <location filename="../ImportingAnalysisWidget.cpp" line="406"/>
         <source>Changing station requires data recalculation. Do you wish to do it now?</source>
         <translation type="unfinished">Ein Stationswechesel erfordert eine Datenneuberechnung. Möchtest Du dies nun tun?</translation>
     </message>
@@ -4692,32 +4953,27 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::Key</name>
     <message>
-        <location filename="../EvernusApplication.cpp" line="3020"/>
         <source>Fetching contract items for contract %1...</source>
-        <translation>Hole Vertragsgegenstände für Vertrag %1...</translation>
+        <translation type="vanished">Hole Vertragsgegenstände für Vertrag %1...</translation>
     </message>
 </context>
 <context>
     <name>Evernus::KeyEditDialog</name>
     <message>
-        <location filename="../KeyEditDialog.cpp" line="43"/>
         <source>Key ID:</source>
-        <translation>Key ID:</translation>
+        <translation type="vanished">Key ID:</translation>
     </message>
     <message>
-        <location filename="../KeyEditDialog.cpp" line="47"/>
         <source>Verification Code:</source>
-        <translation>Verification Code:</translation>
+        <translation type="vanished">Verification Code:</translation>
     </message>
     <message>
-        <location filename="../KeyEditDialog.cpp" line="49"/>
         <source>To create a predefined key, use the following link:</source>
-        <translation>Benutze diesen Link, um einen voreingestellten Key zu erzeugen:</translation>
+        <translation type="vanished">Benutze diesen Link, um einen voreingestellten Key zu erzeugen:</translation>
     </message>
     <message>
-        <location filename="../KeyEditDialog.cpp" line="60"/>
         <source>Key Edit</source>
-        <translation>Key bearbeiten</translation>
+        <translation type="vanished">Key bearbeiten</translation>
     </message>
 </context>
 <context>
@@ -8578,9 +8834,8 @@ Wert gesamt: %7</translation>
         <translation type="vanished">Fehlende CREST Gegenstandsarten URL!</translation>
     </message>
     <message>
-        <location filename="../APIManager.cpp" line="601"/>
         <source>Invalid XML document received!</source>
-        <translation type="unfinished">Ungültiges XML Dokument erhalten!</translation>
+        <translation type="obsolete">Ungültiges XML Dokument erhalten!</translation>
     </message>
 </context>
 <context>
@@ -9058,146 +9313,6 @@ Please click on &quot;Import all&quot; after the update.</source>
         <location filename="../WalletJournalModel.cpp" line="49"/>
         <source>Reason</source>
         <translation>Grund</translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="291"/>
-        <source>Player Trading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="292"/>
-        <source>Market Transaction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="293"/>
-        <source>Player Donation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="294"/>
-        <source>Office Rental Fee</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="295"/>
-        <source>Bounty Prize Historical</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="296"/>
-        <source>Insurance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="297"/>
-        <source>Mission Reward</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="298"/>
-        <source>Mission Reward Bonus</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="299"/>
-        <source>CSPA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="300"/>
-        <source>Corp Account Withdrawal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="301"/>
-        <source>Logo Change Fee</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="302"/>
-        <source>Market Escrow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="303"/>
-        <source>Broker Fee</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="304"/>
-        <source>Alliance Maintenance Fee</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="305"/>
-        <source>Sales Tax</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="306"/>
-        <source>Jump Clone Installation Fee</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="307"/>
-        <source>Manufacturing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="308"/>
-        <source>Contract</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="309"/>
-        <source>Bounty Prizes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="310"/>
-        <source>Medal Creation Fee</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="311"/>
-        <source>Medal Issuing Fee</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="312"/>
-        <source>Customs Office Import Duty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="313"/>
-        <source>Customs Office Export Duty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="314"/>
-        <source>Corporate Reward Payout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="315"/>
-        <source>Industry Facility Tax</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="316"/>
-        <source>Project Discovery Reward</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="317"/>
-        <source>Reprocessing Fee</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../WalletJournalModel.cpp" line="318"/>
-        <source>Jump Clone Activation Fee</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -10044,7 +10159,7 @@ Please click on &quot;Import all&quot; after the update.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="174"/>
+        <location filename="../main.cpp" line="173"/>
         <source>Evernus EVE Online trade tool</source>
         <translation>Evernus EVE Online Trade Tool</translation>
     </message>
@@ -10057,98 +10172,74 @@ Please click on &quot;Import all&quot; after the update.</source>
         <translation type="vanished">CREST Client Secret.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="178"/>
+        <location filename="../main.cpp" line="177"/>
         <source>Force specific version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="179"/>
+        <location filename="../main.cpp" line="178"/>
         <source>Don&apos;t run internal updater</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="180"/>
+        <location filename="../main.cpp" line="179"/>
         <source>SSO client id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="181"/>
+        <location filename="../main.cpp" line="180"/>
         <source>SSO client secret</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="182"/>
+        <location filename="../main.cpp" line="181"/>
         <source>Max. log file size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="183"/>
+        <location filename="../main.cpp" line="182"/>
         <source>Max. log files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="215"/>
-        <location filename="../main.cpp" line="230"/>
+        <location filename="../main.cpp" line="214"/>
+        <location filename="../main.cpp" line="229"/>
         <source>Already running</source>
         <translation>Läuft bereits</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="215"/>
+        <location filename="../main.cpp" line="214"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation>Evernus scheint schon zu laufen. Is das nicht der Fall, entferne bitte &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="230"/>
+        <location filename="../main.cpp" line="229"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation>Evernus wurde letztes Mal wahrscheinlich nicht korrekt beendet. Möchtest du einen Aufräumversuch starten?</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="239"/>
-        <location filename="../main.cpp" line="520"/>
+        <location filename="../main.cpp" line="238"/>
+        <location filename="../main.cpp" line="483"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="240"/>
+        <location filename="../main.cpp" line="239"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation>Konnte &apos;%1&apos; nicht entfernen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="464"/>
+        <location filename="../main.cpp" line="463"/>
         <source>New version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="465"/>
+        <location filename="../main.cpp" line="464"/>
         <source>Would you like to see what&apos;s new in this version?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="478"/>
-        <source>Import source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main.cpp" line="479"/>
-        <source>Would you like to use ESI for data import where applicable?
-
-Using ESI gives access to more data, e.g. citadel assets, and lower cache timers but requires additional autorization. Support for more ESI endpoints is ongoing.
-
-You can always change it in Preferences-&gt;Import-&gt;Source.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main.cpp" line="489"/>
-        <source>Use ESI and XML API</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main.cpp" line="490"/>
-        <source>Use only XML API</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main.cpp" line="531"/>
+        <location filename="../main.cpp" line="494"/>
         <source>Initialization error</source>
         <translation>Fehler beim Initialisieren</translation>
     </message>

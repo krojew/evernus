@@ -131,7 +131,6 @@ namespace Evernus
             } },
             { {1, 45}, [](const auto &provider) {
                 migrateDatabaseTo145(provider.getCharacterRepository(),
-                                     provider.getKeyRepository(),
                                      provider.getMarketOrderRepository(),
                                      provider.getCorpMarketOrderRepository());
             } },
@@ -500,7 +499,6 @@ namespace Evernus
     }
 
     void Updater::migrateDatabaseTo145(const CharacterRepository &characterRepo,
-                                       const KeyRepository &keyRepository,
                                        const MarketOrderRepository &characterOrderRepo,
                                        const MarketOrderRepository &corporationOrderRepo)
     {

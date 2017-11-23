@@ -21,8 +21,6 @@
 
 namespace Evernus
 {
-    class KeyRepository;
-
     class CharacterRepository
         : public Repository<Character>
     {
@@ -35,7 +33,7 @@ namespace Evernus
 
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
-        void create(const KeyRepository &keyRepository) const;
+        void create() const;
 
         void updateSkill(Character::IdType id, const QString &skill, int level) const;
         void updateStanding(Character::IdType id, const QString &type, double value) const;
@@ -43,9 +41,6 @@ namespace Evernus
         void updateReprocessingImplantBonus(Character::IdType id, double value) const;
         void updateManufacturingTimeImplantBonus(Character::IdType id, double value) const;
         void updateAlphaClone(Character::IdType id, bool flag) const;
-
-        void disableByKey(Key::IdType id) const;
-        void disableByKey(Key::IdType id, const std::vector<Character::IdType> &excluded) const;
 
         bool hasCharacters() const;
 
@@ -57,7 +52,7 @@ namespace Evernus
         QString getName(Character::IdType id) const;
 
         QSqlQuery getEnabledQuery() const;
-        QString getCreateQuery(const KeyRepository &keyRepository) const;
+        QString getCreateQuery() const;
 
     private:
         virtual QStringList getColumns() const override;

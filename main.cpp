@@ -47,7 +47,6 @@
 #include "EvernusApplication.h"
 #include "CommandLineOptions.h"
 #include "UpdaterSettings.h"
-#include "ImportSettings.h"
 #include "BezierCurve.h"
 #include "MainWindow.h"
 #include "VolumeType.h"
@@ -469,42 +468,6 @@ int main(int argc, char *argv[])
                     QDesktopServices::openUrl(QUrl{QStringLiteral("http://evernus.com/latest-evernus-version")});
 
                 settings.setValue(Evernus::UpdaterSettings::askedToShowReleaseNotesKey, true);
-            }
-
-            if (!settings.contains(Evernus::ImportSettings::eveImportSourceKey))
-            {
-                QMessageBox sourceQuestionBox{
-                    QMessageBox::Question,
-                    QCoreApplication::translate("main", "Import source"),
-                    QCoreApplication::translate(
-                        "main",
-                        "Would you like to use ESI for data import where applicable?\n\n"
-                        "Using ESI gives access to more data, e.g. citadel assets, and lower cache timers but requires additional autorization. "
-                        "Support for more ESI endpoints is ongoing.\n\n"
-                        "You can always change it in Preferences->Import->Source."
-                    ),
-                    QMessageBox::NoButton,
-                    &mainWnd
-                };
-                sourceQuestionBox.addButton(QCoreApplication::translate("main", "Use ESI and XML API"), QMessageBox::YesRole);
-                sourceQuestionBox.addButton(QCoreApplication::translate("main", "Use only XML API"), QMessageBox::NoRole);
-
-                sourceQuestionBox.exec();
-
-                if (sourceQuestionBox.buttonRole(sourceQuestionBox.clickedButton()) == QMessageBox::NoRole)
-                {
-                    settings.setValue(
-                        Evernus::ImportSettings::eveImportSourceKey,
-                        static_cast<int>(Evernus::ImportSettings::EveImportSource::XML)
-                    );
-                }
-                else
-                {
-                    settings.setValue(
-                        Evernus::ImportSettings::eveImportSourceKey,
-                        static_cast<int>(Evernus::ImportSettings::EveImportSource::ESI)
-                    );
-                }
             }
 
             if (!app.getCharacterRepository().hasCharacters())

@@ -18,8 +18,9 @@
 
 #include <QString>
 
+#include "Entity.h"
+
 #include "CharacterData.h"
-#include "Key.h"
 
 namespace Evernus
 {
@@ -27,17 +28,12 @@ namespace Evernus
         : public Entity<quint64>
     {
     public:
-        typedef std::optional<Key::IdType> KeyIdType;
-
         using Entity::Entity;
 
         Character() = default;
         Character(const Character &) = default;
         Character(Character &&) = default;
         virtual ~Character() = default;
-
-        KeyIdType getKeyId() const noexcept;
-        void setKeyId(const KeyIdType &id);
 
         QString getName() const &;
         QString &&getName() && noexcept;
@@ -134,8 +130,6 @@ namespace Evernus
 
     private:
         CharacterData mData;
-        KeyIdType mKeyId;
-
         bool mEnabled = true;
     };
 }

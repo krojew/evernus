@@ -16,8 +16,6 @@
 
 #include <boost/throw_exception.hpp>
 
-#include "KeyRepository.h"
-
 #include "CharacterRepository.h"
 
 namespace Evernus
@@ -34,10 +32,7 @@ namespace Evernus
 
     CharacterRepository::EntityPtr CharacterRepository::populate(const QSqlRecord &record) const
     {
-        const auto keyId = record.value(QStringLiteral("key_id"));
-
         auto character = std::make_shared<Character>(record.value(QStringLiteral("id")).value<Character::IdType>());
-        character->setKeyId((keyId.isNull()) ? (Character::KeyIdType{}) : (keyId.value<Key::IdType>()));
         character->setName(record.value(QStringLiteral("name")).toString());
         character->setCorporationName(record.value(QStringLiteral("corporation_name")).toString());
         character->setCorporationId(record.value(QStringLiteral("corporation_id")).toULongLong());
@@ -136,10 +131,9 @@ namespace Evernus
         return character;
     }
 
-    void CharacterRepository::create(const KeyRepository &keyRepository) const
+    void CharacterRepository::create() const
     {
-        exec(getCreateQuery(keyRepository));
-        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(key_id)").arg(getTableName()).arg(keyRepository.getTableName()));
+        exec(getCreateQuery());
     }
 
     void CharacterRepository::updateSkill(Character::IdType id, const QString &skill, int level) const
@@ -211,33 +205,6 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
-    void CharacterRepository::disableByKey(Key::IdType id) const
-    {
-        auto query = prepare(QStringLiteral("UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ?").arg(getTableName()));
-        query.bindValue(0, id);
-
-        DatabaseUtils::execQuery(query);
-    }
-
-    void CharacterRepository::disableByKey(Key::IdType id, const std::vector<Character::IdType> &excluded) const
-    {
-        QStringList ids;
-        for (auto i = 0u; i < excluded.size(); ++i)
-            ids << QStringLiteral("?");
-
-        auto query = prepare(QStringLiteral("UPDATE %1 SET key_id = NULL, enabled = 0 WHERE key_id = ? AND %2 NOT IN (%3)")
-            .arg(getTableName())
-            .arg(getIdColumn())
-            .arg(ids.join(QStringLiteral(", "))));
-
-        query.addBindValue(id);
-
-        for (const auto &character : excluded)
-            query.addBindValue(character);
-
-        DatabaseUtils::execQuery(query);
-    }
-
     bool CharacterRepository::hasCharacters() const
     {
         auto query = exec(QStringLiteral("SELECT COUNT(*) FROM %1").arg(getTableName()));
@@ -290,16 +257,15 @@ namespace Evernus
 
     QSqlQuery CharacterRepository::getEnabledQuery() const
     {
-        return exec(QStringLiteral("SELECT %2, name FROM %1 WHERE enabled != 0 AND key_id IS NOT NULL ORDER BY name")
+        return exec(QStringLiteral("SELECT %2, name FROM %1 WHERE enabled != 0 ORDER BY name")
             .arg(getTableName())
             .arg(getIdColumn()));
     }
 
-    QString CharacterRepository::getCreateQuery(const KeyRepository &keyRepository) const
+    QString CharacterRepository::getCreateQuery() const
     {
         return QStringLiteral("CREATE TABLE IF NOT EXISTS %1 ("
             "id BIGINT PRIMARY KEY,"
-            "key_id INTEGER NULL REFERENCES %2(id) ON UPDATE SET NULL ON DELETE SET NULL,"
             "name TEXT NOT NULL,"
             "corporation_name TEXT NOT NULL,"
             "corporation_id BIGINT NOT NULL,"
@@ -371,14 +337,13 @@ namespace Evernus
             "quantum_physics TINYINT NOT NULL,"
             "rocket_science TINYINT NOT NULL,"
             "alpha_clone TINYINT NOT NULL"
-        ")").arg(getTableName()).arg(keyRepository.getTableName());
+        ")").arg(getTableName());
     }
 
     QStringList CharacterRepository::getColumns() const
     {
         return {
             QStringLiteral("id"),
-            QStringLiteral("key_id"),
             QStringLiteral("name"),
             QStringLiteral("corporation_name"),
             QStringLiteral("corporation_id"),
@@ -455,8 +420,6 @@ namespace Evernus
 
     void CharacterRepository::bindValues(const Character &entity, QSqlQuery &query) const
     {
-        const auto keyId = entity.getKeyId();
-
         const auto orderAmountSkills = entity.getOrderAmountSkills();
         const auto tradeRangeSkills = entity.getTradeRangeSkills();
         const auto feeSkills = entity.getFeeSkills();
@@ -467,7 +430,6 @@ namespace Evernus
         if (entity.getId() != Character::invalidId)
             query.bindValue(QStringLiteral(":id"), entity.getId());
 
-        query.bindValue(QStringLiteral(":key_id"), (keyId) ? (*keyId) : (QVariant{QVariant::UInt}));
         query.bindValue(QStringLiteral(":name"), entity.getName());
         query.bindValue(QStringLiteral(":corporation_name"), entity.getCorporationName());
         query.bindValue(QStringLiteral(":corporation_id"), entity.getCorporationId());
@@ -543,8 +505,6 @@ namespace Evernus
 
     void CharacterRepository::bindPositionalValues(const Character &entity, QSqlQuery &query) const
     {
-        const auto keyId = entity.getKeyId();
-
         const auto orderAmountSkills = entity.getOrderAmountSkills();
         const auto tradeRangeSkills = entity.getTradeRangeSkills();
         const auto feeSkills = entity.getFeeSkills();
@@ -555,7 +515,6 @@ namespace Evernus
         if (entity.getId() != Character::invalidId)
             query.addBindValue(entity.getId());
 
-        query.addBindValue((keyId) ? (*keyId) : (QVariant{QVariant::UInt}));
         query.addBindValue(entity.getName());
         query.addBindValue(entity.getCorporationName());
         query.addBindValue(entity.getCorporationId());

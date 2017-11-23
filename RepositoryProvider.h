@@ -40,11 +40,9 @@ namespace Evernus
     class CacheTimerRepository;
     class CharacterRepository;
     class ItemCostRepository;
-    class CorpKeyRepository;
     class EveTypeRepository;
     class CitadelRepository;
     class ItemRepository;
-    class KeyRepository;
 
     class RepositoryProvider
     {
@@ -52,8 +50,6 @@ namespace Evernus
         RepositoryProvider() = default;
         virtual ~RepositoryProvider() = default;
 
-        virtual const KeyRepository &getKeyRepository() const noexcept = 0;
-        virtual const CorpKeyRepository &getCorpKeyRepository() const noexcept = 0;
         virtual const CharacterRepository &getCharacterRepository() const noexcept = 0;
         virtual const WalletSnapshotRepository &getWalletSnapshotRepository() const noexcept = 0;
         virtual const CorpWalletSnapshotRepository &getCorpWalletSnapshotRepository() const noexcept = 0;

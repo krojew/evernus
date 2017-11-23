@@ -27,7 +27,6 @@ find_package(Qt5Qml REQUIRED)
 find_package(Qt5QuickWidgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
-find_package(Qt5XmlPatterns REQUIRED)
 find_package(Qt5WebEngineWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
@@ -128,24 +127,12 @@ add_executable(
     AggregatedEventProcessor.h
     AggregatedStatisticsModel.cpp
     AggregatedStatisticsModel.h
-    APIDomParser.h
-    APIInterface.cpp
-    APIInterface.h
-    APIManager.cpp
-    APIManager.h
-    APIResponseCache.cpp
-    APIResponseCache.h
-    APIUtils.cpp
-    APIUtils.h
-    APIXmlReceiver.h
     ArbitrageUtils.cpp
     ArbitrageUtils.h
     AssetList.cpp
     AssetList.h
     AssetListRepository.cpp
     AssetListRepository.h
-    AssetListXmlReceiver.cpp
-    AssetListXmlReceiver.h
     AssetModel.cpp
     AssetModel.h
     AssetProvider.h
@@ -201,8 +188,6 @@ add_executable(
     CharacterDomParser.h
     CharacterImportPreferencesWidget.cpp
     CharacterImportPreferencesWidget.h
-    CharacterListXmlReceiver.cpp
-    CharacterListXmlReceiver.h
     CharacterManagerDialog.cpp
     CharacterManagerDialog.h
     CharacterModel.cpp
@@ -237,8 +222,6 @@ add_executable(
     ConquerableStation.cpp
     ConquerableStation.h
     ConquerableStationList.h
-    ConquerableStationListXmlReceiver.cpp
-    ConquerableStationListXmlReceiver.h
     ConquerableStationRepository.cpp
     ConquerableStationRepository.h
     Contract.cpp
@@ -251,8 +234,6 @@ add_executable(
     ContractItem.h
     ContractItemRepository.cpp
     ContractItemRepository.h
-    ContractItemsXmlReceiver.cpp
-    ContractItemsXmlReceiver.h
     ContractModel.cpp
     ContractModel.h
     ContractProvider.h
@@ -261,8 +242,6 @@ add_executable(
     Contracts.h
     ContractStatusesWidget.cpp
     ContractStatusesWidget.h
-    ContractsXmlReceiver.cpp
-    ContractsXmlReceiver.h
     ContractView.cpp
     ContractView.h
     ContractWidget.cpp
@@ -273,12 +252,6 @@ add_executable(
     CorpAssetValueSnapshotRepository.h
     CorpImportPreferencesWidget.cpp
     CorpImportPreferencesWidget.h
-    CorpKey.cpp
-    CorpKey.h
-    CorpKeyEditDialog.cpp
-    CorpKeyEditDialog.h
-    CorpKeyRepository.cpp
-    CorpKeyRepository.h
     CorpMarketOrderValueSnapshot.cpp
     CorpMarketOrderValueSnapshot.h
     CorpMarketOrderValueSnapshotRepository.cpp
@@ -449,12 +422,6 @@ add_executable(
     ItemTypeSelectDialog.h
     JSEveDataProvider.cpp
     JSEveDataProvider.h
-    Key.cpp
-    Key.h
-    KeyEditDialog.cpp
-    KeyEditDialog.h
-    KeyRepository.cpp
-    KeyRepository.h
     LanguageComboBox.cpp
     LanguageComboBox.h
     LanguageSelectDialog.cpp
@@ -541,8 +508,6 @@ add_executable(
     MarketOrdersInfoWidget.h
     MarketOrderStatesWidget.cpp
     MarketOrderStatesWidget.h
-    MarketOrdersXmlReceiver.cpp
-    MarketOrdersXmlReceiver.h
     MarketOrderTreeModel.cpp
     MarketOrderTreeModel.h
     MarketOrderValueSnapshot.cpp
@@ -814,8 +779,6 @@ add_executable(
     WalletJournalModel.h
     WalletJournalWidget.cpp
     WalletJournalWidget.h
-    WalletJournalXmlReceiver.cpp
-    WalletJournalXmlReceiver.h
     WalletPreferencesWidget.cpp
     WalletPreferencesWidget.h
     WalletSettings.h
@@ -832,8 +795,6 @@ add_executable(
     WalletTransactionsModel.h
     WalletTransactionsWidget.cpp
     WalletTransactionsWidget.h
-    WalletTransactionsXmlReceiver.cpp
-    WalletTransactionsXmlReceiver.h
     WalletTransactionView.cpp
     WalletTransactionView.h
     WarningBarWidget.cpp
@@ -880,7 +841,6 @@ target_link_libraries(
     Qt5::QuickWidgets
     Qt5::Sql
     Qt5::Xml
-    Qt5::XmlPatterns
     Qt5::WebEngineWidgets
     Qt5::Widgets
     ${ADDITIONAL_LIBS}
