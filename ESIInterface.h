@@ -129,6 +129,8 @@ namespace Evernus
         template<class Tag>
         struct TaggedInvoke;
 
+        struct PaginatedContext;
+
         static const int errorLimitCode = 420;
 
         CitadelAccessCache &mCitadelAccessCache;
@@ -150,12 +152,13 @@ namespace Evernus
         void checkAuth(Character::IdType charId, T &&continuation) const;
 
         template<class T>
-        void fetchPaginatedData(const QString &url, QUrlQuery query, uint page, T &&continuation) const;
+        void fetchPaginatedData(const QString &url, QUrlQuery query, uint page, T &&continuation, const std::shared_ptr<PaginatedContext> &context) const;
         template<class T>
         void fetchPaginatedData(Character::IdType charId,
                                 const QString &url,
                                 uint page,
                                 T &&continuation,
+                                const std::shared_ptr<PaginatedContext> &context,
                                 bool importingCitadels = false,
                                 quint64 citadelId = 0) const;
 
@@ -188,6 +191,9 @@ namespace Evernus
 
         template<class T>
         void runNowOrLater(T callback) const;
+
+        template<class T, class U>
+        static auto createPaginatedCallback(uint page, T continuation, U fetchNext, std::shared_ptr<PaginatedContext> context);
 
         static ErrorInfo getError(const QByteArray &reply);
         static ErrorInfo getError(const QString &url, const QString &query, QNetworkReply &reply);
