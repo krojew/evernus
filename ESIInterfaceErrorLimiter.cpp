@@ -22,8 +22,10 @@ namespace Evernus
         : QObject{parent}
     {
         mErrorRetryTimer.setSingleShot(true);
+
+        // queued because timeout crashes for some reason (someone died in the meantime?)
         connect(&mErrorRetryTimer, &QTimer::timeout,
-                this, &ESIInterfaceErrorLimiter::processPendingRequestsAfterErrors);
+                this, &ESIInterfaceErrorLimiter::processPendingRequestsAfterErrors, Qt::QueuedConnection);
     }
 
     void ESIInterfaceErrorLimiter::addCallback(Callback callback, const std::chrono::seconds &timeout)
