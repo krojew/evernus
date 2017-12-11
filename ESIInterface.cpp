@@ -408,21 +408,19 @@ namespace Evernus
         });
     }
 
-    void ESIInterface::fetchMarketPrices(const PersistentJsonCallback &callback) const
+    void ESIInterface::fetchMarketPrices(const JsonCallback &callback) const
     {
         qDebug() << "Fetching market prices.";
         get(QStringLiteral("/v1/markets/prices/"), {}, [=](auto &&data, const auto &error, const auto &expires) {
-            Q_UNUSED(expires);
-            callback(std::move(data), error);
+            callback(std::move(data), error, expires);
         }, getNumRetries());
     }
 
-    void ESIInterface::fetchIndustryCostIndices(const PersistentJsonCallback &callback) const
+    void ESIInterface::fetchIndustryCostIndices(const JsonCallback &callback) const
     {
         qDebug() << "Fetching industry cost indices.";
         get(QStringLiteral("/v1/industry/systems/"), {}, [=](auto &&data, const auto &error, const auto &expires) {
-            Q_UNUSED(expires);
-            callback(std::move(data), error);
+            callback(std::move(data), error, expires);
         }, getNumRetries());
     }
 

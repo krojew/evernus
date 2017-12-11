@@ -765,13 +765,13 @@ namespace Evernus
         });
     }
 
-    void ESIManager::fetchMarketPrices(const PesistentDataCallback<MarketPrices> &callback) const
+    void ESIManager::fetchMarketPrices(const Callback<MarketPrices> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchMarketPrices([=](auto &&data, const auto &error) {
+        selectNextInterface().fetchMarketPrices([=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                callback({}, error);
+                callback({}, error, expires);
                 return;
             }
 
@@ -789,17 +789,17 @@ namespace Evernus
                 });
             }
 
-            callback(std::move(result), {});
+            callback(std::move(result), {}, expires);
         });
     }
 
-    void ESIManager::fetchIndustryCostIndices(const PesistentDataCallback<IndustryCostIndices> &callback) const
+    void ESIManager::fetchIndustryCostIndices(const Callback<IndustryCostIndices> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchIndustryCostIndices([=](auto &&data, const auto &error) {
+        selectNextInterface().fetchIndustryCostIndices([=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
-                callback({}, error);
+                callback({}, error, expires);
                 return;
             }
 
@@ -848,7 +848,7 @@ namespace Evernus
                 }}
             );
 
-            callback(std::move(result), {});
+            callback(std::move(result), {}, expires);
         });
     }
 

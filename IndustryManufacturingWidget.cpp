@@ -525,14 +525,18 @@ namespace Evernus
 
         mDataFetcher.importData(pairs, mCharacterId);
 
-        mESIManager.fetchMarketPrices([=](auto &&data, const auto &error) {
+        mESIManager.fetchMarketPrices([=](auto &&data, const auto &error, const auto &expires) {
+            Q_UNUSED(expires);
+
             if (Q_LIKELY(error.isEmpty()))
                 mSetupModel.setMarketPrices(std::move(data));
 
             mTaskManager.endTask(mMarketPricesSubtask, error);
             mMarketPricesSubtask = TaskConstants::invalidTask;
         });
-        mESIManager.fetchIndustryCostIndices([=](auto &&data, const auto &error) {
+        mESIManager.fetchIndustryCostIndices([=](auto &&data, const auto &error, const auto &expires) {
+            Q_UNUSED(expires);
+
             if (Q_LIKELY(error.isEmpty()))
                 mSetupModel.setCostIndices(std::move(data));
 

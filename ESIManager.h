@@ -111,8 +111,8 @@ namespace Evernus
         void fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const;
         void fetchCharacterMiningLedger(Character::IdType charId, const Callback<MiningLedgerList> &callback) const;
         void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
-        void fetchMarketPrices(const PesistentDataCallback<MarketPrices> &callback) const;
-        void fetchIndustryCostIndices(const PesistentDataCallback<IndustryCostIndices> &callback) const;
+        void fetchMarketPrices(const Callback<MarketPrices> &callback) const;
+        void fetchIndustryCostIndices(const Callback<IndustryCostIndices> &callback) const;
         void fetchSovereigntyStructures(const Callback<SovereigntyStructureList> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
