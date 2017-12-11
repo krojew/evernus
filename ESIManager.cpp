@@ -34,6 +34,7 @@
 
 #include <boost/scope_exit.hpp>
 
+#include "SovereigntyStructure.h"
 #include "ESIInterfaceManager.h"
 #include "CharacterRepository.h"
 #include "EveDataProvider.h"
@@ -848,6 +849,39 @@ namespace Evernus
             );
 
             callback(std::move(result), {});
+        });
+    }
+
+    void ESIManager::fetchSovereigntyStructures(const Callback<SovereigntyStructureList> &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+        selectNextInterface().fetchSovereigntyStructures([=](auto &&data, const auto &error, const auto &expires) {
+            Q_UNUSED(expires);
+
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            const auto structures = data.array();
+
+            SovereigntyStructureList result;
+            result.reserve(structures.size());
+
+            for (const auto &structure : structures)
+            {
+                const auto structureObj = structure.toObject();
+
+                SovereigntyStructure structure;
+                structure.mSolarSystemId =  structureObj.value(QStringLiteral("solar_system_id")).toDouble();
+                structure.mStructureId =  structureObj.value(QStringLiteral("structure_id")).toDouble();
+                structure.mTypeId =  structureObj.value(QStringLiteral("structure_type_id")).toDouble();
+
+                result.emplace_back(structure);
+            }
+
+            callback(std::move(result), {}, expires);
         });
     }
 

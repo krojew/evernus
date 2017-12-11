@@ -61,7 +61,6 @@
 #include "ItemCostWidget.h"
 #include "ImportSettings.h"
 #include "ClickableLabel.h"
-#include "KeyRepository.h"
 #include "MenuBarWidget.h"
 #include "PriceSettings.h"
 #include "SSOMessageBox.h"

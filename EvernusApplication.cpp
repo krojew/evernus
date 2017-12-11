@@ -743,7 +743,7 @@ namespace Evernus
                 updateCharacterAssets(id, assets);
             }
 
-            emit taskEnded(importSubtask, error);
+            emit taskEnded(assetSubtask, error);
         });
     }
 
@@ -863,7 +863,7 @@ namespace Evernus
                 updateCharacterWalletTransactions(id, data);
             }
 
-            emit taskEnded(importSubtask, error);
+            emit taskEnded(task, error);
         });
     }
 
@@ -892,7 +892,7 @@ namespace Evernus
                 emit externalOrdersChangedWithMarketOrders();
             }
 
-            emit taskEnded(importSubtask, error);
+            emit taskEnded(task, error);
         });
     }
 
@@ -1211,10 +1211,21 @@ namespace Evernus
         const auto task = startTask(tr("Fetching conquerable stations..."));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        mAPIManager.fetchConquerableStationList([=](const auto &list, const auto &error) {
+        Q_ASSERT(mESIManager);
+        mESIManager->fetchSovereigntyStructures([=](auto list, const auto &error, const auto &expires) {
+            Q_UNUSED(expires);
+
             if (error.isEmpty())
             {
                 mDataProvider->clearStationCache();
+
+                if (mStationGroupTypeIds.empty())
+                    fetchStationTypeIds();
+
+                // leave only stations
+                list.erase(std::remove_if(std::begin(list), std::end(list), [=](const auto &structure) {
+                    return mStationGroupTypeIds.find(structure.mTypeId) != std::end(mStationGroupTypeIds);
+                }), std::end(list));
 
                 mConquerableStationRepository->deleteAll();
                 asyncBatchStore(*mConquerableStationRepository, list, true);
@@ -2584,6 +2595,14 @@ namespace Evernus
 
         future.get();
         qDebug() << "Done.";
+    }
+
+    void EvernusApplication::fetchStationTypeIds()
+    {
+        // get all ids from group 15, and hope it never changes...
+        QSqlQuery query{QStringLiteral("SELECT typeID FROM invTypes WHERE groupID = 15"), mEveDb};
+        while (query.next())
+            mStationGroupTypeIds.emplace(query.value(0).value<EveType::IdType>());
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

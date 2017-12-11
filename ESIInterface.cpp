@@ -426,6 +426,14 @@ namespace Evernus
         }, getNumRetries());
     }
 
+    void ESIInterface::fetchSovereigntyStructures(const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching sovereignty structures.";
+        get(QStringLiteral("/v1/sovereignty/structures/"), {}, [=](auto &&data, const auto &error, const auto &expires) {
+            callback(std::move(data), error, expires);
+        }, getNumRetries());
+    }
+
     void ESIInterface::openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const
     {
         qDebug() << "Opening market details for" << typeId;

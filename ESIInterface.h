@@ -86,6 +86,7 @@ namespace Evernus
         void fetchGenericName(quint64 id, const PersistentStringCallback &callback) const;
         void fetchMarketPrices(const PersistentJsonCallback &callback) const;
         void fetchIndustryCostIndices(const PersistentJsonCallback &callback) const;
+        void fetchSovereigntyStructures(const JsonCallback &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId, const ErrorCallback &errorCallback) const;
 

@@ -359,6 +359,8 @@ namespace Evernus
 
         std::unique_ptr<ESIManager> mESIManager;
 
+        std::unordered_set<EveType::IdType> mStationGroupTypeIds;
+
         void updateTranslator(const QString &lang);
 
         void createDb();
@@ -413,6 +415,8 @@ namespace Evernus
 
         template<class Func, class... Args>
         void asyncExecute(Func &&func, Args && ...args);
+
+        void fetchStationTypeIds();
 
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
         static QString getCharacterImportMessage(Character::IdType id);

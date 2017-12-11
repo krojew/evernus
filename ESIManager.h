@@ -48,6 +48,7 @@ class QDateTime;
 
 namespace Evernus
 {
+    struct SovereigntyStructure;
     class ESIInterfaceManager;
     class CharacterRepository;
     class EveDataProvider;
@@ -68,6 +69,7 @@ namespace Evernus
         using ExternalOrderList = std::vector<ExternalOrder>;
         using BlueprintList = std::vector<Blueprint>;
         using MiningLedgerList = std::vector<MiningLedger>;
+        using SovereigntyStructureList = std::vector<SovereigntyStructure>;
         using MarketOrderCallback = Callback<ExternalOrderList>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
         using NameMap = std::unordered_map<quint64, QString>;
@@ -111,6 +113,7 @@ namespace Evernus
         void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
         void fetchMarketPrices(const PesistentDataCallback<MarketPrices> &callback) const;
         void fetchIndustryCostIndices(const PesistentDataCallback<IndustryCostIndices> &callback) const;
+        void fetchSovereigntyStructures(const Callback<SovereigntyStructureList> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 
