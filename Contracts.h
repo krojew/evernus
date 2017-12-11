@@ -19,5 +19,5 @@
 
 namespace Evernus
 {
-    typedef std::vector<Contract> Contracts;
+    using Contracts = std::vector<Contract>;
 }

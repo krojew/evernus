@@ -76,6 +76,7 @@
 #include "WalletJournal.h"
 #include "ESIManager.h"
 #include "TaskManager.h"
+#include "Contracts.h"
 
 #include "qxtsmtp.h"
 
