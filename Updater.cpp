@@ -194,7 +194,7 @@ namespace Evernus
             coreUpdated = true;
         }
 
-        const auto dbVersion = getDbVersion(repoProvider.getKeyRepository().getDatabase(), savedCoreVersion);
+        const auto dbVersion = getDbVersion(repoProvider.getCharacterRepository().getDatabase(), savedCoreVersion);
         updateDatabase(dbVersion, repoProvider);
 
         if (Q_UNLIKELY(coreUpdated))

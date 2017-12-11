@@ -51,7 +51,6 @@ namespace Evernus
 
     CharacterWidget::CharacterWidget(const CharacterRepository &characterRepository,
                                      const MarketOrderRepository &marketOrderRepository,
-                                     const CorpKeyRepository &corpKeyRepository,
                                      const CacheTimerProvider &cacheTimerProvider,
                                      QWidget *parent)
         : CharacterBoundWidget(std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::Character),
@@ -60,7 +59,6 @@ namespace Evernus
                                parent)
         , mCharacterRepository(characterRepository)
         , mMarketOrderRepository(marketOrderRepository)
-        , mCorpKeyRepository(corpKeyRepository)
         , mCacheTimerProvider(cacheTimerProvider)
     {
         auto mainLayout = new QVBoxLayout{this};
@@ -489,11 +487,11 @@ namespace Evernus
         checker(TimerType::CorpWalletJournal, ImportSettings::maxWalletAgeKey, tr("Corp. wallet journal: %1"));
         checker(TimerType::CorpWalletTransactions, ImportSettings::maxWalletAgeKey, tr("Corp. wallet transactions: %1"));
 
-		if (importContracts)
-		{
-			checker(TimerType::CorpContracts, ImportSettings::maxWalletAgeKey, tr("Corp. contracts: %1"));
+        if (importContracts)
+        {
+            checker(TimerType::CorpContracts, ImportSettings::maxWalletAgeKey, tr("Corp. contracts: %1"));
             checker(TimerType::Contracts, ImportSettings::maxWalletAgeKey, tr("Contracts: %1"));
-		}
+        }
 
         mUpdateTimersGroup->setVisible(show);
     }

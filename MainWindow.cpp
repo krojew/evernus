@@ -178,10 +178,7 @@ namespace Evernus
     {
         if (mCharacterManagerDialog == nullptr)
         {
-            mCharacterManagerDialog = new CharacterManagerDialog{mRepositoryProvider.getCharacterRepository(),
-                                                                 mRepositoryProvider.getKeyRepository(),
-                                                                 mRepositoryProvider.getCorpKeyRepository(),
-                                                                 this};
+            mCharacterManagerDialog = new CharacterManagerDialog{mRepositoryProvider.getCharacterRepository(), this};
             connect(this, &MainWindow::charactersChanged, mCharacterManagerDialog, &CharacterManagerDialog::updateCharacters);
             connect(mCharacterManagerDialog, &CharacterManagerDialog::refreshCharacters, this, &MainWindow::refreshCharacters);
             connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,
@@ -552,7 +549,7 @@ namespace Evernus
         time(&buf.actime);
         buf.modtime = buf.actime;
 
-        utime(mRepositoryProvider.getKeyRepository().getDatabase().databaseName().toUtf8().constData(), &buf);
+        utime(mRepositoryProvider.getCharacterRepository().getDatabase().databaseName().toUtf8().constData(), &buf);
 #endif
     }
 
@@ -724,7 +721,6 @@ namespace Evernus
 
         auto charTab = new CharacterWidget{mRepositoryProvider.getCharacterRepository(),
                                            mRepositoryProvider.getMarketOrderRepository(),
-                                           mRepositoryProvider.getCorpKeyRepository(),
                                            cacheTimerProvider,
                                            this};
         mCharacterTabIndex = addTab(charTab, tr("Character"), TabType::Character);
