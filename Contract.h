@@ -32,9 +32,11 @@ namespace Evernus
 
         enum class Type
         {
+            Unknown,
             ItemExchange,
             Courier,
-            Auction
+            Auction,
+            Loan
         };
 
         enum class Status
@@ -54,7 +56,9 @@ namespace Evernus
         enum class Availability
         {
             Public,
-            Private
+            Private,
+            Corporation,
+            Alliance,
         };
 
         using Entity::Entity;

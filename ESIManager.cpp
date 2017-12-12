@@ -650,6 +650,60 @@ namespace Evernus
         });
     }
 
+    void ESIManager::fetchCharacterContracts(Character::IdType charId, const Callback<Contracts> &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+
+        auto result = std::make_shared<Contracts>();
+        selectNextInterface().fetchCharacterContracts(charId, [=, result = std::move(result)](auto &&data, auto atEnd, const auto &error, const auto &expires) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            const auto contracts = data.array();
+            const auto curSize = result->size();
+            result->resize(curSize + contracts.size());
+
+            std::atomic_size_t nextIndex{curSize};
+
+            QtConcurrent::blockingMap(contracts, [&, charId](const auto &contract) {
+                const auto contractObj = contract.toObject();
+
+                auto &curContract = (*result)[nextIndex++];
+                curContract.setId(contractObj.value(QStringLiteral("contract_id")).toDouble());
+                curContract.setIssuerId(contractObj.value(QStringLiteral("issuer_id")).toDouble());
+                curContract.setIssuerCorpId(contractObj.value(QStringLiteral("issuer_corporation_id")).toDouble());
+                curContract.setAssigneeId(contractObj.value(QStringLiteral("assignee_id")).toDouble());
+                curContract.setAcceptorId(contractObj.value(QStringLiteral("acceptor_id")).toDouble());
+                curContract.setStartStationId(contractObj.value(QStringLiteral("start_location_id")).toDouble());
+                curContract.setEndStationId(contractObj.value(QStringLiteral("end_location_id")).toDouble());
+                curContract.setType(getContractTypeFromString(contractObj.value(QStringLiteral("type")).toString()));
+                curContract.setStatus(getContractStatusFromString(contractObj.value(QStringLiteral("status")).toString()));
+                curContract.setTitle(contractObj.value(QStringLiteral("title")).toString());
+                curContract.setForCorp(contractObj.value(QStringLiteral("for_corporation")).toBool());
+                curContract.setAvailability(getContractAvailabilityFromString(contractObj.value(QStringLiteral("availability")).toString()));
+                curContract.setIssued(getDateTimeFromString(contractObj.value(QStringLiteral("date_issued")).toString()));
+                curContract.setExpired(getDateTimeFromString(contractObj.value(QStringLiteral("date_expired")).toString()));
+                curContract.setNumDays(contractObj.value(QStringLiteral("days_to_complete")).toDouble());
+                curContract.setPrice(contractObj.value(QStringLiteral("price")).toDouble());
+                curContract.setReward(contractObj.value(QStringLiteral("reward")).toDouble());
+                curContract.setCollateral(contractObj.value(QStringLiteral("collateral")).toDouble());
+                curContract.setBuyout(contractObj.value(QStringLiteral("buyout")).toDouble());
+                curContract.setVolume(contractObj.value(QStringLiteral("volume")).toDouble());
+
+                if (contractObj.contains(QStringLiteral("date_accepted")))
+                    curContract.setAccepted(getDateTimeFromString(contractObj.value(QStringLiteral("date_accepted")).toString()));
+                if (contractObj.contains(QStringLiteral("date_completed")))
+                    curContract.setCompleted(getDateTimeFromString(contractObj.value(QStringLiteral("date_completed")).toString()));
+            });
+
+            if (atEnd)
+                callback(std::move(*result), {}, expires);
+        });
+    }
+
     void ESIManager::fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
@@ -1436,5 +1490,55 @@ namespace Evernus
         request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
         return request;
+    }
+
+    Contract::Type ESIManager::getContractTypeFromString(const QString &type)
+    {
+        if (type == "item_exchange")
+            return Contract::Type::ItemExchange;
+        if (type == "auction")
+            return Contract::Type::Auction;
+        if (type == "courier")
+            return Contract::Type::Courier;
+        if (type == "loan")
+            return Contract::Type::Loan;
+
+        return Contract::Type::Unknown;
+    }
+
+    Contract::Status ESIManager::getContractStatusFromString(const QString &status)
+    {
+        if (status == "in_progress")
+            return Contract::Status::InProgress;
+        if (status == "finished_issuer")
+            return Contract::Status::CompletedByIssuer;
+        if (status == "finished_contractor")
+            return Contract::Status::CompletedByContractor;
+        if (status == "finished")
+            return Contract::Status::Completed;
+        if (status == "cancelled")
+            return Contract::Status::Cancelled;
+        if (status == "rejected")
+            return Contract::Status::Rejected;
+        if (status == "failed")
+            return Contract::Status::Failed;
+        if (status == "deleted")
+            return Contract::Status::Deleted;
+        if (status == "reversed")
+            return Contract::Status::Reversed;
+
+        return Contract::Status::Outstanding;
+    }
+
+    Contract::Availability ESIManager::getContractAvailabilityFromString(const QString &availability)
+    {
+        if (availability == "public")
+            return Contract::Availability::Public;
+        if (availability == "corporation")
+            return Contract::Availability::Corporation;
+        if (availability == "alliance")
+            return Contract::Availability::Alliance;
+
+        return Contract::Availability::Private;
     }
 }

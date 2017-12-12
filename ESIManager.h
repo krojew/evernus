@@ -41,6 +41,8 @@
 #include "MarketOrder.h"
 #include "Character.h"
 #include "AssetList.h"
+#include "Contracts.h"
+#include "Contract.h"
 #include "EveType.h"
 
 class QJsonObject;
@@ -108,6 +110,7 @@ namespace Evernus
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               WalletTransaction::IdType tillId,
                                               const Callback<WalletTransactions> &callback) const;
+        void fetchCharacterContracts(Character::IdType charId, const Callback<Contracts> &callback) const;
         void fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const;
         void fetchCharacterMiningLedger(Character::IdType charId, const Callback<MiningLedgerList> &callback) const;
         void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
@@ -189,5 +192,9 @@ namespace Evernus
         static QDateTime getDateTimeFromString(const QString &value);
 
         static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
+
+        static Contract::Type getContractTypeFromString(const QString &type);
+        static Contract::Status getContractStatusFromString(const QString &status);
+        static Contract::Availability getContractAvailabilityFromString(const QString &availability);
     };
 }

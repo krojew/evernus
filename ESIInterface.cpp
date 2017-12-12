@@ -359,6 +359,19 @@ namespace Evernus
         });
     }
 
+    void ESIInterface::fetchCharacterContracts(Character::IdType charId, const PaginatedCallback &callback) const
+    {
+        qDebug() << "Fetching character contracts for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, true, tr("Cannot fetch character contracts with no character selected."), {});
+            return;
+        }
+
+        fetchPaginatedData(charId, QStringLiteral("/v1/characters/%1/contracts/").arg(charId), 1, callback);
+    }
+
     void ESIInterface::fetchCharacterBlueprints(Character::IdType charId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching character blueprints for" << charId;

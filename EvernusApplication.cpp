@@ -757,10 +757,12 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::Contracts, task))
             return;
 
+        Q_ASSERT(mESIManager);
+
         try
         {
             markImport(id, TimerType::Contracts);
-            mAPIManager.fetchContracts(*key, id, [key, task, id, this](Contracts &&data, const QString &error) {
+            mESIManager->fetchCharacterContracts(*key, id, [key, task, id, this](auto &&data, const auto &error, const auto &expires) {
                 unmarkImport(id, TimerType::Contracts);
 
                 if (error.isEmpty())
@@ -787,8 +789,7 @@ namespace Evernus
 
                     saveUpdateTimer(Evernus::TimerType::Contracts, mUpdateTimes[Evernus::TimerType::Contracts], id);
 
-                    this->handleIncomingContracts<&Evernus::EvernusApplication::characterContractsChanged>(key,
-                                                                                                           data,
+                    this->handleIncomingContracts<&Evernus::EvernusApplication::characterContractsChanged>(data,
                                                                                                            id,
                                                                                                            *mContractItemRepository,
                                                                                                            task);
@@ -2547,7 +2548,7 @@ namespace Evernus
                 ++pendingContractItemRequests;
 
                 const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                mAPIManager.fetchContractItems(*key, id, contract.getId(), [=, &itemRepo](APIManager::ContractItemList &&data, const QString &error) {
+                mAPIManager.fetchContractItems(id, contract.getId(), [=, &itemRepo](auto &&data, const auto &error) {
                     --pendingContractItemRequests;
 
                     if (error.isEmpty())
