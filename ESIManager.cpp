@@ -704,6 +704,38 @@ namespace Evernus
         });
     }
 
+    void ESIManager::fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const Callback<ContractItemList> &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+        selectNextInterface().fetchCharacterContractItems(charId, contractId, [=](auto &&data, const auto &error, const auto &expires) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            const auto itemList = data.array();
+
+            ContractItemList result;
+            result.reserve(itemList.size());
+
+            for (const auto &item : itemList)
+            {
+                const auto itemObj = item.toObject();
+
+                ContractItem resultItem{static_cast<ContractItem::IdType>(itemObj.value(QStringLiteral("record_id")).toDouble())};
+                resultItem.setContractId(contractId);
+                resultItem.setIncluded(itemObj.value(QStringLiteral("is_included")).toBool());
+                resultItem.setQuantity(itemObj.value(QStringLiteral("quantity")).toDouble());
+                resultItem.setTypeId(itemObj.value(QStringLiteral("type_id")).toDouble());
+
+                result.emplace_back(std::move(resultItem));
+            }
+
+            callback(std::move(result), error, expires);
+        });
+    }
+
     void ESIManager::fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());

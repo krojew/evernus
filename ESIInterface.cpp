@@ -372,6 +372,24 @@ namespace Evernus
         fetchPaginatedData(charId, QStringLiteral("/v1/characters/%1/contracts/").arg(charId), 1, callback);
     }
 
+    void ESIInterface::fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching character contract items for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, tr("Cannot fetch character contract items with no character selected."), {});
+            return;
+        }
+
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/characters/%1/contracts/%2/items/").arg(charId).arg(contractId), {}, callback, getNumRetries());
+        });
+    }
+
     void ESIInterface::fetchCharacterBlueprints(Character::IdType charId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching character blueprints for" << charId;

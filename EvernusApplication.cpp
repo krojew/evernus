@@ -2547,8 +2547,12 @@ namespace Evernus
 
                 ++pendingContractItemRequests;
 
+                Q_ASSERT(mESIManager);
+
                 const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                mAPIManager.fetchContractItems(id, contract.getId(), [=, &itemRepo](auto &&data, const auto &error) {
+                mESIManager->fetchCharacterContractItems(id, contract.getId(), [=, &itemRepo](auto &&data, const auto &error, const auto &expires) {
+                    Q_UNUSED(expires);
+
                     --pendingContractItemRequests;
 
                     if (error.isEmpty())

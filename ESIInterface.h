@@ -28,6 +28,7 @@
 #include "WalletJournalEntry.h"
 #include "WalletTransaction.h"
 #include "Character.h"
+#include "Contract.h"
 #include "EveType.h"
 
 class QNetworkRequest;
@@ -81,6 +82,7 @@ namespace Evernus
                                               const std::optional<WalletTransaction::IdType> &fromId,
                                               const JsonCallback &callback) const;
         void fetchCharacterContracts(Character::IdType charId, const PaginatedCallback &callback) const;
+        void fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const JsonCallback &callback) const;
         void fetchCharacterBlueprints(Character::IdType charId, const JsonCallback &callback) const;
         void fetchCharacterMiningLedger(Character::IdType charId, const PaginatedCallback &callback) const;
         void fetchGenericName(quint64 id, const PersistentStringCallback &callback) const;
