@@ -184,8 +184,6 @@ add_executable(
     CharacterCorporationCombinedMarketOrderProvider.cpp
     CharacterCorporationCombinedMarketOrderProvider.h
     CharacterData.h
-    CharacterDomParser.cpp
-    CharacterDomParser.h
     CharacterImportPreferencesWidget.cpp
     CharacterImportPreferencesWidget.h
     CharacterManagerDialog.cpp
@@ -344,8 +342,6 @@ add_executable(
     GeneralPreferencesWidget.h
     GenericMarketOrdersInfoWidget.cpp
     GenericMarketOrdersInfoWidget.h
-    GenericNameDomParser.cpp
-    GenericNameDomParser.h
     HttpPreferencesWidget.cpp
     HttpPreferencesWidget.h
     HttpService.cpp
