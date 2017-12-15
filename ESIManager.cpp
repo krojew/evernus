@@ -181,69 +181,16 @@ namespace Evernus
         selectNextInterface().fetchCitadelMarketOrders(citadelId, charId, getMarketOrderCallback(regionId, callback));
     }
 
-    void ESIManager::fetchCharacterAssets(Character::IdType charId, const Callback<AssetList> &callback) const
+    void ESIManager::fetchCharacterAssets(Character::IdType charId, const AssetCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
+        selectNextInterface().fetchCharacterAssets(charId, getAssetListCallback(charId, callback));
+    }
 
-        struct AssetProcessingData
-        {
-            std::vector<AssetList::ItemType> mAllItems;
-            std::unordered_map<Item::IdType, Item *> mItemMap;
-        };
-
-        auto allItems = std::make_shared<AssetProcessingData>();
-        selectNextInterface().fetchCharacterAssets(charId, [=, allItems = std::move(allItems)]
-                                                           (auto &&data, auto atEnd, const auto &error, const auto &expires) {
-            if (Q_UNLIKELY(!error.isEmpty()))
-            {
-                callback({}, error, expires);
-                return;
-            }
-
-            const auto assets = data.array();
-
-            allItems->mAllItems.reserve(allItems->mAllItems.size() + assets.size());
-            allItems->mItemMap.reserve(allItems->mItemMap.size() + assets.size());
-
-            for (const auto &itemObj : assets)
-            {
-                const auto item = itemObj.toObject();
-                const int rawQuantity = item.value(QStringLiteral("quantity")).toDouble();
-
-                auto newItem = std::make_unique<Item>(static_cast<Item::IdType>(item.value(QStringLiteral("item_id")).toDouble()));
-                newItem->setLocationId(item.value(QStringLiteral("location_id")).toDouble());
-                newItem->setTypeId(item.value(QStringLiteral("type_id")).toDouble());
-                newItem->setRawQuantity(rawQuantity);
-                // https://forums.eveonline.com/t/esi-assets-blueprints-and-quantities/19345/4
-                newItem->setQuantity((rawQuantity < 0) ? (1) : (rawQuantity));
-
-                allItems->mItemMap.emplace(newItem->getId(), newItem.get());
-                allItems->mAllItems.emplace_back(std::move(newItem));
-            }
-
-            if (atEnd)
-            {
-                AssetList list;
-                list.setCharacterId(charId);
-
-                // make tree
-                for (auto &item : allItems->mAllItems)
-                {
-                    const auto parent = allItems->mItemMap.find(*item->getLocationId());
-                    if (parent != std::end(allItems->mItemMap))
-                    {
-                        item->setLocationId({});
-                        parent->second->addItem(std::move(item));
-                    }
-                    else
-                    {
-                        list.addItem(std::move(item));
-                    }
-                }
-
-                callback(std::move(list), {}, expires);
-            }
-        });
+    void ESIManager::fetchCorporationAssets(Character::IdType charId, quint64 corpId, const AssetCallback &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+        selectNextInterface().fetchCorporationAssets(charId, corpId, getAssetListCallback(charId, callback));
     }
 
     void ESIManager::fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const
@@ -1439,6 +1386,68 @@ namespace Evernus
 
             if (atEnd)
                 callback(std::move(*orders), {}, expires);
+        };
+    }
+
+    ESIInterface::PaginatedCallback ESIManager::getAssetListCallback(Character::IdType charId, const AssetCallback &callback) const
+    {
+        struct AssetProcessingData
+        {
+            std::vector<AssetList::ItemType> mAllItems;
+            std::unordered_map<Item::IdType, Item *> mItemMap;
+        };
+
+        auto allItems = std::make_shared<AssetProcessingData>();
+        return [=, allItems = std::move(allItems)](auto &&data, auto atEnd, const auto &error, const auto &expires) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            const auto assets = data.array();
+
+            allItems->mAllItems.reserve(allItems->mAllItems.size() + assets.size());
+            allItems->mItemMap.reserve(allItems->mItemMap.size() + assets.size());
+
+            for (const auto &itemObj : assets)
+            {
+                const auto item = itemObj.toObject();
+                const int rawQuantity = item.value(QStringLiteral("quantity")).toDouble();
+
+                auto newItem = std::make_unique<Item>(static_cast<Item::IdType>(item.value(QStringLiteral("item_id")).toDouble()));
+                newItem->setLocationId(item.value(QStringLiteral("location_id")).toDouble());
+                newItem->setTypeId(item.value(QStringLiteral("type_id")).toDouble());
+                newItem->setRawQuantity(rawQuantity);
+                // https://forums.eveonline.com/t/esi-assets-blueprints-and-quantities/19345/4
+                newItem->setQuantity((rawQuantity < 0) ? (1) : (rawQuantity));
+
+                allItems->mItemMap.emplace(newItem->getId(), newItem.get());
+                allItems->mAllItems.emplace_back(std::move(newItem));
+            }
+
+            if (atEnd)
+            {
+                AssetList list;
+                list.setCharacterId(charId);
+
+                // make tree
+                for (auto &item : allItems->mAllItems)
+                {
+                    const auto parent = allItems->mItemMap.find(*item->getLocationId());
+                    if (parent != std::end(allItems->mItemMap))
+                    {
+                        item->setLocationId({});
+                        parent->second->addItem(std::move(item));
+                    }
+                    else
+                    {
+                        list.addItem(std::move(item));
+                    }
+                }
+
+                callback(std::move(list), {}, expires);
+            }
         };
     }
 

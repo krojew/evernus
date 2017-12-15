@@ -898,12 +898,15 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::CorpAssetList, assetSubtask))
             return;
 
+        Q_ASSERT(mESIManager);
+
         try
         {
-            const auto key = getCorpKey(id);
+            const auto character = mCharacterRepository->find(id);
+            Q_ASSERT(character);
 
             markImport(id, TimerType::CorpAssetList);
-            mAPIManager.fetchAssets(*key, id, [=](AssetList &&data, const QString &error) {
+            mESIManager->fetchCorporationAssets(id, character->getCorporationId(), [=](auto &&data, const auto &error, const auto &expires) {
                 unmarkImport(id, TimerType::CorpAssetList);
 
                 if (error.isEmpty())
@@ -920,6 +923,7 @@ namespace Evernus
                         computeCorpAssetListSellValueSnapshot(data);
                     }
 
+                    setUtcCacheTimer(id, TimerType::CorpAssetList, expires);
                     saveUpdateTimer(Evernus::TimerType::CorpAssetList, mUpdateTimes[Evernus::TimerType::CorpAssetList], id);
 
                     emit corpAssetsChanged();

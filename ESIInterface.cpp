@@ -207,7 +207,7 @@ namespace Evernus
 
     void ESIInterface::fetchCharacterAssets(Character::IdType charId, const PaginatedCallback &callback) const
     {
-        qDebug() << "Fetching assets for" << charId;
+        qDebug() << "Fetching character assets for" << charId;
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
@@ -216,6 +216,19 @@ namespace Evernus
         }
 
         fetchPaginatedData(charId, QStringLiteral("/v1/characters/%1/assets/").arg(charId), 1, callback);
+    }
+
+    void ESIInterface::fetchCorporationAssets(Character::IdType charId, quint64 corpId, const PaginatedCallback &callback) const
+    {
+        qDebug() << "Fetching corporation assets for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, true, tr("Cannot fetch assets with no character selected."), {});
+            return;
+        }
+
+        fetchPaginatedData(charId, QStringLiteral("/v2/corporations/%1/assets/").arg(corpId), 1, callback);
     }
 
     void ESIInterface::fetchCharacter(Character::IdType charId, const JsonCallback &callback) const

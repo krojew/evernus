@@ -75,6 +75,7 @@ namespace Evernus
         using SovereigntyStructureList = std::vector<SovereigntyStructure>;
         using ContractItemList = std::vector<ContractItem>;
         using MarketOrderCallback = Callback<ExternalOrderList>;
+        using AssetCallback = Callback<AssetList>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
         using NameMap = std::unordered_map<quint64, QString>;
 
@@ -101,7 +102,8 @@ namespace Evernus
                                       uint regionId,
                                       Character::IdType charId,
                                       const MarketOrderCallback &callback) const;
-        void fetchCharacterAssets(Character::IdType charId, const Callback<AssetList> &callback) const;
+        void fetchCharacterAssets(Character::IdType charId, const AssetCallback &callback) const;
+        void fetchCorporationAssets(Character::IdType charId, quint64 corpId, const AssetCallback &callback) const;
         void fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const;
         void fetchRaces(const Callback<NameMap> &callback) const;
         void fetchBloodlines(const Callback<NameMap> &callback) const;
@@ -183,6 +185,7 @@ namespace Evernus
 
         ExternalOrder getExternalOrderFromJson(const QJsonObject &object, uint regionId, const QDateTime &updateTime) const;
         ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
+        ESIInterface::PaginatedCallback getAssetListCallback(Character::IdType charId, const AssetCallback &callback) const;
 
         void scheduleNextTokenFetch();
 
