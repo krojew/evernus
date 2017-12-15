@@ -180,7 +180,6 @@ namespace Evernus
         {
             mCharacterManagerDialog = new CharacterManagerDialog{mRepositoryProvider.getCharacterRepository(), this};
             connect(this, &MainWindow::charactersChanged, mCharacterManagerDialog, &CharacterManagerDialog::updateCharacters);
-            connect(mCharacterManagerDialog, &CharacterManagerDialog::refreshCharacters, this, &MainWindow::refreshCharacters);
             connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,
                     mMenuWidget, &MenuBarWidget::refreshCharacters);
             connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,

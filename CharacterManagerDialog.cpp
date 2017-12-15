@@ -55,11 +55,7 @@ namespace Evernus
                 this, &CharacterManagerDialog::selectCharacter);
 
         auto btnLayout = new QHBoxLayout{};
-		mainLayout->addLayout(btnLayout);
-
-        auto refreshCharsBtn = new QPushButton{QIcon{":/images/arrow_refresh.png"}, tr("Refresh"), this};
-        btnLayout->addWidget(refreshCharsBtn);
-        connect(refreshCharsBtn, &QPushButton::clicked, this, &CharacterManagerDialog::refreshCharacters);
+        mainLayout->addLayout(btnLayout);
 
         mRemoveCharacterBtn = new QPushButton{QIcon{":/images/delete.png"}, tr("Remove"), this};
         btnLayout->addWidget(mRemoveCharacterBtn);

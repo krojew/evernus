@@ -635,71 +635,15 @@ namespace Evernus
     {
         qDebug() << "Refreshing characters...";
 
-        const auto task = startTask(tr("Fetching characters..."));
-
-        const auto keys = mKeyRepository->fetchAll();
-
-        if (keys.empty())
+        const auto characters = mCharacterRepository->fetchAll();
+        for (const auto &character : characters)
         {
-            mCharacterRepository->exec(QStringLiteral("UPDATE %1 SET key_id = NULL, enabled = 0").arg(mCharacterRepository->getTableName()));
-            emit taskEnded(task, {});
-        }
-        else
-        {
-            for (const auto &key : keys)
-            {
-                const auto charListSubtask = startTask(task, tr("Fetching characters for key %1...").arg(key->getId()));
-                mAPIManager.fetchCharacterList(*key, [key, charListSubtask, this](const auto &characters, const auto &error) {
-                    if (error.isEmpty())
-                    {
-                        try
-                        {
-                            if (characters.empty())
-                                mCharacterRepository->disableByKey(key->getId());
-                            else
-                                mCharacterRepository->disableByKey(key->getId(), characters);
-                        }
-                        catch (const std::exception &e)
-                        {
-                            QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information: %1. "
-                                "Data sync should work, but character tab will display incorrect information.").arg(e.what()));
-                            return;
-                        }
-                        catch (...)
-                        {
-                            QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information. "
-                                "Data sync should work, but character tab will display incorrect information."));
-                            return;
-                        }
+            Q_ASSERT(character);
 
-                        if (characters.empty())
-                        {
-                            emit taskEnded(charListSubtask, error);
-                        }
-                        else
-                        {
-                            std::vector<uint> charTasks(characters.size());
-                            for (auto i = 0u; i < characters.size(); ++i)
-                                charTasks[i] = startTask(charListSubtask, getCharacterImportMessage(characters[i]));
+            const auto task = startTask(tr("Fetching character %1...").arg(character->getId()));
+            processEvents(QEventLoop::ExcludeUserInputEvents);
 
-                            if (shouldUseESIOverXML())
-                            {
-                                for (auto i = 0u; i < characters.size(); ++i)
-                                    importCharacterFromESI(characters[i], charTasks[i], *key);
-                            }
-                            else
-                            {
-                                for (auto i = 0u; i < characters.size(); ++i)
-                                    importCharacterFromXML(characters[i], charTasks[i], *key);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        emit taskEnded(charListSubtask, error);
-                    }
-                });
-            }
+            importCharacter(character->getId(), task);
         }
     }
 

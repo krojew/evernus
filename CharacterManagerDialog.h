@@ -39,7 +39,6 @@ namespace Evernus
         virtual ~CharacterManagerDialog() = default;
 
     signals:
-        void refreshCharacters();
         void charactersChanged();
 
     public slots:
