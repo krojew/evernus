@@ -706,7 +706,7 @@ namespace Evernus
         try
         {
             markImport(id, TimerType::Contracts);
-            mESIManager->fetchCharacterContracts(*key, id, [key, task, id, this](auto &&data, const auto &error, const auto &expires) {
+            mESIManager->fetchCharacterContracts(id, [=](auto &&data, const auto &error, const auto &expires) {
                 unmarkImport(id, TimerType::Contracts);
 
                 if (error.isEmpty())
@@ -777,7 +777,7 @@ namespace Evernus
                 updateCharacterWalletJournal(id, data);
             }
 
-            emit taskEnded(importSubtask, error);
+            emit taskEnded(task, error);
         });
     }
 
