@@ -597,90 +597,28 @@ namespace Evernus
         });
     }
 
-    void ESIManager::fetchCharacterContracts(Character::IdType charId, const Callback<Contracts> &callback) const
+    void ESIManager::fetchCharacterContracts(Character::IdType charId, const ContractCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-
-        auto result = std::make_shared<Contracts>();
-        selectNextInterface().fetchCharacterContracts(charId, [=, result = std::move(result)](auto &&data, auto atEnd, const auto &error, const auto &expires) {
-            if (Q_UNLIKELY(!error.isEmpty()))
-            {
-                callback({}, error, expires);
-                return;
-            }
-
-            const auto contracts = data.array();
-            const auto curSize = result->size();
-            result->resize(curSize + contracts.size());
-
-            std::atomic_size_t nextIndex{curSize};
-
-            QtConcurrent::blockingMap(contracts, [&, charId](const auto &contract) {
-                const auto contractObj = contract.toObject();
-
-                auto &curContract = (*result)[nextIndex++];
-                curContract.setId(contractObj.value(QStringLiteral("contract_id")).toDouble());
-                curContract.setIssuerId(contractObj.value(QStringLiteral("issuer_id")).toDouble());
-                curContract.setIssuerCorpId(contractObj.value(QStringLiteral("issuer_corporation_id")).toDouble());
-                curContract.setAssigneeId(contractObj.value(QStringLiteral("assignee_id")).toDouble());
-                curContract.setAcceptorId(contractObj.value(QStringLiteral("acceptor_id")).toDouble());
-                curContract.setStartStationId(contractObj.value(QStringLiteral("start_location_id")).toDouble());
-                curContract.setEndStationId(contractObj.value(QStringLiteral("end_location_id")).toDouble());
-                curContract.setType(getContractTypeFromString(contractObj.value(QStringLiteral("type")).toString()));
-                curContract.setStatus(getContractStatusFromString(contractObj.value(QStringLiteral("status")).toString()));
-                curContract.setTitle(contractObj.value(QStringLiteral("title")).toString());
-                curContract.setForCorp(contractObj.value(QStringLiteral("for_corporation")).toBool());
-                curContract.setAvailability(getContractAvailabilityFromString(contractObj.value(QStringLiteral("availability")).toString()));
-                curContract.setIssued(getDateTimeFromString(contractObj.value(QStringLiteral("date_issued")).toString()));
-                curContract.setExpired(getDateTimeFromString(contractObj.value(QStringLiteral("date_expired")).toString()));
-                curContract.setNumDays(contractObj.value(QStringLiteral("days_to_complete")).toDouble());
-                curContract.setPrice(contractObj.value(QStringLiteral("price")).toDouble());
-                curContract.setReward(contractObj.value(QStringLiteral("reward")).toDouble());
-                curContract.setCollateral(contractObj.value(QStringLiteral("collateral")).toDouble());
-                curContract.setBuyout(contractObj.value(QStringLiteral("buyout")).toDouble());
-                curContract.setVolume(contractObj.value(QStringLiteral("volume")).toDouble());
-
-                if (contractObj.contains(QStringLiteral("date_accepted")))
-                    curContract.setAccepted(getDateTimeFromString(contractObj.value(QStringLiteral("date_accepted")).toString()));
-                if (contractObj.contains(QStringLiteral("date_completed")))
-                    curContract.setCompleted(getDateTimeFromString(contractObj.value(QStringLiteral("date_completed")).toString()));
-            });
-
-            if (atEnd)
-                callback(std::move(*result), {}, expires);
-        });
+        selectNextInterface().fetchCharacterContracts(charId, getContractCallback(callback));
     }
 
-    void ESIManager::fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const Callback<ContractItemList> &callback) const
+    void ESIManager::fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const ContractItemCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterContractItems(charId, contractId, [=](auto &&data, const auto &error, const auto &expires) {
-            if (Q_UNLIKELY(!error.isEmpty()))
-            {
-                callback({}, error, expires);
-                return;
-            }
+        selectNextInterface().fetchCharacterContractItems(charId, contractId, getContractItemCallback(contractId, callback));
+    }
 
-            const auto itemList = data.array();
+    void ESIManager::fetchCorporationContracts(Character::IdType charId, quint64 corpId, const ContractCallback &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+        selectNextInterface().fetchCorporationContracts(charId, corpId, getContractCallback(callback));
+    }
 
-            ContractItemList result;
-            result.reserve(itemList.size());
-
-            for (const auto &item : itemList)
-            {
-                const auto itemObj = item.toObject();
-
-                ContractItem resultItem{static_cast<ContractItem::IdType>(itemObj.value(QStringLiteral("record_id")).toDouble())};
-                resultItem.setContractId(contractId);
-                resultItem.setIncluded(itemObj.value(QStringLiteral("is_included")).toBool());
-                resultItem.setQuantity(itemObj.value(QStringLiteral("quantity")).toDouble());
-                resultItem.setTypeId(itemObj.value(QStringLiteral("type_id")).toDouble());
-
-                result.emplace_back(std::move(resultItem));
-            }
-
-            callback(std::move(result), error, expires);
-        });
+    void ESIManager::fetchCorporationContractItems(Character::IdType charId, quint64 corpId, Contract::IdType contractId, const ContractItemCallback &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+        selectNextInterface().fetchCorporationContractItems(charId, corpId, contractId, getContractItemCallback(contractId, callback));
     }
 
     void ESIManager::fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const
@@ -1448,6 +1386,88 @@ namespace Evernus
 
                 callback(std::move(list), {}, expires);
             }
+        };
+    }
+
+    ESIInterface::JsonCallback ESIManager::getContractCallback(const ContractCallback &callback) const
+    {
+        return [=](auto &&data, const auto &error, const auto &expires) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            const auto contracts = data.array();
+
+            Contracts result;
+            result.resize(contracts.size());
+
+            std::atomic_size_t nextIndex{0};
+
+            QtConcurrent::blockingMap(contracts, [&](const auto &contract) {
+                const auto contractObj = contract.toObject();
+
+                auto &curContract = result[nextIndex++];
+                curContract.setId(contractObj.value(QStringLiteral("contract_id")).toDouble());
+                curContract.setIssuerId(contractObj.value(QStringLiteral("issuer_id")).toDouble());
+                curContract.setIssuerCorpId(contractObj.value(QStringLiteral("issuer_corporation_id")).toDouble());
+                curContract.setAssigneeId(contractObj.value(QStringLiteral("assignee_id")).toDouble());
+                curContract.setAcceptorId(contractObj.value(QStringLiteral("acceptor_id")).toDouble());
+                curContract.setStartStationId(contractObj.value(QStringLiteral("start_location_id")).toDouble());
+                curContract.setEndStationId(contractObj.value(QStringLiteral("end_location_id")).toDouble());
+                curContract.setType(getContractTypeFromString(contractObj.value(QStringLiteral("type")).toString()));
+                curContract.setStatus(getContractStatusFromString(contractObj.value(QStringLiteral("status")).toString()));
+                curContract.setTitle(contractObj.value(QStringLiteral("title")).toString());
+                curContract.setForCorp(contractObj.value(QStringLiteral("for_corporation")).toBool());
+                curContract.setAvailability(getContractAvailabilityFromString(contractObj.value(QStringLiteral("availability")).toString()));
+                curContract.setIssued(getDateTimeFromString(contractObj.value(QStringLiteral("date_issued")).toString()));
+                curContract.setExpired(getDateTimeFromString(contractObj.value(QStringLiteral("date_expired")).toString()));
+                curContract.setNumDays(contractObj.value(QStringLiteral("days_to_complete")).toDouble());
+                curContract.setPrice(contractObj.value(QStringLiteral("price")).toDouble());
+                curContract.setReward(contractObj.value(QStringLiteral("reward")).toDouble());
+                curContract.setCollateral(contractObj.value(QStringLiteral("collateral")).toDouble());
+                curContract.setBuyout(contractObj.value(QStringLiteral("buyout")).toDouble());
+                curContract.setVolume(contractObj.value(QStringLiteral("volume")).toDouble());
+
+                if (contractObj.contains(QStringLiteral("date_accepted")))
+                    curContract.setAccepted(getDateTimeFromString(contractObj.value(QStringLiteral("date_accepted")).toString()));
+                if (contractObj.contains(QStringLiteral("date_completed")))
+                    curContract.setCompleted(getDateTimeFromString(contractObj.value(QStringLiteral("date_completed")).toString()));
+            });
+
+            callback(std::move(result), {}, expires);
+        };
+    }
+
+    ESIInterface::JsonCallback ESIManager::getContractItemCallback(Contract::IdType contractId, const ContractItemCallback &callback) const
+    {
+        return [=](auto &&data, const auto &error, const auto &expires) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            const auto itemList = data.array();
+
+            ContractItemList result;
+            result.reserve(itemList.size());
+
+            for (const auto &item : itemList)
+            {
+                const auto itemObj = item.toObject();
+
+                ContractItem resultItem{static_cast<ContractItem::IdType>(itemObj.value(QStringLiteral("record_id")).toDouble())};
+                resultItem.setContractId(contractId);
+                resultItem.setIncluded(itemObj.value(QStringLiteral("is_included")).toBool());
+                resultItem.setQuantity(itemObj.value(QStringLiteral("quantity")).toDouble());
+                resultItem.setTypeId(itemObj.value(QStringLiteral("type_id")).toDouble());
+
+                result.emplace_back(std::move(resultItem));
+            }
+
+            callback(std::move(result), error, expires);
         };
     }
 

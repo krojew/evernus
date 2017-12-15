@@ -76,6 +76,8 @@ namespace Evernus
         using ContractItemList = std::vector<ContractItem>;
         using MarketOrderCallback = Callback<ExternalOrderList>;
         using AssetCallback = Callback<AssetList>;
+        using ContractCallback = Callback<Contracts>;
+        using ContractItemCallback = Callback<ContractItemList>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
         using NameMap = std::unordered_map<quint64, QString>;
 
@@ -114,8 +116,10 @@ namespace Evernus
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               WalletTransaction::IdType tillId,
                                               const Callback<WalletTransactions> &callback) const;
-        void fetchCharacterContracts(Character::IdType charId, const Callback<Contracts> &callback) const;
-        void fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const Callback<ContractItemList> &callback) const;
+        void fetchCharacterContracts(Character::IdType charId, const ContractCallback &callback) const;
+        void fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const ContractItemCallback &callback) const;
+        void fetchCorporationContracts(Character::IdType charId, quint64 corpId, const ContractCallback &callback) const;
+        void fetchCorporationContractItems(Character::IdType charId, quint64 corpId, Contract::IdType contractId, const ContractItemCallback &callback) const;
         void fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const;
         void fetchCharacterMiningLedger(Character::IdType charId, const Callback<MiningLedgerList> &callback) const;
         void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
@@ -186,6 +190,8 @@ namespace Evernus
         ExternalOrder getExternalOrderFromJson(const QJsonObject &object, uint regionId, const QDateTime &updateTime) const;
         ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
         ESIInterface::PaginatedCallback getAssetListCallback(Character::IdType charId, const AssetCallback &callback) const;
+        ESIInterface::JsonCallback getContractCallback(const ContractCallback &callback) const;
+        ESIInterface::JsonCallback getContractItemCallback(Contract::IdType contractId, const ContractItemCallback &callback) const;
 
         void scheduleNextTokenFetch();
 

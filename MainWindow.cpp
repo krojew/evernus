@@ -427,6 +427,7 @@ namespace Evernus
                 "esi-characters.read_blueprints.v1 "
                 "esi-contracts.read_character_contracts.v1 "
                 "esi-assets.read_corporation_assets.v1 "
+                "esi-contracts.read_corporation_contracts.v1 "
                 "esi-industry.read_character_mining.v1"
             )
         );

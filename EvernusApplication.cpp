@@ -731,7 +731,8 @@ namespace Evernus
                     mCharacterContractProvider->clearForCharacter(id);
                     mCorpContractProvider->clearForCharacter(id);
 
-                    saveUpdateTimer(Evernus::TimerType::Contracts, mUpdateTimes[Evernus::TimerType::Contracts], id);
+                    setUtcCacheTimer(id, TimerType::Contracts, expires);
+                    saveUpdateTimer(TimerType::Contracts, mUpdateTimes[TimerType::Contracts], id);
 
                     this->handleIncomingContracts<&Evernus::EvernusApplication::characterContractsChanged>(data,
                                                                                                            id,
@@ -902,11 +903,10 @@ namespace Evernus
 
         try
         {
-            const auto character = mCharacterRepository->find(id);
-            Q_ASSERT(character);
+            const auto corpId = mCharacterRepository->getCorporationId(id);
 
             markImport(id, TimerType::CorpAssetList);
-            mESIManager->fetchCorporationAssets(id, character->getCorporationId(), [=](auto &&data, const auto &error, const auto &expires) {
+            mESIManager->fetchCorporationAssets(id, corpId, [=](auto &&data, const auto &error, const auto &expires) {
                 unmarkImport(id, TimerType::CorpAssetList);
 
                 if (error.isEmpty())
@@ -917,7 +917,7 @@ namespace Evernus
 
                     QSettings settings;
 
-                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, Evernus::ImportSettings::autoUpdateAssetValueDefault).toBool() &&
+                    if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool() &&
                         settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsKey).toBool())
                     {
                         computeCorpAssetListSellValueSnapshot(data);
@@ -948,39 +948,42 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::CorpContracts, task))
             return;
 
-        markImport(id, TimerType::CorpContracts);
-        mAPIManager.fetchContracts(id, [task, id, this](auto &&data, const auto &error) {
-            unmarkImport(id, Evernus::TimerType::CorpContracts);
+        Q_ASSERT(mESIManager);
 
-            if (error.isEmpty())
-            {
-                asyncBatchStore(*mCorpContractRepository, data, true);
+        try
+        {
+            const auto corpId = mCharacterRepository->getCorporationId(id);
 
-                try
+            markImport(id, TimerType::CorpContracts);
+            mESIManager->fetchCorporationContracts(id, corpId, [=](auto &&data, const auto &error, const auto &expires) {
+                unmarkImport(id, Evernus::TimerType::CorpContracts);
+
+                if (error.isEmpty())
                 {
-                    const auto corpId = mCharacterRepository->getCorporationId(id);
+                    asyncBatchStore(*mCorpContractRepository, data, true);
 
-                    mCharacterContractProvider->clearForCorporation(corpId);
-                    mCorpContractProvider->clearForCorporation(corpId);
-                    mCharacterContractProvider->clearForCorporation(corpId);
-                    mCorpContractProvider->clearForCorporation(corpId);
+                        mCharacterContractProvider->clearForCorporation(corpId);
+                        mCorpContractProvider->clearForCorporation(corpId);
+                        mCharacterContractProvider->clearForCorporation(corpId);
+                        mCorpContractProvider->clearForCorporation(corpId);
+
+                    setUtcCacheTimer(id, TimerType::Contracts, expires);
+                    saveUpdateTimer(TimerType::CorpContracts, mUpdateTimes[TimerType::CorpContracts], id);
+
+                    this->handleIncomingContracts<&EvernusApplication::corpContractsChanged>(data,
+                                                                                             id,
+                                                                                             *mCorpContractItemRepository,
+                                                                                             task);
                 }
-                catch (const Evernus::CharacterRepository::NotFoundException &)
+                else
                 {
+                    emit taskEnded(task, error);
                 }
-
-                saveUpdateTimer(Evernus::TimerType::CorpContracts, mUpdateTimes[Evernus::TimerType::CorpContracts], id);
-
-                this->handleIncomingContracts<&Evernus::EvernusApplication::corpContractsChanged>(data,
-                                                                                                  id,
-                                                                                                  *mCorpContractItemRepository,
-                                                                                                  task);
-            }
-            else
-            {
-                emit taskEnded(task, error);
-            }
-        });
+            });
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+        }
     }
 
     void EvernusApplication::refreshCorpWalletJournal(Character::IdType id, uint parentTask)

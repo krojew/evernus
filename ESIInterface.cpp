@@ -372,17 +372,22 @@ namespace Evernus
         });
     }
 
-    void ESIInterface::fetchCharacterContracts(Character::IdType charId, const PaginatedCallback &callback) const
+    void ESIInterface::fetchCharacterContracts(Character::IdType charId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching character contracts for" << charId;
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, true, tr("Cannot fetch character contracts with no character selected."), {});
+            callback({}, tr("Cannot fetch character contracts with no character selected."), {});
             return;
         }
 
-        fetchPaginatedData(charId, QStringLiteral("/v1/characters/%1/contracts/").arg(charId), 1, callback);
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/characters/%1/contracts/").arg(charId), {}, callback, getNumRetries());
+        });
     }
 
     void ESIInterface::fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const JsonCallback &callback) const
@@ -400,6 +405,42 @@ namespace Evernus
                 callback({}, error, {});
             else
                 get(charId, QStringLiteral("/v1/characters/%1/contracts/%2/items/").arg(charId).arg(contractId), {}, callback, getNumRetries());
+        });
+    }
+
+    void ESIInterface::fetchCorporationContracts(Character::IdType charId, quint64 corpId, const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching corporation contracts for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, tr("Cannot fetch corporation contracts with no character selected."), {});
+            return;
+        }
+
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/corporations/%1/contracts/").arg(corpId), {}, callback, getNumRetries());
+        });
+    }
+
+    void ESIInterface::fetchCorporationContractItems(Character::IdType charId, quint64 corpId, Contract::IdType contractId, const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching corporation contract items for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, tr("Cannot fetch corporation contract items with no character selected."), {});
+            return;
+        }
+
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/corporations/%1/contracts/%2/items/").arg(corpId).arg(contractId), {}, callback, getNumRetries());
         });
     }
 
