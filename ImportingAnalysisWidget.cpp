@@ -126,7 +126,7 @@ namespace Evernus
         toolBarLayout->addWidget(mCollateralEdit);
         mCollateralEdit->setRange(0, 100);
         mCollateralEdit->setSuffix(locale().percent());
-        mCollateralEdit->setToolTip(tr("Addtional cost added to buy price. This is the percetange of the base price."));
+        mCollateralEdit->setToolTip(tr("Additional cost added to buy price. This is the percentage of the base price."));
         mCollateralEdit->setValue(settings.value(MarketAnalysisSettings::importingCollateralKey).toInt());
 
         const auto collateralType = static_cast<PriceType>(

@@ -118,7 +118,7 @@ namespace Evernus
 
         mIgnoreMinVolumeBtn = new QCheckBox{tr("Ignore orders with min. volume > 1"), this};
         toolBarLayout->addWidget(mIgnoreMinVolumeBtn);
-        mIgnoreMinVolumeBtn->setToolTip(tr("Ignore orders wich require minimum volume larger than 1."));
+        mIgnoreMinVolumeBtn->setToolTip(tr("Ignore orders which require minimum volume larger than 1."));
         mIgnoreMinVolumeBtn->setChecked(
             settings.value(MarketAnalysisSettings::reprocessingIgnoreMinVolumeKey, MarketAnalysisSettings::reprocessingIgnoreMinVolumeDefault).toBool()
         );
@@ -151,7 +151,7 @@ namespace Evernus
         toolBarLayout->addWidget(mCustomStationTaxEdit);
         mCustomStationTaxEdit->setRange(0., 100.);
         mCustomStationTaxEdit->setSuffix(locale().percent());
-        mCustomStationTaxEdit->setToolTip(tr("When including station tax, use this value instead of cumputed one."));
+        mCustomStationTaxEdit->setToolTip(tr("When including station tax, use this value instead of computed one."));
         mCustomStationTaxEdit->setEnabled(mCustomStationTaxBtn->isChecked());
         mCustomStationTaxEdit->setValue(
             settings.value(MarketAnalysisSettings::reprocessingCustomStationTaxValueKey, MarketAnalysisSettings::reprocessingCustomStationTaxValueDefault).toDouble()
@@ -224,7 +224,7 @@ namespace Evernus
 
     void ReprocessingArbitrageWidget::recalculateData()
     {
-        qDebug() << "Recomputing  reprocessing arbitrage data...";
+        qDebug() << "Recomputing reprocessing arbitrage data...";
 
         const auto orders = mMarketDataProvider.getOrders();
         if (orders == nullptr)
