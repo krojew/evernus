@@ -199,7 +199,10 @@ namespace Evernus
 
         auto filterBtn = new QPushButton{tr("Apply"), this};
         toolBarLayout->addWidget(filterBtn);
-        connect(filterBtn, &QPushButton::clicked, this, &ImportingAnalysisWidget::recalculateData);
+        connect(filterBtn, &QPushButton::clicked, this, [=] {
+            mImportedNewData = true;
+            recalculateData();
+        });
 
         toolBarLayout->addWidget(new QLabel{tr("Press \"Apply\" to show results. Additional actions are available via the right-click menu."), this});
 
@@ -404,7 +407,10 @@ namespace Evernus
         if (destination != 0)
         {
             if (QMessageBox::question(this, tr("Station change"), tr("Changing station requires data recalculation. Do you wish to do it now?")) == QMessageBox::Yes)
+            {
+                mImportedNewData = true;
                 recalculateData();
+            }
         }
     }
 }
