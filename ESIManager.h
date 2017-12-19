@@ -78,6 +78,7 @@ namespace Evernus
         using AssetCallback = Callback<AssetList>;
         using ContractCallback = Callback<Contracts>;
         using ContractItemCallback = Callback<ContractItemList>;
+        using WalletJournalCallback = Callback<WalletJournal>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
         using NameMap = std::unordered_map<quint64, QString>;
 
@@ -112,7 +113,12 @@ namespace Evernus
         void fetchCharacterMarketOrders(Character::IdType charId, const Callback<MarketOrders> &callback) const;
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          WalletJournalEntry::IdType tillId,
-                                         const Callback<WalletJournal> &callback) const;
+                                         const WalletJournalCallback &callback) const;
+        void fetchCorporationWalletJournal(Character::IdType charId,
+                                           quint64 corpId,
+                                           int division,
+                                           WalletJournalEntry::IdType tillId,
+                                           const WalletJournalCallback &callback) const;
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               WalletTransaction::IdType tillId,
                                               const Callback<WalletTransactions> &callback) const;
@@ -178,7 +184,13 @@ namespace Evernus
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          const std::optional<WalletJournalEntry::IdType> &fromId,
                                          WalletJournalEntry::IdType tillId,
-                                         const Callback<WalletJournal> &callback) const;
+                                         const WalletJournalCallback &callback) const;
+        void fetchCorporationWalletJournal(Character::IdType charId,
+                                           quint64 corpId,
+                                           int division,
+                                           const std::optional<WalletJournalEntry::IdType> &fromId,
+                                           WalletJournalEntry::IdType tillId,
+                                           const WalletJournalCallback &callback) const;
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               const std::optional<WalletTransaction::IdType> &fromId,
                                               WalletTransaction::IdType tillId,
@@ -192,6 +204,7 @@ namespace Evernus
         ESIInterface::PaginatedCallback getAssetListCallback(Character::IdType charId, const AssetCallback &callback) const;
         ESIInterface::JsonCallback getContractCallback(const ContractCallback &callback) const;
         ESIInterface::JsonCallback getContractItemCallback(Contract::IdType contractId, const ContractItemCallback &callback) const;
+        ESIInterface::JsonCallback getWalletJournalCallback(Character::IdType charId, const WalletJournalCallback &callback) const;
 
         void scheduleNextTokenFetch();
 

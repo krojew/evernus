@@ -996,6 +996,8 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::CorpWalletJournal, task))
             return;
 
+        Q_ASSERT(mESIManager);
+
         try
         {
             const auto maxId = mCorpWalletJournalEntryRepository->getLatestEntryId(id);
@@ -1007,8 +1009,8 @@ namespace Evernus
             const auto accountKey = settings.value(ImportSettings::corpWalletDivisionKey, ImportSettings::corpWalletDivisionDefault).toInt();
 
             markImport(id, TimerType::CorpWalletJournal);
-            mAPIManager.fetchWalletJournal(id, mCharacterRepository->getCorporationId(id), WalletJournalEntry::invalidId, maxId, accountKey,
-                                           [task, id, this](WalletJournal &&data, const QString &error) {
+            mESIManager->fetchCorporationWalletJournal(id, mCharacterRepository->getCorporationId(id), accountKey, maxId,
+                                                       [=](auto &&data, const auto &error, const auto &expires) {
                 unmarkImport(id, TimerType::CorpWalletJournal);
 
                 if (error.isEmpty())
@@ -1016,7 +1018,7 @@ namespace Evernus
                     QSettings settings;
                     if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
                     {
-                        std::vector<Evernus::CorpWalletSnapshot> snapshots;
+                        std::vector<CorpWalletSnapshot> snapshots;
                         snapshots.reserve(data.size());
 
                         QSet<QDateTime> usedSnapshots;
@@ -1032,7 +1034,7 @@ namespace Evernus
 
                             if (!usedSnapshots.contains(timestamp))
                             {
-                                Evernus::CorpWalletSnapshot snapshot;
+                                CorpWalletSnapshot snapshot;
                                 snapshot.setTimestamp(timestamp);
                                 snapshot.setBalance(*balance);
                                 snapshot.setCorporationId(entry.getCorporationId());
@@ -1047,7 +1049,8 @@ namespace Evernus
 
                     asyncBatchStore(*mCorpWalletJournalEntryRepository, data, true);
 
-                    saveUpdateTimer(Evernus::TimerType::CorpWalletJournal, mUpdateTimes[Evernus::TimerType::CorpWalletJournal], id);
+                    setUtcCacheTimer(id, TimerType::CorpWalletJournal, expires);
+                    saveUpdateTimer(TimerType::CorpWalletJournal, mUpdateTimes[TimerType::CorpWalletJournal], id);
 
                     emit corpWalletJournalChanged();
                 }
