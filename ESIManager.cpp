@@ -533,7 +533,7 @@ namespace Evernus
                                                  const WalletJournalCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        fetchCharacterWalletJournal(charId, std::nullopt, tillId, callback);
+        fetchCharacterWalletJournal(charId, std::nullopt, tillId, std::make_shared<WalletJournal>(), callback);
     }
 
     void ESIManager::fetchCorporationWalletJournal(Character::IdType charId,
@@ -543,7 +543,7 @@ namespace Evernus
                                                    const WalletJournalCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        fetchCorporationWalletJournal(charId, corpId, division, std::nullopt, tillId, callback);
+        fetchCorporationWalletJournal(charId, corpId, division, std::nullopt, tillId, std::make_shared<WalletJournal>(), callback);
     }
 
     void ESIManager::fetchCharacterWalletTransactions(Character::IdType charId,
@@ -1009,10 +1009,17 @@ namespace Evernus
     void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
                                                  const std::optional<WalletJournalEntry::IdType> &fromId,
                                                  WalletJournalEntry::IdType tillId,
+                                                 std::shared_ptr<WalletJournal> &&journal,
                                                  const WalletJournalCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterWalletJournal(charId, fromId, getWalletJournalCallback(charId, callback));
+        selectNextInterface().fetchCharacterWalletJournal(
+            charId,
+            fromId,
+            getWalletJournalCallback(charId, tillId, std::move(journal), callback, [=](const auto &fromId, auto &&journal) {
+                fetchCharacterWalletJournal(charId, fromId, tillId, std::move(journal), callback);
+            })
+        );
     }
 
     void ESIManager::fetchCorporationWalletJournal(Character::IdType charId,
@@ -1020,10 +1027,19 @@ namespace Evernus
                                                    int division,
                                                    const std::optional<WalletJournalEntry::IdType> &fromId,
                                                    WalletJournalEntry::IdType tillId,
+                                                   std::shared_ptr<WalletJournal> &&journal,
                                                    const WalletJournalCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCorporationWalletJournal(charId, corpId, division, fromId, getWalletJournalCallback(charId, callback));
+        selectNextInterface().fetchCorporationWalletJournal(
+            charId,
+            corpId,
+            division,
+            fromId,
+            getWalletJournalCallback(charId, tillId, std::move(journal), callback, [=](const auto &fromId, auto &&journal) {
+                fetchCorporationWalletJournal(charId, corpId, division, fromId, tillId, std::move(journal), callback);
+            })
+        );
     }
 
     void ESIManager::fetchCharacterWalletTransactions(Character::IdType charId,
@@ -1385,80 +1401,104 @@ namespace Evernus
         };
     }
 
-    ESIInterface::JsonCallback ESIManager::getWalletJournalCallback(Character::IdType charId, const WalletJournalCallback &callback) const
+    template<class T>
+    ESIInterface::JsonCallback ESIManager::getWalletJournalCallback(Character::IdType charId,
+                                                                    WalletJournalEntry::IdType tillId,
+                                                                    std::shared_ptr<WalletJournal> &&journal,
+                                                                    const WalletJournalCallback &callback,
+                                                                    T nextCallback) const
     {
-        return [=](auto &&data, const auto &error, const auto &expires) {
+        return [=, journal = std::move(journal), nextCallback = std::move(nextCallback)](auto &&data, const auto &error, const auto &expires) mutable {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
                 return;
             }
 
-            // https://bugreports.qt.io/browse/QTBUG-61145
-            auto journal = QtConcurrent::blockingMappedReduced<WalletJournal>(
+            auto nextFromId = std::numeric_limits<WalletJournalEntry::IdType>::max();
+            std::atomic_bool reachedEnd{journal->empty()};
+
+            std::mutex resultMutex;
+
+            QtConcurrent::blockingMap(
                 data.array(),
-                std::function<WalletJournalEntry (const QJsonValue &)>{[=](const auto &value) {
+                [&](const auto &value) {
                     const auto entryObj = value.toObject();
 
                     WalletJournalEntry entry{static_cast<WalletJournalEntry::IdType>(entryObj.value(QStringLiteral("ref_id")).toDouble())};
-                    entry.setCharacterId(charId);
-                    entry.setTimestamp(getDateTimeFromString(entryObj.value(QStringLiteral("date")).toString()));
-                    entry.setRefType(entryObj.value(QStringLiteral("ref_type")).toString());
 
-                    if (entryObj.contains(QStringLiteral("first_party_id")))
-                        entry.setFirstPartyId(entryObj.value(QStringLiteral("first_party_id")).toDouble());
-                    if (entryObj.contains(QStringLiteral("second_party_id")))
-                        entry.setSecondPartyId(entryObj.value(QStringLiteral("second_party_id")).toDouble());
-
-                    entry.setFirstPartyType(entryObj.value(QStringLiteral("first_party_type")).toString());
-                    entry.setSecondPartyType(entryObj.value(QStringLiteral("second_party_type")).toString());
-
-                    if (entryObj.contains(QStringLiteral("extra_info")))
+                    const auto id = entry.getId();
+                    if (id > tillId)
                     {
-                        const auto extraInfo = entryObj.value(QStringLiteral("extra_info")).toObject();
-                        const auto checkAndSetExtraInfo = [&](const auto &key) {
-                            if (extraInfo.contains(key))
-                            {
-                                entry.setExtraInfoId(extraInfo.value(key).toDouble());
-                                entry.setExtraInfoType(key);
-                                return true;
-                            }
+                        entry.setCharacterId(charId);
+                        entry.setTimestamp(getDateTimeFromString(entryObj.value(QStringLiteral("date")).toString()));
+                        entry.setRefType(entryObj.value(QStringLiteral("ref_type")).toString());
 
-                            return false;
-                        };
+                        if (entryObj.contains(QStringLiteral("first_party_id")))
+                            entry.setFirstPartyId(entryObj.value(QStringLiteral("first_party_id")).toDouble());
+                        if (entryObj.contains(QStringLiteral("second_party_id")))
+                            entry.setSecondPartyId(entryObj.value(QStringLiteral("second_party_id")).toDouble());
 
-                        checkAndSetExtraInfo(QStringLiteral("alliance_id")) ||
-                        checkAndSetExtraInfo(QStringLiteral("character_id")) ||
-                        checkAndSetExtraInfo(QStringLiteral("contract_id")) ||
-                        checkAndSetExtraInfo(QStringLiteral("corporation_id")) ||
-                        checkAndSetExtraInfo(QStringLiteral("destroyed_ship_type_id")) ||
-                        checkAndSetExtraInfo(QStringLiteral("job_id")) ||
-                        checkAndSetExtraInfo(QStringLiteral("location_id")) ||
-                        checkAndSetExtraInfo(QStringLiteral("npc_id")) ||
-                        checkAndSetExtraInfo(QStringLiteral("planet_id")) ||
-                        checkAndSetExtraInfo(QStringLiteral("system_id")) ||
-                        checkAndSetExtraInfo(QStringLiteral("transaction_id"));
+                        entry.setFirstPartyType(entryObj.value(QStringLiteral("first_party_type")).toString());
+                        entry.setSecondPartyType(entryObj.value(QStringLiteral("second_party_type")).toString());
+
+                        if (entryObj.contains(QStringLiteral("extra_info")))
+                        {
+                            const auto extraInfo = entryObj.value(QStringLiteral("extra_info")).toObject();
+                            const auto checkAndSetExtraInfo = [&](const auto &key) {
+                                if (extraInfo.contains(key))
+                                {
+                                    entry.setExtraInfoId(extraInfo.value(key).toDouble());
+                                    entry.setExtraInfoType(key);
+                                    return true;
+                                }
+
+                                return false;
+                            };
+
+                            checkAndSetExtraInfo(QStringLiteral("alliance_id")) ||
+                            checkAndSetExtraInfo(QStringLiteral("character_id")) ||
+                            checkAndSetExtraInfo(QStringLiteral("contract_id")) ||
+                            checkAndSetExtraInfo(QStringLiteral("corporation_id")) ||
+                            checkAndSetExtraInfo(QStringLiteral("destroyed_ship_type_id")) ||
+                            checkAndSetExtraInfo(QStringLiteral("job_id")) ||
+                            checkAndSetExtraInfo(QStringLiteral("location_id")) ||
+                            checkAndSetExtraInfo(QStringLiteral("npc_id")) ||
+                            checkAndSetExtraInfo(QStringLiteral("planet_id")) ||
+                            checkAndSetExtraInfo(QStringLiteral("system_id")) ||
+                            checkAndSetExtraInfo(QStringLiteral("transaction_id"));
+                        }
+
+                        entry.setReason(entryObj.value(QStringLiteral("reason")).toString());
+
+                        if (entryObj.contains(QStringLiteral("amount")))
+                            entry.setAmount(entryObj.value(QStringLiteral("amount")).toDouble());
+                        if (entryObj.contains(QStringLiteral("balance")))
+                            entry.setBalance(entryObj.value(QStringLiteral("balance")).toDouble());
+                        if (entryObj.contains(QStringLiteral("tax_reciever_id")))
+                            entry.setTaxReceiverId(entryObj.value(QStringLiteral("tax_reciever_id")).toDouble());
+                        if (entryObj.contains(QStringLiteral("tax")))
+                            entry.setTaxAmount(entryObj.value(QStringLiteral("tax")).toDouble());
+
+                        {
+                            std::lock_guard<std::mutex> lock{resultMutex};
+
+                            journal->emplace(std::move(entry));
+                            if (nextFromId > id)
+                                nextFromId = id;
+                        }
                     }
-
-                    entry.setReason(entryObj.value(QStringLiteral("reason")).toString());
-
-                    if (entryObj.contains(QStringLiteral("amount")))
-                        entry.setAmount(entryObj.value(QStringLiteral("amount")).toDouble());
-                    if (entryObj.contains(QStringLiteral("balance")))
-                        entry.setBalance(entryObj.value(QStringLiteral("balance")).toDouble());
-                    if (entryObj.contains(QStringLiteral("tax_reciever_id")))
-                        entry.setTaxReceiverId(entryObj.value(QStringLiteral("tax_reciever_id")).toDouble());
-                    if (entryObj.contains(QStringLiteral("tax")))
-                        entry.setTaxAmount(entryObj.value(QStringLiteral("tax")).toDouble());
-
-                    return entry;
-                }},
-                [](auto &journal, const auto &entry) {
-                    journal.emplace(entry);
+                    else
+                    {
+                        reachedEnd = true;
+                    }
                 }
             );
 
-            callback(std::move(journal), {}, expires);
+            if (reachedEnd)
+                callback(std::move(*journal), {}, expires);
+            else
+                nextCallback(nextFromId, std::move(journal));
         };
     }
 
