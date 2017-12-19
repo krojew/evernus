@@ -548,10 +548,20 @@ namespace Evernus
 
     void ESIManager::fetchCharacterWalletTransactions(Character::IdType charId,
                                                       WalletTransaction::IdType tillId,
-                                                      const Callback<WalletTransactions> &callback) const
+                                                      const WalletTransactionsCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
         fetchCharacterWalletTransactions(charId, std::nullopt, tillId, std::make_shared<WalletTransactions>(), callback);
+    }
+
+    void ESIManager::fetchCorporationWalletTransactions(Character::IdType charId,
+                                                        quint64 corpId,
+                                                        int division,
+                                                        WalletTransaction::IdType tillId,
+                                                        const WalletTransactionsCallback &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+        fetchCorporationWalletTransactions(charId, corpId, division, std::nullopt, tillId, std::make_shared<WalletTransactions>(), callback);
     }
 
     void ESIManager::fetchCharacterMiningLedger(Character::IdType charId, const Callback<MiningLedgerList> &callback) const
@@ -1010,7 +1020,7 @@ namespace Evernus
                                                    int division,
                                                    const std::optional<WalletJournalEntry::IdType> &fromId,
                                                    WalletJournalEntry::IdType tillId,
-                                                   const Callback<WalletJournal> &callback) const
+                                                   const WalletJournalCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
         selectNextInterface().fetchCorporationWalletJournal(charId, corpId, division, fromId, getWalletJournalCallback(charId, callback));
@@ -1020,81 +1030,36 @@ namespace Evernus
                                                       const std::optional<WalletTransaction::IdType> &fromId,
                                                       WalletTransaction::IdType tillId,
                                                       std::shared_ptr<WalletTransactions> &&transactions,
-                                                      const Callback<WalletTransactions> &callback) const
+                                                      const WalletTransactionsCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
         selectNextInterface().fetchCharacterWalletTransactions(
             charId,
             fromId,
-            [=, transactions = std::move(transactions)](auto &&data, const auto &error, const auto &expires) mutable {
-                if (Q_UNLIKELY(!error.isEmpty()))
-                {
-                    callback({}, error, expires);
-                    return;
-                }
+            getWalletTransactionsCallback(charId, tillId, std::move(transactions), callback, [=](const auto &fromId, auto &&transactions) {
+                fetchCharacterWalletTransactions(charId, fromId, tillId, std::move(transactions), callback);
+            })
+        );
+    }
 
-                auto nextFromId = std::numeric_limits<WalletTransaction::IdType>::max();
-                std::atomic_bool reachedEnd{transactions->empty()};
-
-                std::mutex resultMutex;
-
-                auto transactionsArray = data.array();
-                QtConcurrent::blockingMap(
-                    transactionsArray,
-                    [&](const auto &value) {
-                        const auto transactionObj = value.toObject();
-
-                        WalletTransaction transaction{
-                            static_cast<WalletTransaction::IdType>(transactionObj.value(QStringLiteral("transaction_id")).toDouble())
-                        };
-
-                        const auto id = transaction.getId();
-                        if (id > tillId)
-                        {
-                            transaction.setCharacterId(charId);
-                            transaction.setTimestamp(getDateTimeFromString(transactionObj.value(QStringLiteral("date")).toString()));
-                            transaction.setQuantity(transactionObj.value(QStringLiteral("quantity")).toDouble());
-                            transaction.setTypeId(transactionObj.value(QStringLiteral("type_id")).toDouble());
-                            transaction.setPrice(transactionObj.value(QStringLiteral("unit_price")).toDouble());
-                            transaction.setClientId(transactionObj.value(QStringLiteral("client_id")).toDouble());
-                            transaction.setLocationId(transactionObj.value(QStringLiteral("location_id")).toDouble());
-                            transaction.setType(
-                                (transactionObj.value(QStringLiteral("is_buy")).toBool()) ?
-                                (WalletTransaction::Type::Buy) :
-                                (WalletTransaction::Type::Sell)
-                            );
-                            transaction.setJournalId(transactionObj.value(QStringLiteral("journal_ref_id")).toDouble());
-
-                            {
-                                std::lock_guard<std::mutex> lock{resultMutex};
-
-                                transactions->emplace(std::move(transaction));
-                                if (nextFromId > id)
-                                    nextFromId = id;
-                            }
-                        }
-                        else
-                        {
-                            reachedEnd = true;
-                        }
-                    }
-                );
-
-                if (reachedEnd)
-                {
-                    callback(std::move(*transactions), {}, expires);
-                }
-                else
-                {
-                    fetchCharacterWalletTransactions(
-                        charId,
-                        nextFromId,
-                        tillId,
-                        std::move(transactions),
-                        callback
-                    );
-                }
-        });
+    void ESIManager::fetchCorporationWalletTransactions(Character::IdType charId,
+                                                        quint64 corpId,
+                                                        int division,
+                                                        const std::optional<WalletTransaction::IdType> &fromId,
+                                                        WalletTransaction::IdType tillId,
+                                                        std::shared_ptr<WalletTransactions> &&transactions,
+                                                        const WalletTransactionsCallback &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+        selectNextInterface().fetchCorporationWalletTransactions(
+            charId,
+            corpId,
+            division,
+            fromId,
+            getWalletTransactionsCallback(charId, tillId, std::move(transactions), callback, [=](const auto &fromId, auto &&transactions) {
+                fetchCorporationWalletTransactions(charId, corpId, division, fromId, tillId, std::move(transactions), callback);
+            })
+        );
     }
 
     void ESIManager::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
@@ -1494,6 +1459,74 @@ namespace Evernus
             );
 
             callback(std::move(journal), {}, expires);
+        };
+    }
+
+    template<class T>
+    ESIInterface::JsonCallback ESIManager::getWalletTransactionsCallback(Character::IdType charId,
+                                                                         WalletTransaction::IdType tillId,
+                                                                         std::shared_ptr<WalletTransactions> &&transactions,
+                                                                         const WalletTransactionsCallback &callback,
+                                                                         T nextCallback) const
+    {
+        return [=, transactions = std::move(transactions), nextCallback = std::move(nextCallback)](auto &&data, const auto &error, const auto &expires) mutable {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            auto nextFromId = std::numeric_limits<WalletTransaction::IdType>::max();
+            std::atomic_bool reachedEnd{transactions->empty()};
+
+            std::mutex resultMutex;
+
+            auto transactionsArray = data.array();
+            QtConcurrent::blockingMap(
+                transactionsArray,
+                [&](const auto &value) {
+                    const auto transactionObj = value.toObject();
+
+                    WalletTransaction transaction{
+                        static_cast<WalletTransaction::IdType>(transactionObj.value(QStringLiteral("transaction_id")).toDouble())
+                    };
+
+                    const auto id = transaction.getId();
+                    if (id > tillId)
+                    {
+                        transaction.setCharacterId(charId);
+                        transaction.setTimestamp(getDateTimeFromString(transactionObj.value(QStringLiteral("date")).toString()));
+                        transaction.setQuantity(transactionObj.value(QStringLiteral("quantity")).toDouble());
+                        transaction.setTypeId(transactionObj.value(QStringLiteral("type_id")).toDouble());
+                        transaction.setPrice(transactionObj.value(QStringLiteral("unit_price")).toDouble());
+                        transaction.setClientId(transactionObj.value(QStringLiteral("client_id")).toDouble());
+                        transaction.setLocationId(transactionObj.value(QStringLiteral("location_id")).toDouble());
+                        transaction.setType(
+                            (transactionObj.value(QStringLiteral("is_buy")).toBool()) ?
+                            (WalletTransaction::Type::Buy) :
+                            (WalletTransaction::Type::Sell)
+                        );
+                        transaction.setJournalId(transactionObj.value(QStringLiteral("journal_ref_id")).toDouble());
+
+                        {
+                            std::lock_guard<std::mutex> lock{resultMutex};
+
+                            transactions->emplace(std::move(transaction));
+                            if (nextFromId > id)
+                                nextFromId = id;
+                        }
+                    }
+                    else
+                    {
+                        reachedEnd = true;
+                    }
+                }
+            );
+
+            if (reachedEnd)
+                callback(std::move(*transactions), {}, expires);
+            else
+                nextCallback(nextFromId, std::move(transactions));
         };
     }
 

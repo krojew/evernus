@@ -87,6 +87,11 @@ namespace Evernus
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               const std::optional<WalletTransaction::IdType> &fromId,
                                               const JsonCallback &callback) const;
+        void fetchCorporationWalletTransactions(Character::IdType charId,
+                                                quint64 corpId,
+                                                int division,
+                                                const std::optional<WalletTransaction::IdType> &fromId,
+                                                const JsonCallback &callback) const;
         void fetchCharacterContracts(Character::IdType charId, const JsonCallback &callback) const;
         void fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const JsonCallback &callback) const;
         void fetchCorporationContracts(Character::IdType charId, quint64 corpId, const JsonCallback &callback) const;

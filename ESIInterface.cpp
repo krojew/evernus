@@ -402,6 +402,36 @@ namespace Evernus
         });
     }
 
+    void ESIInterface::fetchCorporationWalletTransactions(Character::IdType charId,
+                                                          quint64 corpId,
+                                                          int division,
+                                                          const std::optional<WalletJournalEntry::IdType> &fromId,
+                                                          const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching corporation wallet transactions for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, tr("Cannot fetch corporation wallet transactions with no character selected."), {});
+            return;
+        }
+
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback({}, error, {});
+            }
+            else
+            {
+                QString query;
+                if (fromId)
+                    query = QStringLiteral("from_id=%1").arg(*fromId);
+
+                get(charId, QStringLiteral("/v1/corporations/%1/wallets/%2/transactions/").arg(corpId).arg(division), query, callback, getNumRetries());
+            }
+        });
+    }
+
     void ESIInterface::fetchCharacterContracts(Character::IdType charId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching character contracts for" << charId;

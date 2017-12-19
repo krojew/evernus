@@ -1074,6 +1074,8 @@ namespace Evernus
         if (!force && !checkImportAndEndTask(id, TimerType::CorpWalletTransactions, task))
             return;
 
+        Q_ASSERT(mESIManager);
+
         try
         {
             const auto maxId = mCorpWalletTransactionRepository->getLatestEntryId(id);
@@ -1086,27 +1088,29 @@ namespace Evernus
             const auto accountKey = settings.value(ImportSettings::corpWalletDivisionKey, ImportSettings::corpWalletDivisionDefault).toInt();
 
             markImport(id, TimerType::CorpWalletTransactions);
-            mAPIManager.fetchWalletTransactions(id, corpId, WalletTransaction::invalidId, maxId, accountKey,
-                                                [task, id, corpId, this](auto &&data, const auto &error) {
-                unmarkImport(id, Evernus::TimerType::CorpWalletTransactions);
+            mESIManager->fetchCorporationWalletTransactions(id, corpId, accountKey, maxId,
+                                                            [=](auto &&data, const auto &error, const auto &expires) {
+                unmarkImport(id, TimerType::CorpWalletTransactions);
 
                 if (error.isEmpty())
                 {
                     asyncBatchStore(*mCorpWalletTransactionRepository, data, true);
-                    saveUpdateTimer(Evernus::TimerType::CorpWalletTransactions, mUpdateTimes[Evernus::TimerType::CorpWalletTransactions], id);
+
+                    setUtcCacheTimer(id, TimerType::CorpWalletTransactions, expires);
+                    saveUpdateTimer(TimerType::CorpWalletTransactions, mUpdateTimes[TimerType::CorpWalletTransactions], id);
 
                     QSettings settings;
-                    if (settings.value(Evernus::PriceSettings::autoAddCustomItemCostKey, Evernus::PriceSettings::autoAddCustomItemCostDefault).toBool() &&
+                    if (settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool() &&
                         !mPendingAutoCostOrders.empty())
                     {
                         computeAutoCosts(id,
                                          mCorpOrderProvider->getBuyOrdersForCorporation(corpId),
-                                         std::bind(&Evernus::WalletTransactionRepository::fetchForCorporationInRange,
+                                         std::bind(&WalletTransactionRepository::fetchForCorporationInRange,
                                                    mCorpWalletTransactionRepository.get(),
                                                    corpId,
                                                    std::placeholders::_1,
                                                    std::placeholders::_2,
-                                                   Evernus::WalletTransactionRepository::EntryType::Buy,
+                                                   WalletTransactionRepository::EntryType::Buy,
                                                    std::placeholders::_3));
                     }
 
