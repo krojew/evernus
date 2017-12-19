@@ -80,6 +80,7 @@ namespace Evernus
         using ContractItemCallback = Callback<ContractItemList>;
         using WalletJournalCallback = Callback<WalletJournal>;
         using WalletTransactionsCallback = Callback<WalletTransactions>;
+        using MarketOrdersCallback = Callback<MarketOrders>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
         using NameMap = std::unordered_map<quint64, QString>;
 
@@ -111,7 +112,8 @@ namespace Evernus
         void fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const;
         void fetchRaces(const Callback<NameMap> &callback) const;
         void fetchBloodlines(const Callback<NameMap> &callback) const;
-        void fetchCharacterMarketOrders(Character::IdType charId, const Callback<MarketOrders> &callback) const;
+        void fetchCharacterMarketOrders(Character::IdType charId, const MarketOrdersCallback &callback) const;
+        void fetchCorporationMarketOrders(Character::IdType charId, quint64 corpId, const MarketOrdersCallback &callback) const;
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          WalletJournalEntry::IdType tillId,
                                          const WalletJournalCallback &callback) const;
@@ -216,6 +218,7 @@ namespace Evernus
 
         ExternalOrder getExternalOrderFromJson(const QJsonObject &object, uint regionId, const QDateTime &updateTime) const;
         ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
+        ESIInterface::JsonCallback getMarketOrdersCallback(Character::IdType charId, const MarketOrdersCallback &callback) const;
         ESIInterface::PaginatedCallback getAssetListCallback(Character::IdType charId, const AssetCallback &callback) const;
         ESIInterface::JsonCallback getContractCallback(const ContractCallback &callback) const;
         ESIInterface::JsonCallback getContractItemCallback(Contract::IdType contractId, const ContractItemCallback &callback) const;

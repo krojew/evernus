@@ -487,45 +487,16 @@ namespace Evernus
         });
     }
 
-    void ESIManager::fetchCharacterMarketOrders(Character::IdType charId, const Callback<MarketOrders> &callback) const
+    void ESIManager::fetchCharacterMarketOrders(Character::IdType charId, const MarketOrdersCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterMarketOrders(charId, [=](auto &&data, const auto &error, const auto &expires) {
-            if (Q_UNLIKELY(!error.isEmpty()))
-            {
-                callback({}, error, expires);
-                return;
-            }
+        selectNextInterface().fetchCharacterMarketOrders(charId, getMarketOrdersCallback(charId, callback));
+    }
 
-            const auto orderArray = data.array();
-            MarketOrders orders(orderArray.size());
-
-            std::atomic_size_t index{0};
-            QtConcurrent::blockingMap(orderArray, [&, charId](const auto &order) {
-                const auto orderObj = order.toObject();
-
-                const auto issued = getDateTimeFromString(orderObj.value("issued").toString());
-
-                auto &curOrder = orders[index++];
-                curOrder.setId(orderObj.value(QStringLiteral("order_id")).toDouble());
-                curOrder.setCharacterId(charId);
-                curOrder.setStationId(orderObj.value(QStringLiteral("location_id")).toDouble());
-                curOrder.setVolumeEntered(orderObj.value(QStringLiteral("volume_total")).toDouble());
-                curOrder.setVolumeRemaining(orderObj.value(QStringLiteral("volume_remain")).toDouble());
-                curOrder.setMinVolume(orderObj.value(QStringLiteral("min_volume")).toDouble());
-                curOrder.setState(getStateFromString(orderObj.value(QStringLiteral("state")).toString()));
-                curOrder.setTypeId(orderObj.value(QStringLiteral("type_id")).toDouble());
-                curOrder.setRange(getMarketOrderRangeFromString(orderObj.value(QStringLiteral("range")).toString()));
-                curOrder.setDuration(orderObj.value(QStringLiteral("duration")).toInt());
-                curOrder.setEscrow(orderObj.value(QStringLiteral("escrow")).toDouble());
-                curOrder.setPrice(orderObj.value(QStringLiteral("price")).toDouble());
-                curOrder.setType((orderObj.value(QStringLiteral("is_buy_order")).toBool()) ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
-                curOrder.setIssued(issued);
-                curOrder.setFirstSeen(issued);
-            });
-
-            callback(std::move(orders), {}, expires);
-        });
+    void ESIManager::fetchCorporationMarketOrders(Character::IdType charId, quint64 corpId, const MarketOrdersCallback &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+        selectNextInterface().fetchCorporationMarketOrders(charId, corpId, getMarketOrdersCallback(charId, callback));
     }
 
     void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
@@ -1254,6 +1225,46 @@ namespace Evernus
 
             if (atEnd)
                 callback(std::move(*orders), {}, expires);
+        };
+    }
+
+    ESIInterface::JsonCallback ESIManager::getMarketOrdersCallback(Character::IdType charId, const MarketOrdersCallback &callback) const
+    {
+        return [=](auto &&data, const auto &error, const auto &expires) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            const auto orderArray = data.array();
+            MarketOrders orders(orderArray.size());
+
+            std::atomic_size_t index{0};
+            QtConcurrent::blockingMap(orderArray, [&, charId](const auto &order) {
+                const auto orderObj = order.toObject();
+
+                const auto issued = getDateTimeFromString(orderObj.value("issued").toString());
+
+                auto &curOrder = orders[index++];
+                curOrder.setId(orderObj.value(QStringLiteral("order_id")).toDouble());
+                curOrder.setCharacterId(charId);
+                curOrder.setStationId(orderObj.value(QStringLiteral("location_id")).toDouble());
+                curOrder.setVolumeEntered(orderObj.value(QStringLiteral("volume_total")).toDouble());
+                curOrder.setVolumeRemaining(orderObj.value(QStringLiteral("volume_remain")).toDouble());
+                curOrder.setMinVolume(orderObj.value(QStringLiteral("min_volume")).toDouble());
+                curOrder.setState(getStateFromString(orderObj.value(QStringLiteral("state")).toString()));
+                curOrder.setTypeId(orderObj.value(QStringLiteral("type_id")).toDouble());
+                curOrder.setRange(getMarketOrderRangeFromString(orderObj.value(QStringLiteral("range")).toString()));
+                curOrder.setDuration(orderObj.value(QStringLiteral("duration")).toInt());
+                curOrder.setEscrow(orderObj.value(QStringLiteral("escrow")).toDouble());
+                curOrder.setPrice(orderObj.value(QStringLiteral("price")).toDouble());
+                curOrder.setType((orderObj.value(QStringLiteral("is_buy_order")).toBool()) ? (MarketOrder::Type::Buy) : (MarketOrder::Type::Sell));
+                curOrder.setIssued(issued);
+                curOrder.setFirstSeen(issued);
+            });
+
+            callback(std::move(orders), {}, expires);
         };
     }
 

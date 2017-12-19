@@ -1000,6 +1000,7 @@ namespace Evernus
 
         try
         {
+            const auto corpId = mCharacterRepository->getCorporationId(id);
             const auto maxId = mCorpWalletJournalEntryRepository->getLatestEntryId(id);
 
             if (maxId == WalletJournalEntry::invalidId)
@@ -1009,7 +1010,7 @@ namespace Evernus
             const auto accountKey = settings.value(ImportSettings::corpWalletDivisionKey, ImportSettings::corpWalletDivisionDefault).toInt();
 
             markImport(id, TimerType::CorpWalletJournal);
-            mESIManager->fetchCorporationWalletJournal(id, mCharacterRepository->getCorporationId(id), accountKey, maxId,
+            mESIManager->fetchCorporationWalletJournal(id, corpId, accountKey, maxId,
                                                        [=](auto &&data, const auto &error, const auto &expires) {
                 unmarkImport(id, TimerType::CorpWalletJournal);
 
@@ -1136,19 +1137,32 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::CorpMarketOrders, task))
             return;
 
-        markImport(id, type);
-        mAPIManager.fetchMarketOrders(id, [=](MarketOrders &&data, const QString &error) {
-            unmarkImport(id, type);
+        Q_ASSERT(mESIManager);
 
-            if (error.isEmpty())
-            {
-                importMarketOrders(id, data, true);
-                emit corpMarketOrdersChanged();
-                emit externalOrdersChangedWithMarketOrders();
-            }
+        try
+        {
+            const auto corpId = mCharacterRepository->getCorporationId(id);
 
-            emit taskEnded(task, error);
-        });
+            markImport(id, TimerType::CorpMarketOrders);
+            mESIManager->fetchCorporationMarketOrders(id, corpId, [=](auto &&data, const auto &error, const auto &expires) {
+                unmarkImport(id, TimerType::CorpMarketOrders);
+
+                if (error.isEmpty())
+                {
+                    setUtcCacheTimer(id, TimerType::CorpMarketOrders, expires);
+                    importMarketOrders(id, data, true);
+
+                    emit corpMarketOrdersChanged();
+                    emit externalOrdersChangedWithMarketOrders();
+                }
+
+                emit taskEnded(task, error);
+            });
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            emit taskEnded(task, tr("Character not found!"));
+        }
     }
 
     void EvernusApplication::refreshCorpMarketOrdersFromLogs(Character::IdType id, uint parentTask)

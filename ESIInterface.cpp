@@ -316,6 +316,24 @@ namespace Evernus
         });
     }
 
+    void ESIInterface::fetchCorporationMarketOrders(Character::IdType charId, quint64 corpId, const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching corporation market orders for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, tr("Cannot fetch corporation market orders with no character selected."), {});
+            return;
+        }
+
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/corporations/%1/orders/").arg(corpId), {}, callback, getNumRetries());
+        });
+    }
+
     void ESIInterface::fetchCharacterWalletJournal(Character::IdType charId,
                                                    const std::optional<WalletJournalEntry::IdType> &fromId,
                                                    const JsonCallback &callback) const
