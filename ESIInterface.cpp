@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+
 #include <QtDebug>
 
 #include <QCoreApplication>
@@ -557,17 +559,35 @@ namespace Evernus
     {
         qDebug() << "Fetching generic name:" << id;
         post(QStringLiteral("/v2/universe/names/"),
-             QStringLiteral("[%1]").arg(id).toLatin1(),
-             [=](const auto &error) {
-            callback({}, error);
-        }, [=](const auto &data) {
-            const auto doc = QJsonDocument::fromJson(data);
-            const auto names = doc.array();
+            QStringLiteral("[%1]").arg(id).toLatin1(),
+            [=](const auto &error) {
+                callback({}, error);
+            }, [=](const auto &data) {
+                const auto doc = QJsonDocument::fromJson(data);
+                const auto names = doc.array();
 
-            if (Q_LIKELY(names.size() > 0))
-                callback(names.first().toObject().value(QStringLiteral("name")).toString(), {});
-            else
-                callback({}, tr("Missing name data for: %1").arg(id));
+                if (Q_LIKELY(names.size() > 0))
+                    callback(names.first().toObject().value(QStringLiteral("name")).toString(), {});
+                else
+                    callback({}, tr("Missing name data for: %1").arg(id));
+        });
+    }
+
+    void ESIInterface::fetchGenericNames(const std::vector<quint64> &ids, const PersistentJsonCallback &callback) const
+    {
+        qDebug() << "Fetching generic names:" << ids.size();
+
+        QJsonArray idArray;
+        std::transform(std::begin(ids), std::end(ids), std::back_inserter(idArray), [](auto id) {
+            return static_cast<double>(id);
+        });
+
+        post(QStringLiteral("/v2/universe/names/"),
+            QJsonDocument{idArray}.toJson(QJsonDocument::Compact),
+            [=](const auto &error) {
+                callback({}, error);
+            }, [=](const auto &data) {
+                callback(QJsonDocument::fromJson(data), {});
         });
     }
 

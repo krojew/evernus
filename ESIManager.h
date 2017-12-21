@@ -17,11 +17,10 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
+#include <optional>
 #include <vector>
 #include <memory>
 #include <map>
-
-#include <optional>
 
 #include <QNetworkAccessManager>
 #include <QDateTime>
@@ -137,6 +136,7 @@ namespace Evernus
         void fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const;
         void fetchCharacterMiningLedger(Character::IdType charId, const Callback<MiningLedgerList> &callback) const;
         void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
+        void fetchGenericNames(const std::vector<quint64> &ids, const PesistentDataCallback<std::unordered_map<quint64, QString>> &callback) const;
         void fetchMarketPrices(const Callback<MarketPrices> &callback) const;
         void fetchIndustryCostIndices(const Callback<IndustryCostIndices> &callback) const;
         void fetchSovereigntyStructures(const Callback<SovereigntyStructureList> &callback) const;

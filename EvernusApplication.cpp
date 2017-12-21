@@ -17,6 +17,8 @@
 #include <algorithm>
 #include <future>
 
+#include <boost/range/algorithm/transform.hpp>
+#include <boost/range/adaptor/filtered.hpp>
 #include <boost/throw_exception.hpp>
 
 #include <QSslConfiguration>
@@ -31,6 +33,7 @@
 
 #include "ExternalOrderImporterNames.h"
 #include "LanguageSelectDialog.h"
+#include "SovereigntyStructure.h"
 #include "StatisticsSettings.h"
 #include "UpdaterSettings.h"
 #include "NetworkSettings.h"
@@ -1185,7 +1188,7 @@ namespace Evernus
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
         Q_ASSERT(mESIManager);
-        mESIManager->fetchSovereigntyStructures([=](auto list, const auto &error, const auto &expires) {
+        mESIManager->fetchSovereigntyStructures([=](auto &&list, const auto &error, const auto &expires) {
             Q_UNUSED(expires);
 
             if (error.isEmpty())
@@ -1195,18 +1198,43 @@ namespace Evernus
                 if (mStationGroupTypeIds.empty())
                     fetchStationTypeIds();
 
-                // leave only stations
-                list.erase(std::remove_if(std::begin(list), std::end(list), [=](const auto &structure) {
-                    return mStationGroupTypeIds.find(structure.mTypeId) != std::end(mStationGroupTypeIds);
-                }), std::end(list));
+                std::vector<ConquerableStation> stations;
+                std::vector<quint64> stationNames;
 
-                mConquerableStationRepository->deleteAll();
-                asyncBatchStore(*mConquerableStationRepository, list, true);
+                boost::transform(
+                    list | boost::adaptors::filtered([=](const auto &structure) {
+                        return mStationGroupTypeIds.find(structure.mTypeId) != std::end(mStationGroupTypeIds);
+                    }),
+                    std::back_inserter(stations),
+                    [&](const auto &structure) {
+                        stationNames.emplace_back(structure.mStructureId);
 
-                emit conquerableStationsChanged();
+                        ConquerableStation station{static_cast<uint>(structure.mStructureId)};
+                        station.setSolarSystemId(structure.mSolarSystemId);
+
+                        return station;
+                    }
+                );
+
+                mESIManager->fetchGenericNames(stationNames, [=, stations = std::move(stations)](auto &&data, const auto &error) mutable {
+                    if (error.isEmpty())
+                    {
+                        for (auto &station : stations)
+                            station.setName(data[station.getId()]);
+
+                        mConquerableStationRepository->deleteAll();
+                        asyncBatchStore(*mConquerableStationRepository, stations, true);
+
+                        emit conquerableStationsChanged();
+                    }
+
+                    emit taskEnded(task, error);
+                });
             }
-
-            emit taskEnded(task, error);
+            else
+            {
+                    emit taskEnded(task, error);
+            }
         });
     }
 
@@ -2502,8 +2530,8 @@ namespace Evernus
                                                      const ContractItemRepository &itemRepo,
                                                      uint task)
     {
-        static size_t pendingContractItemRequests = 0;
-        static APIManager::ContractItemList contractItems;
+        static std::size_t pendingContractItemRequests = 0;
+        static std::vector<ContractItem> contractItems;
 
         if (data.empty())
         {
@@ -2514,7 +2542,7 @@ namespace Evernus
         {
             for (const auto &contract : data)
             {
-                if (contract.getType() == Evernus::Contract::Type::Courier)
+                if (contract.getType() == Contract::Type::Courier)
                     continue;
 
                 ++pendingContractItemRequests;

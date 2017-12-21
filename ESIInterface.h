@@ -55,6 +55,7 @@ namespace Evernus
         using ErrorCallback = std::function<void (const QString &error)>;
         using StringCallback = std::function<void (QString &&data, const QString &error, const QDateTime &expires)>;  // https://bugreports.qt.io/browse/QTBUG-62502
         using PersistentStringCallback = PersistentCallback<QString>;
+        using PersistentJsonCallback = PersistentCallback<QJsonDocument>;
 
         ESIInterface(CitadelAccessCache &citadelAccessCache,
                      ESIInterfaceErrorLimiter &errorLimiter,
@@ -100,6 +101,7 @@ namespace Evernus
         void fetchCharacterBlueprints(Character::IdType charId, const JsonCallback &callback) const;
         void fetchCharacterMiningLedger(Character::IdType charId, const PaginatedCallback &callback) const;
         void fetchGenericName(quint64 id, const PersistentStringCallback &callback) const;
+        void fetchGenericNames(const std::vector<quint64> &ids, const PersistentJsonCallback &callback) const;
         void fetchMarketPrices(const JsonCallback &callback) const;
         void fetchIndustryCostIndices(const JsonCallback &callback) const;
         void fetchSovereigntyStructures(const JsonCallback &callback) const;

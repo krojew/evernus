@@ -588,6 +588,62 @@ namespace Evernus
         });
     }
 
+    void ESIManager::fetchGenericNames(const std::vector<quint64> &ids, const PesistentDataCallback<std::unordered_map<quint64, QString>> &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+
+        const auto maxPerRequest = 1000;
+
+        struct SharedState
+        {
+            std::unordered_map<quint64, QString> mResult;
+            QString mError;
+            bool mEmittedError = false;
+        };
+
+        auto state = std::make_shared<SharedState>();
+        auto current = 0u;
+
+        const auto transformCallback = [=, totalSize = ids.size()](auto &&data, const auto &error) {
+            if (state->mError.isEmpty() && !error.isEmpty())
+                state->mError = error;
+
+            if (!state->mError.isEmpty())
+            {
+                if (!state->mEmittedError)
+                {
+                    state->mEmittedError = true;
+                    callback({}, state->mError);
+                }
+
+                return;
+            }
+
+            const auto names = data.array();
+
+            state->mResult.reserve(state->mResult.size() + names.size());
+
+            std::transform(std::begin(names), std::end(names), std::inserter(state->mResult, std::end(state->mResult)), [](const auto &name) {
+                const auto nameObj = name.toObject();
+                return std::make_pair(static_cast<quint64>(nameObj.value(QStringLiteral("id")).toDouble()), nameObj.value(QStringLiteral("name")).toString());
+            });
+
+            if (state->mResult.size() == totalSize)
+                callback(std::move(state->mResult), {});
+        };
+
+        for (; current < ids.size() / maxPerRequest; ++current)
+        {
+            selectNextInterface().fetchGenericNames(
+                std::vector<quint64>(std::begin(ids) + current * maxPerRequest, std::min(std::end(ids), std::begin(ids) + (current + 1) * maxPerRequest)),
+                transformCallback
+            );
+        }
+
+        if (current < ids.size())
+            selectNextInterface().fetchGenericNames(std::vector<quint64>(std::begin(ids) + current * maxPerRequest, std::end(ids)), transformCallback);
+    }
+
     void ESIManager::fetchCharacterContracts(Character::IdType charId, const ContractCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
