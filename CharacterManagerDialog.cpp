@@ -46,12 +46,12 @@ namespace Evernus
 
         mCharacterModelProxy.setSourceModel(&mCharacterModel);
 
-        auto characterView = new QTreeView{this};
-        groupLayout->addWidget(characterView);
-        characterView->setModel(&mCharacterModelProxy);
-        characterView->setMinimumWidth(320);
-        characterView->setSortingEnabled(true);
-        connect(characterView->selectionModel(), &QItemSelectionModel::selectionChanged,
+        mCharacterView = new QTreeView{this};
+        groupLayout->addWidget(mCharacterView);
+        mCharacterView->setModel(&mCharacterModelProxy);
+        mCharacterView->setMinimumWidth(320);
+        mCharacterView->setSortingEnabled(true);
+        connect(mCharacterView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &CharacterManagerDialog::selectCharacter);
 
         auto btnLayout = new QHBoxLayout{};
@@ -79,9 +79,9 @@ namespace Evernus
 
     void CharacterManagerDialog::removeCharacter()
     {
-        Q_ASSERT(!mSelectedCharacters.isEmpty());
+        mRemoveCharacterBtn->setEnabled(false);
 
-        mCharacterModel.removeRow(mCharacterModelProxy.mapToSource(mSelectedCharacters.first()).row());
+        mCharacterModel.removeRow(mCharacterModelProxy.mapToSource(mCharacterView->currentIndex()).row());
         mCharacterModelProxy.invalidate();
 
         emit charactersChanged();
@@ -90,6 +90,5 @@ namespace Evernus
     void CharacterManagerDialog::selectCharacter(const QItemSelection &selected)
     {
         mRemoveCharacterBtn->setEnabled(!selected.isEmpty());
-        mSelectedCharacters = selected.indexes();
     }
 }

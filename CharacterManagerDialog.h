@@ -15,13 +15,13 @@
 #pragma once
 
 #include <QSortFilterProxyModel>
-#include <QModelIndex>
 #include <QDialog>
 
 #include "CharacterModel.h"
 
 class QItemSelection;
 class QPushButton;
+class QTreeView;
 
 namespace Evernus
 {
@@ -54,8 +54,8 @@ namespace Evernus
         CharacterModel mCharacterModel;
         QSortFilterProxyModel mCharacterModelProxy;
 
-        QPushButton *mRemoveCharacterBtn = nullptr;
+        QTreeView *mCharacterView = nullptr;
 
-        QModelIndexList mSelectedCharacters;
+        QPushButton *mRemoveCharacterBtn = nullptr;
     };
 }
