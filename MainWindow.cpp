@@ -184,6 +184,8 @@ namespace Evernus
                     mMenuWidget, &MenuBarWidget::refreshCharacters);
             connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,
                     this, &MainWindow::updateCharacters);
+            connect(mCharacterManagerDialog, &CharacterManagerDialog::addCharacter,
+                    this, &MainWindow::addCharacter);
         }
 
         mCharacterManagerDialog->exec();
@@ -487,6 +489,11 @@ namespace Evernus
                 mAuthView->setWindowTitle(getAuthWidowTitle(mEveDataProvider.getGenericName(charId)));
             });
         }
+    }
+
+    void MainWindow::addCharacter()
+    {
+
     }
 
     void MainWindow::updateCurrentTab(int index)

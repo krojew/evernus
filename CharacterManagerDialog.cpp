@@ -49,13 +49,16 @@ namespace Evernus
         mCharacterView = new QTreeView{this};
         groupLayout->addWidget(mCharacterView);
         mCharacterView->setModel(&mCharacterModelProxy);
-        mCharacterView->setMinimumWidth(320);
         mCharacterView->setSortingEnabled(true);
         connect(mCharacterView->selectionModel(), &QItemSelectionModel::selectionChanged,
                 this, &CharacterManagerDialog::selectCharacter);
 
         auto btnLayout = new QHBoxLayout{};
         mainLayout->addLayout(btnLayout);
+
+        const auto addBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add"), this};
+        btnLayout->addWidget(addBtn);
+        connect(addBtn, &QPushButton::clicked, this, &CharacterManagerDialog::addCharacter);
 
         mRemoveCharacterBtn = new QPushButton{QIcon{":/images/delete.png"}, tr("Remove"), this};
         btnLayout->addWidget(mRemoveCharacterBtn);

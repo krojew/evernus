@@ -190,6 +190,8 @@ namespace Evernus
         void requestSSOAuth(Character::IdType charId);
 
     private slots:
+        void addCharacter();
+
         void updateCurrentTab(int index);
 
         void activateTrayIcon(QSystemTrayIcon::ActivationReason reason);
