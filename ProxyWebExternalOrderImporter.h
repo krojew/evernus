@@ -30,9 +30,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        ProxyWebExternalOrderImporter(QByteArray clientId,
-                                      QByteArray clientSecret,
-                                      const EveDataProvider &dataProvider,
+        ProxyWebExternalOrderImporter(const EveDataProvider &dataProvider,
                                       const CharacterRepository &characterRepo,
                                       ESIInterfaceManager &interfaceManager,
                                       QObject *parent = nullptr);
@@ -40,13 +38,7 @@ namespace Evernus
 
         virtual void fetchExternalOrders(Character::IdType id, const TypeLocationPairs &target) const override;
 
-    signals:
-        void ssoAuthRequested(Character::IdType charId);
-
     public slots:
-        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
-        void cancelSSOAuth(Character::IdType charId);
-
         void handleNewPreferences();
 
     private:

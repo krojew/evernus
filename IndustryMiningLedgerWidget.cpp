@@ -54,8 +54,6 @@ namespace Evernus
                                                            const CharacterRepository &characterRepo,
                                                            TaskManager &taskManager,
                                                            ESIInterfaceManager &interfaceManager,
-                                                           QByteArray clientId,
-                                                           QByteArray clientSecret,
                                                            QWidget *parent)
         : CharacterBoundWidget{std::bind(&CacheTimerProvider::getLocalCacheTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MiningLedger),
                                std::bind(&CacheTimerProvider::getLocalUpdateTimer, &cacheTimerProvider, std::placeholders::_1, TimerType::MiningLedger),
@@ -65,7 +63,7 @@ namespace Evernus
         , mDetailsModel{mDataProvider, ledgerRepo}
         , mTypesModel{mDataProvider, ledgerRepo}
         , mSolarSystemsModel{mDataProvider, ledgerRepo}
-        , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
+        , mDataFetcher{mDataProvider, characterRepo, interfaceManager}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
@@ -185,8 +183,6 @@ namespace Evernus
                 this, &IndustryMiningLedgerWidget::updateOrderTask);
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
                 this, &IndustryMiningLedgerWidget::endOrderTask);
-        connect(&mDataFetcher, &MarketOrderDataFetcher::ssoAuthRequested,
-                this, &IndustryMiningLedgerWidget::ssoAuthRequested);
         connect(&mDataFetcher, &MarketOrderDataFetcher::genericError,
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
@@ -208,16 +204,6 @@ namespace Evernus
         mTypesModel.refresh(charId, from, to);
         mSolarSystemsModel.refresh(charId, from, to);
         mGraphWidget->refresh(charId, from, to);
-    }
-
-    void IndustryMiningLedgerWidget::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
-    {
-        mDataFetcher.processAuthorizationCode(charId, code);
-    }
-
-    void IndustryMiningLedgerWidget::cancelSSOAuth(Character::IdType charId)
-    {
-        mDataFetcher.cancelSSOAuth(charId);
     }
 
     void IndustryMiningLedgerWidget::importData()

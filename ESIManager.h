@@ -15,14 +15,12 @@
 #pragma once
 
 #include <unordered_map>
-#include <unordered_set>
 #include <functional>
 #include <optional>
 #include <vector>
 #include <memory>
 #include <map>
 
-#include <QNetworkAccessManager>
 #include <QDateTime>
 #include <QString>
 #include <QDate>
@@ -37,7 +35,6 @@
 #include "MarketOrders.h"
 #include "MarketPrices.h"
 #include "ContractItem.h"
-#include "SimpleCrypt.h"
 #include "MarketOrder.h"
 #include "Character.h"
 #include "AssetList.h"
@@ -85,9 +82,7 @@ namespace Evernus
 
         static const QString loginUrl;
 
-        ESIManager(QByteArray clientId,
-                   QByteArray clientSecret,
-                   const EveDataProvider &dataProvider,
+        ESIManager(const EveDataProvider &dataProvider,
                    const CharacterRepository &characterRepo,
                    ESIInterfaceManager &interfaceManager,
                    QObject *parent = nullptr);
@@ -145,49 +140,21 @@ namespace Evernus
 
         void setDestination(quint64 locationId, Character::IdType charId) const;
 
-        bool hasClientCredentials() const;
-
         ESIManager &operator =(const ESIManager &) = default;
         ESIManager &operator =(ESIManager &&) = default;
 
     signals:
         void error(const QString &text) const;
 
-        void tokenError(Character::IdType charId, const QString &error);
-        void acquiredToken(Character::IdType charId, const QString &accessToken, const QDateTime &expiry);
-
-        void ssoAuthRequested(Character::IdType charId);
-
-    public slots:
-        void fetchToken(Character::IdType charId);
-
-        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
-        void cancelSSOAuth(Character::IdType charId);
-
     private:
-        using CharacterSet = std::unordered_set<Character::IdType>;
-
         static const QString firstTimeCitadelOrderImportKey;
 
-        static std::unordered_map<Character::IdType, QString> mRefreshTokens;
-        static bool mFetchingToken;
-
         static bool mFirstTimeCitadelOrderImport;
-
-        static CharacterSet mPendingTokenRefresh;
 
         const EveDataProvider &mDataProvider;
         const CharacterRepository &mCharacterRepo;
 
-        const QByteArray mClientId;
-        const QByteArray mClientSecret;
-
-        SimpleCrypt mCrypt;
-
         ESIInterfaceManager &mInterfaceManager;
-
-        QNetworkAccessManager mNetworkManager;
-        CharacterSet mRequestedCharacterAuth;
 
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          const std::optional<WalletJournalEntry::IdType> &fromId,
@@ -214,8 +181,6 @@ namespace Evernus
                                                 std::shared_ptr<WalletTransactions> &&transactions,
                                                 const WalletTransactionsCallback &callback) const;
 
-        QNetworkRequest getAuthRequest() const;
-
         ExternalOrder getExternalOrderFromJson(const QJsonObject &object, uint regionId, const QDateTime &updateTime) const;
         ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
         ESIInterface::JsonCallback getMarketOrdersCallback(Character::IdType charId, const MarketOrdersCallback &callback) const;
@@ -237,8 +202,6 @@ namespace Evernus
                                                                  const WalletTransactionsCallback &callback,
                                                                  T nextCallback) const;
 
-        void scheduleNextTokenFetch();
-
         const ESIInterface &selectNextInterface() const;
 
         std::pair<QString, bool> getCharacterName(Character::IdType id) const;
@@ -246,8 +209,6 @@ namespace Evernus
         static MarketOrder::State getStateFromString(const QString &state);
         static short getMarketOrderRangeFromString(const QString &range);
         static QDateTime getDateTimeFromString(const QString &value);
-
-        static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
 
         static Contract::Type getContractTypeFromString(const QString &type);
         static Contract::Status getContractStatusFromString(const QString &status);

@@ -45,9 +45,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        InterRegionAnalysisWidget(const QByteArray &clientId,
-                                  const QByteArray &clientSecret,
-                                  const EveDataProvider &dataProvider,
+        InterRegionAnalysisWidget(const EveDataProvider &dataProvider,
                                   const MarketDataProvider &marketDataProvider,
                                   const RegionStationPresetRepository &regionStationPresetRepository,
                                   QWidget *parent = nullptr);

@@ -15,11 +15,7 @@
 #pragma once
 
 #include <QDialog>
-#include <QUrl>
 
-class QWebEngineView;
-class QWebEnginePage;
-class QStackedWidget;
 class QLineEdit;
 
 namespace Evernus
@@ -30,10 +26,8 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit SSOAuthDialog(const QUrl &url, QWidget *parent = nullptr);
+        explicit SSOAuthDialog(QWidget *parent = nullptr);
         virtual ~SSOAuthDialog() = default;
-
-        QWebEnginePage *page() const;
 
     signals:
         void acquiredCode(const QByteArray &code);
@@ -44,16 +38,8 @@ namespace Evernus
 
     private slots:
         void applyCode();
-        void updateUrl(const QUrl &url);
-        void toggleViews();
-        void clearCookies();
 
     private:
-        QUrl mAuthUrl;
-
-        QLineEdit *mUrlEdit = nullptr;
-        QStackedWidget *mAuthWidgetStack = nullptr;
-        QWebEngineView *mView = nullptr;
         QLineEdit *mCodeEdit = nullptr;
     };
 }
