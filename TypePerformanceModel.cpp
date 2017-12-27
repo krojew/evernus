@@ -151,13 +151,11 @@ namespace Evernus
 
         mData.clear();
 
-        const auto &db = mCharacterRepository.getDatabase();
-
-        QSqlQuery query;
+        QSqlQuery query{mCharacterRepository.getDatabase()};
 
         if (combineCharacters && combineCorp)
         {
-            query = QSqlQuery{QStringLiteral(R"(
+            query.prepare(QStringLiteral(R"(
 SELECT type_id, type, price, quantity
     FROM (
         SELECT type_id, price, type, quantity FROM %1 WHERE ignored = 0 AND timestamp BETWEEN ? AND ?
@@ -168,7 +166,7 @@ SELECT type_id, type, price, quantity
             )")
                 .arg(mTransactionRepository.getTableName())
                 .arg(mCorpTransactionRepository.getTableName())
-            , db};
+            );
 
             query.addBindValue(from);
             query.addBindValue(to);
@@ -177,16 +175,16 @@ SELECT type_id, type, price, quantity
         }
         else if (combineCharacters)
         {
-            query = QSqlQuery{QStringLiteral("SELECT type_id, type, price, quantity FROM %1 WHERE ignored = 0 AND timestamp BETWEEN ? AND ?")
+            query.prepare(QStringLiteral("SELECT type_id, type, price, quantity FROM %1 WHERE ignored = 0 AND timestamp BETWEEN ? AND ?")
                 .arg(mTransactionRepository.getTableName())
-            , db};
+            );
 
             query.addBindValue(from);
             query.addBindValue(to);
         }
         else if (combineCorp)
         {
-            query = QSqlQuery{QStringLiteral(R"(
+            query.prepare(QStringLiteral(R"(
 SELECT type_id, type, price, quantity
     FROM (
         SELECT type_id, price, type, quantity FROM %1 WHERE character_id = ? AND ignored = 0 AND timestamp BETWEEN ? AND ?
@@ -197,7 +195,7 @@ SELECT type_id, type, price, quantity
             )")
                 .arg(mTransactionRepository.getTableName())
                 .arg(mCorpTransactionRepository.getTableName())
-            , db};
+            );
 
             query.addBindValue(characterId);
             query.addBindValue(from);
@@ -208,9 +206,9 @@ SELECT type_id, type, price, quantity
         }
         else
         {
-            query = QSqlQuery{QStringLiteral("SELECT type_id, type, price, quantity FROM %1 WHERE character_id = ? AND ignored = 0 AND timestamp BETWEEN ? AND ?")
+            query.prepare(QStringLiteral("SELECT type_id, type, price, quantity FROM %1 WHERE character_id = ? AND ignored = 0 AND timestamp BETWEEN ? AND ?")
                 .arg(mTransactionRepository.getTableName())
-            , db};
+            );
 
             query.addBindValue(characterId);
             query.addBindValue(from);
