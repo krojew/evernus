@@ -9,8 +9,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(PROJECT_NAME "evernus")
-set(MAJOR_VERSION "2")
-set(MINOR_VERSION "19")
+set(MAJOR_VERSION "3")
+set(MINOR_VERSION "0")
 
 option(EVERNUS_CREATE_DUMPS "create crash dumps using Google Breakpad" ON)
 
