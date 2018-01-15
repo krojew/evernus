@@ -16,18 +16,18 @@ option(EVERNUS_CREATE_DUMPS "create crash dumps using Google Breakpad" ON)
 
 find_package(Boost REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5Core 5.10 REQUIRED)
+find_package(Qt5Core 5.8 REQUIRED)
 find_package(Qt5DataVisualization REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
 find_package(Qt5Network REQUIRED)
-find_package(Qt5NetworkAuth REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 find_package(Qt5Qml REQUIRED)
 find_package(Qt5QuickWidgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
+find_package(Qt5WebEngineWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 if(EVERNUS_CREATE_DUMPS)
@@ -832,12 +832,12 @@ target_link_libraries(
     Qt5::Gui
     Qt5::Multimedia
     Qt5::Network
-    Qt5::NetworkAuth
     Qt5::PrintSupport
     Qt5::Qml
     Qt5::QuickWidgets
     Qt5::Sql
     Qt5::Xml
+    Qt5::WebEngineWidgets
     Qt5::Widgets
     ${ADDITIONAL_LIBS}
 )

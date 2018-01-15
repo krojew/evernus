@@ -60,6 +60,8 @@ namespace Evernus
                        const AssetProvider &assetProvider,
                        const ItemCostProvider &costProvider,
                        const CacheTimerProvider &cacheTimerProvider,
+                       QByteArray clientId,
+                       QByteArray clientSecret,
                        QWidget *parent = nullptr);
         IndustryWidget(const IndustryWidget &) = default;
         IndustryWidget(IndustryWidget &&) = default;
@@ -71,6 +73,7 @@ namespace Evernus
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
         void importMiningLedger(Character::IdType id);
+        void ssoAuthRequested(Character::IdType charId);
         void showInEve(EveType::IdType id);
         void showExternalOrders(EveType::IdType id);
 
@@ -80,6 +83,9 @@ namespace Evernus
 
         void refreshAssets();
         void refreshMiningLedger();
+
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
 
     private:
         IndustryManufacturingWidget *mManufacturingWidget = nullptr;

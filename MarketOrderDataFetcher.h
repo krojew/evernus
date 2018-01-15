@@ -42,7 +42,9 @@ namespace Evernus
     public:
         using OrderResultType = std::shared_ptr<std::vector<ExternalOrder>>;
 
-        MarketOrderDataFetcher(const EveDataProvider &dataProvider,
+        MarketOrderDataFetcher(QByteArray clientId,
+                               QByteArray clientSecret,
+                               const EveDataProvider &dataProvider,
                                const CharacterRepository &characterRepo,
                                ESIInterfaceManager &interfaceManager,
                                QObject *parent = nullptr);
@@ -54,10 +56,14 @@ namespace Evernus
         void orderStatusUpdated(const QString &text);
         void orderImportEnded(const OrderResultType &result, const QString &error);
         void genericError(const QString &text);
+        void ssoAuthRequested(Character::IdType charId);
 
     public slots:
         void importData(const TypeLocationPairs &pairs,
                         Character::IdType charId);
+
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
 
     private:
         const EveDataProvider &mDataProvider;

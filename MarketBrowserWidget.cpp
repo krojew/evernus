@@ -68,6 +68,8 @@ namespace Evernus
                                              ESIInterfaceManager &interfaceManager,
                                              TaskManager &taskManager,
                                              const ItemCostProvider &costProvider,
+                                             QByteArray clientId,
+                                             QByteArray clientSecret,
                                              QWidget *parent)
         : QWidget{parent}
         , mExternalOrderRepo{externalOrderRepo}
@@ -85,7 +87,7 @@ namespace Evernus
         , mFavoriteNameModel{mDataProvider}
         , mExternalOrderSellModel{mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider}
         , mExternalOrderBuyModel{mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider}
-        , mDataFetcher{mDataProvider, characterRepo, interfaceManager}
+        , mDataFetcher{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -376,6 +378,8 @@ namespace Evernus
                 this, &MarketBrowserWidget::updateOrderTask);
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
                 this, &MarketBrowserWidget::endOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::ssoAuthRequested,
+                this, &MarketBrowserWidget::ssoAuthRequested);
         connect(&mDataFetcher, &MarketOrderDataFetcher::genericError,
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
@@ -447,6 +451,16 @@ namespace Evernus
             mExternalOrderSellModel.reset();
             mExternalOrderBuyModel.reset();
         }
+    }
+
+    void MarketBrowserWidget::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mDataFetcher.processAuthorizationCode(charId, code);
+    }
+
+    void MarketBrowserWidget::cancelSSOAuth(Character::IdType charId)
+    {
+        mDataFetcher.cancelSSOAuth(charId);
     }
 
     void MarketBrowserWidget::prepareItemImportFromWeb()

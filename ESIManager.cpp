@@ -42,6 +42,7 @@
 #include "ExternalOrder.h"
 #include "ReplyTimeout.h"
 #include "MiningLedger.h"
+#include "SSOSettings.h"
 #include "Blueprint.h"
 #include "Defines.h"
 
@@ -49,21 +50,54 @@
 
 namespace Evernus
 {
+#ifdef EVERNUS_ESI_SISI
+    const QString ESIManager::loginUrl = "https://sisilogin.testeveonline.com";
+#else
+    const QString ESIManager::loginUrl = "https://login.eveonline.com";
+#endif
+
     const QString ESIManager::firstTimeCitadelOrderImportKey = "import/firstTimeCitadelOrderImport";
+
+    std::unordered_map<Character::IdType, QString> ESIManager::mRefreshTokens;
+    bool ESIManager::mFetchingToken = false;
 
     bool ESIManager::mFirstTimeCitadelOrderImport = true;
 
-    ESIManager::ESIManager(const EveDataProvider &dataProvider,
+    std::unordered_set<Character::IdType> ESIManager::mPendingTokenRefresh;
+
+    ESIManager::ESIManager(QByteArray clientId,
+                           QByteArray clientSecret,
+                           const EveDataProvider &dataProvider,
                            const CharacterRepository &characterRepo,
                            ESIInterfaceManager &interfaceManager,
                            QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
         , mCharacterRepo{characterRepo}
+        , mClientId{std::move(clientId)}
+        , mClientSecret{std::move(clientSecret)}
+        , mCrypt{SSOSettings::cryptKey}
         , mInterfaceManager{interfaceManager}
     {
         QSettings settings;
+        settings.beginGroup(SSOSettings::refreshTokenGroup);
+
+        const auto keys = settings.childKeys();
+        for (const auto &key : keys)
+            mRefreshTokens[key.toULongLong()] = mCrypt.decryptToString(settings.value(key).toByteArray());
+
+        settings.endGroup();
+
         mFirstTimeCitadelOrderImport = settings.value(firstTimeCitadelOrderImportKey, mFirstTimeCitadelOrderImport).toBool();
+
+        connect(this, &ESIManager::tokenError, this, [=](auto charId, const auto &errorInfo) {
+            Q_UNUSED(charId);
+            emit error(errorInfo);
+        });
+
+        connect(&mInterfaceManager, &ESIInterfaceManager::tokenRequested, this, &ESIManager::fetchToken);
+        connect(this, &ESIManager::acquiredToken, &mInterfaceManager, &ESIInterfaceManager::acquiredToken);
+        connect(this, &ESIManager::tokenError, &mInterfaceManager, &ESIInterfaceManager::tokenError);
     }
 
     void ESIManager::fetchMarketOrders(uint regionId,
@@ -883,6 +917,122 @@ namespace Evernus
         });
     }
 
+    bool ESIManager::hasClientCredentials() const
+    {
+        return !mClientId.isEmpty() && !mClientSecret.isEmpty();
+    }
+
+    void ESIManager::fetchToken(Character::IdType charId)
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+
+        mPendingTokenRefresh.insert(charId);
+
+        if (mFetchingToken)
+            return;
+
+        mFetchingToken = true;
+
+        try
+        {
+            qDebug() << "Refreshing access token for" << charId;
+
+            const auto it = mRefreshTokens.find(charId);
+            if (it == std::end(mRefreshTokens))
+            {
+                qDebug() << "No refresh token - requesting access.";
+
+                mRequestedCharacterAuth.emplace(charId);
+                emit ssoAuthRequested(charId);
+            }
+            else
+            {
+                qDebug() << "Refreshing token...";
+
+                QByteArray data = "grant_type=refresh_token&refresh_token=";
+                data.append(it->second);
+
+                auto reply = mNetworkManager.post(getAuthRequest(), data);
+                connect(reply, &QNetworkReply::finished, this, [=] {
+                    try
+                    {
+                        reply->deleteLater();
+
+                        const auto doc = QJsonDocument::fromJson(reply->readAll());
+                        const auto object = doc.object();
+
+                        if (Q_UNLIKELY(reply->error() != QNetworkReply::NoError))
+                        {
+                            qWarning() << "Error refreshing token:" << reply->errorString();
+
+                            const auto error = object.value(QStringLiteral("error")).toString();
+
+                            qWarning() << "Returned error:" << error;
+
+                            mPendingTokenRefresh.erase(charId);
+                            mFetchingToken = false;
+
+                            if (error == "invalid_token" || error == "invalid_client" || error == "invalid_grant")
+                            {
+                                mRefreshTokens.erase(charId);
+                                fetchToken(charId);
+                            }
+                            else
+                            {
+                                const auto desc = object.value(QStringLiteral("error_description")).toString();
+                                emit tokenError(charId, (desc.isEmpty()) ? (reply->errorString()) : (desc));
+
+                                scheduleNextTokenFetch();
+                            }
+
+                            return;
+                        }
+
+                        BOOST_SCOPE_EXIT(this_, charId) {
+                            this_->mPendingTokenRefresh.erase(charId);
+                            this_->mFetchingToken = false;
+                            this_->scheduleNextTokenFetch();
+                        } BOOST_SCOPE_EXIT_END
+
+                        const auto accessToken = object.value(QStringLiteral("access_token")).toString();
+                        if (accessToken.isEmpty())
+                        {
+                            qWarning() << "Empty access token!";
+                            emit tokenError(charId, tr("Empty access token!"));
+                            return;
+                        }
+
+                        emit acquiredToken(charId, accessToken,
+                                           QDateTime::currentDateTime().addSecs(doc.object().value(QStringLiteral("expires_in")).toInt() - 10));
+                    }
+                    catch (...)
+                    {
+                        mPendingTokenRefresh.clear();
+                        mFetchingToken = false;
+                        throw;
+                    }
+                });
+            }
+        }
+        catch (...)
+        {
+            mPendingTokenRefresh.clear();
+            mFetchingToken = false;
+            throw;
+        }
+    }
+
+    void ESIManager::cancelSSOAuth(Character::IdType charId)
+    {
+        mPendingTokenRefresh.erase(charId);
+        mFetchingToken = false;
+
+        qDebug() << "Auth window closed.";
+        emit tokenError(charId, tr("SSO authorization failed."));
+
+        scheduleNextTokenFetch();
+    }
+
     void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
                                                  const std::optional<WalletJournalEntry::IdType> &fromId,
                                                  WalletJournalEntry::IdType tillId,
@@ -953,6 +1103,121 @@ namespace Evernus
                 fetchCorporationWalletTransactions(charId, corpId, division, fromId, tillId, std::move(transactions), callback);
             })
         );
+    }
+
+    void ESIManager::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        if (mRequestedCharacterAuth.find(charId) == std::end(mRequestedCharacterAuth))
+        {
+            qDebug() << "Ignoring auth code for:" << charId;
+            return;
+        }
+
+        mRequestedCharacterAuth.erase(charId);
+
+        try
+        {
+            qDebug() << "Requesting access token...";
+
+            QByteArray data = "grant_type=authorization_code&code=" + code;
+
+            auto reply = mNetworkManager.post(getAuthRequest(), data);
+            connect(reply, &QNetworkReply::finished, this, [=] {
+                try
+                {
+                    mPendingTokenRefresh.erase(charId);
+
+                    reply->deleteLater();
+
+                    if (Q_UNLIKELY(reply->error() != QNetworkReply::NoError))
+                    {
+                        mFetchingToken = false;
+
+                        qDebug() << "Error requesting access token:" << reply->errorString();
+                        emit tokenError(charId, reply->errorString());
+
+                        scheduleNextTokenFetch();
+                        return;
+                    }
+
+                    const auto doc = QJsonDocument::fromJson(reply->readAll());
+                    const auto object = doc.object();
+                    const auto accessToken = object.value(QStringLiteral("access_token")).toString().toLatin1();
+                    const auto refreshToken = object.value(QStringLiteral("refresh_token")).toString();
+
+                    if (Q_UNLIKELY(refreshToken.isEmpty()))
+                    {
+                        mFetchingToken = false;
+
+                        qDebug() << "Empty refresh token!";
+                        emit tokenError(charId, tr("Empty refresh token!"));
+
+                        scheduleNextTokenFetch();
+                        return;
+                    }
+
+                    auto charReply = mNetworkManager.get(getVerifyRequest(accessToken));
+                    connect(charReply, &QNetworkReply::finished, this, [=] {
+                        BOOST_SCOPE_EXIT(this_) {
+                            this_->mFetchingToken = false;
+                            this_->scheduleNextTokenFetch();
+                        } BOOST_SCOPE_EXIT_END
+
+                        charReply->deleteLater();
+
+                        const auto doc = QJsonDocument::fromJson(charReply->readAll());
+                        const auto object = doc.object();
+
+                        if (Q_UNLIKELY(charReply->error() != QNetworkReply::NoError))
+                        {
+                            const auto error = object.value(QStringLiteral("error")).toString(charReply->errorString());
+
+                            qDebug() << "Error verifying access token:" << error;
+                            emit tokenError(charId, error);
+                            return;
+                        }
+
+                        const Character::IdType realCharId = object[QStringLiteral("CharacterID")].toDouble(Character::invalidId);
+
+                        mRefreshTokens[realCharId] = refreshToken;
+
+                        QSettings settings;
+                        settings.setValue(SSOSettings::refreshTokenKey.arg(realCharId), mCrypt.encryptToByteArray(refreshToken));
+
+                        if (charId != realCharId)
+                        {
+                            qDebug() << "Logged as invalid character id:" << realCharId;
+                            emit tokenError(charId, tr("Please authorize access for character: %1").arg(getCharacterName(charId).first));
+                            return;
+                        }
+
+                        emit acquiredToken(realCharId, accessToken,
+                                           QDateTime::currentDateTime().addSecs(object.value(QStringLiteral("expires_in")).toInt() - 10));
+                    });
+                }
+                catch (...)
+                {
+                    mPendingTokenRefresh.clear();
+                    mFetchingToken = false;
+                    throw;
+                }
+            });
+        }
+        catch (...)
+        {
+            mFetchingToken = false;
+            throw;
+        }
+    }
+
+    QNetworkRequest ESIManager::getAuthRequest() const
+    {
+        QNetworkRequest request{loginUrl + "/oauth/token"};
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+        request.setRawHeader(
+            QByteArrayLiteral("Authorization"), QByteArrayLiteral("Basic ") + (mClientId + ":" + mClientSecret).toBase64());
+
+        return request;
     }
 
     ExternalOrder ESIManager::getExternalOrderFromJson(const QJsonObject &object, uint regionId, const QDateTime &updateTime) const
@@ -1372,6 +1637,17 @@ namespace Evernus
         };
     }
 
+    void ESIManager::scheduleNextTokenFetch()
+    {
+        if (mPendingTokenRefresh.empty())
+            return;
+
+        const auto charId = *std::begin(mPendingTokenRefresh);
+        mPendingTokenRefresh.erase(std::begin(mPendingTokenRefresh));
+
+        QMetaObject::invokeMethod(this, "fetchToken", Q_ARG(Character::IdType, charId));
+    }
+
     const ESIInterface &ESIManager::selectNextInterface() const
     {
         return mInterfaceManager.selectNextInterface();
@@ -1432,6 +1708,15 @@ namespace Evernus
             dt.setTimeSpec(Qt::UTC);
 
         return dt;
+    }
+
+    QNetworkRequest ESIManager::getVerifyRequest(const QByteArray &accessToken)
+    {
+        QNetworkRequest request{ESIInterface::esiUrl + "/verify"};
+        request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer  ") + accessToken);
+        request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+
+        return request;
     }
 
     Contract::Type ESIManager::getContractTypeFromString(const QString &type)

@@ -218,8 +218,9 @@ namespace Evernus
         if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);
 
-        mESIManager = std::make_unique<ESIManager>(*mDataProvider, *mCharacterRepository, mESIInterfaceManager);
+        mESIManager = std::make_unique<ESIManager>(mClientId, mClientSecret, *mDataProvider, *mCharacterRepository, mESIInterfaceManager);
         connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::ssoError);
+        connect(mESIManager.get(), &ESIManager::ssoAuthRequested, this, &EvernusApplication::ssoAuthRequested);
 
         mDataProvider->precacheNames();
     }
@@ -1533,6 +1534,18 @@ namespace Evernus
     {
         Q_ASSERT(mESIManager);
         mESIManager->setDestination(locationId, charId);
+    }
+
+    void EvernusApplication::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        Q_ASSERT(mESIManager);
+        mESIManager->processAuthorizationCode(charId, code);
+    }
+
+    void EvernusApplication::cancelSSOAuth(Character::IdType charId)
+    {
+        Q_ASSERT(mESIManager);
+        mESIManager->cancelSSOAuth(charId);
     }
 
     void EvernusApplication::scheduleCharacterUpdate()

@@ -72,14 +72,16 @@ namespace Evernus
                                                              TaskManager &taskManager,
                                                              const AssetProvider &assetProvider,
                                                              const ItemCostProvider &costProvider,
+                                                             QByteArray clientId,
+                                                             QByteArray clientSecret,
                                                              QWidget *parent)
         : QWidget{parent}
         , mDataProvider{dataProvider}
         , mTaskManager{taskManager}
         , mSetupRepo{setupRepo}
         , mSetupModel{mSetup, mDataProvider, assetProvider, costProvider, characterRepo}
-        , mDataFetcher{mDataProvider, characterRepo, interfaceManager}
-        , mESIManager{mDataProvider, characterRepo, interfaceManager}
+        , mDataFetcher{clientId, clientSecret, mDataProvider, characterRepo, interfaceManager}
+        , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
     {
         const auto mainLayout = new QVBoxLayout{this};
 
@@ -404,6 +406,8 @@ namespace Evernus
                 this, &IndustryManufacturingWidget::updateOrderTask);
         connect(&mDataFetcher, &MarketOrderDataFetcher::orderImportEnded,
                 this, &IndustryManufacturingWidget::endOrderTask);
+        connect(&mDataFetcher, &MarketOrderDataFetcher::ssoAuthRequested,
+                this, &IndustryManufacturingWidget::ssoAuthRequested);
         connect(&mDataFetcher, &MarketOrderDataFetcher::genericError,
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
@@ -428,6 +432,8 @@ namespace Evernus
                 mSetupModel.blockInteractions(false);
         });
 
+        connect(&mESIManager, &ESIManager::ssoAuthRequested, this, &IndustryManufacturingWidget::ssoAuthRequested);
+
         connect(&mSetupController, &IndustryManufacturingSetupController::showInEve,
                 this, &IndustryManufacturingWidget::showInEve);
         connect(&mSetupController, &IndustryManufacturingSetupController::showExternalOrders,
@@ -451,6 +457,18 @@ namespace Evernus
         mSetup.clear();
         mSetupModel.setCharacter(mCharacterId);
         mTypeView->deselectAll();
+    }
+
+    void IndustryManufacturingWidget::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mESIManager.processAuthorizationCode(charId, code);
+        mDataFetcher.processAuthorizationCode(charId, code);
+    }
+
+    void IndustryManufacturingWidget::cancelSSOAuth(Character::IdType charId)
+    {
+        mESIManager.cancelSSOAuth(charId);
+        mDataFetcher.cancelSSOAuth(charId);
     }
 
     void IndustryManufacturingWidget::refreshTypes()

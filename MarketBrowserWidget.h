@@ -74,6 +74,8 @@ namespace Evernus
                             ESIInterfaceManager &interfaceManager,
                             TaskManager &taskManager,
                             const ItemCostProvider &costProvider,
+                            QByteArray clientId,
+                            QByteArray clientSecret,
                             QWidget *parent = nullptr);
         virtual ~MarketBrowserWidget() = default;
 
@@ -85,6 +87,8 @@ namespace Evernus
 
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
+        void ssoAuthRequested(Character::IdType charId);
+
     public slots:
         void setCharacter(Character::IdType id);
 
@@ -93,6 +97,9 @@ namespace Evernus
         void fillOrderItemNames();
 
         void showOrdersForType(EveType::IdType typeId);
+
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
 
     private slots:
         void prepareItemImportFromWeb();

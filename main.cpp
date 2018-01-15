@@ -289,7 +289,9 @@ int main(int argc, char *argv[])
         new QMacPasteboardMimeUnicodeText;
 #endif
 
-        auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getDataProvider(),
+        auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getSSOClientId(),
+                                                                                    app.getSSOClientSecret(),
+                                                                                    app.getDataProvider(),
                                                                                     app.getCharacterRepository(),
                                                                                     app.getESIInterfaceManager());
         auto webImporterPtr = webImporter.get();
@@ -311,7 +313,9 @@ int main(int argc, char *argv[])
 
         try
         {
-            Evernus::MainWindow mainWnd{app,
+            Evernus::MainWindow mainWnd{app.getSSOClientId(),
+                                        app.getSSOClientSecret(),
+                                        app,
                                         app.getMarketOrderProvider(),
                                         app.getCorpMarketOrderProvider(),
                                         app.getAssetProvider(),
@@ -381,6 +385,10 @@ int main(int argc, char *argv[])
                              &app, &Evernus::EvernusApplication::makeValueSnapshots);
             QObject::connect(&mainWnd, &Evernus::MainWindow::citadelsEdited,
                              &app, &Evernus::EvernusApplication::clearCitadelCache);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::gotSSOAuthorizationCode,
+                             &app, &Evernus::EvernusApplication::processAuthorizationCode);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::ssoAuthCanceled,
+                             &app, &Evernus::EvernusApplication::cancelSSOAuth);
             QObject::connect(&app, QOverload<uint, const QString &>::of(&Evernus::EvernusApplication::taskStarted),
                              &mainWnd, &Evernus::MainWindow::addNewTaskInfo);
             QObject::connect(&app, QOverload<uint, uint, const QString &>::of(&Evernus::EvernusApplication::taskStarted),
@@ -435,8 +443,16 @@ int main(int argc, char *argv[])
                              &mainWnd, &Evernus::MainWindow::snapshotsTaken);
             QObject::connect(&app, &Evernus::EvernusApplication::ssoError,
                              &mainWnd, &Evernus::MainWindow::showSSOError);
+            QObject::connect(&app, &Evernus::EvernusApplication::ssoAuthRequested,
+                             &mainWnd, &Evernus::MainWindow::requestSSOAuth);
             QObject::connect(&mainWnd, &Evernus::MainWindow::preferencesChanged,
                              webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::handleNewPreferences);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::gotSSOAuthorizationCode,
+                             webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::processAuthorizationCode);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::ssoAuthCanceled,
+                             webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::cancelSSOAuth);
+            QObject::connect(webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::ssoAuthRequested,
+                             &mainWnd, &Evernus::MainWindow::requestSSOAuth);
             mainWnd.showAsSaved();
 
             QSettings settings;

@@ -44,7 +44,9 @@ namespace Evernus
         using OrderResultType = std::shared_ptr<std::vector<ExternalOrder>>;
         using HistoryResultType = std::shared_ptr<std::unordered_map<uint, TypeAggregatedMarketDataModel::HistoryMap>>;
 
-        MarketAnalysisDataFetcher(const EveDataProvider &dataProvider,
+        MarketAnalysisDataFetcher(QByteArray clientId,
+                                  QByteArray clientSecret,
+                                  const EveDataProvider &dataProvider,
                                   const CharacterRepository &characterRepo,
                                   ESIInterfaceManager &interfaceManager,
                                   QObject *parent = nullptr);
@@ -62,10 +64,15 @@ namespace Evernus
 
         void genericError(const QString &text);
 
+        void ssoAuthRequested(Character::IdType charId);
+
     public slots:
         void importData(const TypeLocationPairs &pairs,
                         const TypeLocationPairs &ignored,
                         Character::IdType charId);
+
+        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSSOAuth(Character::IdType charId);
 
     private:
         const EveDataProvider &mDataProvider;

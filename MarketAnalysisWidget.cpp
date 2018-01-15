@@ -43,7 +43,9 @@
 
 namespace Evernus
 {
-    MarketAnalysisWidget::MarketAnalysisWidget(const EveDataProvider &dataProvider,
+    MarketAnalysisWidget::MarketAnalysisWidget(const QByteArray &clientId,
+                                               const QByteArray &clientSecret,
+                                               const EveDataProvider &dataProvider,
                                                ESIInterfaceManager &interfaceManager,
                                                TaskManager &taskManager,
                                                const MarketOrderRepository &orderRepo,
@@ -66,7 +68,7 @@ namespace Evernus
         , mRegionTypePresetRepo{regionTypePresetRepo}
         , mOrders{std::make_shared<MarketAnalysisDataFetcher::OrderResultType::element_type>()}
         , mHistory{std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>()}
-        , mDataFetcher{mDataProvider, mCharacterRepo, interfaceManager}
+        , mDataFetcher{clientId, clientSecret, mDataProvider, mCharacterRepo, interfaceManager}
     {
         connect(&mDataFetcher, &MarketAnalysisDataFetcher::orderStatusUpdated,
                 this, &MarketAnalysisWidget::updateOrderTask);
@@ -76,6 +78,8 @@ namespace Evernus
                 this, &MarketAnalysisWidget::endOrderTask);
         connect(&mDataFetcher, &MarketAnalysisDataFetcher::historyImportEnded,
                 this, &MarketAnalysisWidget::endHistoryTask);
+        connect(&mDataFetcher, &MarketAnalysisDataFetcher::ssoAuthRequested,
+                this, &MarketAnalysisWidget::ssoAuthRequested);
         connect(&mDataFetcher, &MarketAnalysisDataFetcher::genericError,
                 this, [=](const auto &text) {
             SSOMessageBox::showMessage(text, this);
@@ -196,13 +200,15 @@ namespace Evernus
         const auto src = mSrcPriceTypeCombo->getPriceType();
         const auto dst = mDstPriceTypeCombo->getPriceType();
 
-        mRegionAnalysisWidget = new RegionAnalysisWidget{mDataProvider, *this, tabs};
+        mRegionAnalysisWidget = new RegionAnalysisWidget{clientId, clientSecret, mDataProvider, *this, tabs};
         connect(mRegionAnalysisWidget, &RegionAnalysisWidget::showInEve, this, &MarketAnalysisWidget::showInEve);
         mRegionAnalysisWidget->setPriceTypes(src, dst);
         mRegionAnalysisWidget->setBogusOrderThreshold(bogusThresholdValue);
         mRegionAnalysisWidget->discardBogusOrders(discardBogusOrders);
 
-        mInterRegionAnalysisWidget = new InterRegionAnalysisWidget{mDataProvider,
+        mInterRegionAnalysisWidget = new InterRegionAnalysisWidget{clientId,
+                                                                   clientSecret,
+                                                                   mDataProvider,
                                                                    *this,
                                                                    regionStationPresetRepository,
                                                                    tabs};
@@ -331,6 +337,16 @@ namespace Evernus
     {
         Q_ASSERT(mRegionAnalysisWidget != nullptr);
         mRegionAnalysisWidget->showForCurrentRegion();
+    }
+
+    void MarketAnalysisWidget::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mDataFetcher.processAuthorizationCode(charId, code);
+    }
+
+    void MarketAnalysisWidget::cancelSSOAuth(Character::IdType charId)
+    {
+        mDataFetcher.cancelSSOAuth(charId);
     }
 
     void MarketAnalysisWidget::updateOrderTask(const QString &text)

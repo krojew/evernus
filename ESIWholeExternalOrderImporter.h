@@ -22,7 +22,9 @@ namespace Evernus
         : public ESIExternalOrderImporter
     {
     public:
-        ESIWholeExternalOrderImporter(const EveDataProvider &dataProvider,
+        ESIWholeExternalOrderImporter(QByteArray clientId,
+                                      QByteArray clientSecret,
+                                      const EveDataProvider &dataProvider,
                                       const CharacterRepository &characterRepo,
                                       ESIInterfaceManager &interfaceManager,
                                       QObject *parent = nullptr);

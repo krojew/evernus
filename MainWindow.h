@@ -65,7 +65,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MainWindow(const RepositoryProvider &repositoryProvider,
+        MainWindow(QByteArray clientId,
+                   QByteArray clientSecret,
+                   const RepositoryProvider &repositoryProvider,
                    MarketOrderProvider &charOrderProvider,
                    MarketOrderProvider &corpOrderProvider,
                    AssetProvider &charAssetProvider,
@@ -220,6 +222,8 @@ namespace Evernus
 
         static const QString redirectDomain;
 
+        QByteArray mClientId;
+
         const RepositoryProvider &mRepositoryProvider;
         ItemCostProvider &mItemCostProvider;
 
@@ -269,7 +273,8 @@ namespace Evernus
         void writeSettings();
 
         void createMenu();
-        void createMainView(MarketOrderProvider &charOrderProvider,
+        void createMainView(QByteArray clientSecret,
+                            MarketOrderProvider &charOrderProvider,
                             MarketOrderProvider &corpOrderProvider,
                             AssetProvider &charAssetProvider,
                             AssetProvider &corpAssetProvider,

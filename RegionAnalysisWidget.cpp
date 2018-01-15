@@ -40,7 +40,9 @@
 
 namespace Evernus
 {
-    RegionAnalysisWidget::RegionAnalysisWidget(const EveDataProvider &dataProvider,
+    RegionAnalysisWidget::RegionAnalysisWidget(QByteArray clientId,
+                                               QByteArray clientSecret,
+                                               const EveDataProvider &dataProvider,
                                                const MarketDataProvider &marketDataProvider,
                                                QWidget *parent)
         : StandardModelProxyWidget{mTypeDataModel, mTypeViewProxy, parent}
