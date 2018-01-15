@@ -21,7 +21,6 @@
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QStringList>
 #include <QJsonArray>
 #include <QUrlQuery>
 #include <QThread>
@@ -30,9 +29,9 @@
 #include "ESIInterfaceErrorLimiter.h"
 #include "CitadelAccessCache.h"
 #include "NetworkSettings.h"
+#include "SecurityHelper.h"
 #include "CallbackEvent.h"
 #include "ReplyTimeout.h"
-#include "ESIOAuth.h"
 
 #include "ESIInterface.h"
 
@@ -114,12 +113,6 @@ namespace Evernus
         {
             callback(QJsonDocument{}, error, getExpireTime(reply));
         }
-
-        template<class T>
-        static inline void invoke(const QString &error, const T &callback)
-        {
-            callback(QJsonDocument{}, error, QDateTime{});
-        }
     };
 
     template<>
@@ -135,12 +128,6 @@ namespace Evernus
         static inline void invoke(const QString &error, const QNetworkReply &reply, const T &callback)
         {
             callback(QJsonDocument{}, error, getExpireTime(reply), getPageCount(reply));
-        }
-
-        template<class T>
-        static inline void invoke(const QString &error, const T &callback)
-        {
-            callback(QJsonDocument{}, error, QDateTime{}, 1u);
         }
     };
 
@@ -158,24 +145,16 @@ namespace Evernus
         {
             callback(QString{}, error, getExpireTime(reply));
         }
-
-        template<class T>
-        static inline void invoke(const QString &error, const T &callback)
-        {
-            callback(QString{}, error, QDateTime{});
-        }
     };
 
     const QString ESIInterface::esiUrl{"https://esi.tech.ccp.is"};
 
     ESIInterface::ESIInterface(CitadelAccessCache &citadelAccessCache,
                                ESIInterfaceErrorLimiter &errorLimiter,
-                               ESIOAuth &oauth,
                                QObject *parent)
         : QObject{parent}
         , mCitadelAccessCache{citadelAccessCache}
         , mErrorLimiter{errorLimiter}
-        , mOAuth{oauth}
     {
         QSettings settings;
         mLogReplies = settings.value(NetworkSettings::logESIRepliesKey, mLogReplies).toBool();
@@ -184,7 +163,11 @@ namespace Evernus
     void ESIInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const PaginatedCallback &callback) const
     {
         qDebug() << "Fetching market orders for" << regionId << "and" << typeId;
-        fetchPaginatedData(QStringLiteral("/v1/markets/%1/orders/").arg(regionId), { { QStringLiteral("type_id"), typeId } }, 1, callback);
+
+        QUrlQuery query;
+        query.addQueryItem(QStringLiteral("type_id"), QString::number(typeId));
+
+        fetchPaginatedData(QStringLiteral("/v1/markets/%1/orders/").arg(regionId), query, 1, callback);
     }
 
     void ESIInterface::fetchMarketOrders(uint regionId, const PaginatedCallback &callback) const
@@ -196,7 +179,7 @@ namespace Evernus
     void ESIInterface::fetchMarketHistory(uint regionId, EveType::IdType typeId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching market history for" << regionId << "and" << typeId;
-        get(QStringLiteral("/v1/markets/%1/history/").arg(regionId), { { QStringLiteral("type_id"), typeId } }, callback, getNumRetries());
+        get(QStringLiteral("/v1/markets/%1/history/").arg(regionId), QStringLiteral("type_id=%1").arg(typeId), callback, getNumRetries());
     }
 
     void ESIInterface::fetchCitadelMarketOrders(quint64 citadelId, Character::IdType charId, const PaginatedCallback &callback) const
@@ -216,7 +199,12 @@ namespace Evernus
             return;
         }
 
-        fetchPaginatedData(charId, QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback, true, citadelId);
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback(QJsonDocument{}, true, error, {});
+            else
+                fetchPaginatedData(charId, QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback, true, citadelId);
+        });
     }
 
     void ESIInterface::fetchCharacterAssets(Character::IdType charId, const PaginatedCallback &callback) const
@@ -268,7 +256,12 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v3/characters/%1/skills/").arg(charId), {}, callback, getNumRetries());
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v3/characters/%1/skills/").arg(charId), {}, callback, getNumRetries());
+        });
     }
 
     void ESIInterface::fetchCorporation(quint64 corpId, const JsonCallback &callback) const
@@ -299,7 +292,12 @@ namespace Evernus
             return;
         }
 
-        get<decltype(callback), StringTag>(charId, QStringLiteral("/v1/characters/%1/wallet/").arg(charId), {}, callback, getNumRetries());
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get<decltype(callback), StringTag>(charId, QStringLiteral("/v1/characters/%1/wallet/").arg(charId), {}, callback, getNumRetries());
+        });
     }
 
     void ESIInterface::fetchCharacterMarketOrders(Character::IdType charId, const JsonCallback &callback) const
@@ -312,7 +310,12 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v1/characters/%1/orders/").arg(charId), {}, callback, getNumRetries());
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/characters/%1/orders/").arg(charId), {}, callback, getNumRetries());
+        });
     }
 
     void ESIInterface::fetchCorporationMarketOrders(Character::IdType charId, quint64 corpId, const JsonCallback &callback) const
@@ -325,7 +328,12 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v1/corporations/%1/orders/").arg(corpId), {}, callback, getNumRetries());
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/corporations/%1/orders/").arg(corpId), {}, callback, getNumRetries());
+        });
     }
 
     void ESIInterface::fetchCharacterWalletJournal(Character::IdType charId,
@@ -340,11 +348,20 @@ namespace Evernus
             return;
         }
 
-        QVariantMap paramteres;
-        if (fromId)
-            paramteres[QStringLiteral("from_id")] = *fromId;
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback({}, error, {});
+            }
+            else
+            {
+                QString query;
+                if (fromId)
+                    query = QStringLiteral("from_id=%1").arg(*fromId);
 
-        get(charId, QStringLiteral("/v1/characters/%1/wallet/journal/").arg(charId), paramteres, callback, getNumRetries());
+                get(charId, QStringLiteral("/v1/characters/%1/wallet/journal/").arg(charId), query, callback, getNumRetries());
+            }
+        });
     }
 
     void ESIInterface::fetchCorporationWalletJournal(Character::IdType charId,
@@ -361,11 +378,20 @@ namespace Evernus
             return;
         }
 
-        QVariantMap paramteres;
-        if (fromId)
-            paramteres[QStringLiteral("from_id")] = *fromId;
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback({}, error, {});
+            }
+            else
+            {
+                QString query;
+                if (fromId)
+                    query = QStringLiteral("from_id=%1").arg(*fromId);
 
-        get(charId, QStringLiteral("/v2/corporations/%1/wallets/%2/journal/").arg(corpId).arg(division), paramteres, callback, getNumRetries());
+                get(charId, QStringLiteral("/v2/corporations/%1/wallets/%2/journal/").arg(corpId).arg(division), query, callback, getNumRetries());
+            }
+        });
     }
 
     void ESIInterface::fetchCharacterWalletTransactions(Character::IdType charId,
@@ -380,11 +406,20 @@ namespace Evernus
             return;
         }
 
-        QVariantMap paramteres;
-        if (fromId)
-            paramteres[QStringLiteral("from_id")] = *fromId;
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback({}, error, {});
+            }
+            else
+            {
+                QString query;
+                if (fromId)
+                    query = QStringLiteral("from_id=%1").arg(*fromId);
 
-        get(charId, QStringLiteral("/v1/characters/%1/wallet/transactions/").arg(charId), paramteres, callback, getNumRetries());
+                get(charId, QStringLiteral("/v1/characters/%1/wallet/transactions/").arg(charId), query, callback, getNumRetries());
+            }
+        });
     }
 
     void ESIInterface::fetchCorporationWalletTransactions(Character::IdType charId,
@@ -401,11 +436,20 @@ namespace Evernus
             return;
         }
 
-        QVariantMap paramteres;
-        if (fromId)
-            paramteres[QStringLiteral("from_id")] = *fromId;
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+            {
+                callback({}, error, {});
+            }
+            else
+            {
+                QString query;
+                if (fromId)
+                    query = QStringLiteral("from_id=%1").arg(*fromId);
 
-        get(charId, QStringLiteral("/v1/corporations/%1/wallets/%2/transactions/").arg(corpId).arg(division), paramteres, callback, getNumRetries());
+                get(charId, QStringLiteral("/v1/corporations/%1/wallets/%2/transactions/").arg(corpId).arg(division), query, callback, getNumRetries());
+            }
+        });
     }
 
     void ESIInterface::fetchCharacterContracts(Character::IdType charId, const JsonCallback &callback) const
@@ -418,7 +462,12 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v1/characters/%1/contracts/").arg(charId), {}, callback, getNumRetries());
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/characters/%1/contracts/").arg(charId), {}, callback, getNumRetries());
+        });
     }
 
     void ESIInterface::fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const JsonCallback &callback) const
@@ -431,7 +480,12 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v1/characters/%1/contracts/%2/items/").arg(charId).arg(contractId), {}, callback, getNumRetries());
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/characters/%1/contracts/%2/items/").arg(charId).arg(contractId), {}, callback, getNumRetries());
+        });
     }
 
     void ESIInterface::fetchCorporationContracts(Character::IdType charId, quint64 corpId, const JsonCallback &callback) const
@@ -444,7 +498,12 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v1/corporations/%1/contracts/").arg(corpId), {}, callback, getNumRetries());
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/corporations/%1/contracts/").arg(corpId), {}, callback, getNumRetries());
+        });
     }
 
     void ESIInterface::fetchCorporationContractItems(Character::IdType charId, quint64 corpId, Contract::IdType contractId, const JsonCallback &callback) const
@@ -457,7 +516,12 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v1/corporations/%1/contracts/%2/items/").arg(corpId).arg(contractId), {}, callback, getNumRetries());
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/corporations/%1/contracts/%2/items/").arg(corpId).arg(contractId), {}, callback, getNumRetries());
+        });
     }
 
     void ESIInterface::fetchCharacterBlueprints(Character::IdType charId, const JsonCallback &callback) const
@@ -470,7 +534,12 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v1/characters/%1/blueprints/").arg(charId), {}, callback, getNumRetries());
+        checkAuth(charId, [=](const auto &error) {
+            if (!error.isEmpty())
+                callback({}, error, {});
+            else
+                get(charId, QStringLiteral("/v1/characters/%1/blueprints/").arg(charId), {}, callback, getNumRetries());
+        });
     }
 
     void ESIInterface::fetchCharacterMiningLedger(Character::IdType charId, const PaginatedCallback &callback) const
@@ -556,19 +625,67 @@ namespace Evernus
             return;
         }
 
-        post(charId, QStringLiteral("/v1/ui/openwindow/marketdetails/"), QVariantMap{{ QStringLiteral("type_id"), typeId }}, std::move(errorCallback));
+        auto opener = [=](const auto &error) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                errorCallback(error);
+            }
+            else
+            {
+                post(charId, QStringLiteral("/v1/ui/openwindow/marketdetails/"), QStringLiteral("type_id=%1").arg(typeId), std::move(errorCallback));
+            }
+        };
+
+        checkAuth(charId, opener);
     }
 
     void ESIInterface::setDestination(quint64 locationId, Character::IdType charId, const ErrorCallback &errorCallback) const
     {
         qDebug() << "Setting destination:" << locationId;
 
-        QVariantMap data;
-        data[QStringLiteral("destination_id")] = locationId;
-        data[QStringLiteral("add_to_beginning")] = QStringLiteral("false");
-        data[QStringLiteral("clear_other_waypoints")] = QStringLiteral("true");
+        auto setter = [=](const auto &error) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                errorCallback(error);
+            }
+            else
+            {
+                QUrlQuery query;
+                query.addQueryItem(QStringLiteral("destination_id"), QString::number(locationId));
+                query.addQueryItem(QStringLiteral("add_to_beginning"), QStringLiteral("false"));
+                query.addQueryItem(QStringLiteral("clear_other_waypoints"), QStringLiteral("true"));
 
-        post(charId, QStringLiteral("/v2/ui/autopilot/waypoint/"), data, std::move(errorCallback));
+                post(charId, QStringLiteral("/v2/ui/autopilot/waypoint/"), query.query(), std::move(errorCallback));
+            }
+        };
+
+        checkAuth(charId, setter);
+    }
+
+    void ESIInterface::updateTokenAndContinue(Character::IdType charId, QString token, const QDateTime &expiry)
+    {
+        std::lock_guard<std::recursive_mutex> lock{mAuthMutex};
+
+        auto &charToken = mAccessTokens[charId];
+        charToken.mToken = std::move(token);
+        charToken.mExpiry = expiry;
+
+        const auto range = mPendingAuthRequests.equal_range(charId);
+        for (auto it = range.first; it != range.second; ++it)
+            it->second(QString{});
+
+        mPendingAuthRequests.erase(range.first, range.second);
+    }
+
+    void ESIInterface::handleTokenError(Character::IdType charId, const QString &error)
+    {
+        std::lock_guard<std::recursive_mutex> lock{mAuthMutex};
+
+        const auto requests = mPendingAuthRequests.equal_range(charId);
+        for (auto request = requests.first; request != requests.second; ++request)
+            request->second(error);
+
+        mPendingAuthRequests.erase(requests.first, requests.second);
     }
 
     void ESIInterface::customEvent(QEvent *event)
@@ -586,19 +703,46 @@ namespace Evernus
         }
     }
 
+    void ESIInterface::processSslErrors(const QList<QSslError> &errors)
+    {
+        SecurityHelper::handleSslErrors(errors, *qobject_cast<QNetworkReply *>(sender()));
+    }
+
     template<class T>
-    void ESIInterface::fetchPaginatedData(const QString &url, QVariantMap parameters, uint page, T &&continuation) const
+    void ESIInterface::checkAuth(Character::IdType charId, T &&continuation) const
+    {
+        std::unique_lock<std::recursive_mutex> lock{mAuthMutex};
+
+        const auto &charToken = mAccessTokens[charId];
+        if (charToken.mExpiry < QDateTime::currentDateTime() || charToken.mToken.isEmpty())
+        {
+            mPendingAuthRequests.insert(std::make_pair(charId, std::forward<T>(continuation)));
+            if (mPendingAuthRequests.count(charId) == 1)
+            {
+                lock.unlock();
+                emit tokenRequested(charId);
+            }
+        }
+        else
+        {
+            lock.unlock();
+            std::forward<T>(continuation)(QString{});
+        }
+    }
+
+    template<class T>
+    void ESIInterface::fetchPaginatedData(const QString &url, QUrlQuery query, uint page, T &&continuation) const
     {
         const auto callback = createPaginatedCallback(
             page,
             continuation,
             [=](auto nextPage) {
-                fetchPaginatedData(url, parameters, nextPage, continuation);
+                fetchPaginatedData(url, query, nextPage, continuation);
             }
         );
 
-        parameters[QStringLiteral("page")] = page;
-        get<decltype(callback), PaginatedJsonTag>(url, parameters, callback, getNumRetries());
+        query.addQueryItem(QStringLiteral("page"), QString::number(page));
+        get<decltype(callback), PaginatedJsonTag>(url, query.toString(), callback, getNumRetries());
     }
 
     template<class T>
@@ -620,7 +764,7 @@ namespace Evernus
         get<decltype(callback), PaginatedJsonTag>(
             charId,
             url,
-            { { QStringLiteral("page"), page } },
+            QStringLiteral("page=%1").arg(page),
             callback,
             getNumRetries(),
             importingCitadels,
@@ -629,17 +773,18 @@ namespace Evernus
     }
 
     template<class T, class ResultTag>
-    void ESIInterface::get(const QString &url, const QVariantMap &parameters, const T &continuation, uint retries) const
+    void ESIInterface::get(const QString &url, const QString &query, const T &continuation, uint retries) const
     {
         runNowOrLater([=] {
-            auto reply = mOAuth.get(esiUrl + url, parameters);
+            auto reply = mNetworkManager.get(prepareRequest(url, query));
             Q_ASSERT(reply != nullptr);
 
-            qDebug() << "ESI request:" << reply << "" << url << ":" << parameters;
+            qDebug() << "ESI request:" << reply << "" << url << ":" << query;
             qDebug() << "Retries" << retries;
 
             new ReplyTimeout{*reply};
 
+            connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
             connect(reply, &QNetworkReply::finished, this, [=] {
                 reply->deleteLater();
 
@@ -648,20 +793,20 @@ namespace Evernus
                 {
                     const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-                    qWarning() << "Error for request" << reply << ":" << url << parameters << ":" << httpStatus << getError(url, parameters, *reply);
+                    qWarning() << "Error for request" << reply << ":" << url << query << ":" << httpStatus << getError(url, query, *reply);
 
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
-                            get<T, ResultTag>(url, parameters, continuation, retries);
+                            get<T, ResultTag>(url, query, continuation, retries);
                         }, *reply);
                     }
                     else
                     {
                         if (retries > 0)
-                            get<T, ResultTag>(url, parameters, continuation, retries - 1);
+                            get<T, ResultTag>(url, query, continuation, retries - 1);
                         else
-                            TaggedInvoke<ResultTag>::invoke(getError(url, parameters, *reply), *reply, continuation);
+                            TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
                     }
                 }
                 else
@@ -679,122 +824,171 @@ namespace Evernus
     template<class T, class ResultTag>
     void ESIInterface::get(Character::IdType charId,
                            const QString &url,
-                           const QVariantMap &parameters,
+                           const QString &query,
                            const T &continuation,
                            uint retries,
                            bool importingCitadels,
                            quint64 citadelId) const
     {
         runNowOrLater([=] {
-            mOAuth.get(charId, esiUrl + url, parameters, [=](auto &reply) {
-                qDebug() << "ESI request:" << url << ":" << parameters;
-                qDebug() << "Retries" << retries;
-
-                const auto error = reply.error();
-                if (Q_UNLIKELY(error != QNetworkReply::NoError))
-                {
-                    const auto httpStatus = reply.attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-                    const auto parsedError = getError(url, parameters, reply);
-
-                    qWarning() << "Error for request:" << httpStatus << parsedError;
-
-                    if (httpStatus == errorLimitCode)  // error limit reached?
-                    {
-                        schedulePostErrorLimitRequest([=] {
-                            get<T, ResultTag>(charId, url, parameters, continuation, retries, importingCitadels, citadelId);
-                        }, reply);
-                    }
-                    else
-                    {
-                        if (error == QNetworkReply::ContentAccessDenied)
-                        {
-                            if (importingCitadels && parsedError.mSSOStatus != 0)
-                            {
-                                if (citadelId != 0)
-                                {
-                                    qDebug() << "Blacklisting citadel:" << citadelId << charId;
-                                    mCitadelAccessCache.blacklist(charId, citadelId);
-                                }
-
-                                TaggedInvoke<ResultTag>::invoke(QString{}, reply, continuation);
-                            }
-                            else
-                            {
-                                TaggedInvoke<ResultTag>::invoke(getError(url, parameters, reply), reply, continuation);
-                            }
-                        }
-                        else if (retries > 0)
-                        {
-                            get<T, ResultTag>(charId, url, parameters, continuation, retries - 1, importingCitadels, citadelId);
-                        }
-                        else
-                        {
-                            TaggedInvoke<ResultTag>::invoke(getError(url, parameters, reply), reply, continuation);
-                        }
-                    }
-                }
-                else
-                {
-                    const auto data = reply.readAll();
-                    if (mLogReplies)
-                        qDebug() << url << data;
-
-                    TaggedInvoke<ResultTag>::invoke(data, reply, continuation);
-                }
-            }, [=](const auto &error) {
-                TaggedInvoke<ResultTag>::invoke(error, continuation);
-            });
-        });
-    }
-
-    template<class T>
-    void ESIInterface::post(Character::IdType charId, const QString &url, const QVariant &data, T &&errorCallback) const
-    {
-        runNowOrLater([=] {
-            mOAuth.post(charId, esiUrl + url, data, [=](auto &reply) {
-                qDebug() << "ESI request:" << url << ":" << data;
-
-                const auto error = reply.error();
-                if (Q_UNLIKELY(error != QNetworkReply::NoError))
-                {
-                    const auto httpStatus = reply.attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-                    qWarning() << "Error for request:" << httpStatus << getError(url, {}, reply);
-
-                    if (httpStatus == errorLimitCode)  // error limit reached?
-                    {
-                        schedulePostErrorLimitRequest([=] {
-                            post(charId, url, data, std::move(errorCallback));
-                        }, reply);
-                    }
-                    else
-                    {
-                        errorCallback(getError(url, {}, reply));
-                    }
-                }
-                else
-                {
-                    const auto error = getError(reply.readAll());
-                    if (!error.mMessage.isEmpty())
-                        errorCallback(error);
-                }
-            }, [=](const auto &error) {
-                errorCallback(error);
-            });
-        });
-    }
-
-    template<class T>
-    void ESIInterface::post(const QString &url, const QVariant &data, ErrorCallback errorCallback, T &&resultCallback) const
-    {
-        runNowOrLater([=] {
-            auto reply = mOAuth.post(esiUrl + url, data);
+            auto reply = mNetworkManager.get(prepareRequest(charId, url, query));
             Q_ASSERT(reply != nullptr);
 
-            qDebug() << "ESI request" << reply << ":" << url << ":" << data;
+            qDebug() << "ESI request" << reply << ":" << url << ":" << query;
+            qDebug() << "Retries" << retries;
 
             new ReplyTimeout{*reply};
 
+            connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
+            connect(reply, &QNetworkReply::finished, this, [=] {
+                const auto error = reply->error();
+                if (Q_UNLIKELY(error != QNetworkReply::NoError))
+                {
+                    const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                    const auto parsedError = getError(url, query, *reply);
+
+                    qWarning() << "Error for request" << reply << ":" << url << query << ":" << httpStatus << parsedError;
+
+                    if (httpStatus == errorLimitCode)  // error limit reached?
+                    {
+                        reply->deleteLater();
+                        schedulePostErrorLimitRequest([=] {
+                            get<T, ResultTag>(charId, url, query, continuation, retries, importingCitadels, citadelId);
+                        }, *reply);
+                    }
+                    else
+                    {
+                        if (error == QNetworkReply::AuthenticationRequiredError ||
+                            (error == QNetworkReply::ContentAccessDenied && parsedError.mSSOStatus != 0))
+                        {
+                            // expired token?
+                            tryAuthAndContinue(charId, [=](const auto &error) {
+                                reply->deleteLater();
+                                if (error.isEmpty())
+                                    get<T, ResultTag>(charId, url, query, continuation, retries, importingCitadels);
+                                else
+                                    TaggedInvoke<ResultTag>::invoke(error, *reply, continuation);
+                            });
+                        }
+                        else
+                        {
+                            reply->deleteLater();
+                            if (error == QNetworkReply::ContentAccessDenied)
+                            {
+                                if (importingCitadels)
+                                {
+                                    if (citadelId != 0)
+                                    {
+                                        qDebug() << "Blacklisting citadel:" << citadelId << charId;
+                                        mCitadelAccessCache.blacklist(charId, citadelId);
+                                    }
+
+                                    TaggedInvoke<ResultTag>::invoke(QString{}, *reply, continuation);
+                                }
+                                else
+                                {
+                                    TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                                }
+                            }
+                            else if (retries > 0)
+                            {
+                                get<T, ResultTag>(charId, url, query, continuation, retries - 1, importingCitadels, citadelId);
+                            }
+                            else
+                            {
+                                TaggedInvoke<ResultTag>::invoke(getError(url, query, *reply), *reply, continuation);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    reply->deleteLater();
+
+                    const auto data = reply->readAll();
+                    if (mLogReplies)
+                        qDebug() << reply << data;
+
+                    TaggedInvoke<ResultTag>::invoke(data, *reply, continuation);
+                }
+            });
+        });
+    }
+
+    template<class T>
+    void ESIInterface::post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const
+    {
+        runNowOrLater([=] {
+            auto request = prepareRequest(charId, url, query);
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+            auto reply = mNetworkManager.post(request, QByteArray{});
+            Q_ASSERT(reply != nullptr);
+
+            qDebug() << "ESI request" << reply << ":" << url << ":" << query;
+
+            new ReplyTimeout{*reply};
+
+            connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
+            connect(reply, &QNetworkReply::finished, this, [=] {
+                reply->deleteLater();
+
+                const auto error = reply->error();
+                if (Q_UNLIKELY(error != QNetworkReply::NoError))
+                {
+                    const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+                    qWarning() << "Error for request" << reply << ":" << url << query << ":" << httpStatus << getError(url, query, *reply);
+
+                    if (httpStatus == errorLimitCode)  // error limit reached?
+                    {
+                        schedulePostErrorLimitRequest([=] {
+                            post(charId, url, query, std::move(errorCallback));
+                        }, *reply);
+                    }
+                    else
+                    {
+                        if (error == QNetworkReply::AuthenticationRequiredError || error == QNetworkReply::ContentAccessDenied)
+                        {
+                            // expired token?
+                            tryAuthAndContinue(charId, [=](const auto &error) {
+                                if (error.isEmpty())
+                                    post(charId, url, query, errorCallback);
+                                else
+                                    errorCallback(error);
+                            });
+                        }
+                        else
+                        {
+                            errorCallback(getError(url, query, *reply));
+                        }
+                    }
+                }
+                else
+                {
+                    const auto error = getError(reply->readAll());
+                    if (!error.mMessage.isEmpty())
+                        errorCallback(error);
+                }
+            });
+        });
+    }
+
+    template<class T>
+    void ESIInterface::post(const QString &url, const QByteArray &body, ErrorCallback errorCallback, T &&resultCallback) const
+    {
+        runNowOrLater([=] {
+            auto request = prepareRequest(url, {});
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+            auto reply = mNetworkManager.post(request, body);
+            Q_ASSERT(reply != nullptr);
+
+            qDebug() << "ESI request" << reply << ":" << url << ":" << body;
+
+            new ReplyTimeout{*reply};
+
+            connect(reply, &QNetworkReply::sslErrors, this, &ESIInterface::processSslErrors);
             connect(reply, &QNetworkReply::finished, this, [=] {
                 reply->deleteLater();
 
@@ -808,7 +1002,7 @@ namespace Evernus
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
-                            post(url, data, errorCallback, resultCallback);
+                            post(url, body, errorCallback, resultCallback);
                         }, *reply);
                     }
                     else
@@ -830,10 +1024,53 @@ namespace Evernus
     }
 
     template<class T>
+    void ESIInterface::tryAuthAndContinue(Character::IdType charId, T &&continuation) const
+    {
+        {
+            std::lock_guard<std::recursive_mutex> lock{mAuthMutex};
+            mAccessTokens.erase(charId);
+        }
+
+        checkAuth(charId, std::forward<T>(continuation));
+    }
+
+    template<class T>
     void ESIInterface::schedulePostErrorLimitRequest(T &&callback, const QNetworkReply &reply) const
     {
         const auto errorTimeout = reply.rawHeader(QByteArrayLiteral("X-Esi-Error-Limit-Reset")).toUInt();
         mErrorLimiter.addCallback(std::move(callback), std::chrono::seconds{errorTimeout});
+    }
+
+    QNetworkRequest ESIInterface::prepareRequest(const QString &url, const QString &query) const
+    {
+        QUrlQuery endQuery{query};
+#ifdef EVERNUS_ESI_SISI
+        endQuery.addQueryItem(QStringLiteral("datasource"), QStringLiteral("singularity"));
+#else
+        endQuery.addQueryItem(QStringLiteral("datasource"), QStringLiteral("tranquility"));
+#endif
+
+        QUrl endUrl{esiUrl + url};
+        endUrl.setQuery(endQuery);
+
+        QNetworkRequest request{endUrl};
+        request.setHeader(QNetworkRequest::UserAgentHeader,
+                          QStringLiteral("%1 %2").arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion()));
+        request.setRawHeader(QByteArrayLiteral("Accept"), QByteArrayLiteral("application/json"));
+
+        return request;
+    }
+
+    QNetworkRequest ESIInterface::prepareRequest(Character::IdType charId, const QString &url, const QString &query) const
+    {
+        auto request = prepareRequest(url, query);
+
+        {
+            std::lock_guard<std::recursive_mutex> lock{mAuthMutex};
+            request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer ") + mAccessTokens[charId].mToken.toLatin1());
+        }
+
+        return request;
     }
 
     uint ESIInterface::getNumRetries() const
@@ -868,18 +1105,14 @@ namespace Evernus
         return { error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("sso_status")).toInt() };
     }
 
-    ESIInterface::ErrorInfo ESIInterface::getError(const QString &url, const QVariantMap &parameters, QNetworkReply &reply)
+    ESIInterface::ErrorInfo ESIInterface::getError(const QString &url, const QString &query, QNetworkReply &reply)
     {
         // try to get ESI error
         auto error = getError(reply.readAll());
         if (error.mMessage.isEmpty())
             error.mMessage = reply.errorString();
 
-        QStringList query;
-        for (auto param = std::begin(parameters); param != std::end(parameters); ++param)
-            query << QStringLiteral("%1=%2").arg(param.key()).arg(param.value().toString());
-
-        return { QStringLiteral("%1?%2: %3").arg(url).arg(query.join('&')).arg(error.mMessage), error.mSSOStatus };
+        return { QStringLiteral("%1?%2: %3").arg(url).arg(query).arg(error.mMessage), error.mSSOStatus };
     }
 
     QDateTime ESIInterface::getExpireTime(const QNetworkReply &reply)

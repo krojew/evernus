@@ -12,30 +12,23 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QDesktopServices>
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
 #include <QLabel>
-#include <QUrl>
 
 #include "SSOAuthDialog.h"
 
 namespace Evernus
 {
-    SSOAuthDialog::SSOAuthDialog(const QUrl &url, QWidget *parent)
+    SSOAuthDialog::SSOAuthDialog(QWidget *parent)
         : QDialog{parent}
     {
         auto mainLayout = new QVBoxLayout{this};
 
-        auto infoLabel = new QLabel{
-            tr("Please authorize in the browser and paste the resulting code below. Click the following link, if the browser didn't open: <a href='%1'>%1</a>").arg(url.toString()),
-            this
-        };
+        auto infoLabel = new QLabel{tr("Please authorize in the browser and paste the resulting code below."), this};
         mainLayout->addWidget(infoLabel);
-        infoLabel->setWordWrap(true);
-        infoLabel->setTextFormat(Qt::RichText);
 
         auto codeLayout = new QHBoxLayout{};
         mainLayout->addLayout(codeLayout);
@@ -50,8 +43,6 @@ namespace Evernus
 
         setModal(true);
         adjustSize();
-
-        QDesktopServices::openUrl(url);
     }
 
     void SSOAuthDialog::closeEvent(QCloseEvent *event)

@@ -32,7 +32,6 @@
 class QSystemTrayIcon;
 class QTabWidget;
 class QLabel;
-class QUrl;
 
 #ifdef Q_OS_WIN
 class QWinTaskbarButton;
@@ -186,7 +185,7 @@ namespace Evernus
         void characterDataChanged();
 
         void showSSOError(const QString &info);
-        void requestSSOAuth(Character::IdType charId, const QUrl &url);
+        void requestSSOAuth(Character::IdType charId);
 
     private slots:
         void addCharacter();

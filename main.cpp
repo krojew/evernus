@@ -274,8 +274,8 @@ int main(int argc, char *argv[])
 
         Evernus::EvernusApplication app{argc,
                                         argv,
-                                        parser.value(Evernus::CommandLineOptions::clientIdArg),
-                                        parser.value(Evernus::CommandLineOptions::clientSecretArg),
+                                        parser.value(Evernus::CommandLineOptions::clientIdArg).toLatin1(),
+                                        parser.value(Evernus::CommandLineOptions::clientSecretArg).toLatin1(),
                                         parser.value(Evernus::CommandLineOptions::forceVersionArg),
                                         parser.isSet(Evernus::CommandLineOptions::noUpdateArg)};
 

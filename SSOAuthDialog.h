@@ -17,7 +17,6 @@
 #include <QDialog>
 
 class QLineEdit;
-class QUrl;
 
 namespace Evernus
 {
@@ -27,7 +26,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit SSOAuthDialog(const QUrl &url, QWidget *parent = nullptr);
+        explicit SSOAuthDialog(QWidget *parent = nullptr);
         virtual ~SSOAuthDialog() = default;
 
     signals:

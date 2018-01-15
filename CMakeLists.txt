@@ -104,6 +104,11 @@ endif()
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TRANSLATIONS})
 
+include_directories(
+    ${Boost_INCLUDE_DIRS}
+    ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
+)
+
 add_executable(
     ${PROJECT_NAME}
     WIN32
@@ -284,14 +289,8 @@ add_executable(
     ESIInterfaceErrorLimiter.h
     ESIInterfaceManager.cpp
     ESIInterfaceManager.h
-    ESIManager.cpp
     ESIManager.h
-    ESINetworkAccessManager.cpp
-    ESINetworkAccessManager.h
-    ESIOAuth.cpp
-    ESIOAuth.h
-    ESIOAuthReplyHandler.cpp
-    ESIOAuthReplyHandler.h
+    ESIManager.cpp
     ESIWholeExternalOrderImporter.cpp
     ESIWholeExternalOrderImporter.h
     EveDataManagerProvider.h
@@ -831,7 +830,6 @@ target_link_libraries(
     Qt5::Core
     Qt5::DataVisualization
     Qt5::Gui
-    Qt5::GuiPrivate
     Qt5::Multimedia
     Qt5::Network
     Qt5::NetworkAuth

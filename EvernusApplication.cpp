@@ -62,8 +62,8 @@ namespace Evernus
 
     EvernusApplication::EvernusApplication(int &argc,
                                            char *argv[],
-                                           QString clientId,
-                                           QString clientSecret,
+                                           QByteArray clientId,
+                                           QByteArray clientSecret,
                                            const QString &forcedVersion,
                                            bool dontUpdate)
         : QApplication{argc, argv}
@@ -76,7 +76,8 @@ namespace Evernus
         , EveDataManagerProvider{}
         , mMainDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("main"))}
         , mEveDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("eve"))}
-        , mESIInterfaceManager{std::move(clientId), std::move(clientSecret)}
+        , mClientId{std::move(clientId)}
+        , mClientSecret{std::move(clientSecret)}
     {
         QSettings settings;
 
@@ -216,8 +217,6 @@ namespace Evernus
 
         if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);
-
-        connect(&mESIInterfaceManager, &ESIInterfaceManager::ssoAuthRequested, this, &EvernusApplication::ssoAuthRequested);
 
         mESIManager = std::make_unique<ESIManager>(*mDataProvider, *mCharacterRepository, mESIInterfaceManager);
         connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::ssoError);
@@ -587,6 +586,16 @@ namespace Evernus
     ESIInterfaceManager &EvernusApplication::getESIInterfaceManager() noexcept
     {
         return mESIInterfaceManager;
+    }
+
+    QByteArray EvernusApplication::getSSOClientId() const
+    {
+        return mClientId;
+    }
+
+    QByteArray EvernusApplication::getSSOClientSecret() const
+    {
+        return mClientSecret;
     }
 
     MarketOrderProvider &EvernusApplication::getMarketOrderProvider() const noexcept

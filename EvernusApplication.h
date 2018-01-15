@@ -81,7 +81,6 @@
 #include "qxtsmtp.h"
 
 class QSplashScreen;
-class QUrl;
 
 namespace Evernus
 {
@@ -102,8 +101,8 @@ namespace Evernus
 
         EvernusApplication(int &argc,
                            char *argv[],
-                           QString clientId,
-                           QString clientSecret,
+                           QByteArray clientId,
+                           QByteArray clientSecret,
                            const QString &forcedVersion,
                            bool dontUpdate);
         virtual ~EvernusApplication() = default;
@@ -166,6 +165,9 @@ namespace Evernus
 
         ESIInterfaceManager &getESIInterfaceManager() noexcept;
 
+        QByteArray getSSOClientId() const;
+        QByteArray getSSOClientSecret() const;
+
         MarketOrderProvider &getMarketOrderProvider() const noexcept;
         MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
 
@@ -208,8 +210,6 @@ namespace Evernus
         void openMarginTool();
 
         void ssoError(const QString &info);
-
-        void ssoAuthRequested(Character::IdType charId, const QUrl &url);
 
     public slots:
         void refreshCharacters();
@@ -274,6 +274,9 @@ namespace Evernus
         using TransactionFetcher = std::function<WalletTransactionRepository::EntityList (const QDateTime &, const QDateTime &, EveType::IdType)>;
 
         QSqlDatabase mMainDb, mEveDb;
+
+        QByteArray mClientId;
+        QByteArray mClientSecret;
 
         std::unique_ptr<CharacterRepository> mCharacterRepository;
         std::unique_ptr<ItemRepository> mItemRepository, mCorpItemRepository;

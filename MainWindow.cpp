@@ -401,28 +401,21 @@ namespace Evernus
         SSOMessageBox::showMessage(info, this);
     }
 
-    void MainWindow::requestSSOAuth(Character::IdType charId, const QUrl &url)
+    void MainWindow::requestSSOAuth(Character::IdType charId)
     {
-        qInfo() << "Showing SSO auth for:" << charId << url;
+        qInfo() << "Showing SSO auth for:" << charId;
 
-        mAuthView.reset(new SSOAuthDialog{url, this});
+        mAuthView.reset(new SSOAuthDialog{this});
 
         QString charName;
         auto charNameFound = false;
 
-        if (charId != 0)
-        {
-            std::tie(charName, charNameFound) = getCharacterName(charId);
+        std::tie(charName, charNameFound) = getCharacterName(charId);
 
-            if (charName.isEmpty())
-                mAuthView->setWindowTitle(tr("SSO authentication for unknown character: %1").arg(charId));
-            else
-                mAuthView->setWindowTitle(getAuthWidowTitle(charName));
-        }
+        if (charName.isEmpty())
+            mAuthView->setWindowTitle(tr("SSO Authentication for unknown character: %1").arg(charId));
         else
-        {
-            mAuthView->setWindowTitle(tr("SSO authentication"));
-        }
+            mAuthView->setWindowTitle(getAuthWidowTitle(charName));
 
         mAuthView->move(rect().center() - mAuthView->rect().center());
         mAuthView->show();
@@ -438,7 +431,7 @@ namespace Evernus
             emit ssoAuthCanceled(charId);
         });
 
-        if (!charNameFound && charId != 0)
+        if (!charNameFound)
         {
             connect(&mEveDataProvider, &EveDataProvider::namesChanged, mAuthView.get(), [=] {
                 mAuthView->setWindowTitle(getAuthWidowTitle(mEveDataProvider.getGenericName(charId)));
