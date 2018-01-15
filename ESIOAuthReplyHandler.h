@@ -14,33 +14,28 @@
  */
 #pragma once
 
-#include <QDialog>
-
-class QLineEdit;
-class QUrl;
+#include <QAbstractOAuthReplyHandler>
 
 namespace Evernus
 {
-    class SSOAuthDialog
-        : public QDialog
+    class ESIOAuthReplyHandler
+        : public QAbstractOAuthReplyHandler
     {
         Q_OBJECT
 
     public:
-        explicit SSOAuthDialog(const QUrl &url, QWidget *parent = nullptr);
-        virtual ~SSOAuthDialog() = default;
+        using QAbstractOAuthReplyHandler::QAbstractOAuthReplyHandler;
+        ESIOAuthReplyHandler(const ESIOAuthReplyHandler &) = default;
+        ESIOAuthReplyHandler(ESIOAuthReplyHandler &&) = default;
+        virtual ~ESIOAuthReplyHandler() = default;
+
+        virtual QString callback() const override;
+        virtual void networkReplyFinished(QNetworkReply *reply) override;
+
+        ESIOAuthReplyHandler &operator =(const ESIOAuthReplyHandler &) = default;
+        ESIOAuthReplyHandler &operator =(ESIOAuthReplyHandler &&) = default;
 
     signals:
-        void acquiredCode(const QByteArray &code);
-        void aboutToClose();
-
-    protected:
-        virtual void closeEvent(QCloseEvent *event) override;
-
-    private slots:
-        void applyCode();
-
-    private:
-        QLineEdit *mCodeEdit = nullptr;
+        void error(const QString &message);
     };
 }
