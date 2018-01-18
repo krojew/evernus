@@ -26,12 +26,14 @@
 
 namespace Evernus
 {
-    ESIInterfaceManager::ESIInterfaceManager(QObject *parent)
+    ESIInterfaceManager::ESIInterfaceManager(QString clientId, QString clientSecret, QObject *parent)
         : QObject{parent}
+        , mOAuth{std::move(clientId), std::move(clientSecret)}
     {
+        connect(&mOAuth, &ESIOAuth::ssoAuthRequested, this, &ESIInterfaceManager::ssoAuthRequested);
+
         readCitadelAccessCache();
         createInterfaces();
-        connectInterfaces();
     }
 
     ESIInterfaceManager::~ESIInterfaceManager()
@@ -48,9 +50,7 @@ namespace Evernus
     void ESIInterfaceManager::handleNewPreferences()
     {
         mInterfaces.clear();
-
         createInterfaces();
-        connectInterfaces();
     }
 
     const ESIInterface &ESIInterfaceManager::selectNextInterface()
@@ -71,16 +71,6 @@ namespace Evernus
         return mCitadelAccessCache;
     }
 
-    void ESIInterfaceManager::connectInterfaces()
-    {
-        for (const auto &interface : mInterfaces)
-        {
-            connect(interface.get(), &ESIInterface::tokenRequested, this, &ESIInterfaceManager::tokenRequested, Qt::QueuedConnection);
-            connect(this, &ESIInterfaceManager::acquiredToken, interface.get(), &ESIInterface::updateTokenAndContinue);
-            connect(this, &ESIInterfaceManager::tokenError, interface.get(), &ESIInterface::handleTokenError);
-        }
-    }
-
     void ESIInterfaceManager::createInterfaces()
     {
         QSettings settings;
@@ -92,7 +82,7 @@ namespace Evernus
         );
 
         for (auto i = 0u; i < maxInterfaces; ++i)
-            mInterfaces.emplace_back(new ESIInterface{mCitadelAccessCache, mErrorLimiter});
+            mInterfaces.emplace_back(new ESIInterface{mCitadelAccessCache, mErrorLimiter, mOAuth});
     }
 
     void ESIInterfaceManager::readCitadelAccessCache()

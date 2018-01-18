@@ -24,6 +24,9 @@
 #include "ESIInterfaceErrorLimiter.h"
 #include "CitadelAccessCache.h"
 #include "Character.h"
+#include "ESIOAuth.h"
+
+class QUrl;
 
 namespace Evernus
 {
@@ -35,7 +38,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit ESIInterfaceManager(QObject *parent = nullptr);
+        ESIInterfaceManager(QString clientId, QString clientSecret, QObject *parent = nullptr);
         ESIInterfaceManager(const ESIInterfaceManager &) = delete;
         ESIInterfaceManager(ESIInterfaceManager &&) = default;
         virtual ~ESIInterfaceManager();
@@ -51,10 +54,7 @@ namespace Evernus
         ESIInterfaceManager &operator =(ESIInterfaceManager &&) = default;
 
     signals:
-        void tokenRequested(Character::IdType charId) const;
-
-        void tokenError(Character::IdType charId, const QString &error);
-        void acquiredToken(Character::IdType charId, const QString &accessToken, const QDateTime &expiry);
+        void ssoAuthRequested(Character::IdType charId, const QUrl &url);
 
     private:
         std::vector<std::unique_ptr<ESIInterface, QObjectDeleteLaterDeleter>> mInterfaces;
@@ -62,8 +62,8 @@ namespace Evernus
 
         CitadelAccessCache mCitadelAccessCache;
         ESIInterfaceErrorLimiter mErrorLimiter;
+        ESIOAuth mOAuth;
 
-        void connectInterfaces();
         void createInterfaces();
 
         void readCitadelAccessCache();

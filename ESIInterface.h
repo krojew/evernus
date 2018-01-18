@@ -20,7 +20,6 @@
 
 #include <optional>
 
-#include <QNetworkAccessManager>
 #include <QSettings>
 #include <QDateTime>
 #include <QString>
@@ -33,12 +32,14 @@
 
 class QNetworkRequest;
 class QJsonDocument;
+class QNetworkReply;
 class QUrlQuery;
 
 namespace Evernus
 {
     class ESIInterfaceErrorLimiter;
     class CitadelAccessCache;
+    class ESIOAuth;
 
     class ESIInterface final
         : public QObject
@@ -59,6 +60,7 @@ namespace Evernus
 
         ESIInterface(CitadelAccessCache &citadelAccessCache,
                      ESIInterfaceErrorLimiter &errorLimiter,
+                     ESIOAuth &oauth,
                      QObject *parent = nullptr);
         ESIInterface(const ESIInterface &) = default;
         ESIInterface(ESIInterface &&) = default;
@@ -113,26 +115,10 @@ namespace Evernus
         ESIInterface &operator =(const ESIInterface &) = default;
         ESIInterface &operator =(ESIInterface &&) = default;
 
-    public slots:
-        void updateTokenAndContinue(Character::IdType charId, QString token, const QDateTime &expiry);
-        void handleTokenError(Character::IdType charId, const QString &error);
-
-    signals:
-        void tokenRequested(Character::IdType charId) const;
-
     protected:
         virtual void customEvent(QEvent *event) override;
 
-    private slots:
-        void processSslErrors(const QList<QSslError> &errors);
-
     private:
-        struct AccessToken
-        {
-            QString mToken;
-            QDateTime mExpiry;
-        };
-
         struct ErrorInfo
         {
             QString mMessage;
@@ -152,24 +138,16 @@ namespace Evernus
 
         CitadelAccessCache &mCitadelAccessCache;
         ESIInterfaceErrorLimiter &mErrorLimiter;
+        ESIOAuth &mOAuth;
 
         bool mLogReplies = false;
 
         mutable std::mutex mObjectStateMutex;
-        mutable std::recursive_mutex mAuthMutex;
-
-        mutable QNetworkAccessManager mNetworkManager;
-
-        mutable std::unordered_multimap<Character::IdType, std::function<void (const QString &)>> mPendingAuthRequests;
-        mutable std::unordered_map<Character::IdType, AccessToken> mAccessTokens;
 
         QSettings mSettings;
 
         template<class T>
-        void checkAuth(Character::IdType charId, T &&continuation) const;
-
-        template<class T>
-        void fetchPaginatedData(const QString &url, QUrlQuery query, uint page, T &&continuation) const;
+        void fetchPaginatedData(const QString &url, QVariantMap parameters, uint page, T &&continuation) const;
         template<class T>
         void fetchPaginatedData(Character::IdType charId,
                                 const QString &url,
@@ -179,29 +157,23 @@ namespace Evernus
                                 quint64 citadelId = 0) const;
 
         template<class T, class ResultTag = JsonTag>
-        void get(const QString &url, const QString &query, const T &continuation, uint retries) const;
+        void get(const QString &url, const QVariantMap &parameters, const T &continuation, uint retries) const;
         template<class T, class ResultTag = JsonTag>
         void get(Character::IdType charId,
                  const QString &url,
-                 const QString &query,
+                 const QVariantMap &parameters,
                  const T &continuation,
                  uint retries,
                  bool importingCitadels = false,
                  quint64 citadelId = 0) const;
 
         template<class T>
-        void post(Character::IdType charId, const QString &url, const QString &query, T &&errorCallback) const;
+        void post(Character::IdType charId, const QString &url, const QVariant &data, T &&errorCallback) const;
         template<class T>
-        void post(const QString &url, const QByteArray &body, ErrorCallback errorCallback, T &&resultCallback) const;
-
-        template<class T>
-        void tryAuthAndContinue(Character::IdType charId, T &&continuation) const;
+        void post(const QString &url, const QVariant &data, ErrorCallback errorCallback, T &&resultCallback) const;
 
         template<class T>
         void schedulePostErrorLimitRequest(T &&callback, const QNetworkReply &reply) const;
-
-        QNetworkRequest prepareRequest(const QString &url, const QString &query) const;
-        QNetworkRequest prepareRequest(Character::IdType charId, const QString &url, const QString &query) const;
 
         uint getNumRetries() const;
 
@@ -209,7 +181,7 @@ namespace Evernus
         void runNowOrLater(T callback) const;
 
         static ErrorInfo getError(const QByteArray &reply);
-        static ErrorInfo getError(const QString &url, const QString &query, QNetworkReply &reply);
+        static ErrorInfo getError(const QString &url, const QVariantMap &parameters, QNetworkReply &reply);
         static QDateTime getExpireTime(const QNetworkReply &reply);
         static uint getPageCount(const QNetworkReply &reply);
     };
