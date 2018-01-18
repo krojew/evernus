@@ -143,8 +143,8 @@ namespace Evernus
                 "esi-wallet.read_corporation_wallets.v1 "
                 "esi-assets.read_corporation_assets.v1 "
                 "esi-corporations.read_blueprints.v1 "
-                "esi-contracts.read_corporation_contracts.v1"
-                "esi-markets.read_corporation_orders.v1  "
+                "esi-contracts.read_corporation_contracts.v1 "
+                "esi-markets.read_corporation_orders.v1 "
                 "esi-industry.read_character_mining.v1"
             ));
             it->second->setContentType(QAbstractOAuth::ContentType::Json);
