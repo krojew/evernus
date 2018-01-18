@@ -44,6 +44,7 @@ namespace Evernus
         virtual ~ESIInterfaceManager();
 
         void handleNewPreferences();
+        void clearRefreshTokens();
 
         const ESIInterface &selectNextInterface();
 

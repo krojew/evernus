@@ -50,6 +50,8 @@ namespace Evernus
         QNetworkReply *post(QUrl url, const QVariant &data = {});
         void post(Character::IdType charId, QUrl url, const QVariant &data, NetworkReplyCallback callback, AuthErrorCallback errorCallback);
 
+        void clearRefreshTokens();
+
         ESIOAuth &operator =(const ESIOAuth &) = default;
         ESIOAuth &operator =(ESIOAuth &&) = default;
 

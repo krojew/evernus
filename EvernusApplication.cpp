@@ -50,6 +50,7 @@
 #include "UISettings.h"
 #include "DbSettings.h"
 #include "PathUtils.h"
+#include "SSOUtils.h"
 #include "Updater.h"
 
 #include "qxtmailmessage.h"
@@ -1471,6 +1472,12 @@ namespace Evernus
     {
         mDataProvider->clearCitadelCache();
         emit citadelsChanged();
+    }
+
+    void EvernusApplication::clearRefreshTokens()
+    {
+        SSOUtils::clearRefreshTokens();
+        mESIInterfaceManager.clearRefreshTokens();
     }
 
     void EvernusApplication::makeValueSnapshots(Character::IdType id)

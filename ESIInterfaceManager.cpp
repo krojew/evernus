@@ -53,6 +53,11 @@ namespace Evernus
         createInterfaces();
     }
 
+    void ESIInterfaceManager::clearRefreshTokens()
+    {
+        mOAuth.clearRefreshTokens();
+    }
+
     const ESIInterface &ESIInterfaceManager::selectNextInterface()
     {
         const auto &interface = *mInterfaces[mCurrentInterface];

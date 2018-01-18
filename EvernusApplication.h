@@ -244,6 +244,7 @@ namespace Evernus
 
         void clearCorpWalletData();
         void clearCitadelCache();
+        void clearRefreshTokens();
 
         void makeValueSnapshots(Character::IdType id);
 

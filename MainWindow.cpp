@@ -190,6 +190,7 @@ namespace Evernus
     {
         PreferencesDialog dlg{mEveDataProvider, mRepositoryProvider.getCharacterRepository().getDatabase(), this};
         connect(&dlg, &PreferencesDialog::clearCorpWalletData, this, &MainWindow::clearCorpWalletData);
+        connect(&dlg, &PreferencesDialog::clearRefreshTokens, this, &MainWindow::clearRefreshTokens);
 
         dlg.exec();
 

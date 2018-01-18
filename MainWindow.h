@@ -148,6 +148,7 @@ namespace Evernus
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
         void clearCorpWalletData();
+        void clearRefreshTokens();
 
         void makeValueSnapshots(Character::IdType id);
 

@@ -38,7 +38,7 @@ namespace Evernus
     public slots:
         void applySettings();
 
-    private slots:
+    signals:
         void clearRefreshTokens();
 
     private:

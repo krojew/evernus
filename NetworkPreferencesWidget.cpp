@@ -28,7 +28,6 @@
 #include <QLabel>
 
 #include "NetworkSettings.h"
-#include "SSOUtils.h"
 
 #include "NetworkPreferencesWidget.h"
 
@@ -195,10 +194,5 @@ namespace Evernus
         settings.setValue(NetworkSettings::maxRetriesKey, mMaxRetriesEdit->value());
         settings.setValue(NetworkSettings::maxESIThreadsKey, mMaxESIThreadsEdit->value());
         settings.setValue(NetworkSettings::ignoreSslErrorsKey, mIgnoreSslErrors->isChecked());
-    }
-
-    void NetworkPreferencesWidget::clearRefreshTokens()
-    {
-        SSOUtils::clearRefreshTokens();
     }
 }

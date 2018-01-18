@@ -377,6 +377,8 @@ int main(int argc, char *argv[])
                              &app, &Evernus::EvernusApplication::updateExternalOrdersAndAssetValue);
             QObject::connect(&mainWnd, &Evernus::MainWindow::clearCorpWalletData,
                              &app, &Evernus::EvernusApplication::clearCorpWalletData);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::clearRefreshTokens,
+                             &app, &Evernus::EvernusApplication::clearRefreshTokens);
             QObject::connect(&mainWnd, &Evernus::MainWindow::makeValueSnapshots,
                              &app, &Evernus::EvernusApplication::makeValueSnapshots);
             QObject::connect(&mainWnd, &Evernus::MainWindow::citadelsEdited,

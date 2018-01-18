@@ -88,6 +88,13 @@ namespace Evernus
         return reply;
     }
 
+    void ESIOAuth::clearRefreshTokens()
+    {
+        mRefreshTokens.clear();
+        for (const auto &oauth : mCharactersOAuths)
+            oauth.second->setRefreshToken({});
+    }
+
     void ESIOAuth::post(Character::IdType charId, QUrl url, const QVariant &data, NetworkReplyCallback callback, AuthErrorCallback errorCallback)
     {
         prepareUrl(url);
