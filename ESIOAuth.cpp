@@ -165,14 +165,9 @@ namespace Evernus
                 processPendingRequests(charId);
             });
 
-            //grantOrRefresh(*it->second);
-            // instead of calling the above, we need a hack, because of https://bugreports.qt.io/browse/QTBUG-65778
+            // we need a hack, because of https://bugreports.qt.io/browse/QTBUG-65778
             // TODO: remove
-            if (it->second->refreshToken().isEmpty())
-            {
-                it->second->grant();
-            }
-            else
+            if (!it->second->refreshToken().isEmpty())
             {
                 it->second->blockSignals(true);
                 it->second->setAccessTokenUrl(QStringLiteral("dummy"));
