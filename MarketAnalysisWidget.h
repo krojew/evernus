@@ -51,9 +51,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MarketAnalysisWidget(const QByteArray &clientId,
-                             const QByteArray &clientSecret,
-                             const EveDataProvider &dataProvider,
+        MarketAnalysisWidget(const EveDataProvider &dataProvider,
                              ESIInterfaceManager &interfaceManager,
                              TaskManager &taskManager,
                              const MarketOrderRepository &orderRepo,
@@ -76,14 +74,9 @@ namespace Evernus
 
         void showInEve(EveType::IdType id, Character::IdType ownerId);
 
-        void ssoAuthRequested(Character::IdType charId);
-
     public slots:
         void setCharacter(Character::IdType id);
         void showForCurrentRegion();
-
-        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
-        void cancelSSOAuth(Character::IdType charId);
 
     private slots:
         void prepareOrderImport();

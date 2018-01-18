@@ -50,9 +50,7 @@
 
 namespace Evernus
 {
-    InterRegionAnalysisWidget::InterRegionAnalysisWidget(const QByteArray &clientId,
-                                                         const QByteArray &clientSecret,
-                                                         const EveDataProvider &dataProvider,
+    InterRegionAnalysisWidget::InterRegionAnalysisWidget(const EveDataProvider &dataProvider,
                                                          const MarketDataProvider &marketDataProvider,
                                                          const RegionStationPresetRepository &regionStationPresetRepository,
                                                          QWidget *parent)

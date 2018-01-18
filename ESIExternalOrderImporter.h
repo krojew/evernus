@@ -31,9 +31,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        ESIExternalOrderImporter(QByteArray clientId,
-                                 QByteArray clientSecret,
-                                 const EveDataProvider &dataProvider,
+        ESIExternalOrderImporter(const EveDataProvider &dataProvider,
                                  const CharacterRepository &characterRepo,
                                  ESIInterfaceManager &interfaceManager,
                                  QObject *parent = nullptr);
@@ -43,13 +41,6 @@ namespace Evernus
 
         ESIExternalOrderImporter &operator =(const ESIExternalOrderImporter &) = default;
         ESIExternalOrderImporter &operator =(ESIExternalOrderImporter &&) = default;
-
-    signals:
-        void ssoAuthRequested(Character::IdType charId);
-
-    public slots:
-        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
-        void cancelSSOAuth(Character::IdType charId);
 
     protected:
         ESIManager mManager;

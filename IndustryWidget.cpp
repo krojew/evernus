@@ -34,8 +34,6 @@ namespace Evernus
                                    const AssetProvider &assetProvider,
                                    const ItemCostProvider &costProvider,
                                    const CacheTimerProvider &cacheTimerProvider,
-                                   QByteArray clientId,
-                                   QByteArray clientSecret,
                                    QWidget *parent)
         : QWidget{parent}
     {
@@ -54,14 +52,10 @@ namespace Evernus
                                                                taskManager,
                                                                assetProvider,
                                                                costProvider,
-                                                               clientId,
-                                                               clientSecret,
                                                                this};
         tabs->addTab(mManufacturingWidget, tr("Manufacturing planner"));
         connect(mManufacturingWidget, &IndustryManufacturingWidget::updateExternalOrders,
                 this, &IndustryWidget::updateExternalOrders);
-        connect(mManufacturingWidget, &IndustryManufacturingWidget::ssoAuthRequested,
-                this, &IndustryWidget::ssoAuthRequested);
         connect(mManufacturingWidget, &IndustryManufacturingWidget::showInEve,
                 this, &IndustryWidget::showInEve);
         connect(mManufacturingWidget, &IndustryManufacturingWidget::showExternalOrders,
@@ -73,16 +67,12 @@ namespace Evernus
                                                              characterRepo,
                                                              taskManager,
                                                              interfaceManager,
-                                                             std::move(clientId),
-                                                             std::move(clientSecret),
                                                              this};
         tabs->addTab(mMiningLedgerWidget, tr("Mining ledger"));
         connect(mMiningLedgerWidget, &IndustryMiningLedgerWidget::importFromAPI,
                 this, &IndustryWidget::importMiningLedger);
         connect(mMiningLedgerWidget, &IndustryMiningLedgerWidget::updateExternalOrders,
                 this, &IndustryWidget::updateExternalOrders);
-        connect(mMiningLedgerWidget, &IndustryMiningLedgerWidget::ssoAuthRequested,
-                this, &IndustryWidget::ssoAuthRequested);
     }
 
     void IndustryWidget::handleNewPreferences()
@@ -110,23 +100,5 @@ namespace Evernus
     {
         Q_ASSERT(mMiningLedgerWidget != nullptr);
         mMiningLedgerWidget->refresh();
-    }
-
-    void IndustryWidget::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
-    {
-        Q_ASSERT(mManufacturingWidget != nullptr);
-        Q_ASSERT(mMiningLedgerWidget != nullptr);
-
-        mManufacturingWidget->processAuthorizationCode(charId, code);
-        mMiningLedgerWidget->processAuthorizationCode(charId, code);
-    }
-
-    void IndustryWidget::cancelSSOAuth(Character::IdType charId)
-    {
-        Q_ASSERT(mManufacturingWidget != nullptr);
-        Q_ASSERT(mMiningLedgerWidget != nullptr);
-
-        mManufacturingWidget->cancelSSOAuth(charId);
-        mMiningLedgerWidget->cancelSSOAuth(charId);
     }
 }

@@ -210,7 +210,6 @@ namespace Evernus
         void openMarginTool();
 
         void ssoError(const QString &info);
-        void ssoAuthRequested(Character::IdType charId);
 
     public slots:
         void refreshCharacters();
@@ -250,9 +249,6 @@ namespace Evernus
 
         void showInEve(EveType::IdType typeId, Character::IdType charId);
         void setDestinationInEve(quint64 locationId, Character::IdType charId);
-
-        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
-        void cancelSSOAuth(Character::IdType charId);
 
     private slots:
         void scheduleCharacterUpdate();

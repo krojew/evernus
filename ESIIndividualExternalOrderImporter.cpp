@@ -27,13 +27,11 @@
 namespace Evernus
 {
     ESIIndividualExternalOrderImporter
-    ::ESIIndividualExternalOrderImporter(QByteArray clientId,
-                                         QByteArray clientSecret,
-                                         const EveDataProvider &dataProvider,
+    ::ESIIndividualExternalOrderImporter(const EveDataProvider &dataProvider,
                                          const CharacterRepository &characterRepo,
                                          ESIInterfaceManager &interfaceManager,
                                          QObject *parent)
-        : ESIExternalOrderImporter{std::move(clientId), std::move(clientSecret), dataProvider, characterRepo, interfaceManager, parent}
+        : ESIExternalOrderImporter{dataProvider, characterRepo, interfaceManager, parent}
         , mDataProvider{dataProvider}
     {
     }

@@ -16,26 +16,12 @@
 
 namespace Evernus
 {
-    ESIExternalOrderImporter::ESIExternalOrderImporter(QByteArray clientId,
-                                                       QByteArray clientSecret,
-                                                       const EveDataProvider &dataProvider,
+    ESIExternalOrderImporter::ESIExternalOrderImporter(const EveDataProvider &dataProvider,
                                                        const CharacterRepository &characterRepo,
                                                        ESIInterfaceManager &interfaceManager,
                                                        QObject *parent)
         : CallbackExternalOrderImporter{parent}
-        , mManager{std::move(clientId), std::move(clientSecret), dataProvider, characterRepo, interfaceManager}
+        , mManager{dataProvider, characterRepo, interfaceManager}
     {
-        connect(&mManager, &ESIManager::error, this, &ESIExternalOrderImporter::genericError);
-        connect(&mManager, &ESIManager::ssoAuthRequested, this, &ESIExternalOrderImporter::ssoAuthRequested);
-    }
-
-    void ESIExternalOrderImporter::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
-    {
-        mManager.processAuthorizationCode(charId, code);
-    }
-
-    void ESIExternalOrderImporter::cancelSSOAuth(Character::IdType charId)
-    {
-        mManager.cancelSSOAuth(charId);
     }
 }

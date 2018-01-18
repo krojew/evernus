@@ -68,8 +68,6 @@ namespace Evernus
                                     TaskManager &taskManager,
                                     const AssetProvider &assetProvider,
                                     const ItemCostProvider &costProvider,
-                                    QByteArray clientId,
-                                    QByteArray clientSecret,
                                     QWidget *parent = nullptr);
         IndustryManufacturingWidget(const IndustryManufacturingWidget &) = default;
         IndustryManufacturingWidget(IndustryManufacturingWidget &&) = default;
@@ -83,16 +81,12 @@ namespace Evernus
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
         void setupRefreshChanged(bool started);
-        void ssoAuthRequested(Character::IdType charId);
         void showInEve(EveType::IdType id);
         void showExternalOrders(EveType::IdType id);
 
     public slots:
         void handleNewPreferences();
         void setCharacter(Character::IdType id);
-
-        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
-        void cancelSSOAuth(Character::IdType charId);
 
     private slots:
         void refreshTypes();
