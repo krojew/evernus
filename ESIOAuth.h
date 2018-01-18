@@ -51,6 +51,7 @@ namespace Evernus
         void post(Character::IdType charId, QUrl url, const QVariant &data, NetworkReplyCallback callback, AuthErrorCallback errorCallback);
 
         void clearRefreshTokens();
+        void cancelSsoAuth(Character::IdType charId);
 
         ESIOAuth &operator =(const ESIOAuth &) = default;
         ESIOAuth &operator =(ESIOAuth &&) = default;

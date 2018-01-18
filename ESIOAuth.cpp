@@ -95,6 +95,11 @@ namespace Evernus
             oauth.second->setRefreshToken({});
     }
 
+    void ESIOAuth::cancelSsoAuth(Character::IdType charId)
+    {
+        processPendingRequests(charId, tr("Authentication cancelled."));
+    }
+
     void ESIOAuth::post(Character::IdType charId, QUrl url, const QVariant &data, NetworkReplyCallback callback, AuthErrorCallback errorCallback)
     {
         prepareUrl(url);

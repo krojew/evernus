@@ -13,9 +13,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QDesktopServices>
+#include <QDialogButtonBox>
 #include <QMessageBox>
 #include <QVBoxLayout>
-#include <QPushButton>
 #include <QLineEdit>
 #include <QLabel>
 #include <QUrl>
@@ -37,16 +37,15 @@ namespace Evernus
         infoLabel->setWordWrap(true);
         infoLabel->setTextFormat(Qt::RichText);
 
-        auto codeLayout = new QHBoxLayout{};
-        mainLayout->addLayout(codeLayout);
-
         mCodeEdit = new QLineEdit{this};
-        codeLayout->addWidget(mCodeEdit);
+        mainLayout->addWidget(mCodeEdit);
         mCodeEdit->setPlaceholderText(tr("paste the resulting code here"));
 
-        auto authBtn = new QPushButton{tr("Authorize"), this};
-        codeLayout->addWidget(authBtn);
-        connect(authBtn, &QPushButton::clicked, this, &SSOAuthDialog::applyCode);
+        auto buttons = new QDialogButtonBox{QDialogButtonBox::Cancel, this};
+        mainLayout->addWidget(buttons);
+        buttons->addButton(tr("Authorize"), QDialogButtonBox::AcceptRole);
+        connect(buttons, &QDialogButtonBox::accepted, this, &SSOAuthDialog::applyCode);
+        connect(buttons, &QDialogButtonBox::rejected, this, &SSOAuthDialog::close);
 
         setModal(true);
         adjustSize();

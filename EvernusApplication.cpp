@@ -1533,6 +1533,11 @@ namespace Evernus
         mESIManager->setDestination(locationId, charId);
     }
 
+    void EvernusApplication::cancelSsoAuth(Character::IdType charId)
+    {
+        mESIInterfaceManager.cancelSsoAuth(charId);
+    }
+
     void EvernusApplication::scheduleCharacterUpdate()
     {
         if (mCharacterUpdateScheduled)

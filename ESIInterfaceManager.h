@@ -45,6 +45,7 @@ namespace Evernus
 
         void handleNewPreferences();
         void clearRefreshTokens();
+        void cancelSsoAuth(Character::IdType charId);
 
         const ESIInterface &selectNextInterface();
 

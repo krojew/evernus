@@ -58,6 +58,11 @@ namespace Evernus
         mOAuth.clearRefreshTokens();
     }
 
+    void ESIInterfaceManager::cancelSsoAuth(Character::IdType charId)
+    {
+        mOAuth.cancelSsoAuth(charId);
+    }
+
     const ESIInterface &ESIInterfaceManager::selectNextInterface()
     {
         const auto &interface = *mInterfaces[mCurrentInterface];

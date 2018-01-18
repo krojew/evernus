@@ -251,6 +251,8 @@ namespace Evernus
         void showInEve(EveType::IdType typeId, Character::IdType charId);
         void setDestinationInEve(quint64 locationId, Character::IdType charId);
 
+        void cancelSsoAuth(Character::IdType charId);
+
     private slots:
         void scheduleCharacterUpdate();
         void updateCharacters();
