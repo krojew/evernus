@@ -31,9 +31,16 @@ namespace Evernus
     {
         Q_ASSERT(reply != nullptr);
 
-        if (Q_UNLIKELY(reply->error() != QNetworkReply::NoError))
+        const auto replyError = reply->error();
+        if (Q_UNLIKELY(replyError != QNetworkReply::NoError))
         {
-            qWarning() << "OAuth error:" << reply->error() << reply->errorString();
+            qWarning() << "OAuth error:" << replyError << reply->errorString();
+
+            // part 2 of the hack for https://bugreports.qt.io/browse/QTBUG-65778
+            // TODO: remove
+            if (replyError == QNetworkReply::ProtocolUnknownError && reply->url().path() == QStringLiteral("dummy"))
+                return;
+
             emit error(reply->errorString());
             return;
         }

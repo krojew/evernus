@@ -114,8 +114,7 @@ namespace Evernus
         auto it = mCharactersOAuths.find(charId);
         if (it == std::end(mCharactersOAuths))
         {
-            it = mCharactersOAuths.emplace(charId, new QOAuth2AuthorizationCodeFlow
-                                           {
+            it = mCharactersOAuths.emplace(charId, new QOAuth2AuthorizationCodeFlow{
                 mClientId,
                 QStringLiteral("https://login.eveonline.com/oauth/authorize"),
                 QStringLiteral("https://login.eveonline.com/oauth/token"),
@@ -159,7 +158,26 @@ namespace Evernus
                 processPendingRequests(charId);
             });
 
-            grantOrRefresh(*it->second);
+            //grantOrRefresh(*it->second);
+            // instead of calling the above, we need a hack, because of https://bugreports.qt.io/browse/QTBUG-65778
+            // TODO: remove
+            if (it->second->refreshToken().isEmpty())
+            {
+                it->second->grant();
+            }
+            else
+            {
+                it->second->blockSignals(true);
+                it->second->setAccessTokenUrl(QStringLiteral("dummy"));
+                it->second->grant();
+                it->second->blockSignals(false);
+                it->second->authorizationCallbackReceived({
+                    { QStringLiteral("code"), QStringLiteral("dummy") },
+                    { QStringLiteral("state"), it->second->state() }
+                });
+                it->second->setAccessTokenUrl(QStringLiteral("https://login.eveonline.com/oauth/token"));
+                it->second->refreshAccessToken();
+            }
         }
 
         return *it->second;
