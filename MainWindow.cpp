@@ -428,12 +428,6 @@ namespace Evernus
         mAuthView->move(rect().center() - mAuthView->rect().center());
         mAuthView->show();
 
-        connect(mAuthView.get(), &SSOAuthDialog::acquiredCode, this, [=](const auto &code) {
-            mAuthView->disconnect(this);
-            mAuthView.reset();
-
-            emit gotSSOAuthorizationCode(charId, code);
-        });
         connect(mAuthView.get(), &SSOAuthDialog::aboutToClose, this, [=] {
             mAuthView.reset();
             emit ssoAuthCanceled(charId);

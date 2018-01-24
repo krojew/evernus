@@ -16,7 +16,6 @@
 
 #include <QDialog>
 
-class QLineEdit;
 class QUrl;
 
 namespace Evernus
@@ -31,16 +30,9 @@ namespace Evernus
         virtual ~SSOAuthDialog() = default;
 
     signals:
-        void acquiredCode(const QByteArray &code);
         void aboutToClose();
 
     protected:
         virtual void closeEvent(QCloseEvent *event) override;
-
-    private slots:
-        void applyCode();
-
-    private:
-        QLineEdit *mCodeEdit = nullptr;
     };
 }
