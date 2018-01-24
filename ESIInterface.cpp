@@ -489,37 +489,43 @@ namespace Evernus
     void ESIInterface::fetchGenericName(quint64 id, const PersistentStringCallback &callback) const
     {
         qDebug() << "Fetching generic name:" << id;
-        post(QStringLiteral("/v2/universe/names/"),
-            QStringLiteral("[%1]").arg(id).toLatin1(),
-            [=](const auto &error) {
-                callback({}, error);
-            }, [=](const auto &data) {
-                const auto doc = QJsonDocument::fromJson(data);
-                const auto names = doc.array();
 
-                if (Q_LIKELY(names.size() > 0))
-                    callback(names.first().toObject().value(QStringLiteral("name")).toString(), {});
-                else
-                    callback({}, tr("Missing name data for: %1").arg(id));
-        });
+        QVariantList idArray;
+        idArray << id;
+
+        post(QStringLiteral("/v2/universe/names/"),
+             idArray,
+             [=](const auto &error) {
+                 callback({}, error);
+             }, [=](const auto &data) {
+                 const auto doc = QJsonDocument::fromJson(data);
+                 const auto names = doc.array();
+
+                 if (Q_LIKELY(names.size() > 0))
+                     callback(names.first().toObject().value(QStringLiteral("name")).toString(), {});
+                 else
+                     callback({}, tr("Missing name data for: %1").arg(id));
+             }
+        );
     }
 
     void ESIInterface::fetchGenericNames(const std::vector<quint64> &ids, const PersistentJsonCallback &callback) const
     {
         qDebug() << "Fetching generic names:" << ids.size();
 
-        QJsonArray idArray;
+        QVariantList idArray;
         std::transform(std::begin(ids), std::end(ids), std::back_inserter(idArray), [](auto id) {
             return static_cast<double>(id);
         });
 
         post(QStringLiteral("/v2/universe/names/"),
-            QJsonDocument{idArray}.toJson(QJsonDocument::Compact),
-            [=](const auto &error) {
-                callback({}, error);
-            }, [=](const auto &data) {
-                callback(QJsonDocument::fromJson(data), {});
-        });
+             idArray,
+             [=](const auto &error) {
+                 callback({}, error);
+             }, [=](const auto &data) {
+                 callback(QJsonDocument::fromJson(data), {});
+             }
+        );
     }
 
     void ESIInterface::fetchMarketPrices(const JsonCallback &callback) const

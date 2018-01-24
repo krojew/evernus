@@ -80,7 +80,7 @@ namespace Evernus
         auto request = prepareRequest(url);
         request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 
-        const auto reply = mUnauthNetworkAccessManager.post(request, QJsonDocument::fromVariant(data).toJson());
+        const auto reply = mUnauthNetworkAccessManager.post(request, QJsonDocument::fromVariant(data).toJson(QJsonDocument::Compact));
         connect(reply, &QNetworkReply::sslErrors, this, &ESIOAuth::processSslErrors);
 
         new ReplyTimeout{*reply};
