@@ -152,6 +152,7 @@ namespace Evernus
 
         void makeValueSnapshots(Character::IdType id);
 
+        void gotSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
         void ssoAuthCanceled(Character::IdType charId);
 
     public slots:

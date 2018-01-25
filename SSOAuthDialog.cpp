@@ -16,6 +16,7 @@
 #include <QDialogButtonBox>
 #include <QMessageBox>
 #include <QVBoxLayout>
+#include <QLineEdit>
 #include <QLabel>
 #include <QUrl>
 
@@ -29,16 +30,21 @@ namespace Evernus
         auto mainLayout = new QVBoxLayout{this};
 
         auto infoLabel = new QLabel{
-            tr("Please authorize in the browser and wait for Evernus to proceed. Click the following link, if the browser didn't open: <a href='%1'>%1</a>").arg(url.toString()),
+            tr("Please authorize in the browser and paste the resulting code below. Click the following link, if the browser didn't open: <a href='%1'>%1</a>").arg(url.toString()),
             this
         };
         mainLayout->addWidget(infoLabel);
         infoLabel->setWordWrap(true);
         infoLabel->setTextFormat(Qt::RichText);
 
-        auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
+        mCodeEdit = new QLineEdit{this};
+        mainLayout->addWidget(mCodeEdit);
+        mCodeEdit->setPlaceholderText(tr("paste the resulting code here"));
+
+        auto buttons = new QDialogButtonBox{QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
-        connect(buttons, &QDialogButtonBox::accepted, this, &SSOAuthDialog::accept);
+        buttons->addButton(tr("Authorize"), QDialogButtonBox::AcceptRole);
+        connect(buttons, &QDialogButtonBox::accepted, this, &SSOAuthDialog::applyCode);
         connect(buttons, &QDialogButtonBox::rejected, this, &SSOAuthDialog::close);
 
         setModal(true);
@@ -51,5 +57,19 @@ namespace Evernus
     {
         Q_UNUSED(event);
         emit aboutToClose();
+    }
+
+    void SSOAuthDialog::applyCode()
+    {
+        const auto code = mCodeEdit->text().toLatin1();
+        if (code.isEmpty())
+        {
+            QMessageBox::warning(this,
+                                 tr("SSO Authentication"),
+                                 tr("The supplied code is empty. Please make sure all characters were copied."));
+            return;
+        }
+
+        emit acquiredCode(code);
     }
 }
