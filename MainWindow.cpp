@@ -406,43 +406,43 @@ namespace Evernus
     {
         qInfo() << "Showing SSO auth for:" << charId << url;
 
-        mAuthView.reset(new SSOAuthDialog{url, this});
+        if (mAuthViews.find(charId) != std::end(mAuthViews))
+            return;
+
+        const auto authView = new SSOAuthDialog{url, this};
+        mAuthViews[charId] = authView;
 
         QString charName;
         auto charNameFound = false;
 
-        if (charId != 0)
-        {
-            std::tie(charName, charNameFound) = getCharacterName(charId);
+        std::tie(charName, charNameFound) = getCharacterName(charId);
 
-            if (charName.isEmpty())
-                mAuthView->setWindowTitle(tr("SSO authentication for unknown character: %1").arg(charId));
-            else
-                mAuthView->setWindowTitle(getAuthWidowTitle(charName));
-        }
+        if (charName.isEmpty())
+            authView->setWindowTitle(tr("SSO authentication for unknown character: %1").arg(charId));
         else
-        {
-            mAuthView->setWindowTitle(tr("SSO authentication"));
-        }
+            authView->setWindowTitle(getAuthWidowTitle(charName));
 
-        mAuthView->move(rect().center() - mAuthView->rect().center());
-        mAuthView->show();
+        authView->move(rect().center() - authView->rect().center());
+        authView->show();
 
-        connect(mAuthView.get(), &SSOAuthDialog::acquiredCode, this, [=](const auto &code) {
-            mAuthView->disconnect(this);
-            mAuthView.reset();
+        connect(authView, &SSOAuthDialog::acquiredCode, this, [=](const auto &code) {
+            authView->disconnect(this);
+            authView->deleteLater();
 
             emit gotSSOAuthorizationCode(charId, code);
         });
-        connect(mAuthView.get(), &SSOAuthDialog::aboutToClose, this, [=] {
-            mAuthView.reset();
+        connect(authView, &SSOAuthDialog::aboutToClose, this, [=] {
+            authView->deleteLater();
             emit ssoAuthCanceled(charId);
         });
+        connect(authView, &SSOAuthDialog::destroyed, this, [=] {
+            mAuthViews.erase(charId);
+        });
 
-        if (!charNameFound && charId != 0)
+        if (!charNameFound)
         {
-            connect(&mEveDataProvider, &EveDataProvider::namesChanged, mAuthView.get(), [=] {
-                mAuthView->setWindowTitle(getAuthWidowTitle(mEveDataProvider.getGenericName(charId)));
+            connect(&mEveDataProvider, &EveDataProvider::namesChanged, authView, [=] {
+                authView->setWindowTitle(getAuthWidowTitle(mEveDataProvider.getGenericName(charId)));
             });
         }
     }

@@ -23,7 +23,6 @@
 #include <QTimer>
 #include <QMovie>
 
-#include "QObjectDeleteLaterDeleter.h"
 #include "ExternalOrderImporter.h"
 #include "FPCController.h"
 #include "SSOAuthDialog.h"
@@ -265,7 +264,7 @@ namespace Evernus
 
         FPCController mFPCController;
 
-        std::unique_ptr<SSOAuthDialog, QObjectDeleteLaterDeleter> mAuthView;
+        std::unordered_map<Character::IdType, SSOAuthDialog *> mAuthViews;
 
         void readSettings();
         void writeSettings();
