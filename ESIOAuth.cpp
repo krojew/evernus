@@ -150,7 +150,8 @@ namespace Evernus
                 "esi-corporations.read_blueprints.v1 "
                 "esi-contracts.read_corporation_contracts.v1 "
                 "esi-markets.read_corporation_orders.v1 "
-                "esi-industry.read_character_mining.v1"
+                "esi-industry.read_character_mining.v1 "
+                "esi-industry.read_corporation_mining.v1"
             ));
             it->second->setContentType(QAbstractOAuth::ContentType::Json);
             it->second->setRefreshToken(mRefreshTokens[charId]);
