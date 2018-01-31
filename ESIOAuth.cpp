@@ -168,6 +168,7 @@ namespace Evernus
             ));
             it->second->setContentType(QAbstractOAuth::ContentType::Json);
             it->second->setRefreshToken(mRefreshTokens[charId]);
+            it->second->setModifyParametersFunction(&ESIOAuth::modifyOAuthparameters);
 
             const auto replyHandler = new ESIOAuthReplyHandler{charId, it->second};
             it->second->setReplyHandler(replyHandler);
@@ -329,5 +330,17 @@ namespace Evernus
         request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
         return request;
+    }
+
+    void ESIOAuth::modifyOAuthparameters(QAbstractOAuth::Stage stage, QVariantMap *params)
+    {
+        if (stage == QAbstractOAuth::Stage::RequestingAccessToken)
+        {
+            Q_ASSERT(params != nullptr);
+
+            // we already pass those in the header
+            params->remove(QStringLiteral("client_id"));
+            params->remove(QStringLiteral("client_secret"));
+        }
     }
 }

@@ -18,6 +18,8 @@
 #include <functional>
 #include <vector>
 
+#include <QAbstractOAuth>
+#include <QVariant>
 #include <QList>
 
 #include "ESINetworkAccessManager.h"
@@ -106,5 +108,7 @@ namespace Evernus
         static void grantOrRefresh(ESIOAuth2AuthorizationCodeFlow &oauth);
 
         static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
+
+        static void modifyOAuthparameters(QAbstractOAuth::Stage stage, QVariantMap *params);
     };
 }
