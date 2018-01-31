@@ -290,6 +290,8 @@ add_executable(
     ESINetworkAccessManager.h
     ESIOAuth.cpp
     ESIOAuth.h
+    ESIOAuth2AuthorizationCodeFlow.cpp
+    ESIOAuth2AuthorizationCodeFlow.h
     ESIOAuthReplyHandler.cpp
     ESIOAuthReplyHandler.h
     ESIWholeExternalOrderImporter.cpp

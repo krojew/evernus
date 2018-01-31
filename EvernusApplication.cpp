@@ -1533,6 +1533,11 @@ namespace Evernus
         mESIManager->setDestination(locationId, charId);
     }
 
+    void EvernusApplication::processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mESIInterfaceManager.processSSOAuthorizationCode(charId, code);
+    }
+
     void EvernusApplication::cancelSsoAuth(Character::IdType charId)
     {
         mESIInterfaceManager.cancelSsoAuth(charId);

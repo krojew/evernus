@@ -24,12 +24,12 @@
 #include "SimpleCrypt.h"
 #include "Character.h"
 
-class QOAuth2AuthorizationCodeFlow;
+class QByteArray;
 class QSslError;
 
 namespace Evernus
 {
-    class RefreshTokenOAuth2AuthorizationCodeFlow;
+    class ESIOAuth2AuthorizationCodeFlow;
 
     class ESIOAuth final
         : public QObject
@@ -51,6 +51,8 @@ namespace Evernus
         void post(Character::IdType charId, QUrl url, const QVariant &data, NetworkReplyCallback callback, AuthErrorCallback errorCallback);
 
         void clearRefreshTokens();
+
+        void processSSOAuthorizationCode(Character::IdType charId, const QByteArray &rawQuery);
         void cancelSsoAuth(Character::IdType charId);
 
         ESIOAuth &operator =(const ESIOAuth &) = default;
@@ -58,6 +60,7 @@ namespace Evernus
 
     signals:
         void ssoAuthRequested(Character::IdType charId, const QUrl &url);
+        void ssoAuthReceived(Character::IdType charId, const QVariantMap &data);
 
     private slots:
         void processSslErrors(const QList<QSslError> &errors);
@@ -76,14 +79,14 @@ namespace Evernus
 
         SimpleCrypt mCrypt;
 
-        std::unordered_map<Character::IdType, QOAuth2AuthorizationCodeFlow *> mCharactersOAuths;
+        std::unordered_map<Character::IdType, ESIOAuth2AuthorizationCodeFlow *> mCharactersOAuths;
         std::unordered_map<Character::IdType, QString> mRefreshTokens;
 
         ESINetworkAccessManager mUnauthNetworkAccessManager;
 
         std::unordered_map<Character::IdType, std::vector<PendingCallbacks>> mPendingRequests;
 
-        QOAuth2AuthorizationCodeFlow &getOAuth(Character::IdType charId);
+        ESIOAuth2AuthorizationCodeFlow &getOAuth(Character::IdType charId);
 
         void prepareParameters(QVariantMap &parameters);
         void prepareUrl(QUrl &url);
@@ -95,10 +98,13 @@ namespace Evernus
 
         void processPendingRequests(Character::IdType charId);
         void processPendingRequests(Character::IdType charId, const QString &error);
+        void resetOAuthStatus(Character::IdType charId) const;
 
         static QNetworkRequest prepareRequest(const QUrl &url);
         static QString getUserAgent();
 
-        static void grantOrRefresh(QOAuth2AuthorizationCodeFlow &oauth);
+        static void grantOrRefresh(ESIOAuth2AuthorizationCodeFlow &oauth);
+
+        static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
     };
 }

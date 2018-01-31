@@ -58,6 +58,11 @@ namespace Evernus
         mOAuth.clearRefreshTokens();
     }
 
+    void ESIInterfaceManager::processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mOAuth.processSSOAuthorizationCode(charId, code);
+    }
+
     void ESIInterfaceManager::cancelSsoAuth(Character::IdType charId)
     {
         mOAuth.cancelSsoAuth(charId);

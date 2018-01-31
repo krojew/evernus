@@ -22,33 +22,52 @@
 
 namespace Evernus
 {
+    ESIOAuthReplyHandler::ESIOAuthReplyHandler(Character::IdType charId, QObject *parent)
+        : QAbstractOAuthReplyHandler{parent}
+        , mCharId{charId}
+    {
+    }
+
     QString ESIOAuthReplyHandler::callback() const
     {
-        return QStringLiteral("http://evernus.com/sso-authentication/");
+        return QStringLiteral("https://evernus.com/sso-authentication-2/");
     }
 
     void ESIOAuthReplyHandler::networkReplyFinished(QNetworkReply *reply)
     {
         Q_ASSERT(reply != nullptr);
 
+        const auto data = reply->readAll();
         const auto replyError = reply->error();
+
         if (Q_UNLIKELY(replyError != QNetworkReply::NoError))
         {
-            qWarning() << "OAuth error:" << replyError << reply->errorString();
+            const auto errorObj = QJsonDocument::fromJson(data).object();
+            const auto errorStr = (errorObj.contains(QStringLiteral("error"))) ? (errorObj.value(QStringLiteral("error")).toString()) : (reply->errorString());
+
+            qWarning() << "OAuth error:" << replyError << errorStr << data;
 
             // part 2 of the hack for https://bugreports.qt.io/browse/QTBUG-65778
             // TODO: remove
             if (replyError == QNetworkReply::ProtocolUnknownError && reply->url().path() == QStringLiteral("dummy"))
                 return;
 
-            emit error(reply->errorString());
+            emit error(errorStr);
+            emit tokensReceived({{ QStringLiteral("error"), errorStr }});
             return;
         }
 
-        const auto data = reply->readAll();
         emit replyDataReceived(data);
 
         const auto doc = QJsonDocument::fromJson(data);
         emit tokensReceived(doc.object().toVariantMap());
+    }
+
+    void ESIOAuthReplyHandler::handleAuthReply(Character::IdType charId, const QVariantMap &data)
+    {
+        if (charId != mCharId)
+            return;
+
+        emit callbackReceived(data);
     }
 }

@@ -16,6 +16,8 @@
 
 #include <QAbstractOAuthReplyHandler>
 
+#include "Character.h"
+
 namespace Evernus
 {
     class ESIOAuthReplyHandler
@@ -24,7 +26,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        using QAbstractOAuthReplyHandler::QAbstractOAuthReplyHandler;
+        ESIOAuthReplyHandler(Character::IdType charId, QObject *parent = nullptr);
         ESIOAuthReplyHandler(const ESIOAuthReplyHandler &) = default;
         ESIOAuthReplyHandler(ESIOAuthReplyHandler &&) = default;
         virtual ~ESIOAuthReplyHandler() = default;
@@ -37,5 +39,11 @@ namespace Evernus
 
     signals:
         void error(const QString &message);
+
+    public slots:
+        void handleAuthReply(Character::IdType charId, const QVariantMap &data);
+
+    private:
+        Character::IdType mCharId = Character::invalidId;
     };
 }

@@ -26,6 +26,7 @@
 #include "Character.h"
 #include "ESIOAuth.h"
 
+class QByteArray;
 class QUrl;
 
 namespace Evernus
@@ -45,6 +46,8 @@ namespace Evernus
 
         void handleNewPreferences();
         void clearRefreshTokens();
+
+        void processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
         void cancelSsoAuth(Character::IdType charId);
 
         const ESIInterface &selectNextInterface();

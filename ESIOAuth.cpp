@@ -14,7 +14,6 @@
  */
 #include <QtDebug>
 
-#include <QOAuth2AuthorizationCodeFlow>
 #include <QCoreApplication>
 #include <QJsonDocument>
 #include <QNetworkReply>
@@ -22,8 +21,10 @@
 #include <QUrlQuery>
 #include <QUrl>
 
+#include "ESIOAuth2AuthorizationCodeFlow.h"
 #include "ESIOAuthReplyHandler.h"
 #include "SecurityHelper.h"
+#include "ESIInterface.h"
 #include "ReplyTimeout.h"
 #include "SSOSettings.h"
 
@@ -95,6 +96,18 @@ namespace Evernus
             oauth.second->setRefreshToken({});
     }
 
+    void ESIOAuth::processSSOAuthorizationCode(Character::IdType charId, const QByteArray &rawQuery)
+    {
+        const QUrlQuery query{QByteArray::fromBase64(rawQuery)};
+        const auto items = query.queryItems(QUrl::FullyDecoded);
+
+        QVariantMap mappedQuery;
+        for (const auto &item : items)
+            mappedQuery[item.first] = item.second;
+
+        emit ssoAuthReceived(charId, mappedQuery);
+    }
+
     void ESIOAuth::cancelSsoAuth(Character::IdType charId)
     {
         processPendingRequests(charId, tr("Authentication cancelled."));
@@ -121,12 +134,12 @@ namespace Evernus
         SecurityHelper::handleSslErrors(errors, *qobject_cast<QNetworkReply *>(sender()));
     }
 
-    QOAuth2AuthorizationCodeFlow &ESIOAuth::getOAuth(Character::IdType charId)
+    ESIOAuth2AuthorizationCodeFlow &ESIOAuth::getOAuth(Character::IdType charId)
     {
         auto it = mCharactersOAuths.find(charId);
         if (it == std::end(mCharactersOAuths))
         {
-            it = mCharactersOAuths.emplace(charId, new QOAuth2AuthorizationCodeFlow{
+            it = mCharactersOAuths.emplace(charId, new ESIOAuth2AuthorizationCodeFlow{
                 mClientId,
                 QStringLiteral("https://login.eveonline.com/oauth/authorize"),
                 QStringLiteral("https://login.eveonline.com/oauth/token"),
@@ -156,17 +169,19 @@ namespace Evernus
             it->second->setContentType(QAbstractOAuth::ContentType::Json);
             it->second->setRefreshToken(mRefreshTokens[charId]);
 
-            const auto replyHandler = new ESIOAuthReplyHandler{it->second};
+            const auto replyHandler = new ESIOAuthReplyHandler{charId, it->second};
             it->second->setReplyHandler(replyHandler);
             connect(replyHandler, &ESIOAuthReplyHandler::error, this, [=](const auto &error) {
                 processPendingRequests(charId, error);
+                resetOAuthStatus(charId);
             });
+            connect(this, &ESIOAuth::ssoAuthReceived, replyHandler, &ESIOAuthReplyHandler::handleAuthReply);
 
-            connect(it->second, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
+            connect(it->second, &ESIOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
                     this, [=](const auto &url) {
                 emit ssoAuthRequested(charId, url);
             });
-            connect(it->second, &QOAuth2AuthorizationCodeFlow::granted,
+            connect(it->second, &ESIOAuth2AuthorizationCodeFlow::granted,
                     this, [=] {
                 processPendingRequests(charId);
             });
@@ -278,6 +293,14 @@ namespace Evernus
             request.mErrorCallback(error);
     }
 
+    void ESIOAuth::resetOAuthStatus(Character::IdType charId) const
+    {
+        // TODO: remove when https://bugreports.qt.io/browse/QTBUG-66097 is fixed
+        const auto oauth = mCharactersOAuths.find(charId);
+        if (Q_LIKELY(oauth != std::end(mCharactersOAuths)))
+            oauth->second->resetStatus();
+    }
+
     QNetworkRequest ESIOAuth::prepareRequest(const QUrl &url)
     {
         QNetworkRequest request{url};
@@ -291,11 +314,20 @@ namespace Evernus
         return QStringLiteral("%1 %2").arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion());
     }
 
-    void ESIOAuth::grantOrRefresh(QOAuth2AuthorizationCodeFlow &oauth)
+    void ESIOAuth::grantOrRefresh(ESIOAuth2AuthorizationCodeFlow &oauth)
     {
         if (oauth.refreshToken().isEmpty())
             oauth.grant();
         else
             oauth.refreshAccessToken();
+    }
+
+    QNetworkRequest ESIOAuth::getVerifyRequest(const QByteArray &accessToken)
+    {
+        QNetworkRequest request{ESIInterface::esiUrl + "/verify"};
+        request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer  ") + accessToken);
+        request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+
+        return request;
     }
 }

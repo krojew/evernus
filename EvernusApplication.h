@@ -251,6 +251,7 @@ namespace Evernus
         void showInEve(EveType::IdType typeId, Character::IdType charId);
         void setDestinationInEve(quint64 locationId, Character::IdType charId);
 
+        void processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
         void cancelSsoAuth(Character::IdType charId);
 
     private slots:
@@ -271,7 +272,7 @@ namespace Evernus
         void showMailError(int mailID, int errorCode, const QByteArray &message);
 
     private:
-        using CharacterTypePair =std::pair<Character::IdType, EveType::IdType>;
+        using CharacterTypePair = std::pair<Character::IdType, EveType::IdType>;
         using CharacterTimerMap = std::unordered_map<Character::IdType, QDateTime>;
         using TypedCharacterTimerMap = std::unordered_map<TimerType, CharacterTimerMap>;
         using TransactionFetcher = std::function<WalletTransactionRepository::EntityList (const QDateTime &, const QDateTime &, EveType::IdType)>;

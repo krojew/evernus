@@ -429,6 +429,8 @@ namespace Evernus
             authView->disconnect(this);
             authView->deleteLater();
 
+			mAuthViews.erase(charId);
+
             emit gotSSOAuthorizationCode(charId, code);
         });
         connect(authView, &SSOAuthDialog::aboutToClose, this, [=] {
