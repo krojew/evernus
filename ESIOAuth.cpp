@@ -17,6 +17,7 @@
 #include <QCoreApplication>
 #include <QJsonDocument>
 #include <QNetworkReply>
+#include <QJsonObject>
 #include <QSettings>
 #include <QUrlQuery>
 #include <QUrl>
@@ -253,9 +254,16 @@ namespace Evernus
 
                 if (error == QNetworkReply::AuthenticationRequiredError || error == QNetworkReply::ContentAccessDenied)
                 {
-                    queueRequest(charId, url, std::move(callback), std::move(errorCallback), std::move(replyCreator));
-                    if (mPendingRequests[charId].size() == 1)
-                        grantOrRefresh(auth);
+                    if (QDateTime::currentDateTime() > auth.expirationAt())
+                    {
+                        queueRequest(charId, url, std::move(callback), std::move(errorCallback), std::move(replyCreator));
+                        if (mPendingRequests[charId].size() == 1)
+                            grantOrRefresh(auth);
+                    }
+                    else
+                    {
+                        callback(*reply);
+                    }
                 }
                 else
                 {
