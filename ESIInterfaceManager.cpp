@@ -26,9 +26,13 @@
 
 namespace Evernus
 {
-    ESIInterfaceManager::ESIInterfaceManager(QString clientId, QString clientSecret, QObject *parent)
+    ESIInterfaceManager::ESIInterfaceManager(QString clientId,
+                                             QString clientSecret,
+                                             const CharacterRepository &characterRepo,
+                                             const EveDataProvider &dataProvider,
+                                             QObject *parent)
         : QObject{parent}
-        , mOAuth{std::move(clientId), std::move(clientSecret)}
+        , mOAuth{std::move(clientId), std::move(clientSecret), characterRepo, dataProvider}
     {
         connect(&mOAuth, &ESIOAuth::ssoAuthRequested, this, &ESIInterfaceManager::ssoAuthRequested);
 

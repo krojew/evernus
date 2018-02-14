@@ -22,7 +22,6 @@ class QByteArray;
 
 namespace Evernus
 {
-    class CharacterRepository;
     class EveDataProvider;
 
     class ESIExternalOrderImporter
@@ -32,7 +31,6 @@ namespace Evernus
 
     public:
         ESIExternalOrderImporter(const EveDataProvider &dataProvider,
-                                 const CharacterRepository &characterRepo,
                                  ESIInterfaceManager &interfaceManager,
                                  QObject *parent = nullptr);
         ESIExternalOrderImporter(const ESIExternalOrderImporter &) = default;

@@ -34,7 +34,6 @@ namespace Evernus
     class MiningLedgerRepository;
     class MiningLedgerBarGraph;
     class StationSelectButton;
-    class CharacterRepository;
     class ESIInterfaceManager;
     class CacheTimerProvider;
     class PriceTypeComboBox;
@@ -53,7 +52,6 @@ namespace Evernus
         IndustryMiningLedgerWidget(const CacheTimerProvider &cacheTimerProvider,
                                    const EveDataProvider &dataProvider,
                                    const MiningLedgerRepository &ledgerRepo,
-                                   const CharacterRepository &characterRepo,
                                    TaskManager &taskManager,
                                    ESIInterfaceManager &interfaceManager,
                                    QWidget *parent = nullptr);

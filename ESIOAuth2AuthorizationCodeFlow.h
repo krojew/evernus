@@ -16,23 +16,52 @@
 
 #include <QOAuth2AuthorizationCodeFlow>
 
+#include "Character.h"
+
+class QNetworkRequest;
+
 namespace Evernus
 {
-    // this whole class exists because of https://bugreports.qt.io/browse/QTBUG-66097
-    // TODO: remove when fixed
+    class CharacterRepository;
+    class EveDataProvider;
 
     class ESIOAuth2AuthorizationCodeFlow
         : public QOAuth2AuthorizationCodeFlow
     {
+        Q_OBJECT
+
     public:
-        using QOAuth2AuthorizationCodeFlow::QOAuth2AuthorizationCodeFlow;
+        ESIOAuth2AuthorizationCodeFlow(Character::IdType charId,
+                                       const CharacterRepository &characterRepo,
+                                       const EveDataProvider &dataProvider,
+                                       const QString &clientIdentifier,
+                                       const QUrl &authorizationUrl,
+                                       const QUrl &accessTokenUrl,
+                                       QNetworkAccessManager *manager,
+                                       QObject *parent = nullptr);
         ESIOAuth2AuthorizationCodeFlow(const ESIOAuth2AuthorizationCodeFlow &) = default;
         ESIOAuth2AuthorizationCodeFlow(ESIOAuth2AuthorizationCodeFlow &&) = default;
         virtual ~ESIOAuth2AuthorizationCodeFlow() = default;
 
+        // this method exists because of https://bugreports.qt.io/browse/QTBUG-66097
+        // TODO: remove when fixed
         void resetStatus();
 
         ESIOAuth2AuthorizationCodeFlow &operator =(const ESIOAuth2AuthorizationCodeFlow &) = default;
         ESIOAuth2AuthorizationCodeFlow &operator =(ESIOAuth2AuthorizationCodeFlow &&) = default;
+
+    signals:
+        void characterConfirmed();
+
+    private slots:
+        void checkCharacter();
+
+    private:
+        Character::IdType mCharacterId = Character::invalidId;
+
+        const CharacterRepository &mCharacterRepo;
+        const EveDataProvider &mDataProvider;
+
+        QString getCharacterName() const;
     };
 }

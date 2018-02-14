@@ -43,7 +43,6 @@ namespace Evernus
         using OrderResultType = std::shared_ptr<std::vector<ExternalOrder>>;
 
         MarketOrderDataFetcher(const EveDataProvider &dataProvider,
-                               const CharacterRepository &characterRepo,
                                ESIInterfaceManager &interfaceManager,
                                QObject *parent = nullptr);
         virtual ~MarketOrderDataFetcher() = default;

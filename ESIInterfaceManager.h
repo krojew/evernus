@@ -31,6 +31,8 @@ class QUrl;
 
 namespace Evernus
 {
+    class CharacterRepository;
+    class EveDataProvider;
     class ESIInterface;
 
     class ESIInterfaceManager final
@@ -39,7 +41,11 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        ESIInterfaceManager(QString clientId, QString clientSecret, QObject *parent = nullptr);
+        ESIInterfaceManager(QString clientId,
+                            QString clientSecret,
+                            const CharacterRepository &characterRepo,
+                            const EveDataProvider &dataProvider,
+                            QObject *parent = nullptr);
         ESIInterfaceManager(const ESIInterfaceManager &) = delete;
         ESIInterfaceManager(ESIInterfaceManager &&) = default;
         virtual ~ESIInterfaceManager();

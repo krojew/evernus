@@ -20,16 +20,15 @@
 namespace Evernus
 {
     ProxyWebExternalOrderImporter::ProxyWebExternalOrderImporter(const EveDataProvider &dataProvider,
-                                                                 const CharacterRepository &characterRepo,
                                                                  ESIInterfaceManager &interfaceManager,
                                                                  QObject *parent)
         : ExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
         , mESIIndividualImporter{
-            std::make_unique<ESIIndividualExternalOrderImporter>(mDataProvider, characterRepo, interfaceManager, parent)
+            std::make_unique<ESIIndividualExternalOrderImporter>(mDataProvider, interfaceManager, parent)
         }
         , mESIWholeImporter{
-            std::make_unique<ESIWholeExternalOrderImporter>(mDataProvider, characterRepo, interfaceManager, parent)
+            std::make_unique<ESIWholeExternalOrderImporter>(mDataProvider, interfaceManager, parent)
         }
     {
         setCurrentImporter();

@@ -32,6 +32,8 @@ class QSslError;
 namespace Evernus
 {
     class ESIOAuth2AuthorizationCodeFlow;
+    class CharacterRepository;
+    class EveDataProvider;
 
     class ESIOAuth final
         : public QObject
@@ -42,7 +44,11 @@ namespace Evernus
         using NetworkReplyCallback = std::function<void (QNetworkReply &)>;
         using AuthErrorCallback = std::function<void (const QString &)>;
 
-        ESIOAuth(QString clientId, QString clientSecret, QObject *parent = nullptr);
+        ESIOAuth(QString clientId,
+                 QString clientSecret,
+                 const CharacterRepository &characterRepo,
+                 const EveDataProvider &dataProvider,
+                 QObject *parent = nullptr);
         ESIOAuth(const ESIOAuth &) = default;
         ESIOAuth(ESIOAuth &&) = default;
         virtual ~ESIOAuth() = default;
@@ -79,6 +85,9 @@ namespace Evernus
         QString mClientId;
         QString mClientSecret;
 
+        const CharacterRepository &mCharacterRepo;
+        const EveDataProvider &mDataProvider;
+
         SimpleCrypt mCrypt;
 
         std::unordered_map<Character::IdType, ESIOAuth2AuthorizationCodeFlow *> mCharactersOAuths;
@@ -106,8 +115,6 @@ namespace Evernus
         static QString getUserAgent();
 
         static void grantOrRefresh(ESIOAuth2AuthorizationCodeFlow &oauth);
-
-        static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
 
         static void modifyOAuthparameters(QAbstractOAuth::Stage stage, QVariantMap *params);
     };

@@ -85,7 +85,7 @@ namespace Evernus
         , mFavoriteNameModel{mDataProvider}
         , mExternalOrderSellModel{mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider}
         , mExternalOrderBuyModel{mDataProvider, mExternalOrderRepo, characterRepo, orderProvider, corpOrderProvider, costProvider}
-        , mDataFetcher{mDataProvider, characterRepo, interfaceManager}
+        , mDataFetcher{mDataProvider, interfaceManager}
     {
         auto mainLayout = new QVBoxLayout{this};
 

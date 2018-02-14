@@ -51,7 +51,6 @@ namespace Evernus
     IndustryMiningLedgerWidget::IndustryMiningLedgerWidget(const CacheTimerProvider &cacheTimerProvider,
                                                            const EveDataProvider &dataProvider,
                                                            const MiningLedgerRepository &ledgerRepo,
-                                                           const CharacterRepository &characterRepo,
                                                            TaskManager &taskManager,
                                                            ESIInterfaceManager &interfaceManager,
                                                            QWidget *parent)
@@ -63,7 +62,7 @@ namespace Evernus
         , mDetailsModel{mDataProvider, ledgerRepo}
         , mTypesModel{mDataProvider, ledgerRepo}
         , mSolarSystemsModel{mDataProvider, ledgerRepo}
-        , mDataFetcher{mDataProvider, characterRepo, interfaceManager}
+        , mDataFetcher{mDataProvider, interfaceManager}
     {
         const auto mainLayout = new QVBoxLayout{this};
 

@@ -27,10 +27,9 @@
 namespace Evernus
 {
     ESIWholeExternalOrderImporter::ESIWholeExternalOrderImporter(const EveDataProvider &dataProvider,
-                                                                 const CharacterRepository &characterRepo,
                                                                  ESIInterfaceManager &interfaceManager,
                                                                  QObject *parent)
-        : ESIExternalOrderImporter{dataProvider, characterRepo, interfaceManager, parent}
+        : ESIExternalOrderImporter{dataProvider, interfaceManager, parent}
         , mDataProvider{dataProvider}
     {
     }

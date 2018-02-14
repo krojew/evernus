@@ -23,7 +23,6 @@ namespace Evernus
     {
     public:
         ESIWholeExternalOrderImporter(const EveDataProvider &dataProvider,
-                                      const CharacterRepository &characterRepo,
                                       ESIInterfaceManager &interfaceManager,
                                       QObject *parent = nullptr);
         virtual ~ESIWholeExternalOrderImporter() = default;

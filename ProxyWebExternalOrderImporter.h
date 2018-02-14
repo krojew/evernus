@@ -20,7 +20,6 @@
 
 namespace Evernus
 {
-    class CharacterRepository;
     class ESIInterfaceManager;
     class EveDataProvider;
 
@@ -31,7 +30,6 @@ namespace Evernus
 
     public:
         ProxyWebExternalOrderImporter(const EveDataProvider &dataProvider,
-                                      const CharacterRepository &characterRepo,
                                       ESIInterfaceManager &interfaceManager,
                                       QObject *parent = nullptr);
         virtual ~ProxyWebExternalOrderImporter() = default;

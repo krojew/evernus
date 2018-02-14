@@ -45,7 +45,6 @@ namespace Evernus
         using HistoryResultType = std::shared_ptr<std::unordered_map<uint, TypeAggregatedMarketDataModel::HistoryMap>>;
 
         MarketAnalysisDataFetcher(const EveDataProvider &dataProvider,
-                                  const CharacterRepository &characterRepo,
                                   ESIInterfaceManager &interfaceManager,
                                   QObject *parent = nullptr);
         virtual ~MarketAnalysisDataFetcher() = default;

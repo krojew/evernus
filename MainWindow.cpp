@@ -70,7 +70,6 @@
 #include "AboutDialog.h"
 #include "SyncDialog.h"
 #include "UISettings.h"
-#include "ESIManager.h"
 #include "Updater.h"
 
 #include "MainWindow.h"
@@ -429,7 +428,7 @@ namespace Evernus
             authView->disconnect(this);
             authView->deleteLater();
 
-			mAuthViews.erase(charId);
+            mAuthViews.erase(charId);
 
             emit gotSSOAuthorizationCode(charId, code);
         });

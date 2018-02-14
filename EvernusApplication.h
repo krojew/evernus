@@ -312,7 +312,7 @@ namespace Evernus
         std::unique_ptr<IndustryManufacturingSetupRepository> mIndustryManufacturingSetupRepository;
         std::unique_ptr<MiningLedgerRepository> mMiningLedgerRepository;
 
-        ESIInterfaceManager mESIInterfaceManager;
+        std::unique_ptr<ESIInterfaceManager> mESIInterfaceManager;
 
         LMeveAPIManager mLMeveAPIManager;
         CitadelManager mCitadelManager;

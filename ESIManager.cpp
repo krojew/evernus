@@ -36,7 +36,6 @@
 
 #include "SovereigntyStructure.h"
 #include "ESIInterfaceManager.h"
-#include "CharacterRepository.h"
 #include "EveDataProvider.h"
 #include "NetworkSettings.h"
 #include "ExternalOrder.h"
@@ -54,12 +53,10 @@ namespace Evernus
     bool ESIManager::mFirstTimeCitadelOrderImport = true;
 
     ESIManager::ESIManager(const EveDataProvider &dataProvider,
-                           const CharacterRepository &characterRepo,
                            ESIInterfaceManager &interfaceManager,
                            QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
-        , mCharacterRepo{characterRepo}
         , mInterfaceManager{interfaceManager}
     {
         QSettings settings;
@@ -1375,25 +1372,6 @@ namespace Evernus
     const ESIInterface &ESIManager::selectNextInterface() const
     {
         return mInterfaceManager.selectNextInterface();
-    }
-
-    std::pair<QString, bool> ESIManager::getCharacterName(Character::IdType id) const
-    {
-        QString charName;
-        auto nameFound = false;
-
-        try
-        {
-            charName = mCharacterRepo.getName(id);
-            nameFound = true;
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-            nameFound = mDataProvider.hasGenericName(id);
-            charName = mDataProvider.getGenericName(id);
-        }
-
-        return std::make_pair(charName, nameFound);
     }
 
     MarketOrder::State ESIManager::getStateFromString(const QString &state)

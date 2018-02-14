@@ -78,8 +78,8 @@ namespace Evernus
         , mTaskManager{taskManager}
         , mSetupRepo{setupRepo}
         , mSetupModel{mSetup, mDataProvider, assetProvider, costProvider, characterRepo}
-        , mDataFetcher{mDataProvider, characterRepo, interfaceManager}
-        , mESIManager{mDataProvider, characterRepo, interfaceManager}
+        , mDataFetcher{mDataProvider, interfaceManager}
+        , mESIManager{mDataProvider, interfaceManager}
     {
         const auto mainLayout = new QVBoxLayout{this};
 

@@ -290,7 +290,6 @@ int main(int argc, char *argv[])
 #endif
 
         auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getDataProvider(),
-                                                                                    app.getCharacterRepository(),
                                                                                     app.getESIInterfaceManager());
         auto webImporterPtr = webImporter.get();
 

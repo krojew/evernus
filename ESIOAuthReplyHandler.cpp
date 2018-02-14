@@ -22,9 +22,10 @@
 
 namespace Evernus
 {
-    ESIOAuthReplyHandler::ESIOAuthReplyHandler(Character::IdType charId, QObject *parent)
+    ESIOAuthReplyHandler::ESIOAuthReplyHandler(Character::IdType charId, QString scope, QObject *parent)
         : QAbstractOAuthReplyHandler{parent}
         , mCharId{charId}
+        , mScope{std::move(scope)}
     {
     }
 
@@ -60,7 +61,14 @@ namespace Evernus
         emit replyDataReceived(data);
 
         const auto doc = QJsonDocument::fromJson(data);
-        emit tokensReceived(doc.object().toVariantMap());
+        auto params = doc.object().toVariantMap();
+
+        // https://bugreports.qt.io/browse/QTBUG-66415
+        // TODO: remove when fixed
+        if (!params.contains(QStringLiteral("scope")))
+            params[QStringLiteral("scope")] = mScope;
+
+        emit tokensReceived(params);
     }
 
     void ESIOAuthReplyHandler::handleAuthReply(Character::IdType charId, const QVariantMap &data)

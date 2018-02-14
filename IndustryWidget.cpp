@@ -64,7 +64,6 @@ namespace Evernus
         mMiningLedgerWidget = new IndustryMiningLedgerWidget{cacheTimerProvider,
                                                              dataProvider,
                                                              ledgerRepo,
-                                                             characterRepo,
                                                              taskManager,
                                                              interfaceManager,
                                                              this};

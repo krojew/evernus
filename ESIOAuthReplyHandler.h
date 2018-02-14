@@ -26,7 +26,9 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        ESIOAuthReplyHandler(Character::IdType charId, QObject *parent = nullptr);
+        ESIOAuthReplyHandler(Character::IdType charId,
+                             QString scope,
+                             QObject *parent = nullptr);
         ESIOAuthReplyHandler(const ESIOAuthReplyHandler &) = default;
         ESIOAuthReplyHandler(ESIOAuthReplyHandler &&) = default;
         virtual ~ESIOAuthReplyHandler() = default;
@@ -45,5 +47,6 @@ namespace Evernus
 
     private:
         Character::IdType mCharId = Character::invalidId;
+        QString mScope;
     };
 }

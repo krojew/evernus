@@ -77,7 +77,6 @@ namespace Evernus
         , EveDataManagerProvider{}
         , mMainDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("main"))}
         , mEveDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("eve"))}
-        , mESIInterfaceManager{std::move(clientId), std::move(clientSecret)}
     {
         QSettings settings;
 
@@ -127,6 +126,8 @@ namespace Evernus
         showSplashMessage(tr("Creating schemas..."), splash);
         createDbSchema();
 
+        showSplashMessage(tr("Creating data providers..."), splash);
+
         mCharacterAssetProvider = std::make_unique<CachingAssetProvider>(*mCharacterRepository,
                                                                          *mAssetListRepository,
                                                                          *mItemRepository);
@@ -158,6 +159,11 @@ namespace Evernus
                                                                  *mCitadelRepository,
                                                                  *this,
                                                                  mEveDb);
+
+        mESIInterfaceManager = std::make_unique<ESIInterfaceManager>(std::move(clientId),
+                                                                     std::move(clientSecret),
+                                                                     getCharacterRepository(),
+                                                                     *mDataProvider);
 
         showSplashMessage(tr("Precaching timers..."), splash);
         precacheCacheTimers();
@@ -199,7 +205,7 @@ namespace Evernus
         {
             Updater::getInstance().performVersionMigration(*this,
                                                            *mDataProvider,
-                                                           mESIInterfaceManager.getCitadelAccessCache());
+                                                           mESIInterfaceManager->getCitadelAccessCache());
         }
 
         showSplashMessage(tr("Loading..."), splash);
@@ -218,9 +224,9 @@ namespace Evernus
         if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);
 
-        connect(&mESIInterfaceManager, &ESIInterfaceManager::ssoAuthRequested, this, &EvernusApplication::ssoAuthRequested);
+        connect(mESIInterfaceManager.get(), &ESIInterfaceManager::ssoAuthRequested, this, &EvernusApplication::ssoAuthRequested);
 
-        mESIManager = std::make_unique<ESIManager>(*mDataProvider, *mCharacterRepository, mESIInterfaceManager);
+        mESIManager = std::make_unique<ESIManager>(*mDataProvider, *mESIInterfaceManager);
         connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::ssoError);
 
         mDataProvider->precacheNames();
@@ -587,7 +593,7 @@ namespace Evernus
 
     ESIInterfaceManager &EvernusApplication::getESIInterfaceManager() noexcept
     {
-        return mESIInterfaceManager;
+        return *mESIInterfaceManager;
     }
 
     MarketOrderProvider &EvernusApplication::getMarketOrderProvider() const noexcept
@@ -1477,7 +1483,7 @@ namespace Evernus
     void EvernusApplication::clearRefreshTokens()
     {
         SSOUtils::clearRefreshTokens();
-        mESIInterfaceManager.clearRefreshTokens();
+        mESIInterfaceManager->clearRefreshTokens();
     }
 
     void EvernusApplication::makeValueSnapshots(Character::IdType id)
@@ -1535,12 +1541,12 @@ namespace Evernus
 
     void EvernusApplication::processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code)
     {
-        mESIInterfaceManager.processSSOAuthorizationCode(charId, code);
+        mESIInterfaceManager->processSSOAuthorizationCode(charId, code);
     }
 
     void EvernusApplication::cancelSsoAuth(Character::IdType charId)
     {
-        mESIInterfaceManager.cancelSsoAuth(charId);
+        mESIInterfaceManager->cancelSsoAuth(charId);
     }
 
     void EvernusApplication::scheduleCharacterUpdate()

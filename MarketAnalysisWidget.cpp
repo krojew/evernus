@@ -66,7 +66,7 @@ namespace Evernus
         , mRegionTypePresetRepo{regionTypePresetRepo}
         , mOrders{std::make_shared<MarketAnalysisDataFetcher::OrderResultType::element_type>()}
         , mHistory{std::make_shared<MarketAnalysisDataFetcher::HistoryResultType::element_type>()}
-        , mDataFetcher{mDataProvider, mCharacterRepo, interfaceManager}
+        , mDataFetcher{mDataProvider, interfaceManager}
     {
         connect(&mDataFetcher, &MarketAnalysisDataFetcher::orderStatusUpdated,
                 this, &MarketAnalysisWidget::updateOrderTask);

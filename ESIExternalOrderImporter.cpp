@@ -17,11 +17,10 @@
 namespace Evernus
 {
     ESIExternalOrderImporter::ESIExternalOrderImporter(const EveDataProvider &dataProvider,
-                                                       const CharacterRepository &characterRepo,
                                                        ESIInterfaceManager &interfaceManager,
                                                        QObject *parent)
         : CallbackExternalOrderImporter{parent}
-        , mManager{dataProvider, characterRepo, interfaceManager}
+        , mManager{dataProvider, interfaceManager}
     {
     }
 }

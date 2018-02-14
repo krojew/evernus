@@ -39,10 +39,16 @@ namespace Evernus
     {
     }
 
-    ESIOAuth::ESIOAuth(QString clientId, QString clientSecret, QObject *parent)
+    ESIOAuth::ESIOAuth(QString clientId,
+                       QString clientSecret,
+                       const CharacterRepository &characterRepo,
+                       const EveDataProvider &dataProvider,
+                       QObject *parent)
         : QObject{parent}
         , mClientId{std::move(clientId)}
         , mClientSecret{std::move(clientSecret)}
+        , mCharacterRepo{characterRepo}
+        , mDataProvider{dataProvider}
         , mCrypt{SSOSettings::cryptKey}
     {
         QSettings settings;
@@ -141,6 +147,9 @@ namespace Evernus
         if (it == std::end(mCharactersOAuths))
         {
             it = mCharactersOAuths.emplace(charId, new ESIOAuth2AuthorizationCodeFlow{
+                charId,
+                mCharacterRepo,
+                mDataProvider,
                 mClientId,
                 QStringLiteral("https://login.eveonline.com/oauth/authorize"),
                 QStringLiteral("https://login.eveonline.com/oauth/token"),
@@ -171,7 +180,7 @@ namespace Evernus
             it->second->setRefreshToken(mRefreshTokens[charId]);
             it->second->setModifyParametersFunction(&ESIOAuth::modifyOAuthparameters);
 
-            const auto replyHandler = new ESIOAuthReplyHandler{charId, it->second};
+            const auto replyHandler = new ESIOAuthReplyHandler{charId, it->second->scope(), it->second};
             it->second->setReplyHandler(replyHandler);
             connect(replyHandler, &ESIOAuthReplyHandler::error, this, [=](const auto &error) {
                 processPendingRequests(charId, error);
@@ -183,9 +192,16 @@ namespace Evernus
                     this, [=](const auto &url) {
                 emit ssoAuthRequested(charId, url);
             });
-            connect(it->second, &ESIOAuth2AuthorizationCodeFlow::granted,
+            connect(it->second, &ESIOAuth2AuthorizationCodeFlow::characterConfirmed,
                     this, [=] {
                 processPendingRequests(charId);
+            });
+            connect(it->second, &ESIOAuth2AuthorizationCodeFlow::error, this, [=](const auto &error, const auto &description, const auto &url) {
+                Q_UNUSED(description);
+                Q_UNUSED(url);
+
+                processPendingRequests(charId, error);
+                resetOAuthStatus(charId);
             });
 
             // we need a hack, because of https://bugreports.qt.io/browse/QTBUG-65778
@@ -329,15 +345,6 @@ namespace Evernus
             oauth.grant();
         else
             oauth.refreshAccessToken();
-    }
-
-    QNetworkRequest ESIOAuth::getVerifyRequest(const QByteArray &accessToken)
-    {
-        QNetworkRequest request{ESIInterface::esiUrl + "/verify"};
-        request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer  ") + accessToken);
-        request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-
-        return request;
     }
 
     void ESIOAuth::modifyOAuthparameters(QAbstractOAuth::Stage stage, QVariantMap *params)

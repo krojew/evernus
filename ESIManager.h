@@ -49,7 +49,6 @@ namespace Evernus
 {
     struct SovereigntyStructure;
     class ESIInterfaceManager;
-    class CharacterRepository;
     class EveDataProvider;
     class ExternalOrder;
     class MiningLedger;
@@ -83,7 +82,6 @@ namespace Evernus
         static const QString loginUrl;
 
         ESIManager(const EveDataProvider &dataProvider,
-                   const CharacterRepository &characterRepo,
                    ESIInterfaceManager &interfaceManager,
                    QObject *parent = nullptr);
         ESIManager(const ESIManager &) = default;
@@ -152,7 +150,6 @@ namespace Evernus
         static bool mFirstTimeCitadelOrderImport;
 
         const EveDataProvider &mDataProvider;
-        const CharacterRepository &mCharacterRepo;
 
         ESIInterfaceManager &mInterfaceManager;
 
@@ -203,8 +200,6 @@ namespace Evernus
                                                                  T nextCallback) const;
 
         const ESIInterface &selectNextInterface() const;
-
-        std::pair<QString, bool> getCharacterName(Character::IdType id) const;
 
         static MarketOrder::State getStateFromString(const QString &state);
         static short getMarketOrderRangeFromString(const QString &range);

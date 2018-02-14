@@ -30,12 +30,11 @@
 namespace Evernus
 {
     MarketAnalysisDataFetcher::MarketAnalysisDataFetcher(const EveDataProvider &dataProvider,
-                                                         const CharacterRepository &characterRepo,
                                                          ESIInterfaceManager &interfaceManager,
                                                          QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
-        , mESIManager{mDataProvider, characterRepo, interfaceManager}
+        , mESIManager{mDataProvider, interfaceManager}
     {
         connect(&mESIManager, &ESIManager::error, this, &MarketAnalysisDataFetcher::genericError);
     }
