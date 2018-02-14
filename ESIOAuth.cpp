@@ -69,9 +69,15 @@ namespace Evernus
         });
     }
 
-    QNetworkReply *ESIOAuth::get(const QUrl &url, QVariantMap parameters)
+    QNetworkReply *ESIOAuth::get(QUrl url, QVariantMap parameters)
     {
         prepareParameters(parameters);
+
+        QUrlQuery query{url.query()};
+        for (auto param = std::begin(parameters); param != std::end(parameters); ++param)
+            query.addQueryItem(param.key(), param.value().toString());
+
+        url.setQuery(query);
 
         const auto reply = mUnauthNetworkAccessManager.get(prepareRequest(url));
         connect(reply, &QNetworkReply::sslErrors, this, &ESIOAuth::processSslErrors);

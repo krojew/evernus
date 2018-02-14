@@ -54,7 +54,7 @@ namespace Evernus
         virtual ~ESIOAuth() = default;
 
         void get(Character::IdType charId, const QUrl &url, QVariantMap parameters, NetworkReplyCallback callback, AuthErrorCallback errorCallback);
-        QNetworkReply *get(const QUrl &url, QVariantMap parameters = {});
+        QNetworkReply *get(QUrl url, QVariantMap parameters = {});
         QNetworkReply *post(QUrl url, const QVariant &data = {});
         void post(Character::IdType charId, QUrl url, const QVariant &data, NetworkReplyCallback callback, AuthErrorCallback errorCallback);
 
