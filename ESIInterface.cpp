@@ -653,8 +653,9 @@ namespace Evernus
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
                     const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+					const auto errorInfo = getError(url, parameters, *reply);
 
-                    qWarning() << "Error for request" << reply << ":" << url << parameters << ":" << httpStatus << getError(url, parameters, *reply);
+                    qWarning() << "Error for request" << reply << ":" << url << parameters << ":" << httpStatus << errorInfo;
 
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
@@ -667,7 +668,7 @@ namespace Evernus
                         if (retries > 0)
                             get<T, ResultTag>(url, parameters, continuation, retries - 1);
                         else
-                            TaggedInvoke<ResultTag>::invoke(getError(url, parameters, *reply), *reply, continuation);
+                            TaggedInvoke<ResultTag>::invoke(errorInfo, *reply, continuation);
                     }
                 }
                 else
