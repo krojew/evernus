@@ -653,7 +653,7 @@ namespace Evernus
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
                     const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-					const auto errorInfo = getError(url, parameters, *reply);
+                    const auto errorInfo = getError(url, parameters, *reply);
 
                     qWarning() << "Error for request" << reply << ":" << url << parameters << ":" << httpStatus << errorInfo;
 
@@ -765,8 +765,9 @@ namespace Evernus
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
                     const auto httpStatus = reply.attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                    const auto parsedError = getError(url, {}, reply);
 
-                    qWarning() << "Error for request:" << httpStatus << getError(url, {}, reply);
+                    qWarning() << "Error for request:" << httpStatus << parsedError;
 
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
@@ -776,7 +777,7 @@ namespace Evernus
                     }
                     else
                     {
-                        errorCallback(getError(url, {}, reply));
+                        errorCallback(parsedError);
                     }
                 }
                 else
@@ -809,8 +810,9 @@ namespace Evernus
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
                     const auto httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                    const auto parsedError = getError(url, {}, *reply);
 
-                    qWarning() << "Error for request" << reply << ":" << url << ":" << httpStatus;
+                    qWarning() << "Error for request" << reply << ":" << url << ":" << httpStatus << parsedError;
 
                     if (httpStatus == errorLimitCode)  // error limit reached?
                     {
@@ -820,7 +822,7 @@ namespace Evernus
                     }
                     else
                     {
-                        errorCallback(getError(url, {}, *reply));
+                        errorCallback(parsedError);
                     }
                 }
                 else
