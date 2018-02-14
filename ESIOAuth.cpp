@@ -136,7 +136,7 @@ namespace Evernus
 
             QNetworkRequest request{url};
             request.setHeader(QNetworkRequest::UserAgentHeader, getUserAgent());
-            request.setRawHeader("Authorization", QStringLiteral("Bearer: %1").arg(oauth.token()).toUtf8());
+            request.setRawHeader("Authorization", QStringLiteral("Bearer %1").arg(oauth.token()).toUtf8());
 
             return oauth.networkAccessManager()->post(request, QJsonDocument::fromVariant(data).toJson());
         });
