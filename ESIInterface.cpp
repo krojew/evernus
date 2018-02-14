@@ -562,7 +562,7 @@ namespace Evernus
             return;
         }
 
-        post(charId, QStringLiteral("/v1/ui/openwindow/marketdetails/"), QVariantMap{{ QStringLiteral("type_id"), typeId }}, std::move(errorCallback));
+        post(charId, QStringLiteral("/v1/ui/openwindow/marketdetails/?type_id=%1").arg(typeId), {}, std::move(errorCallback));
     }
 
     void ESIInterface::setDestination(quint64 locationId, Character::IdType charId, const ErrorCallback &errorCallback) const

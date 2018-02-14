@@ -242,7 +242,7 @@ namespace Evernus
 
     void ESIOAuth::prepareUrl(QUrl &url)
     {
-        QUrlQuery query;
+        QUrlQuery query{url.query()};
 #ifdef EVERNUS_ESI_SISI
         query.addQueryItem(QStringLiteral("datasource"), QStringLiteral("singularity"));
 #else
