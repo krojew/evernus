@@ -111,6 +111,8 @@ namespace Evernus
         void processPendingRequests(Character::IdType charId, const QString &error);
         void resetOAuthStatus(Character::IdType charId) const;
 
+        void saveRefreshToken(Character::IdType charId);
+
         static QNetworkRequest prepareRequest(const QUrl &url);
         static QString getUserAgent();
 

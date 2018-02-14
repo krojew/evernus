@@ -194,6 +194,7 @@ namespace Evernus
             });
             connect(it->second, &ESIOAuth2AuthorizationCodeFlow::characterConfirmed,
                     this, [=] {
+                saveRefreshToken(charId);
                 processPendingRequests(charId);
             });
             connect(it->second, &ESIOAuth2AuthorizationCodeFlow::error, this, [=](const auto &error, const auto &description, const auto &url) {
@@ -324,6 +325,22 @@ namespace Evernus
         const auto oauth = mCharactersOAuths.find(charId);
         if (Q_LIKELY(oauth != std::end(mCharactersOAuths)))
             oauth->second->resetStatus();
+    }
+
+    void ESIOAuth::saveRefreshToken(Character::IdType charId)
+    {
+        const auto oauth = mCharactersOAuths.find(charId);
+        if (Q_LIKELY(oauth != std::end(mCharactersOAuths)))
+        {
+            const auto token = oauth->second->refreshToken();
+
+            mRefreshTokens[charId] = token;
+
+            QSettings settings;
+            settings.beginGroup(SSOSettings::refreshTokenGroup);
+            settings.setValue(QString::number(charId), mCrypt.encryptToByteArray(token));
+            settings.endGroup();
+        }
     }
 
     QNetworkRequest ESIOAuth::prepareRequest(const QUrl &url)
