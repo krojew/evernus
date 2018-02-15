@@ -63,6 +63,8 @@ namespace Evernus
         void processSSOAuthorizationCode(Character::IdType charId, const QByteArray &rawQuery);
         void cancelSsoAuth(Character::IdType charId);
 
+        static QString getUserAgent();
+
         ESIOAuth &operator =(const ESIOAuth &) = default;
         ESIOAuth &operator =(ESIOAuth &&) = default;
 
@@ -114,10 +116,7 @@ namespace Evernus
         void saveRefreshToken(Character::IdType charId);
 
         static QNetworkRequest prepareRequest(const QUrl &url);
-        static QString getUserAgent();
 
         static void grantOrRefresh(ESIOAuth2AuthorizationCodeFlow &oauth);
-
-        static void modifyOAuthparameters(QAbstractOAuth::Stage stage, QVariantMap *params);
     };
 }

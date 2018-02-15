@@ -157,34 +157,10 @@ namespace Evernus
                 mCharacterRepo,
                 mDataProvider,
                 mClientId,
-                QStringLiteral("https://login.eveonline.com/oauth/authorize"),
-                QStringLiteral("https://login.eveonline.com/oauth/token"),
-                new ESINetworkAccessManager{mClientId, mClientSecret, this},
+                mClientSecret,
                 this
             }).first;
-            it->second->setUserAgent(getUserAgent());
-            it->second->setClientIdentifierSharedKey(mClientSecret);
-            it->second->setScope(QStringLiteral(
-                "esi-skills.read_skills.v1 "
-                "esi-wallet.read_character_wallet.v1 "
-                "esi-assets.read_assets.v1 "
-                "esi-ui.open_window.v1 "
-                "esi-ui.write_waypoint.v1 "
-                "esi-markets.structure_markets.v1 "
-                "esi-markets.read_character_orders.v1 "
-                "esi-characters.read_blueprints.v1 "
-                "esi-contracts.read_character_contracts.v1 "
-                "esi-wallet.read_corporation_wallets.v1 "
-                "esi-assets.read_corporation_assets.v1 "
-                "esi-corporations.read_blueprints.v1 "
-                "esi-contracts.read_corporation_contracts.v1 "
-                "esi-markets.read_corporation_orders.v1 "
-                "esi-industry.read_character_mining.v1 "
-                "esi-industry.read_corporation_mining.v1"
-            ));
-            it->second->setContentType(QAbstractOAuth::ContentType::Json);
             it->second->setRefreshToken(mRefreshTokens[charId]);
-            it->second->setModifyParametersFunction(&ESIOAuth::modifyOAuthparameters);
 
             const auto replyHandler = new ESIOAuthReplyHandler{charId, it->second->scope(), it->second};
             it->second->setReplyHandler(replyHandler);
@@ -368,17 +344,5 @@ namespace Evernus
             oauth.grant();
         else
             oauth.refreshAccessToken();
-    }
-
-    void ESIOAuth::modifyOAuthparameters(QAbstractOAuth::Stage stage, QVariantMap *params)
-    {
-        if (stage == QAbstractOAuth::Stage::RequestingAccessToken)
-        {
-            Q_ASSERT(params != nullptr);
-
-            // we already pass those in the header
-            params->remove(QStringLiteral("client_id"));
-            params->remove(QStringLiteral("client_secret"));
-        }
     }
 }

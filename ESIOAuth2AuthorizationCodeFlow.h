@@ -35,9 +35,7 @@ namespace Evernus
                                        const CharacterRepository &characterRepo,
                                        const EveDataProvider &dataProvider,
                                        const QString &clientIdentifier,
-                                       const QUrl &authorizationUrl,
-                                       const QUrl &accessTokenUrl,
-                                       QNetworkAccessManager *manager,
+                                       const QString &clientSecret,
                                        QObject *parent = nullptr);
         ESIOAuth2AuthorizationCodeFlow(const ESIOAuth2AuthorizationCodeFlow &) = default;
         ESIOAuth2AuthorizationCodeFlow(ESIOAuth2AuthorizationCodeFlow &&) = default;
@@ -63,5 +61,7 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         QString getCharacterName() const;
+
+        static void modifyOAuthparameters(QAbstractOAuth::Stage stage, QVariantMap *params);
     };
 }
