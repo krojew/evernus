@@ -25,28 +25,28 @@ namespace Evernus
     class CharacterRepository;
     class EveDataProvider;
 
-    class ESIOAuth2AuthorizationCodeFlow
+    class ESIOAuth2CharacterAuthorizationCodeFlow
         : public QOAuth2AuthorizationCodeFlow
     {
         Q_OBJECT
 
     public:
-        ESIOAuth2AuthorizationCodeFlow(Character::IdType charId,
-                                       const CharacterRepository &characterRepo,
-                                       const EveDataProvider &dataProvider,
-                                       const QString &clientIdentifier,
-                                       const QString &clientSecret,
-                                       QObject *parent = nullptr);
-        ESIOAuth2AuthorizationCodeFlow(const ESIOAuth2AuthorizationCodeFlow &) = default;
-        ESIOAuth2AuthorizationCodeFlow(ESIOAuth2AuthorizationCodeFlow &&) = default;
-        virtual ~ESIOAuth2AuthorizationCodeFlow() = default;
+        ESIOAuth2CharacterAuthorizationCodeFlow(Character::IdType charId,
+                                                const CharacterRepository &characterRepo,
+                                                const EveDataProvider &dataProvider,
+                                                const QString &clientIdentifier,
+                                                const QString &clientSecret,
+                                                QObject *parent = nullptr);
+        ESIOAuth2CharacterAuthorizationCodeFlow(const ESIOAuth2CharacterAuthorizationCodeFlow &) = default;
+        ESIOAuth2CharacterAuthorizationCodeFlow(ESIOAuth2CharacterAuthorizationCodeFlow &&) = default;
+        virtual ~ESIOAuth2CharacterAuthorizationCodeFlow() = default;
 
         // this method exists because of https://bugreports.qt.io/browse/QTBUG-66097
         // TODO: remove when fixed
         void resetStatus();
 
-        ESIOAuth2AuthorizationCodeFlow &operator =(const ESIOAuth2AuthorizationCodeFlow &) = default;
-        ESIOAuth2AuthorizationCodeFlow &operator =(ESIOAuth2AuthorizationCodeFlow &&) = default;
+        ESIOAuth2CharacterAuthorizationCodeFlow &operator =(const ESIOAuth2CharacterAuthorizationCodeFlow &) = default;
+        ESIOAuth2CharacterAuthorizationCodeFlow &operator =(ESIOAuth2CharacterAuthorizationCodeFlow &&) = default;
 
     signals:
         void characterConfirmed();

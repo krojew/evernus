@@ -31,7 +31,7 @@ class QSslError;
 
 namespace Evernus
 {
-    class ESIOAuth2AuthorizationCodeFlow;
+    class ESIOAuth2CharacterAuthorizationCodeFlow;
     class CharacterRepository;
     class EveDataProvider;
 
@@ -92,14 +92,14 @@ namespace Evernus
 
         SimpleCrypt mCrypt;
 
-        std::unordered_map<Character::IdType, ESIOAuth2AuthorizationCodeFlow *> mCharactersOAuths;
+        std::unordered_map<Character::IdType, ESIOAuth2CharacterAuthorizationCodeFlow *> mCharactersOAuths;
         std::unordered_map<Character::IdType, QString> mRefreshTokens;
 
         ESINetworkAccessManager mUnauthNetworkAccessManager;
 
         std::unordered_map<Character::IdType, std::vector<PendingCallbacks>> mPendingRequests;
 
-        ESIOAuth2AuthorizationCodeFlow &getOAuth(Character::IdType charId);
+        ESIOAuth2CharacterAuthorizationCodeFlow &getOAuth(Character::IdType charId);
 
         void prepareParameters(QVariantMap &parameters);
         void prepareUrl(QUrl &url);
@@ -117,6 +117,6 @@ namespace Evernus
 
         static QNetworkRequest prepareRequest(const QUrl &url);
 
-        static void grantOrRefresh(ESIOAuth2AuthorizationCodeFlow &oauth);
+        static void grantOrRefresh(ESIOAuth2CharacterAuthorizationCodeFlow &oauth);
     };
 }

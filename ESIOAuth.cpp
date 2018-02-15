@@ -22,7 +22,7 @@
 #include <QUrlQuery>
 #include <QUrl>
 
-#include "ESIOAuth2AuthorizationCodeFlow.h"
+#include "ESIOAuth2CharacterAuthorizationCodeFlow.h"
 #include "ESIOAuthReplyHandler.h"
 #include "SecurityHelper.h"
 #include "ESIInterface.h"
@@ -147,12 +147,12 @@ namespace Evernus
         SecurityHelper::handleSslErrors(errors, *qobject_cast<QNetworkReply *>(sender()));
     }
 
-    ESIOAuth2AuthorizationCodeFlow &ESIOAuth::getOAuth(Character::IdType charId)
+    ESIOAuth2CharacterAuthorizationCodeFlow &ESIOAuth::getOAuth(Character::IdType charId)
     {
         auto it = mCharactersOAuths.find(charId);
         if (it == std::end(mCharactersOAuths))
         {
-            it = mCharactersOAuths.emplace(charId, new ESIOAuth2AuthorizationCodeFlow{
+            it = mCharactersOAuths.emplace(charId, new ESIOAuth2CharacterAuthorizationCodeFlow{
                 charId,
                 mCharacterRepo,
                 mDataProvider,
@@ -170,16 +170,16 @@ namespace Evernus
             });
             connect(this, &ESIOAuth::ssoAuthReceived, replyHandler, &ESIOAuthReplyHandler::handleAuthReply);
 
-            connect(it->second, &ESIOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
+            connect(it->second, &ESIOAuth2CharacterAuthorizationCodeFlow::authorizeWithBrowser,
                     this, [=](const auto &url) {
                 emit ssoAuthRequested(charId, url);
             });
-            connect(it->second, &ESIOAuth2AuthorizationCodeFlow::characterConfirmed,
+            connect(it->second, &ESIOAuth2CharacterAuthorizationCodeFlow::characterConfirmed,
                     this, [=] {
                 saveRefreshToken(charId);
                 processPendingRequests(charId);
             });
-            connect(it->second, &ESIOAuth2AuthorizationCodeFlow::error, this, [=](const auto &error, const auto &description, const auto &url) {
+            connect(it->second, &ESIOAuth2CharacterAuthorizationCodeFlow::error, this, [=](const auto &error, const auto &description, const auto &url) {
                 Q_UNUSED(description);
                 Q_UNUSED(url);
 
@@ -338,7 +338,7 @@ namespace Evernus
         return QStringLiteral("%1 %2").arg(QCoreApplication::applicationName()).arg(QCoreApplication::applicationVersion());
     }
 
-    void ESIOAuth::grantOrRefresh(ESIOAuth2AuthorizationCodeFlow &oauth)
+    void ESIOAuth::grantOrRefresh(ESIOAuth2CharacterAuthorizationCodeFlow &oauth)
     {
         if (oauth.refreshToken().isEmpty())
             oauth.grant();

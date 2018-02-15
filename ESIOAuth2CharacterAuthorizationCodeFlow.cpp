@@ -22,16 +22,16 @@
 #include "ESIInterface.h"
 #include "ESIOAuth.h"
 
-#include "ESIOAuth2AuthorizationCodeFlow.h"
+#include "ESIOAuth2CharacterAuthorizationCodeFlow.h"
 
 namespace Evernus
 {
-    ESIOAuth2AuthorizationCodeFlow::ESIOAuth2AuthorizationCodeFlow(Character::IdType charId,
-                                                                   const CharacterRepository &characterRepo,
-                                                                   const EveDataProvider &dataProvider,
-                                                                   const QString &clientIdentifier,
-                                                                   const QString &clientSecret,
-                                                                   QObject *parent)
+    ESIOAuth2CharacterAuthorizationCodeFlow::ESIOAuth2CharacterAuthorizationCodeFlow(Character::IdType charId,
+                                                                                     const CharacterRepository &characterRepo,
+                                                                                     const EveDataProvider &dataProvider,
+                                                                                     const QString &clientIdentifier,
+                                                                                     const QString &clientSecret,
+                                                                                     QObject *parent)
         : QOAuth2AuthorizationCodeFlow{clientIdentifier,
                                        QStringLiteral("https://login.eveonline.com/oauth/authorize"),
                                        QStringLiteral("https://login.eveonline.com/oauth/token"),
@@ -62,19 +62,19 @@ namespace Evernus
             "esi-industry.read_corporation_mining.v1"
         ));
         setContentType(QAbstractOAuth::ContentType::Json);
-        setModifyParametersFunction(&ESIOAuth2AuthorizationCodeFlow::modifyOAuthparameters);
+        setModifyParametersFunction(&ESIOAuth2CharacterAuthorizationCodeFlow::modifyOAuthparameters);
 
-        connect(this, &ESIOAuth2AuthorizationCodeFlow::granted, this, &ESIOAuth2AuthorizationCodeFlow::checkCharacter);
+        connect(this, &ESIOAuth2CharacterAuthorizationCodeFlow::granted, this, &ESIOAuth2CharacterAuthorizationCodeFlow::checkCharacter);
     }
 
-    void ESIOAuth2AuthorizationCodeFlow::resetStatus()
+    void ESIOAuth2CharacterAuthorizationCodeFlow::resetStatus()
     {
         setRefreshToken({});
         setToken({});
         setStatus(Status::NotAuthenticated);
     }
 
-    void ESIOAuth2AuthorizationCodeFlow::checkCharacter()
+    void ESIOAuth2CharacterAuthorizationCodeFlow::checkCharacter()
     {
         const auto reply = get(ESIInterface::esiUrl + "/verify/");
         connect(reply, &QNetworkReply::finished, this, [=] {
@@ -105,7 +105,7 @@ namespace Evernus
         });
     }
 
-    QString ESIOAuth2AuthorizationCodeFlow::getCharacterName() const
+    QString ESIOAuth2CharacterAuthorizationCodeFlow::getCharacterName() const
     {
         QString charName;
 
@@ -121,7 +121,7 @@ namespace Evernus
         return (charName.isEmpty()) ? (QString::number(mCharacterId)) : (charName);
     }
 
-    void ESIOAuth2AuthorizationCodeFlow::modifyOAuthparameters(QAbstractOAuth::Stage stage, QVariantMap *params)
+    void ESIOAuth2CharacterAuthorizationCodeFlow::modifyOAuthparameters(QAbstractOAuth::Stage stage, QVariantMap *params)
     {
         if (stage == QAbstractOAuth::Stage::RequestingAccessToken)
         {
