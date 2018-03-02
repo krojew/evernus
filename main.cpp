@@ -386,6 +386,8 @@ int main(int argc, char *argv[])
                              &app, &Evernus::EvernusApplication::processSSOAuthorizationCode);
             QObject::connect(&mainWnd, &Evernus::MainWindow::ssoAuthCanceled,
                              &app, &Evernus::EvernusApplication::cancelSsoAuth);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::authorizedCharacter,
+                             &app, &Evernus::EvernusApplication::processNewCharacter);
             QObject::connect(&app, QOverload<uint, const QString &>::of(&Evernus::EvernusApplication::taskStarted),
                              &mainWnd, &Evernus::MainWindow::addNewTaskInfo);
             QObject::connect(&app, QOverload<uint, uint, const QString &>::of(&Evernus::EvernusApplication::taskStarted),

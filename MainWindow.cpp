@@ -39,6 +39,7 @@
 
 #include "WalletTransactionsWidget.h"
 #include "CharacterManagerDialog.h"
+#include "NewCharacterController.h"
 #include "MarketAnalysisWidget.h"
 #include "CitadelManagerDialog.h"
 #include "WalletJournalWidget.h"
@@ -105,6 +106,8 @@ namespace Evernus
         , mTrayIcon{new QSystemTrayIcon{QIcon{QStringLiteral(":/images/main-icon.png")}, this}}
         , mStatusActiveTasksThrobber{QStringLiteral(":/images/loader.gif")}
         , mStatusActiveTasksDonePixmap{QStringLiteral(":/images/tick.png")}
+        , mClientId{interfaceManager.getClientId()}
+        , mClientSecret{interfaceManager.getClientSecret()}
     {
         readSettings();
         createMenu();
@@ -421,7 +424,6 @@ namespace Evernus
         else
             authView->setWindowTitle(getAuthWidowTitle(charName));
 
-        authView->move(rect().center() - authView->rect().center());
         authView->show();
 
         connect(authView, &SSOAuthDialog::acquiredCode, this, [=](const auto &code) {
@@ -450,7 +452,9 @@ namespace Evernus
 
     void MainWindow::addCharacter()
     {
-
+        const auto controller = new NewCharacterController{mClientId, mClientSecret, this};
+        connect(controller, &NewCharacterController::error, this, &MainWindow::showErrorMessage);
+        connect(controller, &NewCharacterController::authorizedCharacter, this, &MainWindow::authorizedCharacter);
     }
 
     void MainWindow::updateCurrentTab(int index)
@@ -533,6 +537,11 @@ namespace Evernus
     {
         if (mCurrentCharacterId != Character::invalidId)
             emit setDestinationInEve(locationId, mCurrentCharacterId);
+    }
+
+    void MainWindow::showErrorMessage(const QString &error)
+    {
+        QMessageBox::warning(this, tr("Error"), error);
     }
 
     void MainWindow::changeEvent(QEvent *event)

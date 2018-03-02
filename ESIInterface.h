@@ -47,8 +47,6 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        static const QString esiUrl;
-
         template<class T>
         using PersistentCallback = std::function<void (T &&data, const QString &error)>;
         using JsonCallback = std::function<void (QJsonDocument &&data, const QString &error, const QDateTime &expires)>;

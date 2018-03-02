@@ -18,6 +18,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include "ESIUrls.h"
+
 #include "ESIOAuthReplyHandler.h"
 
 namespace Evernus
@@ -31,7 +33,7 @@ namespace Evernus
 
     QString ESIOAuthReplyHandler::callback() const
     {
-        return QStringLiteral("https://evernus.com/sso-authentication-2/");
+        return ESIUrls::callbackUrl;
     }
 
     void ESIOAuthReplyHandler::networkReplyFinished(QNetworkReply *reply)

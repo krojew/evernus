@@ -25,9 +25,9 @@
 #include "ESIOAuth2CharacterAuthorizationCodeFlow.h"
 #include "ESIOAuthReplyHandler.h"
 #include "SecurityHelper.h"
-#include "ESIInterface.h"
 #include "ReplyTimeout.h"
 #include "SSOSettings.h"
+#include "SSOUtils.h"
 
 #include "ESIOAuth.h"
 
@@ -111,19 +111,24 @@ namespace Evernus
 
     void ESIOAuth::processSSOAuthorizationCode(Character::IdType charId, const QByteArray &rawQuery)
     {
-        const QUrlQuery query{QByteArray::fromBase64(rawQuery)};
-        const auto items = query.queryItems(QUrl::FullyDecoded);
-
-        QVariantMap mappedQuery;
-        for (const auto &item : items)
-            mappedQuery[item.first] = item.second;
-
-        emit ssoAuthReceived(charId, mappedQuery);
+        emit ssoAuthReceived(charId, SSOUtils::parseAuthorizationCode(rawQuery));
     }
 
     void ESIOAuth::cancelSsoAuth(Character::IdType charId)
     {
         processPendingRequests(charId, tr("Authentication cancelled."));
+    }
+
+    void ESIOAuth::setTokens(Character::IdType id, const QString &accessToken, const QString &refreshToken)
+    {
+        const auto auth = mCharactersOAuths.find(id);
+        if (auth != std::end(mCharactersOAuths))
+        {
+            auth->second->setToken(accessToken);
+            auth->second->setRefreshToken(refreshToken);
+        }
+
+        mRefreshTokens[id] = refreshToken;
     }
 
     void ESIOAuth::post(Character::IdType charId, QUrl url, const QVariant &data, NetworkReplyCallback callback, AuthErrorCallback errorCallback)

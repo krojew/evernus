@@ -153,6 +153,7 @@ namespace Evernus
 
         void gotSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
         void ssoAuthCanceled(Character::IdType charId);
+        void authorizedCharacter(Character::IdType id, const QString &accessToken, const QString &refreshToken);
 
     public slots:
         void showActiveTasks();
@@ -202,6 +203,8 @@ namespace Evernus
 
         void showInEve(EveType::IdType typeId, Character::IdType ownerId);
         void setWaypoint(quint64 locationId);
+
+        void showErrorMessage(const QString &error);
 
     protected:
         virtual void changeEvent(QEvent *event) override;
@@ -265,6 +268,9 @@ namespace Evernus
         FPCController mFPCController;
 
         std::unordered_map<Character::IdType, SSOAuthDialog *> mAuthViews;
+
+        QString mClientId;
+        QString mClientSecret;
 
         void readSettings();
         void writeSettings();

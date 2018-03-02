@@ -32,6 +32,8 @@ namespace Evernus
                                              const EveDataProvider &dataProvider,
                                              QObject *parent)
         : QObject{parent}
+        , mClientId{clientId}
+        , mClientSecret{clientSecret}
         , mOAuth{std::move(clientId), std::move(clientSecret), characterRepo, dataProvider}
     {
         connect(&mOAuth, &ESIOAuth::ssoAuthRequested, this, &ESIInterfaceManager::ssoAuthRequested);
@@ -72,6 +74,11 @@ namespace Evernus
         mOAuth.cancelSsoAuth(charId);
     }
 
+    void ESIInterfaceManager::setTokens(Character::IdType id, const QString &accessToken, const QString &refreshToken)
+    {
+        mOAuth.setTokens(id, accessToken, refreshToken);
+    }
+
     const ESIInterface &ESIInterfaceManager::selectNextInterface()
     {
         const auto &interface = *mInterfaces[mCurrentInterface];
@@ -88,6 +95,16 @@ namespace Evernus
     CitadelAccessCache &ESIInterfaceManager::getCitadelAccessCache() noexcept
     {
         return mCitadelAccessCache;
+    }
+
+    QString ESIInterfaceManager::getClientId() const
+    {
+        return mClientId;
+    }
+
+    QString ESIInterfaceManager::getClientSecret() const
+    {
+        return mClientSecret;
     }
 
     void ESIInterfaceManager::createInterfaces()

@@ -14,8 +14,7 @@
  */
 #pragma once
 
-#include <QOAuth2AuthorizationCodeFlow>
-
+#include "ESIOAuth2AuthorizationCodeFlow.h"
 #include "Character.h"
 
 class QNetworkRequest;
@@ -26,7 +25,7 @@ namespace Evernus
     class EveDataProvider;
 
     class ESIOAuth2CharacterAuthorizationCodeFlow
-        : public QOAuth2AuthorizationCodeFlow
+        : public ESIOAuth2AuthorizationCodeFlow
     {
         Q_OBJECT
 
@@ -40,10 +39,6 @@ namespace Evernus
         ESIOAuth2CharacterAuthorizationCodeFlow(const ESIOAuth2CharacterAuthorizationCodeFlow &) = default;
         ESIOAuth2CharacterAuthorizationCodeFlow(ESIOAuth2CharacterAuthorizationCodeFlow &&) = default;
         virtual ~ESIOAuth2CharacterAuthorizationCodeFlow() = default;
-
-        // this method exists because of https://bugreports.qt.io/browse/QTBUG-66097
-        // TODO: remove when fixed
-        void resetStatus();
 
         ESIOAuth2CharacterAuthorizationCodeFlow &operator =(const ESIOAuth2CharacterAuthorizationCodeFlow &) = default;
         ESIOAuth2CharacterAuthorizationCodeFlow &operator =(ESIOAuth2CharacterAuthorizationCodeFlow &&) = default;
@@ -61,7 +56,5 @@ namespace Evernus
         const EveDataProvider &mDataProvider;
 
         QString getCharacterName() const;
-
-        static void modifyOAuthparameters(QAbstractOAuth::Stage stage, QVariantMap *params);
     };
 }

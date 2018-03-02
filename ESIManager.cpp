@@ -854,12 +854,12 @@ namespace Evernus
             {
                 const auto structureObj = structure.toObject();
 
-                SovereigntyStructure structure;
-                structure.mSolarSystemId =  structureObj.value(QStringLiteral("solar_system_id")).toDouble();
-                structure.mStructureId =  structureObj.value(QStringLiteral("structure_id")).toDouble();
-                structure.mTypeId =  structureObj.value(QStringLiteral("structure_type_id")).toDouble();
+                SovereigntyStructure parsedStructure;
+                parsedStructure.mSolarSystemId =  structureObj.value(QStringLiteral("solar_system_id")).toDouble();
+                parsedStructure.mStructureId =  structureObj.value(QStringLiteral("structure_id")).toDouble();
+                parsedStructure.mTypeId =  structureObj.value(QStringLiteral("structure_type_id")).toDouble();
 
-                result.emplace_back(structure);
+                result.emplace_back(parsedStructure);
             }
 
             callback(std::move(result), {}, expires);
@@ -1219,8 +1219,10 @@ namespace Evernus
 
             std::mutex resultMutex;
 
+            const auto array = data.array();
+
             QtConcurrent::blockingMap(
-                data.array(),
+                array,
                 [&](const auto &value) {
                     const auto entryObj = value.toObject();
 

@@ -253,6 +253,7 @@ namespace Evernus
 
         void processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
         void cancelSsoAuth(Character::IdType charId);
+        void processNewCharacter(Character::IdType id, const QString &accessToken, const QString &refreshToken);
 
     private slots:
         void scheduleCharacterUpdate();

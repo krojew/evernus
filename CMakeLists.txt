@@ -290,10 +290,15 @@ add_executable(
     ESINetworkAccessManager.h
     ESIOAuth.cpp
     ESIOAuth.h
+    ESIOAuth2AuthorizationCodeFlow.cpp
+    ESIOAuth2AuthorizationCodeFlow.h
     ESIOAuth2CharacterAuthorizationCodeFlow.cpp
     ESIOAuth2CharacterAuthorizationCodeFlow.h
+    ESIOAuth2UnknownCharacterAuthorizationCodeFlow.cpp
+    ESIOAuth2UnknownCharacterAuthorizationCodeFlow.h
     ESIOAuthReplyHandler.cpp
     ESIOAuthReplyHandler.h
+    ESIUrls.h
     ESIWholeExternalOrderImporter.cpp
     ESIWholeExternalOrderImporter.h
     EveDataManagerProvider.h
@@ -547,6 +552,8 @@ add_executable(
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h
+    NewCharacterController.cpp
+    NewCharacterController.h
     NumberFormatDelegate.cpp
     NumberFormatDelegate.h
     OrderScript.cpp

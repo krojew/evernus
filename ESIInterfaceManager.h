@@ -55,11 +55,15 @@ namespace Evernus
 
         void processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
         void cancelSsoAuth(Character::IdType charId);
+        void setTokens(Character::IdType id, const QString &accessToken, const QString &refreshToken);
 
         const ESIInterface &selectNextInterface();
 
         const CitadelAccessCache &getCitadelAccessCache() const noexcept;
         CitadelAccessCache &getCitadelAccessCache() noexcept;
+
+        QString getClientId() const;
+        QString getClientSecret() const;
 
         ESIInterfaceManager &operator =(const ESIInterfaceManager &) = delete;
         ESIInterfaceManager &operator =(ESIInterfaceManager &&) = default;
@@ -68,6 +72,9 @@ namespace Evernus
         void ssoAuthRequested(Character::IdType charId, const QUrl &url);
 
     private:
+        QString mClientId;
+        QString mClientSecret;
+
         std::vector<std::unique_ptr<ESIInterface, QObjectDeleteLaterDeleter>> mInterfaces;
         std::size_t mCurrentInterface{0};
 

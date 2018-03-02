@@ -33,6 +33,7 @@
 #include "CallbackEvent.h"
 #include "ReplyTimeout.h"
 #include "ESIOAuth.h"
+#include "ESIUrls.h"
 
 #include "ESIInterface.h"
 
@@ -165,8 +166,6 @@ namespace Evernus
             callback(QString{}, error, QDateTime{});
         }
     };
-
-    const QString ESIInterface::esiUrl{"https://esi.tech.ccp.is"};
 
     ESIInterface::ESIInterface(CitadelAccessCache &citadelAccessCache,
                                ESIInterfaceErrorLimiter &errorLimiter,
@@ -638,7 +637,7 @@ namespace Evernus
     void ESIInterface::get(const QString &url, const QVariantMap &parameters, const T &continuation, uint retries) const
     {
         runNowOrLater([=] {
-            auto reply = mOAuth.get(esiUrl + url, parameters);
+            auto reply = mOAuth.get(ESIUrls::esiUrl + url, parameters);
             Q_ASSERT(reply != nullptr);
 
             qDebug() << "ESI request:" << reply << "" << url << ":" << parameters;
@@ -693,7 +692,7 @@ namespace Evernus
                            quint64 citadelId) const
     {
         runNowOrLater([=] {
-            mOAuth.get(charId, esiUrl + url, parameters, [=](auto &reply) {
+            mOAuth.get(charId, ESIUrls::esiUrl + url, parameters, [=](auto &reply) {
                 qDebug() << "ESI request:" << url << ":" << parameters;
                 qDebug() << "Retries" << retries;
 
@@ -758,7 +757,7 @@ namespace Evernus
     void ESIInterface::post(Character::IdType charId, const QString &url, const QVariant &data, T &&errorCallback) const
     {
         runNowOrLater([=] {
-            mOAuth.post(charId, esiUrl + url, data, [=](auto &reply) {
+            mOAuth.post(charId, ESIUrls::esiUrl + url, data, [=](auto &reply) {
                 qDebug() << "ESI request:" << url << ":" << data;
 
                 const auto error = reply.error();
@@ -796,7 +795,7 @@ namespace Evernus
     void ESIInterface::post(const QString &url, const QVariant &data, ErrorCallback errorCallback, T &&resultCallback) const
     {
         runNowOrLater([=] {
-            auto reply = mOAuth.post(esiUrl + url, data);
+            auto reply = mOAuth.post(ESIUrls::esiUrl + url, data);
             Q_ASSERT(reply != nullptr);
 
             qDebug() << "ESI request" << reply << ":" << url << ":" << data;

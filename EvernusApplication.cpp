@@ -651,18 +651,12 @@ namespace Evernus
     {
         qDebug() << "Refreshing character: " << id;
 
-        try
-        {
-            const auto charSubtask = startTask(parentTask, getCharacterImportMessage(id));
+        const auto charSubtask = startTask(parentTask, getCharacterImportMessage(id));
 
-            if (!checkImportAndEndTask(id, TimerType::Character, charSubtask))
-                return;
+        if (!checkImportAndEndTask(id, TimerType::Character, charSubtask))
+            return;
 
-            importCharacter(id, charSubtask);
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-        }
+        importCharacter(id, charSubtask);
     }
 
     void EvernusApplication::refreshCharacterAssets(Character::IdType id, uint parentTask)
@@ -1541,12 +1535,22 @@ namespace Evernus
 
     void EvernusApplication::processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code)
     {
+        Q_ASSERT(mESIInterfaceManager);
         mESIInterfaceManager->processSSOAuthorizationCode(charId, code);
     }
 
     void EvernusApplication::cancelSsoAuth(Character::IdType charId)
     {
+        Q_ASSERT(mESIInterfaceManager);
         mESIInterfaceManager->cancelSsoAuth(charId);
+    }
+
+    void EvernusApplication::processNewCharacter(Character::IdType id, const QString &accessToken, const QString &refreshToken)
+    {
+        Q_ASSERT(mESIInterfaceManager);
+        mESIInterfaceManager->setTokens(id, accessToken, refreshToken);
+
+        refreshCharacter(id, TaskConstants::invalidTask);
     }
 
     void EvernusApplication::scheduleCharacterUpdate()

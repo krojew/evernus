@@ -302,6 +302,10 @@ namespace Evernus
                         return tr("Private");
                     case Contract::Availability::Public:
                         return tr("Public");
+                    case Contract::Availability::Corporation:
+                        return tr("Corporation");
+                    case Contract::Availability::Alliance:
+                        return tr("Alliance");
                     }
                     break;
                 case issuedColumn:

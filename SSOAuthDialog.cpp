@@ -14,9 +14,12 @@
  */
 #include <QDesktopServices>
 #include <QDialogButtonBox>
+#include <QDesktopWidget>
+#include <QApplication>
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QLineEdit>
+#include <QStyle>
 #include <QLabel>
 #include <QUrl>
 
@@ -49,6 +52,15 @@ namespace Evernus
 
         setModal(true);
         adjustSize();
+
+        setGeometry(
+            QStyle::alignedRect(
+                Qt::LeftToRight,
+                Qt::AlignCenter,
+                size(),
+                qApp->desktop()->availableGeometry()
+            )
+        );
 
         QDesktopServices::openUrl(url);
     }

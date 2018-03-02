@@ -14,20 +14,13 @@
  */
 #pragma once
 
-#include <QVariant>
-
-#include "ExternalOrderImporter.h"
+#include <QString>
 
 namespace Evernus
 {
-    class EveDataProvider;
-
-    namespace SSOUtils
+    namespace ESIUrls
     {
-        bool useWholeMarketImport(const TypeLocationPairs &target,
-                                  const EveDataProvider &dataProvider);
-        void clearRefreshTokens();
-
-        QVariantMap parseAuthorizationCode(const QByteArray &rawQuery);
+        const auto esiUrl = QStringLiteral("https://esi.tech.ccp.is");
+        const auto callbackUrl = QStringLiteral("https://evernus.com/sso-authentication-2/");
     }
 }

@@ -62,6 +62,7 @@ namespace Evernus
 
         void processSSOAuthorizationCode(Character::IdType charId, const QByteArray &rawQuery);
         void cancelSsoAuth(Character::IdType charId);
+        void setTokens(Character::IdType id, const QString &accessToken, const QString &refreshToken);
 
         static QString getUserAgent();
 

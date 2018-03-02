@@ -22,8 +22,8 @@ namespace Evernus
         : public QNetworkAccessManager
     {
     public:
-        ESINetworkAccessManager(const QString &clientId, const QString &clientSecret, QObject *parent = nullptr);
         ESINetworkAccessManager() = default;
+        ESINetworkAccessManager(const QString &clientId, const QString &clientSecret, QObject *parent = nullptr);
         ESINetworkAccessManager(const ESINetworkAccessManager &) = default;
         ESINetworkAccessManager(ESINetworkAccessManager &&) = default;
         virtual ~ESINetworkAccessManager() = default;
