@@ -198,7 +198,7 @@ namespace Evernus
 
                                     Character character{charId};
                                     character.setName(publicDataObj.value(QStringLiteral("name")).toString());
-                                    character.setCorporationName(corpDataObj.value(QStringLiteral("corporation_name")).toString());
+                                    character.setCorporationName(corpDataObj.value(QStringLiteral("name")).toString());
                                     character.setCorporationId(publicDataObj.value(QStringLiteral("corporation_id")).toDouble());
                                     character.setRace(mDataProvider.getRaceName(publicDataObj.value(QStringLiteral("race_id")).toDouble()));
                                     character.setBloodline(mDataProvider.getBloodlineName(publicDataObj.value(QStringLiteral("bloodline_id")).toDouble()));
@@ -214,169 +214,171 @@ namespace Evernus
                                     CharacterData::ReprocessingSkills reprocessingSkills;
                                     CharacterData::IndustrySkills industrySkills;
 
+                                    const auto skillLevelProperty = QStringLiteral("active_skill_level");
+
                                     const auto skills = skillData.object().value(QStringLiteral("skills")).toArray();
                                     for (const auto &skill : skills)
                                     {
                                         const auto skillObj = skill.toObject();
                                         switch (skillObj.value(QStringLiteral("skill_id")).toInt()) {
                                         case 3443:
-                                            orderAmountSkills.mTrade = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            orderAmountSkills.mTrade = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3444:
-                                            orderAmountSkills.mRetail = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            orderAmountSkills.mRetail = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 16596:
-                                            orderAmountSkills.mWholesale = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            orderAmountSkills.mWholesale = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 18580:
-                                            orderAmountSkills.mTycoon = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            orderAmountSkills.mTycoon = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 16598:
-                                            tradeRangeSkills.mMarketing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            tradeRangeSkills.mMarketing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 16594:
-                                            tradeRangeSkills.mProcurement = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            tradeRangeSkills.mProcurement = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 16595:
-                                            tradeRangeSkills.mDaytrading = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            tradeRangeSkills.mDaytrading = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3447:
-                                            tradeRangeSkills.mVisibility = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            tradeRangeSkills.mVisibility = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 16622:
-                                            feeSkills.mAccounting = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            feeSkills.mAccounting = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3446:
-                                            feeSkills.mBrokerRelations = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            feeSkills.mBrokerRelations = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 16597:
-                                            feeSkills.mMarginTrading = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            feeSkills.mMarginTrading = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 25235:
-                                            contractSkills.mContracting = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            contractSkills.mContracting = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12180:
-                                            reprocessingSkills.mArkonorProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mArkonorProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12181:
-                                            reprocessingSkills.mBistotProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mBistotProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12182:
-                                            reprocessingSkills.mCrokiteProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mCrokiteProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12183:
-                                            reprocessingSkills.mDarkOchreProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mDarkOchreProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12185:
-                                            reprocessingSkills.mHedbergiteProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mHedbergiteProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12186:
-                                            reprocessingSkills.mHemorphiteProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mHemorphiteProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 18025:
-                                            reprocessingSkills.mIceProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mIceProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12187:
-                                            reprocessingSkills.mJaspetProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mJaspetProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12188:
-                                            reprocessingSkills.mKerniteProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mKerniteProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12189:
-                                            reprocessingSkills.mMercoxitProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mMercoxitProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12190:
-                                            reprocessingSkills.mOmberProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mOmberProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12191:
-                                            reprocessingSkills.mPlagioclaseProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mPlagioclaseProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12192:
-                                            reprocessingSkills.mPyroxeresProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mPyroxeresProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3385:
-                                            reprocessingSkills.mReprocessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mReprocessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3389:
-                                            reprocessingSkills.mReprocessingEfficiency = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mReprocessingEfficiency = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12193:
-                                            reprocessingSkills.mScorditeProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mScorditeProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12196:
-                                            reprocessingSkills.mScrapmetalProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mScrapmetalProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12194:
-                                            reprocessingSkills.mSpodumainProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mSpodumainProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 12195:
-                                            reprocessingSkills.mVeldsparProcessing = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            reprocessingSkills.mVeldsparProcessing = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3380:
-                                            industrySkills.mIndustry = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mIndustry = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3388:
-                                            industrySkills.mAdvancedIndustry = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mAdvancedIndustry = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3398:
-                                            industrySkills.mAdvancedLargeShipConstruction = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mAdvancedLargeShipConstruction = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3397:
-                                            industrySkills.mAdvancedMediumShipConstruction = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mAdvancedMediumShipConstruction = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3395:
-                                            industrySkills.mAdvancedSmallShipConstruction = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mAdvancedSmallShipConstruction = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11444:
-                                            industrySkills.mAmarrStarshipEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mAmarrStarshipEngineering = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 3396:
-                                            industrySkills.mAvancedIndustrialShipConstruction = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mAvancedIndustrialShipConstruction = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11454:
-                                            industrySkills.mCaldariStarshipEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mCaldariStarshipEngineering = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11448:
-                                            industrySkills.mElectromagneticPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mElectromagneticPhysics = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11453:
-                                            industrySkills.mElectronicEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mElectronicEngineering = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11450:
-                                            industrySkills.mGallenteStarshipEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mGallenteStarshipEngineering = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11446:
-                                            industrySkills.mGravitonPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mGravitonPhysics = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11433:
-                                            industrySkills.mHighEnergyPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mHighEnergyPhysics = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11443:
-                                            industrySkills.mHydromagneticPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mHydromagneticPhysics = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11447:
-                                            industrySkills.mLaserPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mLaserPhysics = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11452:
-                                            industrySkills.mMechanicalEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mMechanicalEngineering = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11445:
-                                            industrySkills.mMinmatarStarshipEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mMinmatarStarshipEngineering = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11529:
-                                            industrySkills.mMolecularEngineering = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mMolecularEngineering = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11451:
-                                            industrySkills.mNuclearPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mNuclearPhysics = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11441:
-                                            industrySkills.mPlasmaPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mPlasmaPhysics = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11455:
-                                            industrySkills.mQuantumPhysics = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mQuantumPhysics = skillObj.value(skillLevelProperty).toInt();
                                             break;
                                         case 11449:
-                                            industrySkills.mRocketScience = skillObj.value(QStringLiteral("current_skill_level")).toInt();
+                                            industrySkills.mRocketScience = skillObj.value(skillLevelProperty).toInt();
                                         }
                                     }
 

@@ -228,7 +228,7 @@ namespace Evernus
             return;
         }
 
-        fetchPaginatedData(charId, QStringLiteral("/v1/characters/%1/assets/").arg(charId), 1, callback);
+        fetchPaginatedData(charId, QStringLiteral("/v3/characters/%1/assets/").arg(charId), 1, callback);
     }
 
     void ESIInterface::fetchCorporationAssets(Character::IdType charId, quint64 corpId, const PaginatedCallback &callback) const
@@ -267,13 +267,13 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v3/characters/%1/skills/").arg(charId), {}, callback, getNumRetries());
+        get(charId, QStringLiteral("/v4/characters/%1/skills/").arg(charId), {}, callback, getNumRetries());
     }
 
     void ESIInterface::fetchCorporation(quint64 corpId, const JsonCallback &callback) const
     {
         qDebug() << "Fetching corporation" << corpId;
-        get(QStringLiteral("/v3/corporations/%1/").arg(corpId), {}, callback, getNumRetries());
+        get(QStringLiteral("/v4/corporations/%1/").arg(corpId), {}, callback, getNumRetries());
     }
 
     void ESIInterface::fetchRaces(const JsonCallback &callback) const
@@ -343,7 +343,7 @@ namespace Evernus
         if (fromId)
             paramteres[QStringLiteral("from_id")] = *fromId;
 
-        get(charId, QStringLiteral("/v1/characters/%1/wallet/journal/").arg(charId), paramteres, callback, getNumRetries());
+        get(charId, QStringLiteral("/v3/characters/%1/wallet/journal/").arg(charId), paramteres, callback, getNumRetries());
     }
 
     void ESIInterface::fetchCorporationWalletJournal(Character::IdType charId,
@@ -469,7 +469,7 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v1/characters/%1/blueprints/").arg(charId), {}, callback, getNumRetries());
+        get(charId, QStringLiteral("/v2/characters/%1/blueprints/").arg(charId), {}, callback, getNumRetries());
     }
 
     void ESIInterface::fetchCharacterMiningLedger(Character::IdType charId, const PaginatedCallback &callback) const
