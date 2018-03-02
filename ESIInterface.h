@@ -147,7 +147,7 @@ namespace Evernus
         QSettings mSettings;
 
         template<class T>
-        void fetchPaginatedData(const QString &url, QVariantMap parameters, uint page, T &&continuation) const;
+        void fetchPaginatedData(const QString &url, QVariantMap parameters, uint page, T &&continuation, const std::shared_ptr<PaginatedContext> &context) const;
         template<class T>
         void fetchPaginatedData(Character::IdType charId,
                                 const QString &url,

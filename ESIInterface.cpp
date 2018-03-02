@@ -131,7 +131,7 @@ namespace Evernus
     void ESIInterface::fetchMarketOrders(uint regionId, EveType::IdType typeId, const PaginatedCallback &callback) const
     {
         qDebug() << "Fetching market orders for" << regionId << "and" << typeId;
-        fetchPaginatedData(QStringLiteral("/v1/markets/%1/orders/").arg(regionId), { { QStringLiteral("type_id"), typeId } }, 1, callback);
+        fetchPaginatedData(QStringLiteral("/v1/markets/%1/orders/").arg(regionId), { { QStringLiteral("type_id"), typeId } }, 1, callback, std::make_shared<PaginatedContext>());
     }
 
     void ESIInterface::fetchMarketOrders(uint regionId, const PaginatedCallback &callback) const
@@ -163,7 +163,7 @@ namespace Evernus
             return;
         }
 
-        fetchPaginatedData(charId, QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback, true, citadelId);
+        fetchPaginatedData(charId, QStringLiteral("/v1/markets/structures/%1/").arg(citadelId), 1, callback, std::make_shared<PaginatedContext>(), true, citadelId);
     }
 
     void ESIInterface::fetchCharacterAssets(Character::IdType charId, const PaginatedCallback &callback) const
@@ -176,7 +176,7 @@ namespace Evernus
             return;
         }
 
-        fetchPaginatedData(charId, QStringLiteral("/v3/characters/%1/assets/").arg(charId), 1, callback);
+        fetchPaginatedData(charId, QStringLiteral("/v3/characters/%1/assets/").arg(charId), 1, callback, std::make_shared<PaginatedContext>());
     }
 
     void ESIInterface::fetchCorporationAssets(Character::IdType charId, quint64 corpId, const PaginatedCallback &callback) const
@@ -189,7 +189,7 @@ namespace Evernus
             return;
         }
 
-        fetchPaginatedData(charId, QStringLiteral("/v2/corporations/%1/assets/").arg(corpId), 1, callback);
+        fetchPaginatedData(charId, QStringLiteral("/v2/corporations/%1/assets/").arg(corpId), 1, callback, std::make_shared<PaginatedContext>());
     }
 
     void ESIInterface::fetchCharacter(Character::IdType charId, const JsonCallback &callback) const
@@ -597,14 +597,13 @@ namespace Evernus
     }
 
     template<class T>
-    void ESIInterface::fetchPaginatedData(const QString &url, QVariantMap parameters, uint page, T &&continuation) const
-    ::fetchPaginatedData(const QString &url, QUrlQuery query, uint page, T &&continuation, const std::shared_ptr<PaginatedContext> &context) const
+    void ESIInterface::fetchPaginatedData(const QString &url, QVariantMap parameters, uint page, T &&continuation, const std::shared_ptr<PaginatedContext> &context) const
     {
         const auto callback = createPaginatedCallback(
             page,
             continuation,
             [=](auto nextPage) {
-                fetchPaginatedData(url, parameters, nextPage, continuation);
+                fetchPaginatedData(url, parameters, nextPage, continuation, context);
             },
             context
         );
