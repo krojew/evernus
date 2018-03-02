@@ -15,15 +15,12 @@
 #pragma once
 
 #include <unordered_map>
-#include <unordered_set>
 #include <functional>
+#include <optional>
 #include <vector>
 #include <memory>
 #include <map>
 
-#include <optional>
-
-#include <QNetworkAccessManager>
 #include <QDateTime>
 #include <QString>
 #include <QDate>
@@ -37,10 +34,12 @@
 #include "ESIInterface.h"
 #include "MarketOrders.h"
 #include "MarketPrices.h"
-#include "SimpleCrypt.h"
+#include "ContractItem.h"
 #include "MarketOrder.h"
 #include "Character.h"
 #include "AssetList.h"
+#include "Contracts.h"
+#include "Contract.h"
 #include "EveType.h"
 
 class QJsonObject;
@@ -48,8 +47,8 @@ class QDateTime;
 
 namespace Evernus
 {
+    struct SovereigntyStructure;
     class ESIInterfaceManager;
-    class CharacterRepository;
     class EveDataProvider;
     class ExternalOrder;
     class MiningLedger;
@@ -68,16 +67,21 @@ namespace Evernus
         using ExternalOrderList = std::vector<ExternalOrder>;
         using BlueprintList = std::vector<Blueprint>;
         using MiningLedgerList = std::vector<MiningLedger>;
+        using SovereigntyStructureList = std::vector<SovereigntyStructure>;
+        using ContractItemList = std::vector<ContractItem>;
         using MarketOrderCallback = Callback<ExternalOrderList>;
+        using AssetCallback = Callback<AssetList>;
+        using ContractCallback = Callback<Contracts>;
+        using ContractItemCallback = Callback<ContractItemList>;
+        using WalletJournalCallback = Callback<WalletJournal>;
+        using WalletTransactionsCallback = Callback<WalletTransactions>;
+        using MarketOrdersCallback = Callback<MarketOrders>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
         using NameMap = std::unordered_map<quint64, QString>;
 
         static const QString loginUrl;
 
-        ESIManager(QByteArray clientId,
-                   QByteArray clientSecret,
-                   const EveDataProvider &dataProvider,
-                   const CharacterRepository &characterRepo,
+        ESIManager(const EveDataProvider &dataProvider,
                    ESIInterfaceManager &interfaceManager,
                    QObject *parent = nullptr);
         ESIManager(const ESIManager &) = default;
@@ -95,28 +99,44 @@ namespace Evernus
                                       uint regionId,
                                       Character::IdType charId,
                                       const MarketOrderCallback &callback) const;
-        void fetchCharacterAssets(Character::IdType charId, const Callback<AssetList> &callback) const;
+        void fetchCharacterAssets(Character::IdType charId, const AssetCallback &callback) const;
+        void fetchCorporationAssets(Character::IdType charId, quint64 corpId, const AssetCallback &callback) const;
         void fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const;
         void fetchRaces(const Callback<NameMap> &callback) const;
         void fetchBloodlines(const Callback<NameMap> &callback) const;
-        void fetchCharacterMarketOrders(Character::IdType charId, const Callback<MarketOrders> &callback) const;
+        void fetchCharacterMarketOrders(Character::IdType charId, const MarketOrdersCallback &callback) const;
+        void fetchCorporationMarketOrders(Character::IdType charId, quint64 corpId, const MarketOrdersCallback &callback) const;
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          WalletJournalEntry::IdType tillId,
-                                         const Callback<WalletJournal> &callback) const;
+                                         const WalletJournalCallback &callback) const;
+        void fetchCorporationWalletJournal(Character::IdType charId,
+                                           quint64 corpId,
+                                           int division,
+                                           WalletJournalEntry::IdType tillId,
+                                           const WalletJournalCallback &callback) const;
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               WalletTransaction::IdType tillId,
-                                              const Callback<WalletTransactions> &callback) const;
+                                              const WalletTransactionsCallback &callback) const;
+        void fetchCorporationWalletTransactions(Character::IdType charId,
+                                                quint64 corpId,
+                                                int division,
+                                                WalletTransaction::IdType tillId,
+                                                const WalletTransactionsCallback &callback) const;
+        void fetchCharacterContracts(Character::IdType charId, const ContractCallback &callback) const;
+        void fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const ContractItemCallback &callback) const;
+        void fetchCorporationContracts(Character::IdType charId, quint64 corpId, const ContractCallback &callback) const;
+        void fetchCorporationContractItems(Character::IdType charId, quint64 corpId, Contract::IdType contractId, const ContractItemCallback &callback) const;
         void fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const;
         void fetchCharacterMiningLedger(Character::IdType charId, const Callback<MiningLedgerList> &callback) const;
         void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
-        void fetchMarketPrices(const PesistentDataCallback<MarketPrices> &callback) const;
-        void fetchIndustryCostIndices(const PesistentDataCallback<IndustryCostIndices> &callback) const;
+        void fetchGenericNames(const std::vector<quint64> &ids, const PesistentDataCallback<std::unordered_map<quint64, QString>> &callback) const;
+        void fetchMarketPrices(const Callback<MarketPrices> &callback) const;
+        void fetchIndustryCostIndices(const Callback<IndustryCostIndices> &callback) const;
+        void fetchSovereigntyStructures(const Callback<SovereigntyStructureList> &callback) const;
 
         void openMarketDetails(EveType::IdType typeId, Character::IdType charId) const;
 
         void setDestination(quint64 locationId, Character::IdType charId) const;
-
-        bool hasClientCredentials() const;
 
         ESIManager &operator =(const ESIManager &) = default;
         ESIManager &operator =(ESIManager &&) = default;
@@ -124,67 +144,69 @@ namespace Evernus
     signals:
         void error(const QString &text) const;
 
-        void tokenError(Character::IdType charId, const QString &error);
-        void acquiredToken(Character::IdType charId, const QString &accessToken, const QDateTime &expiry);
-
-        void ssoAuthRequested(Character::IdType charId);
-
-    public slots:
-        void fetchToken(Character::IdType charId);
-
-        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
-        void cancelSSOAuth(Character::IdType charId);
-
     private:
-        using CharacterSet = std::unordered_set<Character::IdType>;
-
         static const QString firstTimeCitadelOrderImportKey;
-
-        static std::unordered_map<Character::IdType, QString> mRefreshTokens;
-        static bool mFetchingToken;
 
         static bool mFirstTimeCitadelOrderImport;
 
-        static CharacterSet mPendingTokenRefresh;
-
         const EveDataProvider &mDataProvider;
-        const CharacterRepository &mCharacterRepo;
-
-        const QByteArray mClientId;
-        const QByteArray mClientSecret;
-
-        SimpleCrypt mCrypt;
 
         ESIInterfaceManager &mInterfaceManager;
-
-        QNetworkAccessManager mNetworkManager;
-        CharacterSet mRequestedCharacterAuth;
 
         void fetchCharacterWalletJournal(Character::IdType charId,
                                          const std::optional<WalletJournalEntry::IdType> &fromId,
                                          WalletJournalEntry::IdType tillId,
-                                         const Callback<WalletJournal> &callback) const;
+                                         std::shared_ptr<WalletJournal> &&journal,
+                                         const WalletJournalCallback &callback) const;
+        void fetchCorporationWalletJournal(Character::IdType charId,
+                                           quint64 corpId,
+                                           int division,
+                                           const std::optional<WalletJournalEntry::IdType> &fromId,
+                                           WalletJournalEntry::IdType tillId,
+                                           std::shared_ptr<WalletJournal> &&journal,
+                                           const WalletJournalCallback &callback) const;
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               const std::optional<WalletTransaction::IdType> &fromId,
                                               WalletTransaction::IdType tillId,
                                               std::shared_ptr<WalletTransactions> &&transactions,
-                                              const Callback<WalletTransactions> &callback) const;
-
-        QNetworkRequest getAuthRequest() const;
+                                              const WalletTransactionsCallback &callback) const;
+        void fetchCorporationWalletTransactions(Character::IdType charId,
+                                                quint64 corpId,
+                                                int division,
+                                                const std::optional<WalletTransaction::IdType> &fromId,
+                                                WalletTransaction::IdType tillId,
+                                                std::shared_ptr<WalletTransactions> &&transactions,
+                                                const WalletTransactionsCallback &callback) const;
 
         ExternalOrder getExternalOrderFromJson(const QJsonObject &object, uint regionId, const QDateTime &updateTime) const;
         ESIInterface::PaginatedCallback getMarketOrderCallback(uint regionId, const MarketOrderCallback &callback) const;
+        ESIInterface::JsonCallback getMarketOrdersCallback(Character::IdType charId, const MarketOrdersCallback &callback) const;
+        ESIInterface::PaginatedCallback getAssetListCallback(Character::IdType charId, const AssetCallback &callback) const;
+        ESIInterface::JsonCallback getContractCallback(const ContractCallback &callback) const;
+        ESIInterface::JsonCallback getContractItemCallback(Contract::IdType contractId, const ContractItemCallback &callback) const;
 
-        void scheduleNextTokenFetch();
+        template<class T>
+        ESIInterface::JsonCallback getWalletJournalCallback(Character::IdType charId,
+                                                            WalletJournalEntry::IdType tillId,
+                                                            std::shared_ptr<WalletJournal> &&journal,
+                                                            const WalletJournalCallback &callback,
+                                                            T nextCallback) const;
+
+        template<class T>
+        ESIInterface::JsonCallback getWalletTransactionsCallback(Character::IdType charId,
+                                                                 WalletTransaction::IdType tillId,
+                                                                 std::shared_ptr<WalletTransactions> &&transactions,
+                                                                 const WalletTransactionsCallback &callback,
+                                                                 T nextCallback) const;
 
         const ESIInterface &selectNextInterface() const;
-
-        std::pair<QString, bool> getCharacterName(Character::IdType id) const;
 
         static MarketOrder::State getStateFromString(const QString &state);
         static short getMarketOrderRangeFromString(const QString &range);
         static QDateTime getDateTimeFromString(const QString &value);
 
-        static QNetworkRequest getVerifyRequest(const QByteArray &accessToken);
+        static Contract::Type getContractTypeFromString(const QString &type);
+        static Contract::Status getContractStatusFromString(const QString &status);
+        static Contract::Availability getContractAvailabilityFromString(const QString &availability);
     };
 }

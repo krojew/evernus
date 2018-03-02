@@ -34,7 +34,6 @@ namespace Evernus
     class MiningLedgerRepository;
     class MiningLedgerBarGraph;
     class StationSelectButton;
-    class CharacterRepository;
     class ESIInterfaceManager;
     class CacheTimerProvider;
     class PriceTypeComboBox;
@@ -53,11 +52,8 @@ namespace Evernus
         IndustryMiningLedgerWidget(const CacheTimerProvider &cacheTimerProvider,
                                    const EveDataProvider &dataProvider,
                                    const MiningLedgerRepository &ledgerRepo,
-                                   const CharacterRepository &characterRepo,
                                    TaskManager &taskManager,
                                    ESIInterfaceManager &interfaceManager,
-                                   QByteArray clientId,
-                                   QByteArray clientSecret,
                                    QWidget *parent = nullptr);
         IndustryMiningLedgerWidget(const IndustryMiningLedgerWidget &) = default;
         IndustryMiningLedgerWidget(IndustryMiningLedgerWidget &&) = default;
@@ -68,13 +64,9 @@ namespace Evernus
 
     signals:
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
-        void ssoAuthRequested(Character::IdType charId);
 
     public slots:
         void refresh();
-
-        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
-        void cancelSSOAuth(Character::IdType charId);
 
     private slots:
         void importData();

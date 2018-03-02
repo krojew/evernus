@@ -30,18 +30,14 @@
 
 namespace Evernus
 {
-    MarketOrderDataFetcher::MarketOrderDataFetcher(QByteArray clientId,
-                                                   QByteArray clientSecret,
-                                                   const EveDataProvider &dataProvider,
-                                                   const CharacterRepository &characterRepo,
+    MarketOrderDataFetcher::MarketOrderDataFetcher(const EveDataProvider &dataProvider,
                                                    ESIInterfaceManager &interfaceManager,
                                                    QObject *parent)
         : QObject{parent}
         , mDataProvider{dataProvider}
-        , mESIManager{std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager}
+        , mESIManager{mDataProvider, interfaceManager}
     {
         connect(&mESIManager, &ESIManager::error, this, &MarketOrderDataFetcher::genericError);
-        connect(&mESIManager, &ESIManager::ssoAuthRequested, this, &MarketOrderDataFetcher::ssoAuthRequested);
     }
 
     bool MarketOrderDataFetcher::hasPendingOrderRequests() const noexcept
@@ -84,16 +80,6 @@ namespace Evernus
 
         if (mOrderCounter.isEmpty())
             finishOrderImport();
-    }
-
-    void MarketOrderDataFetcher::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
-    {
-        mESIManager.processAuthorizationCode(charId, code);
-    }
-
-    void MarketOrderDataFetcher::cancelSSOAuth(Character::IdType charId)
-    {
-        mESIManager.cancelSSOAuth(charId);
     }
 
     void MarketOrderDataFetcher::processOrders(std::vector<ExternalOrder> &&orders, const QString &errorText)

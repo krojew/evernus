@@ -60,6 +60,10 @@ namespace Evernus
         mPreferencesStack = new QStackedWidget{this};
         preferencesLayout->addWidget(mPreferencesStack, 1);
 
+        const auto networkPreferences = new NetworkPreferencesWidget{this};
+        connect(networkPreferences, &NetworkPreferencesWidget::clearRefreshTokens,
+                this, &PreferencesDialog::clearRefreshTokens);
+
         std::vector<std::pair<QString, QWidget *>> categories;
         categories.emplace_back(std::make_pair(tr("General"), new GeneralPreferencesWidget{db, this}));
         categories.emplace_back(std::make_pair(tr("Paths"), new PathPreferencesWidget{this}));
@@ -67,7 +71,7 @@ namespace Evernus
         categories.emplace_back(std::make_pair(tr("Prices"), new PricePreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Orders"), new OrderPreferencesWidget{dataProvider, this}));
         categories.emplace_back(std::make_pair(tr("Statistics"), new StatisticsPreferencesWidget{this}));
-        categories.emplace_back(std::make_pair(tr("Network"), new NetworkPreferencesWidget{this}));
+        categories.emplace_back(std::make_pair(tr("Network"), networkPreferences));
         categories.emplace_back(std::make_pair(tr("Synchronization"), new SyncPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Web Service"), new HttpPreferencesWidget{this}));
         categories.emplace_back(std::make_pair(tr("Wallet"), new WalletPreferencesWidget{this}));

@@ -46,12 +46,6 @@ namespace Evernus
             Whole
         };
 
-        enum class EveImportSource
-        {
-            XML,
-            ESI,
-        };
-
         const auto importSkillsDefault = true;
         const auto importPortraitDefault = true;
         const auto importAssetsDefault = true;
@@ -74,7 +68,6 @@ namespace Evernus
         const auto corpWalletDivisionDefault = 1000;
         const auto marketOrderImportTypeDefault = MarketOrderImportType::Auto;
         const auto csvSeparatorDefault = QChar(',');
-        const auto eveImportSourceDefault = EveImportSource::ESI;
         const auto maxCitadelAccessAgeDefault = 7;
         const auto importMiningLedgerDefault = false;
 
@@ -113,7 +106,6 @@ namespace Evernus
         const auto marketOrderImportTypeKey = QStringLiteral("import/marketOrderType");
         const auto itemPricesFileDirKey = QStringLiteral("import/costs/fileDir");
         const auto csvSeparatorKey = QStringLiteral("import/csvSeparator");
-        const auto eveImportSourceKey = QStringLiteral("import/source/eve");
         const auto maxCitadelAccessAgeKey = QStringLiteral("import/citadelAccess/maxAge");
         const auto importMiningLedgerKey = QStringLiteral("import/character/importMiningLedger");
         const auto maxMiningLedgerAgeKey = QStringLiteral("import/miningLedger/maxAge");

@@ -20,16 +20,6 @@
 
 namespace Evernus
 {
-    Character::KeyIdType Character::getKeyId() const noexcept
-    {
-        return mKeyId;
-    }
-
-    void Character::setKeyId(const KeyIdType &id)
-    {
-        mKeyId = id;
-    }
-
     QString Character::getName() const &
     {
         return mData.mName;

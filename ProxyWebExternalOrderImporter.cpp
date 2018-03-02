@@ -19,19 +19,16 @@
 
 namespace Evernus
 {
-    ProxyWebExternalOrderImporter::ProxyWebExternalOrderImporter(QByteArray clientId,
-                                                                 QByteArray clientSecret,
-                                                                 const EveDataProvider &dataProvider,
-                                                                 const CharacterRepository &characterRepo,
+    ProxyWebExternalOrderImporter::ProxyWebExternalOrderImporter(const EveDataProvider &dataProvider,
                                                                  ESIInterfaceManager &interfaceManager,
                                                                  QObject *parent)
         : ExternalOrderImporter{parent}
         , mDataProvider{dataProvider}
         , mESIIndividualImporter{
-            std::make_unique<ESIIndividualExternalOrderImporter>(clientId, clientSecret, mDataProvider, characterRepo, interfaceManager, parent)
+            std::make_unique<ESIIndividualExternalOrderImporter>(mDataProvider, interfaceManager, parent)
         }
         , mESIWholeImporter{
-            std::make_unique<ESIWholeExternalOrderImporter>(std::move(clientId), std::move(clientSecret), mDataProvider, characterRepo, interfaceManager, parent)
+            std::make_unique<ESIWholeExternalOrderImporter>(mDataProvider, interfaceManager, parent)
         }
     {
         setCurrentImporter();
@@ -59,24 +56,6 @@ namespace Evernus
         }
     }
 
-    void ProxyWebExternalOrderImporter::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
-    {
-        Q_ASSERT(mESIIndividualImporter);
-        Q_ASSERT(mESIWholeImporter);
-
-        mESIIndividualImporter->processAuthorizationCode(charId, code);
-        mESIWholeImporter->processAuthorizationCode(charId, code);
-    }
-
-    void ProxyWebExternalOrderImporter::cancelSSOAuth(Character::IdType charId)
-    {
-        Q_ASSERT(mESIIndividualImporter);
-        Q_ASSERT(mESIWholeImporter);
-
-        mESIIndividualImporter->cancelSSOAuth(charId);
-        mESIWholeImporter->cancelSSOAuth(charId);
-    }
-
     void ProxyWebExternalOrderImporter::handleNewPreferences()
     {
         setCurrentImporter();
@@ -89,8 +68,6 @@ namespace Evernus
                 this, &ProxyWebExternalOrderImporter::externalOrdersChanged);
         connect(&importer, &T::statusChanged,
                 this, &ProxyWebExternalOrderImporter::statusChanged);
-        connect(&importer, &T::ssoAuthRequested,
-                this, &ProxyWebExternalOrderImporter::ssoAuthRequested);
     }
 
     void ProxyWebExternalOrderImporter::setCurrentImporter()

@@ -26,12 +26,20 @@
 
 namespace Evernus
 {
-    ESIInterfaceManager::ESIInterfaceManager(QObject *parent)
+    ESIInterfaceManager::ESIInterfaceManager(QString clientId,
+                                             QString clientSecret,
+                                             const CharacterRepository &characterRepo,
+                                             const EveDataProvider &dataProvider,
+                                             QObject *parent)
         : QObject{parent}
+        , mClientId{clientId}
+        , mClientSecret{clientSecret}
+        , mOAuth{std::move(clientId), std::move(clientSecret), characterRepo, dataProvider}
     {
+        connect(&mOAuth, &ESIOAuth::ssoAuthRequested, this, &ESIInterfaceManager::ssoAuthRequested);
+
         readCitadelAccessCache();
         createInterfaces();
-        connectInterfaces();
     }
 
     ESIInterfaceManager::~ESIInterfaceManager()
@@ -48,9 +56,27 @@ namespace Evernus
     void ESIInterfaceManager::handleNewPreferences()
     {
         mInterfaces.clear();
-
         createInterfaces();
-        connectInterfaces();
+    }
+
+    void ESIInterfaceManager::clearRefreshTokens()
+    {
+        mOAuth.clearRefreshTokens();
+    }
+
+    void ESIInterfaceManager::processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    {
+        mOAuth.processSSOAuthorizationCode(charId, code);
+    }
+
+    void ESIInterfaceManager::cancelSsoAuth(Character::IdType charId)
+    {
+        mOAuth.cancelSsoAuth(charId);
+    }
+
+    void ESIInterfaceManager::setTokens(Character::IdType id, const QString &accessToken, const QString &refreshToken)
+    {
+        mOAuth.setTokens(id, accessToken, refreshToken);
     }
 
     const ESIInterface &ESIInterfaceManager::selectNextInterface()
@@ -71,14 +97,14 @@ namespace Evernus
         return mCitadelAccessCache;
     }
 
-    void ESIInterfaceManager::connectInterfaces()
+    QString ESIInterfaceManager::getClientId() const
     {
-        for (const auto &interface : mInterfaces)
-        {
-            connect(interface.get(), &ESIInterface::tokenRequested, this, &ESIInterfaceManager::tokenRequested, Qt::QueuedConnection);
-            connect(this, &ESIInterfaceManager::acquiredToken, interface.get(), &ESIInterface::updateTokenAndContinue);
-            connect(this, &ESIInterfaceManager::tokenError, interface.get(), &ESIInterface::handleTokenError);
-        }
+        return mClientId;
+    }
+
+    QString ESIInterfaceManager::getClientSecret() const
+    {
+        return mClientSecret;
     }
 
     void ESIInterfaceManager::createInterfaces()
@@ -92,7 +118,7 @@ namespace Evernus
         );
 
         for (auto i = 0u; i < maxInterfaces; ++i)
-            mInterfaces.emplace_back(new ESIInterface{mCitadelAccessCache, mErrorLimiter});
+            mInterfaces.emplace_back(new ESIInterface{mCitadelAccessCache, mErrorLimiter, mOAuth});
     }
 
     void ESIInterfaceManager::readCitadelAccessCache()

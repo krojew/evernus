@@ -17,6 +17,8 @@
 #include <algorithm>
 #include <future>
 
+#include <boost/range/algorithm/transform.hpp>
+#include <boost/range/adaptor/filtered.hpp>
 #include <boost/throw_exception.hpp>
 
 #include <QSslConfiguration>
@@ -31,6 +33,7 @@
 
 #include "ExternalOrderImporterNames.h"
 #include "LanguageSelectDialog.h"
+#include "SovereigntyStructure.h"
 #include "StatisticsSettings.h"
 #include "UpdaterSettings.h"
 #include "NetworkSettings.h"
@@ -47,6 +50,7 @@
 #include "UISettings.h"
 #include "DbSettings.h"
 #include "PathUtils.h"
+#include "SSOUtils.h"
 #include "Updater.h"
 
 #include "qxtmailmessage.h"
@@ -59,8 +63,8 @@ namespace Evernus
 
     EvernusApplication::EvernusApplication(int &argc,
                                            char *argv[],
-                                           QByteArray clientId,
-                                           QByteArray clientSecret,
+                                           QString clientId,
+                                           QString clientSecret,
                                            const QString &forcedVersion,
                                            bool dontUpdate)
         : QApplication{argc, argv}
@@ -73,9 +77,6 @@ namespace Evernus
         , EveDataManagerProvider{}
         , mMainDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("main"))}
         , mEveDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("eve"))}
-        , mClientId{std::move(clientId)}
-        , mClientSecret{std::move(clientSecret)}
-        , mAPIManager{*this}
     {
         QSettings settings;
 
@@ -125,6 +126,8 @@ namespace Evernus
         showSplashMessage(tr("Creating schemas..."), splash);
         createDbSchema();
 
+        showSplashMessage(tr("Creating data providers..."), splash);
+
         mCharacterAssetProvider = std::make_unique<CachingAssetProvider>(*mCharacterRepository,
                                                                          *mAssetListRepository,
                                                                          *mItemRepository);
@@ -156,6 +159,11 @@ namespace Evernus
                                                                  *mCitadelRepository,
                                                                  *this,
                                                                  mEveDb);
+
+        mESIInterfaceManager = std::make_unique<ESIInterfaceManager>(std::move(clientId),
+                                                                     std::move(clientSecret),
+                                                                     getCharacterRepository(),
+                                                                     *mDataProvider);
 
         showSplashMessage(tr("Precaching timers..."), splash);
         precacheCacheTimers();
@@ -197,7 +205,7 @@ namespace Evernus
         {
             Updater::getInstance().performVersionMigration(*this,
                                                            *mDataProvider,
-                                                           mESIInterfaceManager.getCitadelAccessCache());
+                                                           mESIInterfaceManager->getCitadelAccessCache());
         }
 
         showSplashMessage(tr("Loading..."), splash);
@@ -216,9 +224,10 @@ namespace Evernus
         if (settings.value(UpdaterSettings::autoUpdateKey, UpdaterSettings::autoUpdateDefault).toBool())
             Updater::getInstance().checkForUpdates(true);
 
-        mESIManager = std::make_unique<ESIManager>(mClientId, mClientSecret, *mDataProvider, *mCharacterRepository, mESIInterfaceManager);
+        connect(mESIInterfaceManager.get(), &ESIInterfaceManager::ssoAuthRequested, this, &EvernusApplication::ssoAuthRequested);
+
+        mESIManager = std::make_unique<ESIManager>(*mDataProvider, *mESIInterfaceManager);
         connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::ssoError);
-        connect(mESIManager.get(), &ESIManager::ssoAuthRequested, this, &EvernusApplication::ssoAuthRequested);
 
         mDataProvider->precacheNames();
     }
@@ -373,16 +382,6 @@ namespace Evernus
         mTypeItemCostCache.clear();
 
         emit itemCostsChanged();
-    }
-
-    const KeyRepository &EvernusApplication::getKeyRepository() const noexcept
-    {
-        return *mKeyRepository;
-    }
-
-    const CorpKeyRepository &EvernusApplication::getCorpKeyRepository() const noexcept
-    {
-        return *mCorpKeyRepository;
     }
 
     const CharacterRepository &EvernusApplication::getCharacterRepository() const noexcept
@@ -594,17 +593,7 @@ namespace Evernus
 
     ESIInterfaceManager &EvernusApplication::getESIInterfaceManager() noexcept
     {
-        return mESIInterfaceManager;
-    }
-
-    QByteArray EvernusApplication::getSSOClientId() const
-    {
-        return mClientId;
-    }
-
-    QByteArray EvernusApplication::getSSOClientSecret() const
-    {
-        return mClientSecret;
+        return *mESIInterfaceManager;
     }
 
     MarketOrderProvider &EvernusApplication::getMarketOrderProvider() const noexcept
@@ -646,71 +635,15 @@ namespace Evernus
     {
         qDebug() << "Refreshing characters...";
 
-        const auto task = startTask(tr("Fetching characters..."));
-
-        const auto keys = mKeyRepository->fetchAll();
-
-        if (keys.empty())
+        const auto characters = mCharacterRepository->fetchAll();
+        for (const auto &character : characters)
         {
-            mCharacterRepository->exec(QStringLiteral("UPDATE %1 SET key_id = NULL, enabled = 0").arg(mCharacterRepository->getTableName()));
-            emit taskEnded(task, {});
-        }
-        else
-        {
-            for (const auto &key : keys)
-            {
-                const auto charListSubtask = startTask(task, tr("Fetching characters for key %1...").arg(key->getId()));
-                mAPIManager.fetchCharacterList(*key, [key, charListSubtask, this](const auto &characters, const auto &error) {
-                    if (error.isEmpty())
-                    {
-                        try
-                        {
-                            if (characters.empty())
-                                mCharacterRepository->disableByKey(key->getId());
-                            else
-                                mCharacterRepository->disableByKey(key->getId(), characters);
-                        }
-                        catch (const std::exception &e)
-                        {
-                            QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information: %1. "
-                                "Data sync should work, but character tab will display incorrect information.").arg(e.what()));
-                            return;
-                        }
-                        catch (...)
-                        {
-                            QMessageBox::warning(activeWindow(), tr("Evernus"), tr("An error occurred while updating character key information. "
-                                "Data sync should work, but character tab will display incorrect information."));
-                            return;
-                        }
+            Q_ASSERT(character);
 
-                        if (characters.empty())
-                        {
-                            emit taskEnded(charListSubtask, error);
-                        }
-                        else
-                        {
-                            std::vector<uint> charTasks(characters.size());
-                            for (auto i = 0u; i < characters.size(); ++i)
-                                charTasks[i] = startTask(charListSubtask, getCharacterImportMessage(characters[i]));
+            const auto task = startTask(tr("Fetching character %1...").arg(character->getId()));
+            processEvents(QEventLoop::ExcludeUserInputEvents);
 
-                            if (shouldUseESIOverXML())
-                            {
-                                for (auto i = 0u; i < characters.size(); ++i)
-                                    importCharacterFromESI(characters[i], charTasks[i], *key);
-                            }
-                            else
-                            {
-                                for (auto i = 0u; i < characters.size(); ++i)
-                                    importCharacterFromXML(characters[i], charTasks[i], *key);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        emit taskEnded(charListSubtask, error);
-                    }
-                });
-            }
+            importCharacter(character->getId(), task);
         }
     }
 
@@ -718,24 +651,12 @@ namespace Evernus
     {
         qDebug() << "Refreshing character: " << id;
 
-        try
-        {
-            const auto charSubtask = startTask(parentTask, getCharacterImportMessage(id));
+        const auto charSubtask = startTask(parentTask, getCharacterImportMessage(id));
 
-            if (!checkImportAndEndTask(id, TimerType::Character, charSubtask))
-                return;
+        if (!checkImportAndEndTask(id, TimerType::Character, charSubtask))
+            return;
 
-            if (shouldUseESIOverXML())
-                importCharacterFromESI(id, charSubtask, *getCharacterKey(id));
-            else
-                importCharacterFromXML(id, charSubtask, *getCharacterKey(id));
-        }
-        catch (const KeyRepository::NotFoundException &)
-        {
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-        }
+        importCharacter(id, charSubtask);
     }
 
     void EvernusApplication::refreshCharacterAssets(Character::IdType id, uint parentTask)
@@ -748,40 +669,6 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::AssetList, assetSubtask))
             return;
 
-        if (shouldUseESIOverXML())
-            importCharacterAssetsFromESI(id, assetSubtask);
-        else
-            importCharacterAssetsFromXML(id, assetSubtask);
-    }
-
-    void EvernusApplication::importCharacterAssetsFromXML(Character::IdType id, uint importSubtask)
-    {
-        try
-        {
-            const auto key = getCharacterKey(id);
-
-            markImport(id, TimerType::AssetList);
-            mAPIManager.fetchAssets(*key, id, [=](AssetList &&data, const QString &error) {
-                unmarkImport(id, TimerType::AssetList);
-
-                if (error.isEmpty())
-                    updateCharacterAssets(id, data);
-
-                emit taskEnded(importSubtask, error);
-            });
-        }
-        catch (const KeyRepository::NotFoundException &)
-        {
-            emit taskEnded(importSubtask, tr("Key not found!"));
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-            emit taskEnded(importSubtask, tr("Character not found!"));
-        }
-    }
-
-    void EvernusApplication::importCharacterAssetsFromESI(Character::IdType id, uint importSubtask)
-    {
         Q_ASSERT(mESIManager);
 
         markImport(id, TimerType::AssetList);
@@ -794,150 +681,7 @@ namespace Evernus
                 updateCharacterAssets(id, assets);
             }
 
-            emit taskEnded(importSubtask, error);
-        });
-    }
-
-    void EvernusApplication::importCharacterMarketOrdersFromXML(Character::IdType id, uint importSubtask)
-    {
-        try
-        {
-            const auto key = getCharacterKey(id);
-            doRefreshMarketOrdersFromAPI<&EvernusApplication::characterMarketOrdersChanged>(*key, id, importSubtask, TimerType::MarketOrders);
-        }
-        catch (const KeyRepository::NotFoundException &)
-        {
-            emit taskEnded(importSubtask, tr("Key not found!"));
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-            emit taskEnded(importSubtask, tr("Character not found!"));
-        }
-    }
-
-    void EvernusApplication::importCharacterMarketOrdersFromESI(Character::IdType id, uint importSubtask)
-    {
-        Q_ASSERT(mESIManager);
-
-        markImport(id, TimerType::MarketOrders);
-        mESIManager->fetchCharacterMarketOrders(id, [=](auto &&data, const auto &error, const auto &expires) {
-            unmarkImport(id, TimerType::MarketOrders);
-
-            if (error.isEmpty())
-            {
-                setUtcCacheTimer(id, TimerType::MarketOrders, expires);
-                importMarketOrders(id, data, false);
-
-                emit characterMarketOrdersChanged();
-                emit externalOrdersChangedWithMarketOrders();
-            }
-
-            emit taskEnded(importSubtask, error);
-        });
-    }
-
-    void EvernusApplication::importCharacterWalletJournalFromXML(Character::IdType id, uint importSubtask)
-    {
-        try
-        {
-            const auto key = getCharacterKey(id);
-            const auto maxId = mWalletJournalEntryRepository->getLatestEntryId(id);
-
-            if (maxId == WalletJournalEntry::invalidId)
-                emit taskInfoChanged(importSubtask, tr("Fetching wallet journal for character %1 (this may take a while)...").arg(id));
-
-            mAPIManager.fetchWalletJournal(*key, id, WalletJournalEntry::invalidId, maxId,
-                                           [=](const WalletJournal &data, const QString &error) {
-                if (error.isEmpty())
-                    updateCharacterWalletJournal(id, data);
-
-                emit taskEnded(importSubtask, error);
-            });
-        }
-        catch (const KeyRepository::NotFoundException &)
-        {
-            emit taskEnded(importSubtask, tr("Key not found!"));
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-            emit taskEnded(importSubtask, tr("Character not found!"));
-        }
-    }
-
-    void EvernusApplication::importCharacterWalletJournalFromESI(Character::IdType id, uint importSubtask)
-    {
-        const auto maxId = mWalletJournalEntryRepository->getLatestEntryId(id);
-
-        if (maxId == WalletJournalEntry::invalidId)
-            emit taskInfoChanged(importSubtask, tr("Fetching wallet journal for character %1 (this may take a while)...").arg(id));
-
-        Q_ASSERT(mESIManager);
-
-        markImport(id, TimerType::WalletJournal);
-        mESIManager->fetchCharacterWalletJournal(id, maxId, [=](auto &&data, const auto &error, const auto &expires) {
-            unmarkImport(id, TimerType::WalletJournal);
-
-            if (error.isEmpty())
-            {
-                setUtcCacheTimer(id, TimerType::WalletJournal, expires);
-                updateCharacterWalletJournal(id, data);
-            }
-
-            emit taskEnded(importSubtask, error);
-        });
-    }
-
-    void EvernusApplication::importCharacterWalletTransactionsFromXML(Character::IdType id, uint importSubtask)
-    {
-        try
-        {
-            const auto key = getCharacterKey(id);
-            const auto maxId = mWalletTransactionRepository->getLatestEntryId(id);
-
-            if (maxId == WalletTransaction::invalidId)
-                emit taskInfoChanged(importSubtask, tr("Fetching wallet transactions for character %1 (this may take a while)...").arg(id));
-
-            markImport(id, TimerType::WalletTransactions);
-            mAPIManager.fetchWalletTransactions(*key, id, WalletTransaction::invalidId, maxId,
-                                                [=](const auto &data, const auto &error) {
-                unmarkImport(id, TimerType::WalletTransactions);
-
-                if (error.isEmpty())
-                    updateCharacterWalletTransactions(id, data);
-
-                emit taskEnded(importSubtask, error);
-            });
-        }
-        catch (const KeyRepository::NotFoundException &)
-        {
-            emit taskEnded(importSubtask, tr("Key not found!"));
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-            emit taskEnded(importSubtask, tr("Character not found!"));
-        }
-    }
-
-    void EvernusApplication::importCharacterWalletTransactionsFromESI(Character::IdType id, uint importSubtask)
-    {
-        const auto maxId = mWalletTransactionRepository->getLatestEntryId(id);
-
-        if (maxId == WalletTransaction::invalidId)
-            emit taskInfoChanged(importSubtask, tr("Fetching wallet transactions for character %1 (this may take a while)...").arg(id));
-
-        Q_ASSERT(mESIManager);
-
-        markImport(id, TimerType::WalletTransactions);
-        mESIManager->fetchCharacterWalletTransactions(id, maxId, [=](auto &&data, const auto &error, const auto &expires) {
-            unmarkImport(id, TimerType::WalletTransactions);
-
-            if (error.isEmpty())
-            {
-                setUtcCacheTimer(id, TimerType::WalletTransactions, expires);
-                updateCharacterWalletTransactions(id, data);
-            }
-
-            emit taskEnded(importSubtask, error);
+            emit taskEnded(assetSubtask, error);
         });
     }
 
@@ -951,12 +695,12 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::Contracts, task))
             return;
 
+        Q_ASSERT(mESIManager);
+
         try
         {
-            const auto key = getCharacterKey(id);
-
             markImport(id, TimerType::Contracts);
-            mAPIManager.fetchContracts(*key, id, [key, task, id, this](Contracts &&data, const QString &error) {
+            mESIManager->fetchCharacterContracts(id, [=](auto &&data, const auto &error, const auto &expires) {
                 unmarkImport(id, TimerType::Contracts);
 
                 if (error.isEmpty())
@@ -981,10 +725,10 @@ namespace Evernus
                     mCharacterContractProvider->clearForCharacter(id);
                     mCorpContractProvider->clearForCharacter(id);
 
-                    saveUpdateTimer(Evernus::TimerType::Contracts, mUpdateTimes[Evernus::TimerType::Contracts], id);
+                    setUtcCacheTimer(id, TimerType::Contracts, expires);
+                    saveUpdateTimer(TimerType::Contracts, mUpdateTimes[TimerType::Contracts], id);
 
-                    this->handleIncomingContracts<&Evernus::EvernusApplication::characterContractsChanged>(key,
-                                                                                                           data,
+                    this->handleIncomingContracts<&Evernus::EvernusApplication::characterContractsChanged>(data,
                                                                                                            id,
                                                                                                            *mContractItemRepository,
                                                                                                            task);
@@ -994,10 +738,6 @@ namespace Evernus
                     emit taskEnded(task, error);
                 }
             });
-        }
-        catch (const KeyRepository::NotFoundException &)
-        {
-            emit taskEnded(task, tr("Key not found!"));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
@@ -1015,10 +755,25 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::WalletJournal, task))
             return;
 
-        if (shouldUseESIOverXML())
-            importCharacterWalletJournalFromESI(id, task);
-        else
-            importCharacterWalletJournalFromXML(id, task);
+        const auto maxId = mWalletJournalEntryRepository->getLatestEntryId(id);
+
+        if (maxId == WalletJournalEntry::invalidId)
+            emit taskInfoChanged(task, tr("Fetching wallet journal for character %1 (this may take a while)...").arg(id));
+
+        Q_ASSERT(mESIManager);
+
+        markImport(id, TimerType::WalletJournal);
+        mESIManager->fetchCharacterWalletJournal(id, maxId, [=](auto &&data, const auto &error, const auto &expires) {
+            unmarkImport(id, TimerType::WalletJournal);
+
+            if (error.isEmpty())
+            {
+                setUtcCacheTimer(id, TimerType::WalletJournal, expires);
+                updateCharacterWalletJournal(id, data);
+            }
+
+            emit taskEnded(task, error);
+        });
     }
 
     void EvernusApplication::refreshCharacterWalletTransactions(Character::IdType id, uint parentTask, bool force)
@@ -1031,10 +786,25 @@ namespace Evernus
         if (!force && !checkImportAndEndTask(id, TimerType::WalletTransactions, task))
             return;
 
-        if (shouldUseESIOverXML())
-            importCharacterWalletTransactionsFromESI(id, task);
-        else
-            importCharacterWalletTransactionsFromXML(id, task);
+        const auto maxId = mWalletTransactionRepository->getLatestEntryId(id);
+
+        if (maxId == WalletTransaction::invalidId)
+            emit taskInfoChanged(task, tr("Fetching wallet transactions for character %1 (this may take a while)...").arg(id));
+
+        Q_ASSERT(mESIManager);
+
+        markImport(id, TimerType::WalletTransactions);
+        mESIManager->fetchCharacterWalletTransactions(id, maxId, [=](auto &&data, const auto &error, const auto &expires) {
+            unmarkImport(id, TimerType::WalletTransactions);
+
+            if (error.isEmpty())
+            {
+                setUtcCacheTimer(id, TimerType::WalletTransactions, expires);
+                updateCharacterWalletTransactions(id, data);
+            }
+
+            emit taskEnded(task, error);
+        });
     }
 
     void EvernusApplication::refreshCharacterMarketOrdersFromAPI(Character::IdType id, uint parentTask)
@@ -1047,10 +817,23 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::MarketOrders, task))
             return;
 
-        if (shouldUseESIOverXML())
-            importCharacterMarketOrdersFromESI(id, task);
-        else
-            importCharacterMarketOrdersFromXML(id, task);
+        Q_ASSERT(mESIManager);
+
+        markImport(id, TimerType::MarketOrders);
+        mESIManager->fetchCharacterMarketOrders(id, [=](auto &&data, const auto &error, const auto &expires) {
+            unmarkImport(id, TimerType::MarketOrders);
+
+            if (error.isEmpty())
+            {
+                setUtcCacheTimer(id, TimerType::MarketOrders, expires);
+                importMarketOrders(id, data, false);
+
+                emit characterMarketOrdersChanged();
+                emit externalOrdersChangedWithMarketOrders();
+            }
+
+            emit taskEnded(task, error);
+        });
     }
 
     void EvernusApplication::refreshCharacterMarketOrdersFromLogs(Character::IdType id, uint parentTask)
@@ -1110,12 +893,14 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::CorpAssetList, assetSubtask))
             return;
 
+        Q_ASSERT(mESIManager);
+
         try
         {
-            const auto key = getCorpKey(id);
+            const auto corpId = mCharacterRepository->getCorporationId(id);
 
             markImport(id, TimerType::CorpAssetList);
-            mAPIManager.fetchAssets(*key, id, [=](AssetList &&data, const QString &error) {
+            mESIManager->fetchCorporationAssets(id, corpId, [=](auto &&data, const auto &error, const auto &expires) {
                 unmarkImport(id, TimerType::CorpAssetList);
 
                 if (error.isEmpty())
@@ -1126,12 +911,13 @@ namespace Evernus
 
                     QSettings settings;
 
-                    if (settings.value(Evernus::ImportSettings::autoUpdateAssetValueKey, Evernus::ImportSettings::autoUpdateAssetValueDefault).toBool() &&
+                    if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool() &&
                         settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsKey).toBool())
                     {
                         computeCorpAssetListSellValueSnapshot(data);
                     }
 
+                    setUtcCacheTimer(id, TimerType::CorpAssetList, expires);
                     saveUpdateTimer(Evernus::TimerType::CorpAssetList, mUpdateTimes[Evernus::TimerType::CorpAssetList], id);
 
                     emit corpAssetsChanged();
@@ -1139,10 +925,6 @@ namespace Evernus
 
                 emit taskEnded(assetSubtask, error);
             });
-        }
-        catch (const CorpKeyRepository::NotFoundException &)
-        {
-            emit taskEnded(assetSubtask, tr("Key not found!"));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
@@ -1160,38 +942,32 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::CorpContracts, task))
             return;
 
+        Q_ASSERT(mESIManager);
+
         try
         {
-            const auto key = getCorpKey(id);
+            const auto corpId = mCharacterRepository->getCorporationId(id);
 
             markImport(id, TimerType::CorpContracts);
-            mAPIManager.fetchContracts(*key, id, [key, task, id, this](auto &&data, const auto &error) {
+            mESIManager->fetchCorporationContracts(id, corpId, [=](auto &&data, const auto &error, const auto &expires) {
                 unmarkImport(id, Evernus::TimerType::CorpContracts);
 
                 if (error.isEmpty())
                 {
                     asyncBatchStore(*mCorpContractRepository, data, true);
 
-                    try
-                    {
-                        const auto corpId = mCharacterRepository->getCorporationId(id);
-
                         mCharacterContractProvider->clearForCorporation(corpId);
                         mCorpContractProvider->clearForCorporation(corpId);
                         mCharacterContractProvider->clearForCorporation(corpId);
                         mCorpContractProvider->clearForCorporation(corpId);
-                    }
-                    catch (const Evernus::CharacterRepository::NotFoundException &)
-                    {
-                    }
 
-                    saveUpdateTimer(Evernus::TimerType::CorpContracts, mUpdateTimes[Evernus::TimerType::CorpContracts], id);
+                    setUtcCacheTimer(id, TimerType::Contracts, expires);
+                    saveUpdateTimer(TimerType::CorpContracts, mUpdateTimes[TimerType::CorpContracts], id);
 
-                    this->handleIncomingContracts<&Evernus::EvernusApplication::corpContractsChanged>(key,
-                                                                                                      data,
-                                                                                                      id,
-                                                                                                      *mCorpContractItemRepository,
-                                                                                                      task);
+                    this->handleIncomingContracts<&EvernusApplication::corpContractsChanged>(data,
+                                                                                             id,
+                                                                                             *mCorpContractItemRepository,
+                                                                                             task);
                 }
                 else
                 {
@@ -1199,9 +975,8 @@ namespace Evernus
                 }
             });
         }
-        catch (const CorpKeyRepository::NotFoundException &)
+        catch (const CharacterRepository::NotFoundException &)
         {
-            emit taskEnded(task, tr("Key not found!"));
         }
     }
 
@@ -1215,9 +990,11 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::CorpWalletJournal, task))
             return;
 
+        Q_ASSERT(mESIManager);
+
         try
         {
-            const auto key = getCorpKey(id);
+            const auto corpId = mCharacterRepository->getCorporationId(id);
             const auto maxId = mCorpWalletJournalEntryRepository->getLatestEntryId(id);
 
             if (maxId == WalletJournalEntry::invalidId)
@@ -1227,8 +1004,8 @@ namespace Evernus
             const auto accountKey = settings.value(ImportSettings::corpWalletDivisionKey, ImportSettings::corpWalletDivisionDefault).toInt();
 
             markImport(id, TimerType::CorpWalletJournal);
-            mAPIManager.fetchWalletJournal(*key, id, mCharacterRepository->getCorporationId(id), WalletJournalEntry::invalidId, maxId, accountKey,
-                                           [task, id, this](WalletJournal &&data, const QString &error) {
+            mESIManager->fetchCorporationWalletJournal(id, corpId, accountKey, maxId,
+                                                       [=](auto &&data, const auto &error, const auto &expires) {
                 unmarkImport(id, TimerType::CorpWalletJournal);
 
                 if (error.isEmpty())
@@ -1236,7 +1013,7 @@ namespace Evernus
                     QSettings settings;
                     if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
                     {
-                        std::vector<Evernus::CorpWalletSnapshot> snapshots;
+                        std::vector<CorpWalletSnapshot> snapshots;
                         snapshots.reserve(data.size());
 
                         QSet<QDateTime> usedSnapshots;
@@ -1252,7 +1029,7 @@ namespace Evernus
 
                             if (!usedSnapshots.contains(timestamp))
                             {
-                                Evernus::CorpWalletSnapshot snapshot;
+                                CorpWalletSnapshot snapshot;
                                 snapshot.setTimestamp(timestamp);
                                 snapshot.setBalance(*balance);
                                 snapshot.setCorporationId(entry.getCorporationId());
@@ -1267,17 +1044,14 @@ namespace Evernus
 
                     asyncBatchStore(*mCorpWalletJournalEntryRepository, data, true);
 
-                    saveUpdateTimer(Evernus::TimerType::CorpWalletJournal, mUpdateTimes[Evernus::TimerType::CorpWalletJournal], id);
+                    setUtcCacheTimer(id, TimerType::CorpWalletJournal, expires);
+                    saveUpdateTimer(TimerType::CorpWalletJournal, mUpdateTimes[TimerType::CorpWalletJournal], id);
 
                     emit corpWalletJournalChanged();
                 }
 
                 emit taskEnded(task, error);
             });
-        }
-        catch (const CorpKeyRepository::NotFoundException &)
-        {
-            emit taskEnded(task, tr("Key not found!"));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
@@ -1295,9 +1069,10 @@ namespace Evernus
         if (!force && !checkImportAndEndTask(id, TimerType::CorpWalletTransactions, task))
             return;
 
+        Q_ASSERT(mESIManager);
+
         try
         {
-            const auto key = getCorpKey(id);
             const auto maxId = mCorpWalletTransactionRepository->getLatestEntryId(id);
             const auto corpId = mCharacterRepository->getCorporationId(id);
 
@@ -1308,27 +1083,29 @@ namespace Evernus
             const auto accountKey = settings.value(ImportSettings::corpWalletDivisionKey, ImportSettings::corpWalletDivisionDefault).toInt();
 
             markImport(id, TimerType::CorpWalletTransactions);
-            mAPIManager.fetchWalletTransactions(*key, id, corpId, WalletTransaction::invalidId, maxId, accountKey,
-                                                [task, id, corpId, this](auto &&data, const auto &error) {
-                unmarkImport(id, Evernus::TimerType::CorpWalletTransactions);
+            mESIManager->fetchCorporationWalletTransactions(id, corpId, accountKey, maxId,
+                                                            [=](auto &&data, const auto &error, const auto &expires) {
+                unmarkImport(id, TimerType::CorpWalletTransactions);
 
                 if (error.isEmpty())
                 {
                     asyncBatchStore(*mCorpWalletTransactionRepository, data, true);
-                    saveUpdateTimer(Evernus::TimerType::CorpWalletTransactions, mUpdateTimes[Evernus::TimerType::CorpWalletTransactions], id);
+
+                    setUtcCacheTimer(id, TimerType::CorpWalletTransactions, expires);
+                    saveUpdateTimer(TimerType::CorpWalletTransactions, mUpdateTimes[TimerType::CorpWalletTransactions], id);
 
                     QSettings settings;
-                    if (settings.value(Evernus::PriceSettings::autoAddCustomItemCostKey, Evernus::PriceSettings::autoAddCustomItemCostDefault).toBool() &&
+                    if (settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool() &&
                         !mPendingAutoCostOrders.empty())
                     {
                         computeAutoCosts(id,
                                          mCorpOrderProvider->getBuyOrdersForCorporation(corpId),
-                                         std::bind(&Evernus::WalletTransactionRepository::fetchForCorporationInRange,
+                                         std::bind(&WalletTransactionRepository::fetchForCorporationInRange,
                                                    mCorpWalletTransactionRepository.get(),
                                                    corpId,
                                                    std::placeholders::_1,
                                                    std::placeholders::_2,
-                                                   Evernus::WalletTransactionRepository::EntryType::Buy,
+                                                   WalletTransactionRepository::EntryType::Buy,
                                                    std::placeholders::_3));
                     }
 
@@ -1337,10 +1114,6 @@ namespace Evernus
 
                 emit taskEnded(task, error);
             });
-        }
-        catch (const CorpKeyRepository::NotFoundException &)
-        {
-            emit taskEnded(task, tr("Key not found!"));
         }
         catch (const CharacterRepository::NotFoundException &)
         {
@@ -1358,14 +1131,31 @@ namespace Evernus
         if (!checkImportAndEndTask(id, TimerType::CorpMarketOrders, task))
             return;
 
+        Q_ASSERT(mESIManager);
+
         try
         {
-            const auto key = getCorpKey(id);
-            doRefreshMarketOrdersFromAPI<&EvernusApplication::corpMarketOrdersChanged>(*key, id, task, TimerType::CorpMarketOrders);
+            const auto corpId = mCharacterRepository->getCorporationId(id);
+
+            markImport(id, TimerType::CorpMarketOrders);
+            mESIManager->fetchCorporationMarketOrders(id, corpId, [=](auto &&data, const auto &error, const auto &expires) {
+                unmarkImport(id, TimerType::CorpMarketOrders);
+
+                if (error.isEmpty())
+                {
+                    setUtcCacheTimer(id, TimerType::CorpMarketOrders, expires);
+                    importMarketOrders(id, data, true);
+
+                    emit corpMarketOrdersChanged();
+                    emit externalOrdersChangedWithMarketOrders();
+                }
+
+                emit taskEnded(task, error);
+            });
         }
-        catch (const CorpKeyRepository::NotFoundException &)
+        catch (const CharacterRepository::NotFoundException &)
         {
-            emit taskEnded(task, tr("Key not found!"));
+            emit taskEnded(task, tr("Character not found!"));
         }
     }
 
@@ -1388,18 +1178,54 @@ namespace Evernus
         const auto task = startTask(tr("Fetching conquerable stations..."));
         processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        mAPIManager.fetchConquerableStationList([=](const auto &list, const auto &error) {
+        Q_ASSERT(mESIManager);
+        mESIManager->fetchSovereigntyStructures([=](auto &&list, const auto &error, const auto &expires) {
+            Q_UNUSED(expires);
+
             if (error.isEmpty())
             {
                 mDataProvider->clearStationCache();
 
-                mConquerableStationRepository->deleteAll();
-                asyncBatchStore(*mConquerableStationRepository, list, true);
+                if (mStationGroupTypeIds.empty())
+                    fetchStationTypeIds();
 
-                emit conquerableStationsChanged();
+                std::vector<ConquerableStation> stations;
+                std::vector<quint64> stationNames;
+
+                boost::transform(
+                    list | boost::adaptors::filtered([=](const auto &structure) {
+                        return mStationGroupTypeIds.find(structure.mTypeId) != std::end(mStationGroupTypeIds);
+                    }),
+                    std::back_inserter(stations),
+                    [&](const auto &structure) {
+                        stationNames.emplace_back(structure.mStructureId);
+
+                        ConquerableStation station{static_cast<uint>(structure.mStructureId)};
+                        station.setSolarSystemId(structure.mSolarSystemId);
+
+                        return station;
+                    }
+                );
+
+                mESIManager->fetchGenericNames(stationNames, [=, stations = std::move(stations)](auto &&data, const auto &error) mutable {
+                    if (error.isEmpty())
+                    {
+                        for (auto &station : stations)
+                            station.setName(data[station.getId()]);
+
+                        mConquerableStationRepository->deleteAll();
+                        asyncBatchStore(*mConquerableStationRepository, stations, true);
+
+                        emit conquerableStationsChanged();
+                    }
+
+                    emit taskEnded(task, error);
+                });
             }
-
-            emit taskEnded(task, error);
+            else
+            {
+                    emit taskEnded(task, error);
+            }
         });
     }
 
@@ -1648,6 +1474,12 @@ namespace Evernus
         emit citadelsChanged();
     }
 
+    void EvernusApplication::clearRefreshTokens()
+    {
+        SSOUtils::clearRefreshTokens();
+        mESIInterfaceManager->clearRefreshTokens();
+    }
+
     void EvernusApplication::makeValueSnapshots(Character::IdType id)
     {
         qDebug() << "Making all value snapshots for" << id;
@@ -1701,16 +1533,24 @@ namespace Evernus
         mESIManager->setDestination(locationId, charId);
     }
 
-    void EvernusApplication::processAuthorizationCode(Character::IdType charId, const QByteArray &code)
+    void EvernusApplication::processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code)
     {
-        Q_ASSERT(mESIManager);
-        mESIManager->processAuthorizationCode(charId, code);
+        Q_ASSERT(mESIInterfaceManager);
+        mESIInterfaceManager->processSSOAuthorizationCode(charId, code);
     }
 
-    void EvernusApplication::cancelSSOAuth(Character::IdType charId)
+    void EvernusApplication::cancelSsoAuth(Character::IdType charId)
     {
-        Q_ASSERT(mESIManager);
-        mESIManager->cancelSSOAuth(charId);
+        Q_ASSERT(mESIInterfaceManager);
+        mESIInterfaceManager->cancelSsoAuth(charId);
+    }
+
+    void EvernusApplication::processNewCharacter(Character::IdType id, const QString &accessToken, const QString &refreshToken)
+    {
+        Q_ASSERT(mESIInterfaceManager);
+        mESIInterfaceManager->setTokens(id, accessToken, refreshToken);
+
+        refreshCharacter(id, TaskConstants::invalidTask);
     }
 
     void EvernusApplication::scheduleCharacterUpdate()
@@ -1797,9 +1637,7 @@ namespace Evernus
         mQtTranslator.load(locale, QStringLiteral("qt"), QStringLiteral("_"), applicationDirPath() + UISettings::translationPath);
         mQtBaseTranslator.load(locale, QStringLiteral("qtbase"), QStringLiteral("_"), applicationDirPath() + UISettings::translationPath);
         mQtScriptTranslator.load(locale, QStringLiteral("qtscript"), QStringLiteral("_"), applicationDirPath() + UISettings::translationPath);
-        mQtXmlPatternsTranslator.load(locale, QStringLiteral("qtxmlpatterns"), QStringLiteral("_"), applicationDirPath() + UISettings::translationPath);
 
-        installTranslator(&mQtXmlPatternsTranslator);
         installTranslator(&mQtScriptTranslator);
         installTranslator(&mQtBaseTranslator);
         installTranslator(&mQtTranslator);
@@ -1841,8 +1679,6 @@ namespace Evernus
             settings.value(DbSettings::synchronousKey, DbSettings::synchronousDefault).toInt()
         ));
 
-        mKeyRepository.reset(new KeyRepository{mMainDb});
-        mCorpKeyRepository.reset(new CorpKeyRepository{mMainDb});
         mCharacterRepository.reset(new CharacterRepository{mMainDb});
         mItemRepository.reset(new ItemRepository{false, mMainDb});
         mCorpItemRepository.reset(new ItemRepository{true, mMainDb});
@@ -1886,9 +1722,7 @@ namespace Evernus
 
     void EvernusApplication::createDbSchema()
     {
-        mKeyRepository->create();
-        mCharacterRepository->create(*mKeyRepository);
-        mCorpKeyRepository->create(*mCharacterRepository);
+        mCharacterRepository->create();
         mAssetListRepository->create(*mCharacterRepository);
         mCorpAssetListRepository->create(*mCharacterRepository);
         mItemRepository->create(*mAssetListRepository);
@@ -1971,20 +1805,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::importCharacterFromXML(Character::IdType id, uint task, const Key &key)
-    {
-        markImport(id, TimerType::Character);
-        mAPIManager.fetchCharacter(key, id, [task, id, this](Character &&data, const QString &error) {
-            unmarkImport(id, TimerType::Character);
-
-            if (error.isEmpty())
-                updateCharacter(data);
-
-            emit taskEnded(task, error);
-        });
-    }
-
-    void EvernusApplication::importCharacterFromESI(Character::IdType id, uint task, const Key &key)
+    void EvernusApplication::importCharacter(Character::IdType id, uint task)
     {
         Q_ASSERT(mESIManager);
 
@@ -1995,10 +1816,7 @@ namespace Evernus
             unmarkImport(id, TimerType::Character);
 
             if (error.isEmpty())
-            {
-                data.setKeyId(key.getId());
                 updateCharacter(data);
-            }
 
             emit taskEnded(task, error);
         });
@@ -2383,42 +2201,6 @@ namespace Evernus
         }
     }
 
-    KeyRepository::EntityPtr EvernusApplication::getCharacterKey(Character::IdType id) const
-    {
-        try
-        {
-            const auto character = mCharacterRepository->find(id);
-            const auto keyId = character->getKeyId();
-
-            if (keyId)
-            {
-                try
-                {
-                    return mKeyRepository->find(*keyId);
-                }
-                catch (const KeyRepository::NotFoundException &)
-                {
-                    qCritical() << "Attempted to refresh character without a key!";
-                    throw;
-                }
-            }
-            else
-            {
-                BOOST_THROW_EXCEPTION(KeyRepository::NotFoundException{});
-            }
-        }
-        catch (const CharacterRepository::NotFoundException &)
-        {
-            qCritical() << "Attempted to refresh non-existent character!";
-            throw;
-        }
-    }
-
-    CorpKeyRepository::EntityPtr EvernusApplication::getCorpKey(Character::IdType id) const
-    {
-        return mCorpKeyRepository->fetchForCharacter(id);
-    }
-
     void EvernusApplication::finishExternalOrderImportTask(const QString &info)
     {
          const auto task = mCurrentExternalOrderImportTask;
@@ -2747,15 +2529,14 @@ namespace Evernus
         mPendingImports.erase(std::make_pair(id, type));
     }
 
-    template<void (EvernusApplication::* Signal)(), class Key>
-    void EvernusApplication::handleIncomingContracts(const Key &key,
-                                                     const Contracts &data,
+    template<void (EvernusApplication::* Signal)()>
+    void EvernusApplication::handleIncomingContracts(const Contracts &data,
                                                      Character::IdType id,
                                                      const ContractItemRepository &itemRepo,
                                                      uint task)
     {
-        static size_t pendingContractItemRequests = 0;
-        static APIManager::ContractItemList contractItems;
+        static std::size_t pendingContractItemRequests = 0;
+        static std::vector<ContractItem> contractItems;
 
         if (data.empty())
         {
@@ -2766,13 +2547,17 @@ namespace Evernus
         {
             for (const auto &contract : data)
             {
-                if (contract.getType() == Evernus::Contract::Type::Courier)
+                if (contract.getType() == Contract::Type::Courier)
                     continue;
 
                 ++pendingContractItemRequests;
 
+                Q_ASSERT(mESIManager);
+
                 const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                mAPIManager.fetchContractItems(*key, id, contract.getId(), [=, &itemRepo](APIManager::ContractItemList &&data, const QString &error) {
+                mESIManager->fetchCharacterContractItems(id, contract.getId(), [=, &itemRepo](auto &&data, const auto &error, const auto &expires) {
+                    Q_UNUSED(expires);
+
                     --pendingContractItemRequests;
 
                     if (error.isEmpty())
@@ -2803,25 +2588,6 @@ namespace Evernus
         }
     }
 
-    template<void (EvernusApplication::* Signal)(), class Key>
-    void EvernusApplication
-    ::doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task, TimerType type)
-    {
-        markImport(id, type);
-        mAPIManager.fetchMarketOrders(key, id, [=](MarketOrders &&data, const QString &error) {
-            unmarkImport(id, type);
-
-            if (error.isEmpty())
-            {
-                importMarketOrders(id, data, std::is_same<Key, CorpKey>());
-                emit (this->*Signal)();
-                emit externalOrdersChangedWithMarketOrders();
-            }
-
-            emit taskEnded(task, error);
-        });
-    }
-
     template<class T, class Data>
     void EvernusApplication::asyncBatchStore(const T &repo, const Data &data, bool hasId)
     {
@@ -2839,6 +2605,14 @@ namespace Evernus
 
         future.get();
         qDebug() << "Done.";
+    }
+
+    void EvernusApplication::fetchStationTypeIds()
+    {
+        // get all ids from group 15, and hope it never changes...
+        QSqlQuery query{QStringLiteral("SELECT typeID FROM invTypes WHERE groupID = 15"), mEveDb};
+        while (query.next())
+            mStationGroupTypeIds.emplace(query.value(0).value<EveType::IdType>());
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)
@@ -2872,16 +2646,5 @@ namespace Evernus
         {
             QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
         }
-    }
-
-    bool EvernusApplication::shouldUseESIOverXML()
-    {
-        QSettings settings;
-        return static_cast<ImportSettings::EveImportSource>(
-            settings.value(
-                ImportSettings::eveImportSourceKey,
-                static_cast<int>(ImportSettings::eveImportSourceDefault)
-            ).toInt()
-        ) != ImportSettings::EveImportSource::XML;
     }
 }

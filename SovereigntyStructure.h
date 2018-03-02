@@ -14,13 +14,14 @@
  */
 #pragma once
 
-class QDomElement;
+#include <EveType.h>
 
 namespace Evernus
 {
-    namespace APIDomParser
+    struct SovereigntyStructure
     {
-        template<class T>
-        T parse(const QDomElement &node);
-    }
+        uint mSolarSystemId = 0;
+        quint64 mStructureId = 0;
+        EveType::IdType mTypeId = 0;
+    };
 }

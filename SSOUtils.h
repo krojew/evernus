@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <QVariant>
+
 #include "ExternalOrderImporter.h"
 
 namespace Evernus
@@ -25,5 +27,7 @@ namespace Evernus
         bool useWholeMarketImport(const TypeLocationPairs &target,
                                   const EveDataProvider &dataProvider);
         void clearRefreshTokens();
+
+        QVariantMap parseAuthorizationCode(const QByteArray &rawQuery);
     }
 }

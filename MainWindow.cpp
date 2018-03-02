@@ -18,7 +18,6 @@
 
 #include <QNetworkInterface>
 #include <QDesktopServices>
-#include <QWebEnginePage>
 #include <QApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
@@ -40,6 +39,7 @@
 
 #include "WalletTransactionsWidget.h"
 #include "CharacterManagerDialog.h"
+#include "NewCharacterController.h"
 #include "MarketAnalysisWidget.h"
 #include "CitadelManagerDialog.h"
 #include "WalletJournalWidget.h"
@@ -61,7 +61,6 @@
 #include "ItemCostWidget.h"
 #include "ImportSettings.h"
 #include "ClickableLabel.h"
-#include "KeyRepository.h"
 #include "MenuBarWidget.h"
 #include "PriceSettings.h"
 #include "SSOMessageBox.h"
@@ -72,7 +71,6 @@
 #include "AboutDialog.h"
 #include "SyncDialog.h"
 #include "UISettings.h"
-#include "ESIManager.h"
 #include "Updater.h"
 
 #include "MainWindow.h"
@@ -85,9 +83,7 @@ namespace Evernus
 
     const QString MainWindow::redirectDomain = "evernus.com";
 
-    MainWindow::MainWindow(QByteArray clientId,
-                           QByteArray clientSecret,
-                           const RepositoryProvider &repositoryProvider,
+    MainWindow::MainWindow(const RepositoryProvider &repositoryProvider,
                            MarketOrderProvider &charOrderProvider,
                            MarketOrderProvider &corpOrderProvider,
                            AssetProvider &charAssetProvider,
@@ -103,7 +99,6 @@ namespace Evernus
                            QWidget *parent,
                            Qt::WindowFlags flags)
         : QMainWindow{parent, flags}
-        , mClientId{std::move(clientId)}
         , mRepositoryProvider{repositoryProvider}
         , mItemCostProvider{itemCostProvider}
         , mEveDataProvider{eveDataProvider}
@@ -111,11 +106,12 @@ namespace Evernus
         , mTrayIcon{new QSystemTrayIcon{QIcon{QStringLiteral(":/images/main-icon.png")}, this}}
         , mStatusActiveTasksThrobber{QStringLiteral(":/images/loader.gif")}
         , mStatusActiveTasksDonePixmap{QStringLiteral(":/images/tick.png")}
+        , mClientId{interfaceManager.getClientId()}
+        , mClientSecret{interfaceManager.getClientSecret()}
     {
         readSettings();
         createMenu();
-        createMainView(std::move(clientSecret),
-                       charOrderProvider,
+        createMainView(charOrderProvider,
                        corpOrderProvider,
                        charAssetProvider,
                        corpAssetProvider,
@@ -179,16 +175,14 @@ namespace Evernus
     {
         if (mCharacterManagerDialog == nullptr)
         {
-            mCharacterManagerDialog = new CharacterManagerDialog{mRepositoryProvider.getCharacterRepository(),
-                                                                 mRepositoryProvider.getKeyRepository(),
-                                                                 mRepositoryProvider.getCorpKeyRepository(),
-                                                                 this};
+            mCharacterManagerDialog = new CharacterManagerDialog{mRepositoryProvider.getCharacterRepository(), this};
             connect(this, &MainWindow::charactersChanged, mCharacterManagerDialog, &CharacterManagerDialog::updateCharacters);
-            connect(mCharacterManagerDialog, &CharacterManagerDialog::refreshCharacters, this, &MainWindow::refreshCharacters);
             connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,
                     mMenuWidget, &MenuBarWidget::refreshCharacters);
             connect(mCharacterManagerDialog, &CharacterManagerDialog::charactersChanged,
                     this, &MainWindow::updateCharacters);
+            connect(mCharacterManagerDialog, &CharacterManagerDialog::addCharacter,
+                    this, &MainWindow::addCharacter);
         }
 
         mCharacterManagerDialog->exec();
@@ -198,6 +192,7 @@ namespace Evernus
     {
         PreferencesDialog dlg{mEveDataProvider, mRepositoryProvider.getCharacterRepository().getDatabase(), this};
         connect(&dlg, &PreferencesDialog::clearCorpWalletData, this, &MainWindow::clearCorpWalletData);
+        connect(&dlg, &PreferencesDialog::clearRefreshTokens, this, &MainWindow::clearRefreshTokens);
 
         dlg.exec();
 
@@ -409,35 +404,15 @@ namespace Evernus
         SSOMessageBox::showMessage(info, this);
     }
 
-    void MainWindow::requestSSOAuth(Character::IdType charId)
+    void MainWindow::requestSSOAuth(Character::IdType charId, const QUrl &url)
     {
-        qInfo() << "Showing SSO auth for:" << charId;
+        qInfo() << "Showing SSO auth for:" << charId << url;
 
-        QUrl url{ESIManager::loginUrl + "/oauth/authorize"};
+        if (mAuthViews.find(charId) != std::end(mAuthViews))
+            return;
 
-        QUrlQuery query;
-        query.addQueryItem(QStringLiteral("response_type"), QStringLiteral("code"));
-        query.addQueryItem(QStringLiteral("redirect_uri"), QStringLiteral("http://%1/sso-authentication/").arg(redirectDomain));
-        query.addQueryItem(QStringLiteral("client_id"), mClientId);
-        query.addQueryItem(
-            QStringLiteral("scope"),
-            QStringLiteral(
-                "esi-skills.read_skills.v1 "
-                "esi-wallet.read_character_wallet.v1 "
-                "esi-assets.read_assets.v1 "
-                "esi-ui.open_window.v1 "
-                "esi-ui.write_waypoint.v1 "
-                "esi-markets.structure_markets.v1 "
-                "esi-markets.read_character_orders.v1 "
-                "esi-characters.read_blueprints.v1 "
-                "esi-contracts.read_character_contracts.v1 "
-                "esi-industry.read_character_mining.v1"
-            )
-        );
-
-        url.setQuery(query);
-
-        mAuthView.reset(new SSOAuthDialog{url, this});
+        const auto authView = new SSOAuthDialog{url, this};
+        mAuthViews[charId] = authView;
 
         QString charName;
         auto charNameFound = false;
@@ -445,48 +420,41 @@ namespace Evernus
         std::tie(charName, charNameFound) = getCharacterName(charId);
 
         if (charName.isEmpty())
-            mAuthView->setWindowTitle(tr("SSO Authentication for unknown character: %1").arg(charId));
+            authView->setWindowTitle(tr("SSO authentication for unknown character: %1").arg(charId));
         else
-            mAuthView->setWindowTitle(getAuthWidowTitle(charName));
+            authView->setWindowTitle(getAuthWidowTitle(charName));
 
-        mAuthView->move(rect().center() - mAuthView->rect().center());
-        mAuthView->show();
+        authView->show();
 
-        connect(mAuthView.get(), &SSOAuthDialog::acquiredCode, this, [=](const auto &code) {
-            mAuthView->disconnect(this);
-            mAuthView.reset();
+        connect(authView, &SSOAuthDialog::acquiredCode, this, [=](const auto &code) {
+            authView->disconnect(this);
+            authView->deleteLater();
+
+            mAuthViews.erase(charId);
 
             emit gotSSOAuthorizationCode(charId, code);
         });
-        connect(mAuthView.get(), &SSOAuthDialog::aboutToClose, this, [=] {
-            mAuthView.reset();
+        connect(authView, &SSOAuthDialog::aboutToClose, this, [=] {
+            authView->deleteLater();
             emit ssoAuthCanceled(charId);
         });
-        connect(mAuthView->page(), &QWebEnginePage::urlChanged, this, [=](const QUrl &url) {
-            try
-            {
-                if (url.host() == redirectDomain)
-                {
-                    mAuthView->disconnect(this);
-                    mAuthView.reset();
-
-                    QUrlQuery query{url};
-                    emit gotSSOAuthorizationCode(charId, query.queryItemValue(QStringLiteral("code")).toLatin1());
-                }
-            }
-            catch (...)
-            {
-                emit ssoAuthCanceled(charId);
-                throw;
-            }
+        connect(authView, &SSOAuthDialog::destroyed, this, [=] {
+            mAuthViews.erase(charId);
         });
 
         if (!charNameFound)
         {
-            connect(&mEveDataProvider, &EveDataProvider::namesChanged, mAuthView.get(), [=] {
-                mAuthView->setWindowTitle(getAuthWidowTitle(mEveDataProvider.getGenericName(charId)));
+            connect(&mEveDataProvider, &EveDataProvider::namesChanged, authView, [=] {
+                authView->setWindowTitle(getAuthWidowTitle(mEveDataProvider.getGenericName(charId)));
             });
         }
+    }
+
+    void MainWindow::addCharacter()
+    {
+        const auto controller = new NewCharacterController{mClientId, mClientSecret, this};
+        connect(controller, &NewCharacterController::error, this, &MainWindow::showErrorMessage);
+        connect(controller, &NewCharacterController::authorizedCharacter, this, &MainWindow::authorizedCharacter);
     }
 
     void MainWindow::updateCurrentTab(int index)
@@ -553,7 +521,7 @@ namespace Evernus
         time(&buf.actime);
         buf.modtime = buf.actime;
 
-        utime(mRepositoryProvider.getKeyRepository().getDatabase().databaseName().toUtf8().constData(), &buf);
+        utime(mRepositoryProvider.getCharacterRepository().getDatabase().databaseName().toUtf8().constData(), &buf);
 #endif
     }
 
@@ -569,6 +537,11 @@ namespace Evernus
     {
         if (mCurrentCharacterId != Character::invalidId)
             emit setDestinationInEve(locationId, mCurrentCharacterId);
+    }
+
+    void MainWindow::showErrorMessage(const QString &error)
+    {
+        QMessageBox::warning(this, tr("Error"), error);
     }
 
     void MainWindow::changeEvent(QEvent *event)
@@ -702,8 +675,7 @@ namespace Evernus
         toggleTopmost();
     }
 
-    void MainWindow::createMainView(QByteArray clientSecret,
-                                    MarketOrderProvider &charOrderProvider,
+    void MainWindow::createMainView(MarketOrderProvider &charOrderProvider,
                                     MarketOrderProvider &corpOrderProvider,
                                     AssetProvider &charAssetProvider,
                                     AssetProvider &corpAssetProvider,
@@ -725,7 +697,6 @@ namespace Evernus
 
         auto charTab = new CharacterWidget{mRepositoryProvider.getCharacterRepository(),
                                            mRepositoryProvider.getMarketOrderRepository(),
-                                           mRepositoryProvider.getCorpKeyRepository(),
                                            cacheTimerProvider,
                                            this};
         mCharacterTabIndex = addTab(charTab, tr("Character"), TabType::Character);
@@ -949,21 +920,16 @@ namespace Evernus
                                                     interfaceManager,
                                                     taskManager,
                                                     mItemCostProvider,
-                                                    mClientId,
-                                                    clientSecret,
                                                     this};
         mMarketBrowserTabIndex = addTab(mMarketBrowserTab, tr("Market browser"), TabType::Other);
         connect(mMarketBrowserTab, &MarketBrowserWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(mMarketBrowserTab, &MarketBrowserWidget::externalOrdersChanged, this, &MainWindow::externalOrdersChanged);
         connect(mMarketBrowserTab, &MarketBrowserWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
-        connect(mMarketBrowserTab, &MarketBrowserWidget::ssoAuthRequested, this, &MainWindow::requestSSOAuth);
         connect(this, &MainWindow::characterMarketOrdersChanged, mMarketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
         connect(this, &MainWindow::corpMarketOrdersChanged, mMarketBrowserTab, &MarketBrowserWidget::fillOrderItemNames);
         connect(this, &MainWindow::externalOrdersChanged, mMarketBrowserTab, &MarketBrowserWidget::updateData);
         connect(this, &MainWindow::itemVolumeChanged, mMarketBrowserTab, &MarketBrowserWidget::updateData);
         connect(this, &MainWindow::preferencesChanged, mMarketBrowserTab, &MarketBrowserWidget::preferencesChanged);
-        connect(this, &MainWindow::gotSSOAuthorizationCode, mMarketBrowserTab, &MarketBrowserWidget::processAuthorizationCode);
-        connect(this, &MainWindow::ssoAuthCanceled, mMarketBrowserTab, &MarketBrowserWidget::cancelSSOAuth);
 
         auto itemCostTab = new ItemCostWidget{mItemCostProvider, mEveDataProvider, this};
         addTab(itemCostTab, tr("Item costs"), TabType::Other);
@@ -983,9 +949,7 @@ namespace Evernus
         connect(this, &MainWindow::externalOrdersChanged, lmEveTab, &LMeveWidget::updateData);
         connect(this, &MainWindow::lMeveTasksChanged, lmEveTab, &LMeveWidget::updateData);
 
-        auto marketAnalysisTab = new MarketAnalysisWidget{std::move(mClientId),
-                                                          std::move(clientSecret),
-                                                          mEveDataProvider,
+        auto marketAnalysisTab = new MarketAnalysisWidget{mEveDataProvider,
                                                           interfaceManager,
                                                           taskManager,
                                                           mRepositoryProvider.getMarketOrderRepository(),
@@ -998,10 +962,7 @@ namespace Evernus
                                                           this};
         connect(marketAnalysisTab, &MarketAnalysisWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         connect(marketAnalysisTab, &MarketAnalysisWidget::showInEve, this, &MainWindow::showInEve);
-        connect(marketAnalysisTab, &MarketAnalysisWidget::ssoAuthRequested, this, &MainWindow::requestSSOAuth);
         connect(this, &MainWindow::preferencesChanged, marketAnalysisTab, &MarketAnalysisWidget::preferencesChanged);
-        connect(this, &MainWindow::gotSSOAuthorizationCode, marketAnalysisTab, &MarketAnalysisWidget::processAuthorizationCode);
-        connect(this, &MainWindow::ssoAuthCanceled, marketAnalysisTab, &MarketAnalysisWidget::cancelSSOAuth);
         addTab(marketAnalysisTab, tr("Market analysis"), TabType::Other);
 
         const auto industryTab = new IndustryWidget{mEveDataProvider,
@@ -1016,13 +977,10 @@ namespace Evernus
                                                     charAssetProvider,
                                                     mItemCostProvider,
                                                     cacheTimerProvider,
-                                                    mClientId,
-                                                    clientSecret,
                                                     this};
         addTab(industryTab, tr("Industry"), TabType::Other);
         connect(industryTab, &IndustryWidget::updateExternalOrders, this, &MainWindow::updateExternalOrders);
         connect(industryTab, &IndustryWidget::importMiningLedger, this, &MainWindow::importCharacterMiningLedger);
-        connect(industryTab, &IndustryWidget::ssoAuthRequested, this, &MainWindow::requestSSOAuth);
         connect(industryTab, &IndustryWidget::showExternalOrders, this, &MainWindow::showMarketBrowser);
         connect(industryTab, &IndustryWidget::showInEve, this, [=](auto typeId) {
             showInEve(typeId, Character::invalidId);
@@ -1030,8 +988,6 @@ namespace Evernus
         connect(this, &MainWindow::preferencesChanged, industryTab, &IndustryWidget::handleNewPreferences);
         connect(this, &MainWindow::characterAssetsChanged, industryTab, &IndustryWidget::refreshAssets);
         connect(this, &MainWindow::characterMiningLedgerChanged, industryTab, &IndustryWidget::refreshMiningLedger);
-        connect(this, &MainWindow::gotSSOAuthorizationCode, industryTab, &IndustryWidget::processAuthorizationCode);
-        connect(this, &MainWindow::ssoAuthCanceled, industryTab, &IndustryWidget::cancelSSOAuth);
 
         QSettings settings;
 

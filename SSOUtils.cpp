@@ -15,6 +15,7 @@
 #include <QtDebug>
 
 #include <QSettings>
+#include <QUrlQuery>
 
 #include "EveDataProvider.h"
 #include "SSOSettings.h"
@@ -52,6 +53,18 @@ namespace Evernus
             settings.beginGroup(SSOSettings::refreshTokenGroup);
             settings.remove(QStringLiteral(""));
             settings.endGroup();
+        }
+
+        QVariantMap parseAuthorizationCode(const QByteArray &rawQuery)
+        {
+            const QUrlQuery query{QByteArray::fromBase64(rawQuery)};
+            const auto items = query.queryItems(QUrl::FullyDecoded);
+
+            QVariantMap mappedQuery;
+            for (const auto &item : items)
+                mappedQuery[item.first] = item.second;
+
+            return mappedQuery;
         }
     }
 }

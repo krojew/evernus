@@ -67,27 +67,24 @@
 #include "WalletTransactions.h"
 #include "CitadelRepository.h"
 #include "EveTypeRepository.h"
-#include "CorpKeyRepository.h"
 #include "LMeveDataProvider.h"
 #include "ItemCostProvider.h"
 #include "LMeveAPIManager.h"
 #include "CitadelManager.h"
 #include "ItemRepository.h"
 #include "TaskConstants.h"
-#include "KeyRepository.h"
 #include "WalletJournal.h"
 #include "ESIManager.h"
 #include "TaskManager.h"
-#include "APIManager.h"
+#include "Contracts.h"
 
 #include "qxtsmtp.h"
 
 class QSplashScreen;
+class QUrl;
 
 namespace Evernus
 {
-    class Key;
-
     class EvernusApplication
         : public QApplication
         , public ExternalOrderImporterRegistry
@@ -105,8 +102,8 @@ namespace Evernus
 
         EvernusApplication(int &argc,
                            char *argv[],
-                           QByteArray clientId,
-                           QByteArray clientSecret,
+                           QString clientId,
+                           QString clientSecret,
                            const QString &forcedVersion,
                            bool dontUpdate);
         virtual ~EvernusApplication() = default;
@@ -127,8 +124,6 @@ namespace Evernus
         virtual void storeItemCost(ItemCost &cost) const override;
         virtual void removeAllItemCosts(Character::IdType characterId) const override;
 
-        virtual const KeyRepository &getKeyRepository() const noexcept override;
-        virtual const CorpKeyRepository &getCorpKeyRepository() const noexcept override;
         virtual const CharacterRepository &getCharacterRepository() const noexcept override;
         virtual const WalletSnapshotRepository &getWalletSnapshotRepository() const noexcept override;
         virtual const CorpWalletSnapshotRepository &getCorpWalletSnapshotRepository() const noexcept override;
@@ -170,9 +165,6 @@ namespace Evernus
         virtual const ESIManager &getESIManager() const override;
 
         ESIInterfaceManager &getESIInterfaceManager() noexcept;
-
-        QByteArray getSSOClientId() const;
-        QByteArray getSSOClientSecret() const;
 
         MarketOrderProvider &getMarketOrderProvider() const noexcept;
         MarketOrderProvider &getCorpMarketOrderProvider() const noexcept;
@@ -216,7 +208,8 @@ namespace Evernus
         void openMarginTool();
 
         void ssoError(const QString &info);
-        void ssoAuthRequested(Character::IdType charId);
+
+        void ssoAuthRequested(Character::IdType charId, const QUrl &url);
 
     public slots:
         void refreshCharacters();
@@ -251,14 +244,16 @@ namespace Evernus
 
         void clearCorpWalletData();
         void clearCitadelCache();
+        void clearRefreshTokens();
 
         void makeValueSnapshots(Character::IdType id);
 
         void showInEve(EveType::IdType typeId, Character::IdType charId);
         void setDestinationInEve(quint64 locationId, Character::IdType charId);
 
-        void processAuthorizationCode(Character::IdType charId, const QByteArray &code);
-        void cancelSSOAuth(Character::IdType charId);
+        void processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSsoAuth(Character::IdType charId);
+        void processNewCharacter(Character::IdType id, const QString &accessToken, const QString &refreshToken);
 
     private slots:
         void scheduleCharacterUpdate();
@@ -278,18 +273,13 @@ namespace Evernus
         void showMailError(int mailID, int errorCode, const QByteArray &message);
 
     private:
-        using CharacterTypePair =std::pair<Character::IdType, EveType::IdType>;
+        using CharacterTypePair = std::pair<Character::IdType, EveType::IdType>;
         using CharacterTimerMap = std::unordered_map<Character::IdType, QDateTime>;
         using TypedCharacterTimerMap = std::unordered_map<TimerType, CharacterTimerMap>;
         using TransactionFetcher = std::function<WalletTransactionRepository::EntityList (const QDateTime &, const QDateTime &, EveType::IdType)>;
 
         QSqlDatabase mMainDb, mEveDb;
 
-        QByteArray mClientId;
-        QByteArray mClientSecret;
-
-        std::unique_ptr<KeyRepository> mKeyRepository;
-        std::unique_ptr<CorpKeyRepository> mCorpKeyRepository;
         std::unique_ptr<CharacterRepository> mCharacterRepository;
         std::unique_ptr<ItemRepository> mItemRepository, mCorpItemRepository;
         std::unique_ptr<AssetListRepository> mAssetListRepository, mCorpAssetListRepository;
@@ -323,9 +313,8 @@ namespace Evernus
         std::unique_ptr<IndustryManufacturingSetupRepository> mIndustryManufacturingSetupRepository;
         std::unique_ptr<MiningLedgerRepository> mMiningLedgerRepository;
 
-        ESIInterfaceManager mESIInterfaceManager;
+        std::unique_ptr<ESIInterfaceManager> mESIInterfaceManager;
 
-        APIManager mAPIManager;
         LMeveAPIManager mLMeveAPIManager;
         CitadelManager mCitadelManager;
 
@@ -356,7 +345,7 @@ namespace Evernus
         mCharacterItemCostCache;
         mutable std::unordered_map<EveType::IdType, ItemCostRepository::EntityPtr> mTypeItemCostCache;
 
-        QTranslator mTranslator, mQtTranslator, mQtBaseTranslator, mQtScriptTranslator, mQtXmlPatternsTranslator;
+        QTranslator mTranslator, mQtTranslator, mQtBaseTranslator, mQtScriptTranslator;
 
         QxtHttpSessionManager mHttpSessionManager;
         QxtSmtp mSmtp;
@@ -369,6 +358,8 @@ namespace Evernus
 
         std::unique_ptr<ESIManager> mESIManager;
 
+        std::unordered_set<EveType::IdType> mStationGroupTypeIds;
+
         void updateTranslator(const QString &lang);
 
         void createDb();
@@ -378,22 +369,10 @@ namespace Evernus
         void deleteOldWalletEntries();
         void deleteOldMarketOrders();
 
-        void importCharacterFromXML(Character::IdType id, uint task, const Key &key);
-        void importCharacterFromESI(Character::IdType id, uint task, const Key &key);
+        void importCharacter(Character::IdType id, uint task);
         void importExternalOrders(const std::string &importerName, Character::IdType id, const TypeLocationPairs &target);
         void importMarketOrdersFromLogs(Character::IdType id, uint task, bool corp);
         void importMarketOrders(Character::IdType id, MarketOrders &orders, bool corp);
-        void importCharacterAssetsFromXML(Character::IdType id, uint importSubtask);
-        void importCharacterAssetsFromESI(Character::IdType id, uint importSubtask);
-        void importCharacterMarketOrdersFromXML(Character::IdType id, uint importSubtask);
-        void importCharacterMarketOrdersFromESI(Character::IdType id, uint importSubtask);
-        void importCharacterWalletJournalFromXML(Character::IdType id, uint importSubtask);
-        void importCharacterWalletJournalFromESI(Character::IdType id, uint importSubtask);
-        void importCharacterWalletTransactionsFromXML(Character::IdType id, uint importSubtask);
-        void importCharacterWalletTransactionsFromESI(Character::IdType id, uint importSubtask);
-
-        KeyRepository::EntityPtr getCharacterKey(Character::IdType id) const;
-        CorpKeyRepository::EntityPtr getCorpKey(Character::IdType id) const;
 
         void finishExternalOrderImportTask(const QString &info);
 
@@ -424,14 +403,11 @@ namespace Evernus
         void markImport(Character::IdType id, TimerType type);
         void unmarkImport(Character::IdType id, TimerType type);
 
-        template<void (EvernusApplication::* Signal)(), class Key>
-        void handleIncomingContracts(const Key &key,
-                                     const Contracts &data,
+        template<void (EvernusApplication::* Signal)()>
+        void handleIncomingContracts(const Contracts &data,
                                      Character::IdType id,
                                      const ContractItemRepository &itemRepo,
                                      uint task);
-        template<void (EvernusApplication::* Signal)(), class Key>
-        void doRefreshMarketOrdersFromAPI(const Key &key, Character::IdType id, uint task, TimerType type);
 
         template<class T, class Data>
         void asyncBatchStore(const T &repo, const Data &data, bool hasId);
@@ -439,11 +415,11 @@ namespace Evernus
         template<class Func, class... Args>
         void asyncExecute(Func &&func, Args && ...args);
 
+        void fetchStationTypeIds();
+
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
         static QString getCharacterImportMessage(Character::IdType id);
 
         static void setProxySettings();
-
-        static bool shouldUseESIOverXML();
     };
 }

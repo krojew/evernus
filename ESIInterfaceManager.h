@@ -24,9 +24,15 @@
 #include "ESIInterfaceErrorLimiter.h"
 #include "CitadelAccessCache.h"
 #include "Character.h"
+#include "ESIOAuth.h"
+
+class QByteArray;
+class QUrl;
 
 namespace Evernus
 {
+    class CharacterRepository;
+    class EveDataProvider;
     class ESIInterface;
 
     class ESIInterfaceManager final
@@ -35,35 +41,47 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit ESIInterfaceManager(QObject *parent = nullptr);
+        ESIInterfaceManager(QString clientId,
+                            QString clientSecret,
+                            const CharacterRepository &characterRepo,
+                            const EveDataProvider &dataProvider,
+                            QObject *parent = nullptr);
         ESIInterfaceManager(const ESIInterfaceManager &) = delete;
         ESIInterfaceManager(ESIInterfaceManager &&) = default;
         virtual ~ESIInterfaceManager();
 
         void handleNewPreferences();
+        void clearRefreshTokens();
+
+        void processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
+        void cancelSsoAuth(Character::IdType charId);
+        void setTokens(Character::IdType id, const QString &accessToken, const QString &refreshToken);
 
         const ESIInterface &selectNextInterface();
 
         const CitadelAccessCache &getCitadelAccessCache() const noexcept;
         CitadelAccessCache &getCitadelAccessCache() noexcept;
 
+        QString getClientId() const;
+        QString getClientSecret() const;
+
         ESIInterfaceManager &operator =(const ESIInterfaceManager &) = delete;
         ESIInterfaceManager &operator =(ESIInterfaceManager &&) = default;
 
     signals:
-        void tokenRequested(Character::IdType charId) const;
-
-        void tokenError(Character::IdType charId, const QString &error);
-        void acquiredToken(Character::IdType charId, const QString &accessToken, const QDateTime &expiry);
+        void ssoAuthRequested(Character::IdType charId, const QUrl &url);
 
     private:
+        QString mClientId;
+        QString mClientSecret;
+
         std::vector<std::unique_ptr<ESIInterface, QObjectDeleteLaterDeleter>> mInterfaces;
         std::size_t mCurrentInterface{0};
 
         CitadelAccessCache mCitadelAccessCache;
         ESIInterfaceErrorLimiter mErrorLimiter;
+        ESIOAuth mOAuth;
 
-        void connectInterfaces();
         void createInterfaces();
 
         void readCitadelAccessCache();

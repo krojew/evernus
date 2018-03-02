@@ -23,7 +23,6 @@
 #include <QTimer>
 #include <QMovie>
 
-#include "QObjectDeleteLaterDeleter.h"
 #include "ExternalOrderImporter.h"
 #include "FPCController.h"
 #include "SSOAuthDialog.h"
@@ -32,6 +31,7 @@
 class QSystemTrayIcon;
 class QTabWidget;
 class QLabel;
+class QUrl;
 
 #ifdef Q_OS_WIN
 class QWinTaskbarButton;
@@ -65,9 +65,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        MainWindow(QByteArray clientId,
-                   QByteArray clientSecret,
-                   const RepositoryProvider &repositoryProvider,
+        MainWindow(const RepositoryProvider &repositoryProvider,
                    MarketOrderProvider &charOrderProvider,
                    MarketOrderProvider &corpOrderProvider,
                    AssetProvider &charAssetProvider,
@@ -149,11 +147,13 @@ namespace Evernus
         void updateExternalOrders(const std::vector<ExternalOrder> &orders);
 
         void clearCorpWalletData();
+        void clearRefreshTokens();
 
         void makeValueSnapshots(Character::IdType id);
 
         void gotSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
         void ssoAuthCanceled(Character::IdType charId);
+        void authorizedCharacter(Character::IdType id, const QString &accessToken, const QString &refreshToken);
 
     public slots:
         void showActiveTasks();
@@ -187,9 +187,11 @@ namespace Evernus
         void characterDataChanged();
 
         void showSSOError(const QString &info);
-        void requestSSOAuth(Character::IdType charId);
+        void requestSSOAuth(Character::IdType charId, const QUrl &url);
 
     private slots:
+        void addCharacter();
+
         void updateCurrentTab(int index);
 
         void activateTrayIcon(QSystemTrayIcon::ActivationReason reason);
@@ -201,6 +203,8 @@ namespace Evernus
 
         void showInEve(EveType::IdType typeId, Character::IdType ownerId);
         void setWaypoint(quint64 locationId);
+
+        void showErrorMessage(const QString &error);
 
     protected:
         virtual void changeEvent(QEvent *event) override;
@@ -219,8 +223,6 @@ namespace Evernus
         static const QString settingsSizeKey;
 
         static const QString redirectDomain;
-
-        QByteArray mClientId;
 
         const RepositoryProvider &mRepositoryProvider;
         ItemCostProvider &mItemCostProvider;
@@ -265,14 +267,16 @@ namespace Evernus
 
         FPCController mFPCController;
 
-        std::unique_ptr<SSOAuthDialog, QObjectDeleteLaterDeleter> mAuthView;
+        std::unordered_map<Character::IdType, SSOAuthDialog *> mAuthViews;
+
+        QString mClientId;
+        QString mClientSecret;
 
         void readSettings();
         void writeSettings();
 
         void createMenu();
-        void createMainView(QByteArray clientSecret,
-                            MarketOrderProvider &charOrderProvider,
+        void createMainView(MarketOrderProvider &charOrderProvider,
                             MarketOrderProvider &corpOrderProvider,
                             AssetProvider &charAssetProvider,
                             AssetProvider &corpAssetProvider,

@@ -47,7 +47,6 @@
 #include "EvernusApplication.h"
 #include "CommandLineOptions.h"
 #include "UpdaterSettings.h"
-#include "ImportSettings.h"
 #include "BezierCurve.h"
 #include "MainWindow.h"
 #include "VolumeType.h"
@@ -275,8 +274,8 @@ int main(int argc, char *argv[])
 
         Evernus::EvernusApplication app{argc,
                                         argv,
-                                        parser.value(Evernus::CommandLineOptions::clientIdArg).toLatin1(),
-                                        parser.value(Evernus::CommandLineOptions::clientSecretArg).toLatin1(),
+                                        parser.value(Evernus::CommandLineOptions::clientIdArg),
+                                        parser.value(Evernus::CommandLineOptions::clientSecretArg),
                                         parser.value(Evernus::CommandLineOptions::forceVersionArg),
                                         parser.isSet(Evernus::CommandLineOptions::noUpdateArg)};
 
@@ -290,10 +289,7 @@ int main(int argc, char *argv[])
         new QMacPasteboardMimeUnicodeText;
 #endif
 
-        auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getSSOClientId(),
-                                                                                    app.getSSOClientSecret(),
-                                                                                    app.getDataProvider(),
-                                                                                    app.getCharacterRepository(),
+        auto webImporter = std::make_unique<Evernus::ProxyWebExternalOrderImporter>(app.getDataProvider(),
                                                                                     app.getESIInterfaceManager());
         auto webImporterPtr = webImporter.get();
 
@@ -314,9 +310,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            Evernus::MainWindow mainWnd{app.getSSOClientId(),
-                                        app.getSSOClientSecret(),
-                                        app,
+            Evernus::MainWindow mainWnd{app,
                                         app.getMarketOrderProvider(),
                                         app.getCorpMarketOrderProvider(),
                                         app.getAssetProvider(),
@@ -382,14 +376,18 @@ int main(int argc, char *argv[])
                              &app, &Evernus::EvernusApplication::updateExternalOrdersAndAssetValue);
             QObject::connect(&mainWnd, &Evernus::MainWindow::clearCorpWalletData,
                              &app, &Evernus::EvernusApplication::clearCorpWalletData);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::clearRefreshTokens,
+                             &app, &Evernus::EvernusApplication::clearRefreshTokens);
             QObject::connect(&mainWnd, &Evernus::MainWindow::makeValueSnapshots,
                              &app, &Evernus::EvernusApplication::makeValueSnapshots);
             QObject::connect(&mainWnd, &Evernus::MainWindow::citadelsEdited,
                              &app, &Evernus::EvernusApplication::clearCitadelCache);
             QObject::connect(&mainWnd, &Evernus::MainWindow::gotSSOAuthorizationCode,
-                             &app, &Evernus::EvernusApplication::processAuthorizationCode);
+                             &app, &Evernus::EvernusApplication::processSSOAuthorizationCode);
             QObject::connect(&mainWnd, &Evernus::MainWindow::ssoAuthCanceled,
-                             &app, &Evernus::EvernusApplication::cancelSSOAuth);
+                             &app, &Evernus::EvernusApplication::cancelSsoAuth);
+            QObject::connect(&mainWnd, &Evernus::MainWindow::authorizedCharacter,
+                             &app, &Evernus::EvernusApplication::processNewCharacter);
             QObject::connect(&app, QOverload<uint, const QString &>::of(&Evernus::EvernusApplication::taskStarted),
                              &mainWnd, &Evernus::MainWindow::addNewTaskInfo);
             QObject::connect(&app, QOverload<uint, uint, const QString &>::of(&Evernus::EvernusApplication::taskStarted),
@@ -448,12 +446,6 @@ int main(int argc, char *argv[])
                              &mainWnd, &Evernus::MainWindow::requestSSOAuth);
             QObject::connect(&mainWnd, &Evernus::MainWindow::preferencesChanged,
                              webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::handleNewPreferences);
-            QObject::connect(&mainWnd, &Evernus::MainWindow::gotSSOAuthorizationCode,
-                             webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::processAuthorizationCode);
-            QObject::connect(&mainWnd, &Evernus::MainWindow::ssoAuthCanceled,
-                             webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::cancelSSOAuth);
-            QObject::connect(webImporterPtr, &Evernus::ProxyWebExternalOrderImporter::ssoAuthRequested,
-                             &mainWnd, &Evernus::MainWindow::requestSSOAuth);
             mainWnd.showAsSaved();
 
             QSettings settings;
@@ -469,42 +461,6 @@ int main(int argc, char *argv[])
                     QDesktopServices::openUrl(QUrl{QStringLiteral("http://evernus.com/latest-evernus-version")});
 
                 settings.setValue(Evernus::UpdaterSettings::askedToShowReleaseNotesKey, true);
-            }
-
-            if (!settings.contains(Evernus::ImportSettings::eveImportSourceKey))
-            {
-                QMessageBox sourceQuestionBox{
-                    QMessageBox::Question,
-                    QCoreApplication::translate("main", "Import source"),
-                    QCoreApplication::translate(
-                        "main",
-                        "Would you like to use ESI for data import where applicable?\n\n"
-                        "Using ESI gives access to more data, e.g. citadel assets, and lower cache timers but requires additional autorization. "
-                        "Support for more ESI endpoints is ongoing.\n\n"
-                        "You can always change it in Preferences->Import->Source."
-                    ),
-                    QMessageBox::NoButton,
-                    &mainWnd
-                };
-                sourceQuestionBox.addButton(QCoreApplication::translate("main", "Use ESI and XML API"), QMessageBox::YesRole);
-                sourceQuestionBox.addButton(QCoreApplication::translate("main", "Use only XML API"), QMessageBox::NoRole);
-
-                sourceQuestionBox.exec();
-
-                if (sourceQuestionBox.buttonRole(sourceQuestionBox.clickedButton()) == QMessageBox::NoRole)
-                {
-                    settings.setValue(
-                        Evernus::ImportSettings::eveImportSourceKey,
-                        static_cast<int>(Evernus::ImportSettings::EveImportSource::XML)
-                    );
-                }
-                else
-                {
-                    settings.setValue(
-                        Evernus::ImportSettings::eveImportSourceKey,
-                        static_cast<int>(Evernus::ImportSettings::EveImportSource::ESI)
-                    );
-                }
             }
 
             if (!app.getCharacterRepository().hasCharacters())

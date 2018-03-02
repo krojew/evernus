@@ -12,20 +12,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QDomElement>
+#pragma once
 
-#include "GenericNameDomParser.h"
+#include <QString>
 
 namespace Evernus
 {
-    namespace APIDomParser
+    namespace ESIUrls
     {
-        template<>
-        QString parse<QString>(const QDomElement &node)
-        {
-            const auto rows = node.elementsByTagName("row");
-
-            return (rows.isEmpty()) ? (QString{}) : (rows.at(0).toElement().attribute("name"));
-        }
+        const auto esiUrl = QStringLiteral("https://esi.tech.ccp.is");
+        const auto callbackUrl = QStringLiteral("https://evernus.com/sso-authentication-2/");
     }
 }

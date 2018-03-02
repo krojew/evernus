@@ -256,12 +256,16 @@ namespace Evernus
                     return mDataProvider.getLocationName(contract->getEndStationId());
                 case typeColumn:
                     switch (contract->getType()) {
+                    case Contract::Type::Unknown:
+                        return tr("Unknown");
                     case Contract::Type::ItemExchange:
                         return tr("Item Exchange");
                     case Contract::Type::Courier:
                         return tr("Courier");
                     case Contract::Type::Auction:
                         return tr("Auction");
+                    case Contract::Type::Loan:
+                        return tr("Loan");
                     }
                     break;
                 case statusColumn:
@@ -298,6 +302,10 @@ namespace Evernus
                         return tr("Private");
                     case Contract::Availability::Public:
                         return tr("Public");
+                    case Contract::Availability::Corporation:
+                        return tr("Corporation");
+                    case Contract::Availability::Alliance:
+                        return tr("Alliance");
                     }
                     break;
                 case issuedColumn:

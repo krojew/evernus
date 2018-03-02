@@ -9,26 +9,25 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(PROJECT_NAME "evernus")
-set(MAJOR_VERSION "2")
-set(MINOR_VERSION "21")
+set(MAJOR_VERSION "3")
+set(MINOR_VERSION "0")
 
 option(EVERNUS_CREATE_DUMPS "create crash dumps using Google Breakpad" ON)
 
 find_package(Boost REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5Core 5.8 REQUIRED)
+find_package(Qt5Core 5.10 REQUIRED)
 find_package(Qt5DataVisualization REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(Qt5NetworkAuth REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 find_package(Qt5Qml REQUIRED)
 find_package(Qt5QuickWidgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
-find_package(Qt5XmlPatterns REQUIRED)
-find_package(Qt5WebEngineWidgets REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 if(EVERNUS_CREATE_DUMPS)
@@ -105,11 +104,6 @@ endif()
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TRANSLATIONS})
 
-include_directories(
-    ${Boost_INCLUDE_DIRS}
-    ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-)
-
 add_executable(
     ${PROJECT_NAME}
     WIN32
@@ -128,24 +122,12 @@ add_executable(
     AggregatedEventProcessor.h
     AggregatedStatisticsModel.cpp
     AggregatedStatisticsModel.h
-    APIDomParser.h
-    APIInterface.cpp
-    APIInterface.h
-    APIManager.cpp
-    APIManager.h
-    APIResponseCache.cpp
-    APIResponseCache.h
-    APIUtils.cpp
-    APIUtils.h
-    APIXmlReceiver.h
     ArbitrageUtils.cpp
     ArbitrageUtils.h
     AssetList.cpp
     AssetList.h
     AssetListRepository.cpp
     AssetListRepository.h
-    AssetListXmlReceiver.cpp
-    AssetListXmlReceiver.h
     AssetModel.cpp
     AssetModel.h
     AssetProvider.h
@@ -197,12 +179,8 @@ add_executable(
     CharacterCorporationCombinedMarketOrderProvider.cpp
     CharacterCorporationCombinedMarketOrderProvider.h
     CharacterData.h
-    CharacterDomParser.cpp
-    CharacterDomParser.h
     CharacterImportPreferencesWidget.cpp
     CharacterImportPreferencesWidget.h
-    CharacterListXmlReceiver.cpp
-    CharacterListXmlReceiver.h
     CharacterManagerDialog.cpp
     CharacterManagerDialog.h
     CharacterModel.cpp
@@ -237,8 +215,6 @@ add_executable(
     ConquerableStation.cpp
     ConquerableStation.h
     ConquerableStationList.h
-    ConquerableStationListXmlReceiver.cpp
-    ConquerableStationListXmlReceiver.h
     ConquerableStationRepository.cpp
     ConquerableStationRepository.h
     Contract.cpp
@@ -251,8 +227,6 @@ add_executable(
     ContractItem.h
     ContractItemRepository.cpp
     ContractItemRepository.h
-    ContractItemsXmlReceiver.cpp
-    ContractItemsXmlReceiver.h
     ContractModel.cpp
     ContractModel.h
     ContractProvider.h
@@ -261,8 +235,6 @@ add_executable(
     Contracts.h
     ContractStatusesWidget.cpp
     ContractStatusesWidget.h
-    ContractsXmlReceiver.cpp
-    ContractsXmlReceiver.h
     ContractView.cpp
     ContractView.h
     ContractWidget.cpp
@@ -273,12 +245,6 @@ add_executable(
     CorpAssetValueSnapshotRepository.h
     CorpImportPreferencesWidget.cpp
     CorpImportPreferencesWidget.h
-    CorpKey.cpp
-    CorpKey.h
-    CorpKeyEditDialog.cpp
-    CorpKeyEditDialog.h
-    CorpKeyRepository.cpp
-    CorpKeyRepository.h
     CorpMarketOrderValueSnapshot.cpp
     CorpMarketOrderValueSnapshot.h
     CorpMarketOrderValueSnapshotRepository.cpp
@@ -318,8 +284,21 @@ add_executable(
     ESIInterfaceErrorLimiter.h
     ESIInterfaceManager.cpp
     ESIInterfaceManager.h
-    ESIManager.h
     ESIManager.cpp
+    ESIManager.h
+    ESINetworkAccessManager.cpp
+    ESINetworkAccessManager.h
+    ESIOAuth.cpp
+    ESIOAuth.h
+    ESIOAuth2AuthorizationCodeFlow.cpp
+    ESIOAuth2AuthorizationCodeFlow.h
+    ESIOAuth2CharacterAuthorizationCodeFlow.cpp
+    ESIOAuth2CharacterAuthorizationCodeFlow.h
+    ESIOAuth2UnknownCharacterAuthorizationCodeFlow.cpp
+    ESIOAuth2UnknownCharacterAuthorizationCodeFlow.h
+    ESIOAuthReplyHandler.cpp
+    ESIOAuthReplyHandler.h
+    ESIUrls.h
     ESIWholeExternalOrderImporter.cpp
     ESIWholeExternalOrderImporter.h
     EveDataManagerProvider.h
@@ -371,8 +350,6 @@ add_executable(
     GeneralPreferencesWidget.h
     GenericMarketOrdersInfoWidget.cpp
     GenericMarketOrdersInfoWidget.h
-    GenericNameDomParser.cpp
-    GenericNameDomParser.h
     HttpPreferencesWidget.cpp
     HttpPreferencesWidget.h
     HttpService.cpp
@@ -449,12 +426,6 @@ add_executable(
     ItemTypeSelectDialog.h
     JSEveDataProvider.cpp
     JSEveDataProvider.h
-    Key.cpp
-    Key.h
-    KeyEditDialog.cpp
-    KeyEditDialog.h
-    KeyRepository.cpp
-    KeyRepository.h
     LanguageComboBox.cpp
     LanguageComboBox.h
     LanguageSelectDialog.cpp
@@ -541,8 +512,6 @@ add_executable(
     MarketOrdersInfoWidget.h
     MarketOrderStatesWidget.cpp
     MarketOrderStatesWidget.h
-    MarketOrdersXmlReceiver.cpp
-    MarketOrdersXmlReceiver.h
     MarketOrderTreeModel.cpp
     MarketOrderTreeModel.h
     MarketOrderValueSnapshot.cpp
@@ -583,6 +552,8 @@ add_executable(
     NetworkPreferencesWidget.cpp
     NetworkPreferencesWidget.h
     NetworkSettings.h
+    NewCharacterController.cpp
+    NewCharacterController.h
     NumberFormatDelegate.cpp
     NumberFormatDelegate.h
     OrderScript.cpp
@@ -814,8 +785,6 @@ add_executable(
     WalletJournalModel.h
     WalletJournalWidget.cpp
     WalletJournalWidget.h
-    WalletJournalXmlReceiver.cpp
-    WalletJournalXmlReceiver.h
     WalletPreferencesWidget.cpp
     WalletPreferencesWidget.h
     WalletSettings.h
@@ -832,8 +801,6 @@ add_executable(
     WalletTransactionsModel.h
     WalletTransactionsWidget.cpp
     WalletTransactionsWidget.h
-    WalletTransactionsXmlReceiver.cpp
-    WalletTransactionsXmlReceiver.h
     WalletTransactionView.cpp
     WalletTransactionView.h
     WarningBarWidget.cpp
@@ -873,15 +840,15 @@ target_link_libraries(
     Qt5::Core
     Qt5::DataVisualization
     Qt5::Gui
+    Qt5::GuiPrivate
     Qt5::Multimedia
     Qt5::Network
+    Qt5::NetworkAuth
     Qt5::PrintSupport
     Qt5::Qml
     Qt5::QuickWidgets
     Qt5::Sql
     Qt5::Xml
-    Qt5::XmlPatterns
-    Qt5::WebEngineWidgets
     Qt5::Widgets
     ${ADDITIONAL_LIBS}
 )
