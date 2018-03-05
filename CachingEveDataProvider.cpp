@@ -25,6 +25,7 @@
 #include <QDir>
 
 #include "ConquerableStationRepository.h"
+#include "DatabaseConnectionProvider.h"
 #include "EveDataManagerProvider.h"
 #include "MarketOrderRepository.h"
 #include "ESIManager.h"
@@ -69,7 +70,7 @@ namespace Evernus
                                                    const MarketGroupRepository &marketGroupRepository,
                                                    const CitadelRepository &citadelRepository,
                                                    const EveDataManagerProvider &dataManagerProvider,
-                                                   const QSqlDatabase &eveDb,
+                                                   const DatabaseConnectionProvider &connectionProvider,
                                                    QObject *parent)
         : EveDataProvider{parent}
         , mEveTypeRepository{eveTypeRepository}
@@ -81,7 +82,7 @@ namespace Evernus
         , mMarketGroupRepository{marketGroupRepository}
         , mCitadelRepository{citadelRepository}
         , mDataManagerProvider{dataManagerProvider}
-        , mEveDb{eveDb}
+        , mConnectionProvider{connectionProvider}
     {
         readCache(nameCacheFileName, mGenericNameCache);
         findManufaturingActivity();
@@ -338,7 +339,7 @@ namespace Evernus
         QString result;
         if (id >= 66000000 && id <= 66014933)
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT stationName FROM staStations WHERE stationID = ?"));
             query.bindValue(0, id - 6000001);
 
@@ -370,7 +371,7 @@ namespace Evernus
         }
         else if (id > 60000000 && id <= 61000000)
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT stationName FROM staStations WHERE stationID = ?"));
             query.bindValue(0, id);
 
@@ -391,7 +392,7 @@ namespace Evernus
         }
         else
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT itemName FROM mapDenormalize WHERE itemID = ?"));
             query.bindValue(0, id);
 
@@ -417,7 +418,7 @@ namespace Evernus
         if (it != std::end(mRegionNameCache))
             return it->second;
 
-        QSqlQuery query{mEveDb};
+        QSqlQuery query{mConnectionProvider.getConnection()};
         query.prepare(QStringLiteral("SELECT regionName FROM mapRegions WHERE regionID = ?"));
         query.bindValue(0, id);
 
@@ -433,7 +434,7 @@ namespace Evernus
         if (it != std::end(mSolarSystemNameCache))
             return it->second;
 
-        QSqlQuery query{mEveDb};
+        QSqlQuery query{mConnectionProvider.getConnection()};
         query.prepare(QStringLiteral("SELECT solarSystemName FROM mapSolarSystems WHERE solarSystemID = ?"));
         query.bindValue(0, id);
 
@@ -448,7 +449,7 @@ namespace Evernus
     {
         if (mRegionCache.empty())
         {
-            auto query = mEveDb.exec(QStringLiteral("SELECT regionID, regionName FROM mapRegions ORDER BY regionName"));
+            auto query = mConnectionProvider.getConnection().exec(QStringLiteral("SELECT regionID, regionName FROM mapRegions ORDER BY regionName"));
 
             const auto size = query.size();
             if (size > 0)
@@ -465,7 +466,7 @@ namespace Evernus
     {
         if (mConstellationCache.find(regionId) == std::end(mConstellationCache))
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT constellationID, constellationName FROM mapConstellations WHERE regionID = ? ORDER BY constellationName"));
             query.bindValue(0, regionId);
 
@@ -488,7 +489,7 @@ namespace Evernus
     {
         if (BOOST_UNLIKELY(mAllConstellationsCache.empty()))
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT constellationID, constellationName, regionID FROM mapConstellations ORDER BY constellationName"));
 
             DatabaseUtils::execQuery(query);
@@ -515,7 +516,7 @@ namespace Evernus
     {
         if (mConstellationSolarSystemCache.find(constellationId) == std::end(mConstellationSolarSystemCache))
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT solarSystemID, solarSystemName FROM mapSolarSystems WHERE constellationID = ? ORDER BY solarSystemName"));
             query.bindValue(0, constellationId);
 
@@ -538,7 +539,7 @@ namespace Evernus
     {
         if (mRegionSolarSystemCache.find(regionId) == std::end(mRegionSolarSystemCache))
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT solarSystemID, solarSystemName FROM mapSolarSystems WHERE regionID = ? ORDER BY solarSystemName"));
             query.bindValue(0, regionId);
 
@@ -561,7 +562,7 @@ namespace Evernus
     {
         if (BOOST_UNLIKELY(mAllSolarSystemsCache.empty()))
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT solarSystemID, solarSystemName, constellationID FROM mapSolarSystems ORDER BY solarSystemName"));
 
             DatabaseUtils::execQuery(query);
@@ -588,7 +589,7 @@ namespace Evernus
     {
         if (mStationCache.find(solarSystemId) == std::end(mStationCache))
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral(
                 "SELECT stationID id, stationName name FROM staStations WHERE solarSystemID = ? "
                 "UNION "
@@ -629,7 +630,7 @@ namespace Evernus
         if (it != std::end(mSecurityStatuses))
             return it->second;
 
-        QSqlQuery query{mEveDb};
+        QSqlQuery query{mConnectionProvider.getConnection()};
         query.prepare(QStringLiteral("SELECT security FROM mapSolarSystems WHERE solarSystemID = ?"));
         query.bindValue(0, solarSystemId);
 
@@ -647,7 +648,7 @@ namespace Evernus
         if (it != std::end(mSolarSystemConstellationCache))
             return it->second;
 
-        QSqlQuery query{mEveDb};
+        QSqlQuery query{mConnectionProvider.getConnection()};
         query.prepare(QStringLiteral("SELECT constellationID FROM mapSolarSystems WHERE solarSystemID = ?"));
         query.bindValue(0, solarSystemId);
 
@@ -669,7 +670,7 @@ namespace Evernus
         uint result = 0;
         if (stationId >= 66000000 && stationId <= 66014933)
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT regionID FROM staStations WHERE stationID = ?"));
             query.bindValue(0, stationId - 6000001);
 
@@ -687,7 +688,7 @@ namespace Evernus
         }
         else if (stationId > 60000000 && stationId <= 61000000)
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT regionID FROM staStations WHERE stationID = ?"));
             query.bindValue(0, stationId);
 
@@ -697,7 +698,7 @@ namespace Evernus
         }
         else
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT regionID FROM mapDenormalize WHERE itemID = ?"));
             query.bindValue(0, stationId);
 
@@ -724,7 +725,7 @@ namespace Evernus
         uint systemId = 0;
         if (stationId >= 66000000 && stationId <= 66014933)
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT solarSystemID FROM staStations WHERE stationID = ?"));
             query.bindValue(0, stationId - 6000001);
 
@@ -756,7 +757,7 @@ namespace Evernus
         }
         else if (stationId > 60000000 && stationId <= 61000000)
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT solarSystemID FROM staStations WHERE stationID = ?"));
             query.bindValue(0, stationId);
 
@@ -777,7 +778,7 @@ namespace Evernus
         }
         else
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT solarSystemID FROM mapDenormalize WHERE itemID = ?"));
             query.bindValue(0, stationId);
 
@@ -821,7 +822,7 @@ namespace Evernus
     {
         if (mOreReprocessingInfo.empty())
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral(R"(
 SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM invTypeMaterials m INNER JOIN (
     SELECT typeID, portionSize, groupID FROM invTypes WHERE groupID IN (
@@ -861,7 +862,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
             for (const auto id : reducedTypes)
                 typeNames << QString::number(id);
 
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral(R"(
 SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM invTypeMaterials m INNER JOIN (
     SELECT typeID, portionSize, groupID FROM invTypes WHERE typeID IN (%1) AND marketGroupID IS NOT NULL
@@ -890,7 +891,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         if (mGroupIdCache.contains(name))
             return mGroupIdCache[name];
 
-        QSqlQuery query{mEveDb};
+        QSqlQuery query{mConnectionProvider.getConnection()};
         query.prepare(QStringLiteral("SELECT groupID FROM invGroups WHERE groupName = ?"));
         query.addBindValue(name);
 
@@ -948,7 +949,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
 
     void CachingEveDataProvider::precacheJumpMap()
     {
-        auto query = mEveDb.exec(QStringLiteral("SELECT fromRegionID, fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps WHERE fromRegionID = toRegionID"));
+        auto query = mConnectionProvider.getConnection().exec(QStringLiteral("SELECT fromRegionID, fromSolarSystemID, toSolarSystemID FROM mapSolarSystemJumps WHERE fromRegionID = toRegionID"));
         while (query.next())
             mSystemJumpMap[query.value(0).toUInt()].emplace(query.value(1).toUInt(), query.value(2).toUInt());
 
@@ -1106,7 +1107,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         if (it != std::end(mSolarSystemRegionCache))
             return it->second;
 
-        QSqlQuery query{mEveDb};
+        QSqlQuery query{mConnectionProvider.getConnection()};
         query.prepare(QStringLiteral("SELECT regionID FROM mapSolarSystems WHERE solarSystemID = ?"));
         query.bindValue(0, systemId);
 
@@ -1205,7 +1206,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
         auto it = mTypeManufacturingInfoCache.find(typeId);
         if (it == std::end(mTypeManufacturingInfoCache))
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral(R"(
 SELECT m.materialTypeID, m.quantity, p.quantity, a.time, s.skillID FROM industryActivityMaterials m
     INNER JOIN industryActivityProducts p
@@ -1255,7 +1256,7 @@ SELECT m.materialTypeID, m.quantity, p.quantity, a.time, s.skillID FROM industry
         auto type = mBlueprintOutputCache.find(blueprintId);
         if (type == std::end(mBlueprintOutputCache))
         {
-            QSqlQuery query{mEveDb};
+            QSqlQuery query{mConnectionProvider.getConnection()};
             query.prepare(QStringLiteral("SELECT productTypeID FROM industryActivityProducts WHERE typeID = ? AND activityID = ?"));
             query.addBindValue(blueprintId);
             query.addBindValue(mManufacturingActivityId);
@@ -1407,7 +1408,7 @@ SELECT m.materialTypeID, m.quantity, p.quantity, a.time, s.skillID FROM industry
 
     void CachingEveDataProvider::findManufaturingActivity()
     {
-        QSqlQuery query{mEveDb};
+        QSqlQuery query{mConnectionProvider.getConnection()};
         query.prepare(QStringLiteral("SELECT activityID FROM ramActivities WHERE activityName = ?"));
         query.bindValue(0, QStringLiteral("Manufacturing"));
 

@@ -32,7 +32,7 @@ namespace Evernus
             Outgoing
         };
 
-        WalletJournalEntryRepository(bool corp, const QSqlDatabase &db);
+        WalletJournalEntryRepository(bool corp, const DatabaseConnectionProvider &connectionProvider);
         virtual ~WalletJournalEntryRepository() = default;
 
         virtual QString getTableName() const override;

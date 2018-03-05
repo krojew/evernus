@@ -21,7 +21,6 @@
 #include <boost/functional/hash.hpp>
 
 #include <QApplication>
-#include <QSqlDatabase>
 #include <QTranslator>
 
 #include "CharacterCorporationCombinedMarketOrderProvider.h"
@@ -29,8 +28,10 @@
 #include "IndustryManufacturingSetupRepository.h"
 #include "MarketOrderValueSnapshotRepository.h"
 #include "CorpAssetValueSnapshotRepository.h"
+#include "MainDatabaseConnectionProvider.h"
 #include "ExternalOrderImporterRegistry.h"
 #include "RegionStationPresetRepository.h"
+#include "EveDatabaseConnectionProvider.h"
 #include "ConquerableStationRepository.h"
 #include "AssetValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
@@ -278,7 +279,8 @@ namespace Evernus
         using TypedCharacterTimerMap = std::unordered_map<TimerType, CharacterTimerMap>;
         using TransactionFetcher = std::function<WalletTransactionRepository::EntityList (const QDateTime &, const QDateTime &, EveType::IdType)>;
 
-        QSqlDatabase mMainDb, mEveDb;
+        MainDatabaseConnectionProvider mMainDatabaseConnectionProvider;
+        EveDatabaseConnectionProvider mEveDatabaseConnectionProvider;
 
         std::unique_ptr<CharacterRepository> mCharacterRepository;
         std::unique_ptr<ItemRepository> mItemRepository, mCorpItemRepository;

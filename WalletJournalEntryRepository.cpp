@@ -19,8 +19,8 @@
 
 namespace Evernus
 {
-    WalletJournalEntryRepository::WalletJournalEntryRepository(bool corp, const QSqlDatabase &db)
-        : Repository{db}
+    WalletJournalEntryRepository::WalletJournalEntryRepository(bool corp, const DatabaseConnectionProvider &connectionProvider)
+        : Repository{connectionProvider}
         , mCorp{corp}
     {
     }

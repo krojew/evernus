@@ -72,7 +72,7 @@ namespace Evernus
 
         using CustomAggregatedData = std::vector<std::pair<quint64, SingleAggrData>>;
 
-        MarketOrderRepository(bool corp, const QSqlDatabase &db);
+        MarketOrderRepository(bool corp, const DatabaseConnectionProvider &connectionProvider);
         virtual ~MarketOrderRepository() = default;
 
         virtual QString getTableName() const override;

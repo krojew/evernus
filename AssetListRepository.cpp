@@ -25,8 +25,8 @@
 
 namespace Evernus
 {
-    AssetListRepository::AssetListRepository(bool corp, const QSqlDatabase &db, const ItemRepository &itemRepository)
-        : Repository{db}
+    AssetListRepository::AssetListRepository(bool corp, const DatabaseConnectionProvider &connectionProvider, const ItemRepository &itemRepository)
+        : Repository{connectionProvider}
         , mItemRepository{itemRepository}
         , mCorp{corp}
     {

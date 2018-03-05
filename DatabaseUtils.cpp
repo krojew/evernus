@@ -23,7 +23,6 @@
 #include <QSqlError>
 #include <QtDebug>
 #include <QFile>
-#include <QDir>
 
 #include "DatabaseUtils.h"
 
@@ -36,23 +35,9 @@ namespace Evernus
             return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/db/";
         }
 
-        void createDb(QSqlDatabase &db, const QString &name)
+        QString getDbFilePath(const QString &dbName)
         {
-            if (!db.isValid())
-                BOOST_THROW_EXCEPTION(std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error creating DB object!").toStdString()});
-
-            const auto dbPath = getDbPath();
-
-            qDebug() << "DB path: " << dbPath;
-
-            if (!QDir{}.mkpath(dbPath))
-                BOOST_THROW_EXCEPTION(std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error creating DB path!").toStdString()});
-
-            db.setDatabaseName(dbPath + name);
-            if (!db.open())
-                BOOST_THROW_EXCEPTION(std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error opening DB!").toStdString()});
-
-            db.exec(QStringLiteral("PRAGMA foreign_keys = ON"));
+            return getDbPath() + dbName;
         }
 
         void execQuery(QSqlQuery &query)

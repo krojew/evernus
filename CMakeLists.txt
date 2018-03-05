@@ -255,6 +255,7 @@ add_executable(
     CorpWalletSnapshotRepository.h
     CustomFPCDialog.cpp
     CustomFPCDialog.h
+    DatabaseConnectionProvider.h
     DatabaseUtils.cpp
     DatabaseUtils.h
     DateFilteredPlotWidget.cpp
@@ -301,6 +302,8 @@ add_executable(
     ESIUrls.h
     ESIWholeExternalOrderImporter.cpp
     ESIWholeExternalOrderImporter.h
+    EveDatabaseConnectionProvider.cpp
+    EveDatabaseConnectionProvider.h
     EveDataManagerProvider.h
     EveDataProvider.cpp
     EveDataProvider.h
@@ -459,6 +462,8 @@ add_executable(
     LookupActionGroupModelConnector.cpp
     LookupActionGroupModelConnector.h
     main.cpp
+    MainDatabaseConnectionProvider.cpp
+    MainDatabaseConnectionProvider.h
     MainWindow.cpp
     MainWindow.h
     MarginToolDialog.cpp

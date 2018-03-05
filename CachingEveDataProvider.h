@@ -34,6 +34,7 @@ class QDir;
 namespace Evernus
 {
     class ConquerableStationRepository;
+    class DatabaseConnectionProvider;
     class EveDataManagerProvider;
     class MarketOrderRepository;
 
@@ -54,7 +55,7 @@ namespace Evernus
                                const MarketGroupRepository &marketGroupRepository,
                                const CitadelRepository &citadelRepository,
                                const EveDataManagerProvider &dataManagerProvider,
-                               const QSqlDatabase &eveDb,
+                               const DatabaseConnectionProvider &connectionProvider,
                                QObject *parent = nullptr);
         virtual ~CachingEveDataProvider();
 
@@ -154,7 +155,7 @@ namespace Evernus
 
         const EveDataManagerProvider &mDataManagerProvider;
 
-        QSqlDatabase mEveDb;
+        const DatabaseConnectionProvider &mConnectionProvider;
 
         mutable std::unordered_map<EveType::IdType, QString> mTradeableTypeNameCache;
         mutable TypeList mTradeableTypeCache;

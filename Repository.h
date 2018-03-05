@@ -21,6 +21,8 @@
 
 namespace Evernus
 {
+    class DatabaseConnectionProvider;
+
     template<class T>
     class Repository
     {
@@ -30,7 +32,7 @@ namespace Evernus
         typedef std::shared_ptr<T> EntityPtr;
         typedef std::vector<EntityPtr> EntityList;
 
-        Repository(const QSqlDatabase &db);
+        explicit Repository(const DatabaseConnectionProvider &connectionProvider);
         virtual ~Repository() = default;
 
         virtual QString getTableName() const = 0;
@@ -61,7 +63,7 @@ namespace Evernus
         const size_t maxSqliteBoundVariables = 999;
 
     private:
-        mutable QSqlDatabase mDb;
+        const DatabaseConnectionProvider &mConnectionProvider;
 
         void insert(T &entity) const;
         void update(const T &entity) const;

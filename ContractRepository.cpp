@@ -24,8 +24,8 @@ namespace Evernus
 {
     ContractRepository::ContractRepository(const ContractItemRepository &contractItemRepo,
                                            bool corp,
-                                           const QSqlDatabase &db)
-        : Repository{db}
+                                           const DatabaseConnectionProvider &connectionProvider)
+        : Repository{connectionProvider}
         , mContractItemRepo{contractItemRepo}
         , mCorp{corp}
     {

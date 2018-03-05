@@ -25,7 +25,7 @@ namespace Evernus
         : public Repository<Contract>
     {
     public:
-        ContractRepository(const ContractItemRepository &contractItemRepo, bool corp, const QSqlDatabase &db);
+        ContractRepository(const ContractItemRepository &contractItemRepo, bool corp, const DatabaseConnectionProvider &connectionProvider);
         virtual ~ContractRepository() = default;
 
         virtual QString getTableName() const override;

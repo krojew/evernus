@@ -29,7 +29,7 @@ namespace Evernus
     public:
         using PropertyMap = QHash<QString, QVariantList>;
 
-        ItemRepository(bool corp, const QSqlDatabase &db);
+        ItemRepository(bool corp, const DatabaseConnectionProvider &connectionProvider);
         virtual ~ItemRepository() = default;
 
         virtual QString getTableName() const override;

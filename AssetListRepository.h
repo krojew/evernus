@@ -26,7 +26,7 @@ namespace Evernus
         : public Repository<AssetList>
     {
     public:
-        AssetListRepository(bool corp, const QSqlDatabase &db, const ItemRepository &itemRepository);
+        AssetListRepository(bool corp, const DatabaseConnectionProvider &connectionProvider, const ItemRepository &itemRepository);
         virtual ~AssetListRepository() = default;
 
         virtual QString getTableName() const override;

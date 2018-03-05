@@ -25,8 +25,8 @@
 
 namespace Evernus
 {
-    ItemRepository::ItemRepository(bool corp, const QSqlDatabase &db)
-        : Repository{db}
+    ItemRepository::ItemRepository(bool corp, const DatabaseConnectionProvider &connectionProvider)
+        : Repository{connectionProvider}
         , mCorp{corp}
     {
     }

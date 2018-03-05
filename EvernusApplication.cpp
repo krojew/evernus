@@ -22,14 +22,15 @@
 #include <boost/throw_exception.hpp>
 
 #include <QSslConfiguration>
-#include <QStandardPaths>
 #include <QSplashScreen>
 #include <QNetworkProxy>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QSettings>
-#include <QtDebug>
+#include <QDir>
 #include <QSet>
+
+#include <QtDebug>
 
 #include "ExternalOrderImporterNames.h"
 #include "LanguageSelectDialog.h"
@@ -75,8 +76,6 @@ namespace Evernus
         , LMeveDataProvider{}
         , TaskManager{}
         , EveDataManagerProvider{}
-        , mMainDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("main"))}
-        , mEveDb{QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("eve"))}
     {
         QSettings settings;
 
@@ -158,7 +157,7 @@ namespace Evernus
                                                                  *mMarketGroupRepository,
                                                                  *mCitadelRepository,
                                                                  *this,
-                                                                 mEveDb);
+                                                                 mEveDatabaseConnectionProvider);
 
         mESIInterfaceManager = std::make_unique<ESIInterfaceManager>(std::move(clientId),
                                                                      std::move(clientSecret),
@@ -199,7 +198,7 @@ namespace Evernus
 
         if (dontUpdate)
         {
-            Updater::getInstance().updateDatabaseVersion(mMainDb);
+            Updater::getInstance().updateDatabaseVersion(mMainDatabaseConnectionProvider.getConnection());
         }
         else
         {
@@ -1256,7 +1255,7 @@ namespace Evernus
     {
         TypeLocationPairs target;
 
-        QSqlQuery query{mMainDb};
+        QSqlQuery query{mMainDatabaseConnectionProvider.getConnection()};
         query.prepare(QStringLiteral("SELECT DISTINCT ids.type_id, ids.location_id FROM ("
             "SELECT type_id, location_id FROM %1 WHERE state = ? "
             "UNION "
@@ -1646,78 +1645,48 @@ namespace Evernus
 
     void EvernusApplication::createDb()
     {
-        DatabaseUtils::createDb(mMainDb, QStringLiteral("main.db"));
+        if (!QDir{}.mkpath(DatabaseUtils::getDbPath()))
+            BOOST_THROW_EXCEPTION(std::runtime_error{QCoreApplication::translate("DatabaseUtils", "Error creating DB path!").toStdString()});
 
-        if (!mEveDb.isValid())
-            BOOST_THROW_EXCEPTION(std::runtime_error{"Error crating Eve DB object!"});
-
-        auto eveDbPath = applicationDirPath() + "/resources/eve.db";
-        qDebug() << "Eve DB path:" << eveDbPath;
-
-        if (!QFile::exists(eveDbPath))
-        {
-            eveDbPath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, applicationName() + "/resources/eve.db");
-            qDebug() << "Eve DB path:" << eveDbPath;
-
-            if (!QFile::exists(eveDbPath))
-                BOOST_THROW_EXCEPTION(std::runtime_error{"Cannot find Eve DB!"});
-        }
-
-        mEveDb.setDatabaseName(eveDbPath);
-        mEveDb.setConnectOptions("QSQLITE_OPEN_READONLY");
-
-        if (!mEveDb.open())
-            BOOST_THROW_EXCEPTION(std::runtime_error{"Error opening Eve DB!"});
-
-        QSettings settings;
-
-        // disable syncing changes to the disk between
-        // each transaction. This means the database can become
-        // corrupted in the event of a power failure or OS crash
-        // but NOT in the event of an application error
-        mMainDb.exec(QStringLiteral("PRAGMA synchronous = %1").arg(
-            settings.value(DbSettings::synchronousKey, DbSettings::synchronousDefault).toInt()
-        ));
-
-        mCharacterRepository.reset(new CharacterRepository{mMainDb});
-        mItemRepository.reset(new ItemRepository{false, mMainDb});
-        mCorpItemRepository.reset(new ItemRepository{true, mMainDb});
-        mAssetListRepository.reset(new AssetListRepository{false, mMainDb, *mItemRepository});
-        mCorpAssetListRepository.reset(new AssetListRepository{true, mMainDb, *mCorpItemRepository});
-        mConquerableStationRepository.reset(new ConquerableStationRepository{mMainDb});
-        mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDb});
-        mCorpWalletSnapshotRepository.reset(new CorpWalletSnapshotRepository{mMainDb});
-        mExternalOrderRepository.reset(new ExternalOrderRepository{mMainDb});
-        mAssetValueSnapshotRepository.reset(new AssetValueSnapshotRepository{mMainDb});
-        mCorpAssetValueSnapshotRepository.reset(new CorpAssetValueSnapshotRepository{mMainDb});
-        mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{false, mMainDb});
-        mCorpWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{true, mMainDb});
-        mCacheTimerRepository.reset(new CacheTimerRepository{mMainDb});
-        mUpdateTimerRepository.reset(new UpdateTimerRepository{mMainDb});
-        mWalletTransactionRepository.reset(new WalletTransactionRepository{false, mMainDb});
-        mCorpWalletTransactionRepository.reset(new WalletTransactionRepository{true, mMainDb});
-        mMarketOrderRepository.reset(new MarketOrderRepository{false, mMainDb});
-        mCorpMarketOrderRepository.reset(new MarketOrderRepository{true, mMainDb});
-        mItemCostRepository.reset(new ItemCostRepository{mMainDb});
-        mMarketOrderValueSnapshotRepository.reset(new MarketOrderValueSnapshotRepository{mMainDb});
-        mCorpMarketOrderValueSnapshotRepository.reset(new CorpMarketOrderValueSnapshotRepository{mMainDb});
-        mFilterTextRepository.reset(new FilterTextRepository{mMainDb});
-        mOrderScriptRepository.reset(new OrderScriptRepository{mMainDb});
-        mFavoriteItemRepository.reset(new FavoriteItemRepository{mMainDb});
-        mLocationBookmarkRepository.reset(new LocationBookmarkRepository{mMainDb});
-        mContractItemRepository.reset(new ContractItemRepository{false, mMainDb});
-        mCorpContractItemRepository.reset(new ContractItemRepository{true, mMainDb});
-        mContractRepository.reset(new ContractRepository{*mContractItemRepository, false, mMainDb});
-        mCorpContractRepository.reset(new ContractRepository{*mCorpContractItemRepository, true, mMainDb});
-        mLMeveTaskRepository.reset(new LMeveTaskRepository{mMainDb});
-        mEveTypeRepository.reset(new EveTypeRepository{mEveDb});
-        mMarketGroupRepository.reset(new MarketGroupRepository{mEveDb});
-        mMetaGroupRepository.reset(new MetaGroupRepository{mEveDb});
-        mCitadelRepository.reset(new CitadelRepository{mMainDb});
-        mRegionTypePresetRepository.reset(new RegionTypePresetRepository{mMainDb});
-        mRegionStationPresetRepository.reset(new RegionStationPresetRepository{mMainDb});
-        mIndustryManufacturingSetupRepository.reset(new IndustryManufacturingSetupRepository{mMainDb});
-        mMiningLedgerRepository.reset(new MiningLedgerRepository{mMainDb});
+        mCharacterRepository.reset(new CharacterRepository{mMainDatabaseConnectionProvider});
+        mItemRepository.reset(new ItemRepository{false, mMainDatabaseConnectionProvider});
+        mCorpItemRepository.reset(new ItemRepository{true, mMainDatabaseConnectionProvider});
+        mAssetListRepository.reset(new AssetListRepository{false, mMainDatabaseConnectionProvider, *mItemRepository});
+        mCorpAssetListRepository.reset(new AssetListRepository{true, mMainDatabaseConnectionProvider, *mCorpItemRepository});
+        mConquerableStationRepository.reset(new ConquerableStationRepository{mMainDatabaseConnectionProvider});
+        mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDatabaseConnectionProvider});
+        mCorpWalletSnapshotRepository.reset(new CorpWalletSnapshotRepository{mMainDatabaseConnectionProvider});
+        mExternalOrderRepository.reset(new ExternalOrderRepository{mMainDatabaseConnectionProvider});
+        mAssetValueSnapshotRepository.reset(new AssetValueSnapshotRepository{mMainDatabaseConnectionProvider});
+        mCorpAssetValueSnapshotRepository.reset(new CorpAssetValueSnapshotRepository{mMainDatabaseConnectionProvider});
+        mWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{false, mMainDatabaseConnectionProvider});
+        mCorpWalletJournalEntryRepository.reset(new WalletJournalEntryRepository{true, mMainDatabaseConnectionProvider});
+        mCacheTimerRepository.reset(new CacheTimerRepository{mMainDatabaseConnectionProvider});
+        mUpdateTimerRepository.reset(new UpdateTimerRepository{mMainDatabaseConnectionProvider});
+        mWalletTransactionRepository.reset(new WalletTransactionRepository{false, mMainDatabaseConnectionProvider});
+        mCorpWalletTransactionRepository.reset(new WalletTransactionRepository{true, mMainDatabaseConnectionProvider});
+        mMarketOrderRepository.reset(new MarketOrderRepository{false, mMainDatabaseConnectionProvider});
+        mCorpMarketOrderRepository.reset(new MarketOrderRepository{true, mMainDatabaseConnectionProvider});
+        mItemCostRepository.reset(new ItemCostRepository{mMainDatabaseConnectionProvider});
+        mMarketOrderValueSnapshotRepository.reset(new MarketOrderValueSnapshotRepository{mMainDatabaseConnectionProvider});
+        mCorpMarketOrderValueSnapshotRepository.reset(new CorpMarketOrderValueSnapshotRepository{mMainDatabaseConnectionProvider});
+        mFilterTextRepository.reset(new FilterTextRepository{mMainDatabaseConnectionProvider});
+        mOrderScriptRepository.reset(new OrderScriptRepository{mMainDatabaseConnectionProvider});
+        mFavoriteItemRepository.reset(new FavoriteItemRepository{mMainDatabaseConnectionProvider});
+        mLocationBookmarkRepository.reset(new LocationBookmarkRepository{mMainDatabaseConnectionProvider});
+        mContractItemRepository.reset(new ContractItemRepository{false, mMainDatabaseConnectionProvider});
+        mCorpContractItemRepository.reset(new ContractItemRepository{true, mMainDatabaseConnectionProvider});
+        mContractRepository.reset(new ContractRepository{*mContractItemRepository, false, mMainDatabaseConnectionProvider});
+        mCorpContractRepository.reset(new ContractRepository{*mCorpContractItemRepository, true, mMainDatabaseConnectionProvider});
+        mLMeveTaskRepository.reset(new LMeveTaskRepository{mMainDatabaseConnectionProvider});
+        mEveTypeRepository.reset(new EveTypeRepository{mEveDatabaseConnectionProvider});
+        mMarketGroupRepository.reset(new MarketGroupRepository{mEveDatabaseConnectionProvider});
+        mMetaGroupRepository.reset(new MetaGroupRepository{mEveDatabaseConnectionProvider});
+        mCitadelRepository.reset(new CitadelRepository{mMainDatabaseConnectionProvider});
+        mRegionTypePresetRepository.reset(new RegionTypePresetRepository{mMainDatabaseConnectionProvider});
+        mRegionStationPresetRepository.reset(new RegionStationPresetRepository{mMainDatabaseConnectionProvider});
+        mIndustryManufacturingSetupRepository.reset(new IndustryManufacturingSetupRepository{mMainDatabaseConnectionProvider});
+        mMiningLedgerRepository.reset(new MiningLedgerRepository{mMainDatabaseConnectionProvider});
     }
 
     void EvernusApplication::createDbSchema()
@@ -2290,9 +2259,11 @@ namespace Evernus
         {
         }
 
-        mMainDb.exec(QStringLiteral("PRAGMA foreign_keys = OFF;"));
+        const auto db = mMainDatabaseConnectionProvider.getConnection();
+
+        db.exec(QStringLiteral("PRAGMA foreign_keys = OFF;"));
         mCharacterRepository->store(character);
-        mMainDb.exec(QStringLiteral("PRAGMA foreign_keys = ON;"));
+        db.exec(QStringLiteral("PRAGMA foreign_keys = ON;"));
 
         if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
             createWalletSnapshot(charId, character.getISK());
@@ -2610,7 +2581,7 @@ namespace Evernus
     void EvernusApplication::fetchStationTypeIds()
     {
         // get all ids from group 15, and hope it never changes...
-        QSqlQuery query{QStringLiteral("SELECT typeID FROM invTypes WHERE groupID = 15"), mEveDb};
+        QSqlQuery query{QStringLiteral("SELECT typeID FROM invTypes WHERE groupID = 15"), mEveDatabaseConnectionProvider.getConnection()};
         while (query.next())
             mStationGroupTypeIds.emplace(query.value(0).value<EveType::IdType>());
     }

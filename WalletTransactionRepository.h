@@ -30,7 +30,7 @@ namespace Evernus
             Sell
         };
 
-        WalletTransactionRepository(bool corp, const QSqlDatabase &db);
+        WalletTransactionRepository(bool corp, const DatabaseConnectionProvider &connectionProvider);
         virtual ~WalletTransactionRepository() = default;
 
         virtual QString getTableName() const override;

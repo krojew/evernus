@@ -20,8 +20,8 @@
 
 namespace Evernus
 {
-    MarketOrderRepository::MarketOrderRepository(bool corp, const QSqlDatabase &db)
-        : Repository{db}
+    MarketOrderRepository::MarketOrderRepository(bool corp, const DatabaseConnectionProvider &connectionProvider)
+        : Repository{connectionProvider}
         , mCorp{corp}
     {
     }

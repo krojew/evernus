@@ -17,15 +17,17 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 #include <QSqlError>
+
 #include <QtDebug>
 
+#include "DatabaseConnectionProvider.h"
 #include "DatabaseUtils.h"
 
 namespace Evernus
 {
     template<class T>
-    Repository<T>::Repository(const QSqlDatabase &db)
-        : mDb{db}
+    Repository<T>::Repository(const DatabaseConnectionProvider &connectionProvider)
+        : mConnectionProvider{connectionProvider}
     {
     }
 
@@ -34,8 +36,10 @@ namespace Evernus
     {
         qDebug() << "SQL:" << query;
 
-        auto result = mDb.exec(query);
-        const auto error = mDb.lastError();
+        const auto db = getDatabase();
+
+        auto result = db.exec(query);
+        const auto error = db.lastError();
 
         if (error.isValid())
         {
@@ -51,7 +55,7 @@ namespace Evernus
     template<class T>
     QSqlQuery Repository<T>::prepare(const QString &queryStr) const
     {
-        QSqlQuery query{mDb};
+        QSqlQuery query{getDatabase()};
         if (!query.prepare(queryStr))
         {
             const auto error = query.lastError().text();
@@ -114,8 +118,10 @@ namespace Evernus
 
         const auto batchQueryStr = baseQueryStr.arg(batchBindings.join(", "));
 
+        auto db = getDatabase();
+
         if (wrapIntransaction)
-            mDb.transaction();
+            db.transaction();
 
         try
         {
@@ -149,13 +155,13 @@ namespace Evernus
         catch (...)
         {
             if (wrapIntransaction)
-                mDb.rollback();
+                db.rollback();
 
             throw;
         }
 
         if (wrapIntransaction)
-            mDb.commit();
+            db.commit();
     }
 
     template<class T>
@@ -200,7 +206,7 @@ namespace Evernus
     template<class T>
     QSqlDatabase Repository<T>::getDatabase() const
     {
-        return mDb;
+        return mConnectionProvider.getConnection();
     }
 
     template<class T>

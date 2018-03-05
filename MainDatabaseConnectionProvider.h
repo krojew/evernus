@@ -14,29 +14,22 @@
  */
 #pragma once
 
-#include <unordered_set>
-
-class QSqlDatabase;
-class QSqlRecord;
-class QByteArray;
-class QSqlQuery;
-class QString;
+#include "DatabaseConnectionProvider.h"
 
 namespace Evernus
 {
-    namespace DatabaseUtils
+    class MainDatabaseConnectionProvider final
+        : public DatabaseConnectionProvider
     {
-        QString getDbPath();
-        QString getDbFilePath(const QString &dbName);
-        void execQuery(QSqlQuery &query);
-        QString backupDatabase(const QSqlDatabase &db);
-        QString backupDatabase(const QString &dbPath);
+    public:
+        MainDatabaseConnectionProvider() = default;
+        MainDatabaseConnectionProvider(const MainDatabaseConnectionProvider &) = default;
+        MainDatabaseConnectionProvider(MainDatabaseConnectionProvider &&) = default;
+        virtual ~MainDatabaseConnectionProvider() = default;
 
-        template<class T>
-        std::unordered_set<T> decodeRawSet(const QSqlRecord &record, const QString &name);
-        template<class T>
-        QByteArray encodeRawSet(const std::unordered_set<T> &values);
-    }
+        virtual QSqlDatabase getConnection() const override;
+
+        MainDatabaseConnectionProvider &operator =(const MainDatabaseConnectionProvider &) = default;
+        MainDatabaseConnectionProvider &operator =(MainDatabaseConnectionProvider &&) = default;
+    };
 }
-
-#include "DatabaseUtils.inl"
