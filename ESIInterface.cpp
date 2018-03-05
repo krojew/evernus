@@ -236,6 +236,12 @@ namespace Evernus
         get(QStringLiteral("/v1/universe/bloodlines/"), {}, callback, getNumRetries());
     }
 
+    void ESIInterface::fetchAncestries(const JsonCallback &callback) const
+    {
+        qDebug() << "Fetching ancestries";
+        get(QStringLiteral("/v1/universe/ancestries/"), {}, callback, getNumRetries());
+    }
+
     void ESIInterface::fetchCharacterWallet(Character::IdType charId, const StringCallback &callback) const
     {
         qDebug() << "Fetching character wallet for" << charId;

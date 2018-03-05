@@ -104,6 +104,7 @@ namespace Evernus
         void fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const;
         void fetchRaces(const Callback<NameMap> &callback) const;
         void fetchBloodlines(const Callback<NameMap> &callback) const;
+        void fetchAncestries(const Callback<NameMap> &callback) const;
         void fetchCharacterMarketOrders(Character::IdType charId, const MarketOrdersCallback &callback) const;
         void fetchCorporationMarketOrders(Character::IdType charId, quint64 corpId, const MarketOrdersCallback &callback) const;
         void fetchCharacterWalletJournal(Character::IdType charId,

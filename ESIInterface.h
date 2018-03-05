@@ -75,6 +75,7 @@ namespace Evernus
         void fetchCorporation(quint64 corpId, const JsonCallback &callback) const;
         void fetchRaces(const JsonCallback &callback) const;
         void fetchBloodlines(const JsonCallback &callback) const;
+        void fetchAncestries(const JsonCallback &callback) const;
         void fetchCharacterWallet(Character::IdType charId, const StringCallback &callback) const;
         void fetchCharacterMarketOrders(Character::IdType charId, const JsonCallback &callback) const;
         void fetchCorporationMarketOrders(Character::IdType charId, quint64 corpId, const JsonCallback &callback) const;

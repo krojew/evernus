@@ -202,8 +202,7 @@ namespace Evernus
                                     character.setCorporationId(publicDataObj.value(QStringLiteral("corporation_id")).toDouble());
                                     character.setRace(mDataProvider.getRaceName(publicDataObj.value(QStringLiteral("race_id")).toDouble()));
                                     character.setBloodline(mDataProvider.getBloodlineName(publicDataObj.value(QStringLiteral("bloodline_id")).toDouble()));
-                                    // TODO: change when ancestry enpoint becomes available
-                                    character.setAncestry(mDataProvider.getGenericName(publicDataObj.value(QStringLiteral("ancestry_id")).toDouble()));
+                                    character.setAncestry(mDataProvider.getAncestryName(publicDataObj.value(QStringLiteral("ancestry_id")).toDouble()));
                                     character.setGender(publicDataObj.value(QStringLiteral("gender")).toString());
                                     character.setISK(walletData.toDouble());
 
@@ -445,6 +444,34 @@ namespace Evernus
                 names.emplace(
                     static_cast<quint64>(bloodlineObj.value(QStringLiteral("bloodline_id")).toDouble()),
                     bloodlineObj.value(QStringLiteral("name")).toString()
+                );
+            }
+
+            callback(std::move(names), {}, expires);
+        });
+    }
+
+    void ESIManager::fetchAncestries(const Callback<NameMap> &callback) const
+    {
+        Q_ASSERT(thread() == QThread::currentThread());
+        selectNextInterface().fetchAncestries([=](auto &&data, const auto &error, const auto &expires) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            const auto ancestries = data.array();
+
+            NameMap names;
+            names.reserve(ancestries.size());
+
+            for (const auto &ancestry : ancestries)
+            {
+                const auto ancestryObj = ancestry.toObject();
+                names.emplace(
+                    static_cast<quint64>(ancestryObj.value(QStringLiteral("id")).toDouble()),
+					ancestryObj.value(QStringLiteral("name")).toString()
                 );
             }
 

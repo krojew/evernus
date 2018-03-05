@@ -27,6 +27,7 @@
 #include "MetaGroupRepository.h"
 #include "EveTypeRepository.h"
 #include "EveDataProvider.h"
+#include "ESIManager.h"
 #include "Citadel.h"
 
 class QDir;
@@ -109,6 +110,7 @@ namespace Evernus
 
         virtual QString getRaceName(uint raceId) const override;
         virtual QString getBloodlineName(uint bloodlineId) const override;
+        virtual QString getAncestryName(uint ancestryId) const override;
 
         virtual const ManufacturingInfo &getTypeManufacturingInfo(EveType::IdType typeId) const override;
         virtual EveType::IdType getBlueprintOutputType(EveType::IdType blueprintId) const override;
@@ -142,6 +144,7 @@ namespace Evernus
         static const QString nameCacheFileName;
         static const QString raceCacheFileName;
         static const QString bloodlineCacheFileName;
+        static const QString ancestryCacheFileName;
 
         static const QStringList oreGroupNames;
 
@@ -221,6 +224,7 @@ namespace Evernus
 
         NameMap mRaceNameCache;
         NameMap mBloodlineNameCache;
+        NameMap mAncestryNameCache;
 
         uint mManufacturingActivityId = 1; // 1 - fallback id at the time of writing
 
@@ -241,6 +245,8 @@ namespace Evernus
 
         template<class Cache>
         void cacheWrite(const QString &cacheFileName, const Cache &cache) const;
+
+        static ESIManager::Callback<ESIManager::NameMap> getFillNameMapCallback(NameMap &target);
 
         static double getPackagedVolume(const EveType &type);
     };
