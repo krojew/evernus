@@ -130,6 +130,7 @@ namespace Evernus
         static void migrateCoreTo214(CitadelAccessCache &citadelAccessCache);
         static void migrateCoreTo217();
         static void migrateCoreTo218();
+        static void migrateCoreTo30();
 
         static void removeRefreshTokens();
 

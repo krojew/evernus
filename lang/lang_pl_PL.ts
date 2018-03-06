@@ -394,7 +394,7 @@
 <context>
     <name>Evernus</name>
     <message>
-        <location filename="../CachingEveDataProvider.cpp" line="1037"/>
+        <location filename="../CachingEveDataProvider.cpp" line="1014"/>
         <source>(unknown)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -996,13 +996,13 @@ Total: %7</source>
 <context>
     <name>Evernus::CachingEveDataProvider</name>
     <message>
-        <location filename="../CachingEveDataProvider.cpp" line="180"/>
-        <location filename="../CachingEveDataProvider.cpp" line="192"/>
+        <location filename="../CachingEveDataProvider.cpp" line="181"/>
+        <location filename="../CachingEveDataProvider.cpp" line="193"/>
         <source>(unknown)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CachingEveDataProvider.cpp" line="408"/>
+        <location filename="../CachingEveDataProvider.cpp" line="409"/>
         <source>- unknown location -</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2318,77 +2318,77 @@ Total: %7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="245"/>
+        <location filename="../ESIInterface.cpp" line="251"/>
         <source>Cannot fetch character wallet with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="258"/>
+        <location filename="../ESIInterface.cpp" line="264"/>
         <source>Cannot fetch character market orders with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="271"/>
+        <location filename="../ESIInterface.cpp" line="277"/>
         <source>Cannot fetch corporation market orders with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="286"/>
+        <location filename="../ESIInterface.cpp" line="292"/>
         <source>Cannot fetch character wallet journal with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="307"/>
+        <location filename="../ESIInterface.cpp" line="313"/>
         <source>Cannot fetch corporation wallet journal with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="326"/>
+        <location filename="../ESIInterface.cpp" line="332"/>
         <source>Cannot fetch character wallet transactions with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="347"/>
+        <location filename="../ESIInterface.cpp" line="353"/>
         <source>Cannot fetch corporation wallet transactions with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="364"/>
+        <location filename="../ESIInterface.cpp" line="370"/>
         <source>Cannot fetch character contracts with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="377"/>
+        <location filename="../ESIInterface.cpp" line="383"/>
         <source>Cannot fetch character contract items with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="390"/>
+        <location filename="../ESIInterface.cpp" line="396"/>
         <source>Cannot fetch corporation contracts with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="403"/>
+        <location filename="../ESIInterface.cpp" line="409"/>
         <source>Cannot fetch corporation contract items with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="416"/>
+        <location filename="../ESIInterface.cpp" line="422"/>
         <source>Cannot fetch character blueprints with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="429"/>
+        <location filename="../ESIInterface.cpp" line="435"/>
         <source>Cannot fetch character mining ledger with no character selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="454"/>
+        <location filename="../ESIInterface.cpp" line="460"/>
         <source>Missing name data for: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ESIInterface.cpp" line="508"/>
+        <location filename="../ESIInterface.cpp" line="514"/>
         <source>Cannot open market window for invalid character. Check if there&apos;s a character associated with the item you wish to view.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8047,7 +8047,7 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
     <name>MainDatabaseConnectionProvider</name>
     <message>
         <location filename="../EveDatabaseConnectionProvider.cpp" line="60"/>
-        <location filename="../MainDatabaseConnectionProvider.cpp" line="46"/>
+        <location filename="../MainDatabaseConnectionProvider.cpp" line="47"/>
         <source>Error opening DB!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8595,79 +8595,89 @@ Job tax: %3</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="173"/>
+        <location filename="../main.cpp" line="174"/>
         <source>Evernus EVE Online trade tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="177"/>
+        <location filename="../main.cpp" line="178"/>
         <source>Force specific version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="178"/>
+        <location filename="../main.cpp" line="179"/>
         <source>Don&apos;t run internal updater</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="179"/>
+        <location filename="../main.cpp" line="180"/>
         <source>SSO client id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="180"/>
+        <location filename="../main.cpp" line="181"/>
         <source>SSO client secret</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="181"/>
+        <location filename="../main.cpp" line="182"/>
         <source>Max. log file size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="182"/>
+        <location filename="../main.cpp" line="183"/>
         <source>Max. log files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="214"/>
-        <location filename="../main.cpp" line="229"/>
+        <location filename="../main.cpp" line="215"/>
+        <location filename="../main.cpp" line="230"/>
         <source>Already running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="214"/>
+        <location filename="../main.cpp" line="215"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="229"/>
+        <location filename="../main.cpp" line="230"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="238"/>
-        <location filename="../main.cpp" line="476"/>
+        <location filename="../main.cpp" line="239"/>
+        <location filename="../main.cpp" line="494"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="239"/>
+        <location filename="../main.cpp" line="240"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="456"/>
+        <location filename="../main.cpp" line="457"/>
         <source>New version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="457"/>
+        <location filename="../main.cpp" line="458"/>
         <source>Would you like to see what&apos;s new in this version?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="487"/>
+        <location filename="../main.cpp" line="471"/>
+        <source>Citadel data import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="472"/>
+        <source>EVE doesn&apos;t provide any information about your access rights to citadels. This means, in order to fetch data from citadels, Evernus needs to ask EVE for data for all possible citadels in given regions. This usually takes a lot of time. After doing the first citadel import, the next imports will be much, much faster. From time to time, Evernus needs to refresh its citadel data and ask for all of it again - you can change the refresh period in the preferences.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="505"/>
         <source>Initialization error</source>
         <translation type="unfinished"></translation>
     </message>

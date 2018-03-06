@@ -91,6 +91,9 @@ namespace Evernus
             { {2, 18}, [](auto &) {
                 migrateCoreTo218();
             } },
+            { {3, 0}, [](auto &) {
+                migrateCoreTo30();
+            } },
         }
         , mDbUpdateSteps{
             { {0, 5}, [](const auto &provider) {
@@ -681,6 +684,11 @@ namespace Evernus
     }
 
     void Updater::migrateCoreTo218()
+    {
+        removeRefreshTokens();
+    }
+
+    void Updater::migrateCoreTo30()
     {
         removeRefreshTokens();
     }
