@@ -728,7 +728,7 @@ namespace Evernus
                     {
                         if (error == QNetworkReply::ContentAccessDenied)
                         {
-                            if (importingCitadels && parsedError.mSSOStatus != 0)
+                            if (importingCitadels && parsedError.mSSOStatus == 0)
                             {
                                 if (citadelId != 0)
                                 {
