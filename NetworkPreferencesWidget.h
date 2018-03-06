@@ -51,9 +51,6 @@ namespace Evernus
         QLineEdit *mProxyUserEdit = nullptr;
         QLineEdit *mProxyPasswordEdit = nullptr;
 
-        QRadioButton *mUseDefaultProviderBtn = nullptr;
-        QLineEdit *mProviderHostEdit = nullptr;
-
         QSpinBox *mMaxReplyTimeEdit = nullptr;
         QSpinBox *mMaxRetriesEdit = nullptr;
         QCheckBox *mIgnoreSslErrors = nullptr;

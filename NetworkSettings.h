@@ -24,7 +24,6 @@ namespace Evernus
     namespace NetworkSettings
     {
         const auto useProxyDefault = false;
-        const auto useCustomProviderDefault = false;
         const auto defaultAPIProvider = "https://api.eveonline.com";
         const auto maxReplyTimeDefault = 1800u;
         const auto ignoreSslErrorsDefault = false;
@@ -39,8 +38,6 @@ namespace Evernus
         const auto proxyPortKey = QStringLiteral("network/proxy/port");
         const auto proxyUserKey = QStringLiteral("network/proxy/user");
         const auto proxyPasswordKey = QStringLiteral("network/proxy/password");
-        const auto useCustomProviderKey = QStringLiteral("network/useCustomProvider");
-        const auto providerHostKey = QStringLiteral("network/provider/host");
         const auto maxReplyTimeKey = QStringLiteral("network/maxReplyTime");
         const auto ignoreSslErrorsKey = QStringLiteral("network/security/ignoreSslErrors");
         const auto maxRetriesKey = QStringLiteral("network/maxRetries");

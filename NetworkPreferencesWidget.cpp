@@ -46,10 +46,6 @@ namespace Evernus
         const auto proxyUser = settings.value(NetworkSettings::proxyUserKey).toString();
         const auto proxyPassword = mCrypt.decryptToString(settings.value(NetworkSettings::proxyPasswordKey).toString());
 
-        const auto usemCustomProvider
-            = settings.value(NetworkSettings::useCustomProviderKey, NetworkSettings::useCustomProviderDefault).toBool();
-        const auto providerHost = settings.value(NetworkSettings::providerHostKey).toString();
-
         auto mainLayout = new QVBoxLayout{this};
 
         auto proxyGroup = new QGroupBox{tr("Proxy"), this};
@@ -93,23 +89,6 @@ namespace Evernus
         auto warningLabel = new QLabel{tr("Warning: password store uses weak encryption - do not use sensitive passwords."), this};
         proxyLayout->addWidget(warningLabel);
         warningLabel->setWordWrap(true);
-
-        auto providerGroup = new QGroupBox{tr("API provider"), this};
-        mainLayout->addWidget(providerGroup);
-
-        auto providerLayout = new QVBoxLayout{providerGroup};
-
-        mUseDefaultProviderBtn = new QRadioButton{tr("Use default provider"), this};
-        providerLayout->addWidget(mUseDefaultProviderBtn);
-
-        providerLayout->addWidget(new QLabel{NetworkSettings::defaultAPIProvider, this});
-
-        auto customProviderBtn = new QRadioButton{tr("Use custom provider"), this};
-        providerLayout->addWidget(customProviderBtn);
-
-        mProviderHostEdit = new QLineEdit{providerHost, this};
-        providerLayout->addWidget(mProviderHostEdit);
-        connect(customProviderBtn, &QRadioButton::toggled, mProviderHostEdit, &QWidget::setEnabled);
 
         auto miscGroup = new QGroupBox{this};
         mainLayout->addWidget(miscGroup);
@@ -157,16 +136,6 @@ namespace Evernus
 
         if (proxyType == QNetworkProxy::HttpProxy)
             mProxyTypeCombo->setCurrentIndex(1);
-
-        if (usemCustomProvider)
-        {
-            customProviderBtn->setChecked(true);
-        }
-        else
-        {
-            mUseDefaultProviderBtn->setChecked(true);
-            mProviderHostEdit->setDisabled(true);
-        }
     }
 
     void NetworkPreferencesWidget::applySettings()
@@ -186,9 +155,6 @@ namespace Evernus
         settings.setValue(NetworkSettings::proxyPortKey, proxyPort);
         settings.setValue(NetworkSettings::proxyUserKey, proxyUser);
         settings.setValue(NetworkSettings::proxyPasswordKey, mCrypt.encryptToString(proxyPassword));
-
-        settings.setValue(NetworkSettings::useCustomProviderKey, !mUseDefaultProviderBtn->isChecked());
-        settings.setValue(NetworkSettings::providerHostKey, mProviderHostEdit->text());
 
         settings.setValue(NetworkSettings::maxReplyTimeKey, mMaxReplyTimeEdit->value());
         settings.setValue(NetworkSettings::maxRetriesKey, mMaxRetriesEdit->value());
