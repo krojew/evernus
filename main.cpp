@@ -47,6 +47,7 @@
 #include "EvernusApplication.h"
 #include "CommandLineOptions.h"
 #include "UpdaterSettings.h"
+#include "ImportSettings.h"
 #include "BezierCurve.h"
 #include "MainWindow.h"
 #include "VolumeType.h"
@@ -461,6 +462,23 @@ int main(int argc, char *argv[])
                     QDesktopServices::openUrl(QUrl{QStringLiteral("http://evernus.com/latest-evernus-version")});
 
                 settings.setValue(Evernus::UpdaterSettings::askedToShowReleaseNotesKey, true);
+            }
+
+            if (settings.value(Evernus::ImportSettings::citadelAccessCacheWarningKey, Evernus::ImportSettings::citadelAccessCacheWarningDefault).toBool())
+            {
+                QMessageBox::information(
+                    &mainWnd,
+                    QCoreApplication::translate("main", "Citadel data import"),
+                    QCoreApplication::translate(
+                        "main",
+                        "EVE doesn't provide any information about your access rights to citadels. This means, in order to fetch data from citadels, Evernus needs to ask "
+                        "EVE for data for all possible citadels in given regions. This usually takes a lot of time. After doing the first citadel import, the next imports "
+                        "will be much, much faster. From time to time, Evernus needs to refresh its citadel data and ask for all of it again - you can change the refresh period "
+                        "in the preferences."
+                    )
+                );
+
+                settings.setValue(Evernus::ImportSettings::citadelAccessCacheWarningKey, false);
             }
 
             if (!app.getCharacterRepository().hasCharacters())

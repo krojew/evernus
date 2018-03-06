@@ -70,6 +70,7 @@ namespace Evernus
         const auto csvSeparatorDefault = QChar(',');
         const auto maxCitadelAccessAgeDefault = 7;
         const auto importMiningLedgerDefault = false;
+        const auto citadelAccessCacheWarningDefault = true;
 
         const auto smtpCryptKey = Q_UINT64_C(0x740376004af2acc9);
 
@@ -109,5 +110,6 @@ namespace Evernus
         const auto maxCitadelAccessAgeKey = QStringLiteral("import/citadelAccess/maxAge");
         const auto importMiningLedgerKey = QStringLiteral("import/character/importMiningLedger");
         const auto maxMiningLedgerAgeKey = QStringLiteral("import/miningLedger/maxAge");
+        const auto citadelAccessCacheWarningKey = QStringLiteral("import/citadelAccessCacheWarning");
     }
 }
