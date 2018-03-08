@@ -131,6 +131,7 @@ namespace Evernus
         static void migrateCoreTo217();
         static void migrateCoreTo218();
         static void migrateCoreTo30();
+        static void migrateCoreTo31();
 
         static void removeRefreshTokens();
 

@@ -399,112 +399,112 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="269"/>
-        <location filename="../Updater.cpp" line="280"/>
-        <location filename="../Updater.cpp" line="290"/>
+        <location filename="../Updater.cpp" line="272"/>
+        <location filename="../Updater.cpp" line="283"/>
+        <location filename="../Updater.cpp" line="293"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="269"/>
+        <location filename="../Updater.cpp" line="272"/>
         <source>Error contacting update server: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="280"/>
+        <location filename="../Updater.cpp" line="283"/>
         <source>Error parsing response from the update server: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="290"/>
+        <location filename="../Updater.cpp" line="293"/>
         <source>Missing update version information!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="303"/>
+        <location filename="../Updater.cpp" line="306"/>
         <source>No update found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="303"/>
+        <location filename="../Updater.cpp" line="306"/>
         <source>Your current version is up-to-date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="312"/>
-        <location filename="../Updater.cpp" line="317"/>
-        <location filename="../Updater.cpp" line="328"/>
+        <location filename="../Updater.cpp" line="315"/>
+        <location filename="../Updater.cpp" line="320"/>
+        <location filename="../Updater.cpp" line="331"/>
         <source>Update found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="312"/>
+        <location filename="../Updater.cpp" line="315"/>
         <source>A new version is available: %1
 Do you wish to download it now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="317"/>
+        <location filename="../Updater.cpp" line="320"/>
         <source>A new version is available: %1
 Do you wish to launch the updater?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="328"/>
+        <location filename="../Updater.cpp" line="331"/>
         <source>Couldn&apos;t launch updater. Download manually?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="385"/>
-        <location filename="../Updater.cpp" line="410"/>
-        <location filename="../Updater.cpp" line="417"/>
-        <location filename="../Updater.cpp" line="429"/>
-        <location filename="../Updater.cpp" line="505"/>
-        <location filename="../Updater.cpp" line="532"/>
-        <location filename="../Updater.cpp" line="631"/>
-        <location filename="../Updater.cpp" line="644"/>
+        <location filename="../Updater.cpp" line="388"/>
+        <location filename="../Updater.cpp" line="413"/>
+        <location filename="../Updater.cpp" line="420"/>
+        <location filename="../Updater.cpp" line="432"/>
+        <location filename="../Updater.cpp" line="508"/>
+        <location filename="../Updater.cpp" line="535"/>
+        <location filename="../Updater.cpp" line="634"/>
+        <location filename="../Updater.cpp" line="647"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="385"/>
+        <location filename="../Updater.cpp" line="388"/>
         <source>An error occurred during the update process.
 Database backup was saved as %1. Please read online help how to deal with this situation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="410"/>
+        <location filename="../Updater.cpp" line="413"/>
         <source>This update requires re-importing all data.
 Please click on &quot;Import all&quot; after the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="417"/>
+        <location filename="../Updater.cpp" line="420"/>
         <source>This update requires re-importing all item prices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="429"/>
+        <location filename="../Updater.cpp" line="432"/>
         <source>This update requires re-importing all corporation transactions and journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="505"/>
+        <location filename="../Updater.cpp" line="508"/>
         <source>This update requires settings your custom broker&apos;s fee again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="532"/>
+        <location filename="../Updater.cpp" line="535"/>
         <source>This update requires re-importing citadels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="631"/>
+        <location filename="../Updater.cpp" line="634"/>
         <source>This update requires re-importing wallet journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Updater.cpp" line="644"/>
+        <location filename="../Updater.cpp" line="647"/>
         <source>This update requires importing wallet transactions again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6309,97 +6309,82 @@ Please import prices from Orders/Assets tab or by using Margin tool.</source>
 <context>
     <name>Evernus::NetworkPreferencesWidget</name>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="55"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="51"/>
         <source>Proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="60"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="56"/>
         <source>No proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="63"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="59"/>
         <source>Custom proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="73"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="69"/>
         <source>Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="70"/>
         <source>SOCKS5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="75"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="71"/>
         <source>HTTP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="78"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="74"/>
         <source>Host:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="81"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="77"/>
         <source>Port:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="87"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="83"/>
         <source>User:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="90"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="86"/>
         <source>Password:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="93"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="89"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="97"/>
-        <source>API provider</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="102"/>
-        <source>Use default provider</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="107"/>
-        <source>Use custom provider</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="120"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="99"/>
         <source>Max. reply time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="127"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="106"/>
         <source>Max. retries:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="132"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="111"/>
         <source>Max. ESI network threads:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="137"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="116"/>
         <source>Ignore certificate errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="142"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="121"/>
         <source>Clear saved refresh tokens</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8467,9 +8452,9 @@ Job tax: %3</source>
 <context>
     <name>Updater</name>
     <message>
-        <location filename="../Updater.cpp" line="218"/>
-        <location filename="../Updater.cpp" line="227"/>
-        <location filename="../Updater.cpp" line="233"/>
+        <location filename="../Updater.cpp" line="221"/>
+        <location filename="../Updater.cpp" line="230"/>
+        <location filename="../Updater.cpp" line="236"/>
         <source>Error updating db version: %1</source>
         <translation type="unfinished"></translation>
     </message>

@@ -94,6 +94,9 @@ namespace Evernus
             { {3, 0}, [](auto &) {
                 migrateCoreTo30();
             } },
+            { {3, 1}, [](auto &) {
+                migrateCoreTo31();
+            } },
         }
         , mDbUpdateSteps{
             { {0, 5}, [](const auto &provider) {
@@ -691,6 +694,12 @@ namespace Evernus
     void Updater::migrateCoreTo30()
     {
         removeRefreshTokens();
+    }
+
+    void Updater::migrateCoreTo31()
+    {
+        QSettings settings;
+        settings.setValue(ImportSettings::corpWalletDivisionKey, settings.value(ImportSettings::corpWalletDivisionKey, 1000).toInt() - 999);
     }
 
     void Updater::removeRefreshTokens()

@@ -65,7 +65,7 @@ namespace Evernus
         const auto makeCorpSnapshotsDefault = true;
         const auto useCustomAssetStationDefault = false;
         const auto importAllCharactersDefault = true;
-        const auto corpWalletDivisionDefault = 1000;
+        const auto corpWalletDivisionDefault = 1;
         const auto marketOrderImportTypeDefault = MarketOrderImportType::Auto;
         const auto csvSeparatorDefault = QChar(',');
         const auto maxCitadelAccessAgeDefault = 7;
