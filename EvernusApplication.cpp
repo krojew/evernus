@@ -22,13 +22,26 @@
 #include <boost/throw_exception.hpp>
 
 #include <QSslConfiguration>
+#include <QFutureWatcher>
 #include <QSplashScreen>
 #include <QNetworkProxy>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QThreadPool>
 #include <QSettings>
 #include <QDir>
 #include <QSet>
+
+#if Q_CC_MSVC
+#   pragma warning(push)
+#   pragma warning(disable : 4996)
+#endif
+
+#include <QtConcurrent>
+
+#if Q_CC_MSVC
+#   pragma warning(pop)
+#endif
 
 #include <QtDebug>
 
@@ -229,6 +242,11 @@ namespace Evernus
         connect(mESIManager.get(), &ESIManager::error, this, &EvernusApplication::ssoError);
 
         mDataProvider->precacheNames();
+    }
+
+    EvernusApplication::~EvernusApplication()
+    {
+        QThreadPool::globalInstance()->waitForDone();
     }
 
     void EvernusApplication::registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer)
@@ -704,33 +722,45 @@ namespace Evernus
 
                 if (error.isEmpty())
                 {
+                    const auto storeContracts = [=, &data] {
+                        asyncBatchStore(*mContractRepository, data, true, [=] {
+                            mCharacterContractProvider->clearForCharacter(id);
+                            mCorpContractProvider->clearForCharacter(id);
+
+                            setUtcCacheTimer(id, TimerType::Contracts, expires);
+                            saveUpdateTimer(TimerType::Contracts, mUpdateTimes[TimerType::Contracts], id);
+
+                            this->handleIncomingContracts<&EvernusApplication::characterContractsChanged>(data,
+                                                                                                          id,
+                                                                                                          *mContractItemRepository,
+                                                                                                          task);
+                        });
+                    };
+
                     const auto it = std::remove_if(std::begin(data), std::end(data), [](const Contract &contract) {
                         return contract.isForCorp();
                     });
 
                     if (it != std::end(data))
                     {
-                        Evernus::Contracts corpContracts(it, std::end(data));
-                        asyncBatchStore(*mCorpContractRepository, corpContracts, true);
+                        Contracts corpContracts(it, std::end(data));
 
-                        mCharacterContractProvider->clearForCorporation(corpContracts.front().getIssuerCorpId());
-                        mCorpContractProvider->clearForCorporation(corpContracts.front().getIssuerCorpId());
-                        mCharacterContractProvider->clearForCorporation(corpContracts.front().getAssigneeId());
-                        mCorpContractProvider->clearForCorporation(corpContracts.front().getAssigneeId());
+                        const auto issuerCorpId = corpContracts.front().getIssuerCorpId();
+                        const auto assigneeCorpId = corpContracts.front().getAssigneeId();
+
+                        asyncBatchStore(*mCorpContractRepository, std::move(corpContracts), true, [=] {
+                            mCharacterContractProvider->clearForCorporation(issuerCorpId);
+                            mCorpContractProvider->clearForCorporation(issuerCorpId);
+                            mCharacterContractProvider->clearForCorporation(assigneeCorpId);
+                            mCorpContractProvider->clearForCorporation(assigneeCorpId);
+
+                            storeContracts();
+                        });
                     }
-
-                    asyncBatchStore(*mContractRepository, data, true);
-
-                    mCharacterContractProvider->clearForCharacter(id);
-                    mCorpContractProvider->clearForCharacter(id);
-
-                    setUtcCacheTimer(id, TimerType::Contracts, expires);
-                    saveUpdateTimer(TimerType::Contracts, mUpdateTimes[TimerType::Contracts], id);
-
-                    this->handleIncomingContracts<&Evernus::EvernusApplication::characterContractsChanged>(data,
-                                                                                                           id,
-                                                                                                           *mContractItemRepository,
-                                                                                                           task);
+                    else
+                    {
+                        storeContracts();
+                    }
                 }
                 else
                 {
@@ -768,10 +798,12 @@ namespace Evernus
             if (error.isEmpty())
             {
                 setUtcCacheTimer(id, TimerType::WalletJournal, expires);
-                updateCharacterWalletJournal(id, data);
+                updateCharacterWalletJournal(id, std::move(data), task);
             }
-
-            emit taskEnded(task, error);
+            else
+            {
+                emit taskEnded(task, error);
+            }
         });
     }
 
@@ -799,10 +831,12 @@ namespace Evernus
             if (error.isEmpty())
             {
                 setUtcCacheTimer(id, TimerType::WalletTransactions, expires);
-                updateCharacterWalletTransactions(id, data);
+                updateCharacterWalletTransactions(id, std::move(data), task);
             }
-
-            emit taskEnded(task, error);
+            else
+            {
+                emit taskEnded(task, error);
+            }
         });
     }
 
@@ -871,14 +905,17 @@ namespace Evernus
 
                 // TODO: remove when https://github.com/ccpgames/esi-issues/issues/593 is done
                 mMiningLedgerRepository->removeForCharacter(id);
-                asyncBatchStore(*mMiningLedgerRepository, std::move(data), false);
+                asyncBatchStore(*mMiningLedgerRepository, std::move(data), false, [=] {
+                    saveUpdateTimer(Evernus::TimerType::MiningLedger, mUpdateTimes[Evernus::TimerType::MiningLedger], id);
 
-                saveUpdateTimer(Evernus::TimerType::MiningLedger, mUpdateTimes[Evernus::TimerType::MiningLedger], id);
-
-                emit characterMiningLedgerChanged();
+                    emit characterMiningLedgerChanged();
+                    emit taskEnded(task, {});
+                });
             }
-
-            emit taskEnded(task, error);
+            else
+            {
+                emit taskEnded(task, error);
+            }
         });
     }
 
@@ -953,20 +990,20 @@ namespace Evernus
 
                 if (error.isEmpty())
                 {
-                    asyncBatchStore(*mCorpContractRepository, data, true);
-
+                    asyncBatchStore(*mCorpContractRepository, data, true, [=] {
                         mCharacterContractProvider->clearForCorporation(corpId);
                         mCorpContractProvider->clearForCorporation(corpId);
                         mCharacterContractProvider->clearForCorporation(corpId);
                         mCorpContractProvider->clearForCorporation(corpId);
 
-                    setUtcCacheTimer(id, TimerType::Contracts, expires);
-                    saveUpdateTimer(TimerType::CorpContracts, mUpdateTimes[TimerType::CorpContracts], id);
+                        setUtcCacheTimer(id, TimerType::Contracts, expires);
+                        saveUpdateTimer(TimerType::CorpContracts, mUpdateTimes[TimerType::CorpContracts], id);
 
-                    this->handleIncomingContracts<&EvernusApplication::corpContractsChanged>(data,
-                                                                                             id,
-                                                                                             *mCorpContractItemRepository,
-                                                                                             task);
+                        this->handleIncomingContracts<&EvernusApplication::corpContractsChanged>(data,
+                                                                                                 id,
+                                                                                                 *mCorpContractItemRepository,
+                                                                                                 task);
+                    });
                 }
                 else
                 {
@@ -1038,18 +1075,21 @@ namespace Evernus
                             }
                         }
 
-                        asyncBatchStore(*mCorpWalletSnapshotRepository, snapshots, false);
+                        asyncBatchStore(*mCorpWalletSnapshotRepository, std::move(snapshots), false);
                     }
 
-                    asyncBatchStore(*mCorpWalletJournalEntryRepository, data, true);
+                    asyncBatchStore(*mCorpWalletJournalEntryRepository, std::move(data), true, [=] {
+                        setUtcCacheTimer(id, TimerType::CorpWalletJournal, expires);
+                        saveUpdateTimer(TimerType::CorpWalletJournal, mUpdateTimes[TimerType::CorpWalletJournal], id);
 
-                    setUtcCacheTimer(id, TimerType::CorpWalletJournal, expires);
-                    saveUpdateTimer(TimerType::CorpWalletJournal, mUpdateTimes[TimerType::CorpWalletJournal], id);
-
-                    emit corpWalletJournalChanged();
+                        emit corpWalletJournalChanged();
+                        emit taskEnded(task, {});
+                    });
                 }
-
-                emit taskEnded(task, error);
+                else
+                {
+                    emit taskEnded(task, error);
+                }
             });
         }
         catch (const CharacterRepository::NotFoundException &)
@@ -1088,30 +1128,33 @@ namespace Evernus
 
                 if (error.isEmpty())
                 {
-                    asyncBatchStore(*mCorpWalletTransactionRepository, data, true);
+                    asyncBatchStore(*mCorpWalletTransactionRepository, std::move(data), true, [=] {
+                        setUtcCacheTimer(id, TimerType::CorpWalletTransactions, expires);
+                        saveUpdateTimer(TimerType::CorpWalletTransactions, mUpdateTimes[TimerType::CorpWalletTransactions], id);
 
-                    setUtcCacheTimer(id, TimerType::CorpWalletTransactions, expires);
-                    saveUpdateTimer(TimerType::CorpWalletTransactions, mUpdateTimes[TimerType::CorpWalletTransactions], id);
+                        QSettings settings;
+                        if (settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool() &&
+                            !mPendingAutoCostOrders.empty())
+                        {
+                            computeAutoCosts(id,
+                                             mCorpOrderProvider->getBuyOrdersForCorporation(corpId),
+                                             std::bind(&WalletTransactionRepository::fetchForCorporationInRange,
+                                                       mCorpWalletTransactionRepository.get(),
+                                                       corpId,
+                                                       std::placeholders::_1,
+                                                       std::placeholders::_2,
+                                                       WalletTransactionRepository::EntryType::Buy,
+                                                       std::placeholders::_3));
+                        }
 
-                    QSettings settings;
-                    if (settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool() &&
-                        !mPendingAutoCostOrders.empty())
-                    {
-                        computeAutoCosts(id,
-                                         mCorpOrderProvider->getBuyOrdersForCorporation(corpId),
-                                         std::bind(&WalletTransactionRepository::fetchForCorporationInRange,
-                                                   mCorpWalletTransactionRepository.get(),
-                                                   corpId,
-                                                   std::placeholders::_1,
-                                                   std::placeholders::_2,
-                                                   WalletTransactionRepository::EntryType::Buy,
-                                                   std::placeholders::_3));
-                    }
-
-                    emit corpWalletTransactionsChanged();
+                        emit corpWalletTransactionsChanged();
+                        emit taskEnded(task, {});
+                    });
                 }
-
-                emit taskEnded(task, error);
+                else
+                {
+                    emit taskEnded(task, error);
+                }
             });
         }
         catch (const CharacterRepository::NotFoundException &)
@@ -1213,17 +1256,20 @@ namespace Evernus
                             station.setName(data[station.getId()]);
 
                         mConquerableStationRepository->deleteAll();
-                        asyncBatchStore(*mConquerableStationRepository, stations, true);
-
-                        emit conquerableStationsChanged();
+                        asyncBatchStore(*mConquerableStationRepository, std::move(stations), true, [=] {
+                            emit conquerableStationsChanged();
+                            emit taskEnded(task, {});
+                        });
                     }
-
-                    emit taskEnded(task, error);
+                    else
+                    {
+                        emit taskEnded(task, error);
+                    }
                 });
             }
             else
             {
-                    emit taskEnded(task, error);
+                emit taskEnded(task, error);
             }
         });
     }
@@ -1310,17 +1356,20 @@ namespace Evernus
 
     void EvernusApplication::updateExternalOrdersAndAssetValue(const std::vector<ExternalOrder> &orders)
     {
-        asyncExecute(&CachingEveDataProvider::updateExternalOrders, mDataProvider.get(), std::cref(orders));
+        auto watcher = new QFutureWatcher<void>{this};
+        connect(watcher, &QFutureWatcher<void>::finished, this, [=] {
+            QSettings settings;
+            if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool())
+            {
+                const auto assets = mCharacterAssetProvider->fetchAllAssets();
+                for (const auto &list : assets)
+                    computeAssetListSellValueSnapshot(*list);
+            }
 
-        QSettings settings;
-        if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool())
-        {
-            const auto assets = mCharacterAssetProvider->fetchAllAssets();
-            for (const auto &list : assets)
-                computeAssetListSellValueSnapshot(*list);
-        }
+            emit externalOrdersChanged();
+        });
 
-        emit externalOrdersChanged();
+        watcher->setFuture(asyncExecute(std::bind(&CachingEveDataProvider::updateExternalOrders, mDataProvider.get(), std::cref(orders))));
     }
 
     void EvernusApplication::handleNewPreferences()
@@ -1416,17 +1465,20 @@ namespace Evernus
 
         try
         {
-            asyncBatchStore(*mMarketOrderRepository, orders, true);
-            emit taskEnded(task, QString{});
+            asyncBatchStore(*mMarketOrderRepository, std::move(orders), true, [=] {
+                emit taskEnded(task, {});
+
+                mCharacterOrderProvider->clearArchived();
+                emit characterMarketOrdersChanged();
+            });
         }
         catch (const std::exception &e)
         {
             emit taskEnded(task, e.what());
+
+            mCharacterOrderProvider->clearArchived();
+            emit characterMarketOrdersChanged();
         }
-
-        mCharacterOrderProvider->clearArchived();
-
-        emit characterMarketOrdersChanged();
     }
 
     void EvernusApplication::syncLMeve(Character::IdType id)
@@ -1448,13 +1500,17 @@ namespace Evernus
                 mLMeveTaskCache.erase(id);
                 mLMeveTaskRepository->removeForCharacter(id);
 
-                asyncBatchStore(*mLMeveTaskRepository, list, true);
-                setUtcCacheTimer(id, Evernus::TimerType::LMeveTasks, QDateTime::currentDateTimeUtc().addSecs(3600));
+                asyncBatchStore(*mLMeveTaskRepository, std::move(list), true, [=] {
+                    setUtcCacheTimer(id, Evernus::TimerType::LMeveTasks, QDateTime::currentDateTimeUtc().addSecs(3600));
 
-                emit lMeveTasksChanged();
+                    emit lMeveTasksChanged();
+                    emit taskEnded(task, {});
+                });
             }
-
-            emit taskEnded(task, error);
+            else
+            {
+                emit taskEnded(task, error);
+            }
         });
     }
 
@@ -2055,7 +2111,7 @@ namespace Evernus
             if (!toFulfill.empty())
                 orderRepo.fulfill(toFulfill);
 
-            asyncBatchStore(orderRepo, orders, true);
+            auto future = asyncBatchStore(orderRepo, orders, true);
 
             if (!corp)
             {
@@ -2152,6 +2208,8 @@ namespace Evernus
                     throw;
                 }
             }
+
+            future.waitForFinished();
 
             if (autoSetCosts)
             {
@@ -2284,7 +2342,7 @@ namespace Evernus
         }
     }
 
-    void EvernusApplication::updateCharacterWalletJournal(Character::IdType id, const WalletJournal &data)
+    void EvernusApplication::updateCharacterWalletJournal(Character::IdType id, WalletJournal data, uint task)
     {
         QSettings settings;
         if (settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsDefault).toBool())
@@ -2315,37 +2373,40 @@ namespace Evernus
                 }
             }
 
-            asyncBatchStore(*mWalletSnapshotRepository, snapshots, false);
+            asyncBatchStore(*mWalletSnapshotRepository, std::move(snapshots), false);
         }
 
-        asyncBatchStore(*mWalletJournalEntryRepository, data, true);
+        asyncBatchStore(*mWalletJournalEntryRepository, std::move(data), true, [=] {
+            saveUpdateTimer(TimerType::WalletJournal, mUpdateTimes[TimerType::WalletJournal], id);
 
-        saveUpdateTimer(TimerType::WalletJournal, mUpdateTimes[TimerType::WalletJournal], id);
-
-        emit characterWalletJournalChanged();
+            emit characterWalletJournalChanged();
+            emit taskEnded(task, {});
+        });
     }
 
-    void EvernusApplication::updateCharacterWalletTransactions(Character::IdType id, const WalletTransactions &data)
+    void EvernusApplication::updateCharacterWalletTransactions(Character::IdType id, WalletTransactions data, uint task)
     {
-        asyncBatchStore(*mWalletTransactionRepository, data, true);
-        saveUpdateTimer(TimerType::WalletTransactions, mUpdateTimes[TimerType::WalletTransactions], id);
+        asyncBatchStore(*mWalletTransactionRepository, std::move(data), true, [=] {
+            saveUpdateTimer(TimerType::WalletTransactions, mUpdateTimes[TimerType::WalletTransactions], id);
 
-        QSettings settings;
-        if (settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool() &&
-            !mPendingAutoCostOrders.empty())
-        {
-            computeAutoCosts(id,
-                             mCharacterOrderProvider->getBuyOrders(id),
-                             std::bind(&WalletTransactionRepository::fetchForCharacterInRange,
-                                       mWalletTransactionRepository.get(),
-                                       id,
-                                       std::placeholders::_1,
-                                       std::placeholders::_2,
-                                       WalletTransactionRepository::EntryType::Buy,
-                                       std::placeholders::_3));
-        }
+            QSettings settings;
+            if (settings.value(PriceSettings::autoAddCustomItemCostKey, PriceSettings::autoAddCustomItemCostDefault).toBool() &&
+                !mPendingAutoCostOrders.empty())
+            {
+                computeAutoCosts(id,
+                                 mCharacterOrderProvider->getBuyOrders(id),
+                                 std::bind(&WalletTransactionRepository::fetchForCharacterInRange,
+                                           mWalletTransactionRepository.get(),
+                                           id,
+                                           std::placeholders::_1,
+                                           std::placeholders::_2,
+                                           WalletTransactionRepository::EntryType::Buy,
+                                           std::placeholders::_3));
+            }
 
-        emit characterWalletTransactionsChanged();
+            emit characterWalletTransactionsChanged();
+            emit taskEnded(task, {});
+        });
     }
 
     double EvernusApplication::getTotalAssetListValue(const AssetList &list) const
@@ -2506,9 +2567,6 @@ namespace Evernus
                                                      const ContractItemRepository &itemRepo,
                                                      uint task)
     {
-        static std::size_t pendingContractItemRequests = 0;
-        static std::vector<ContractItem> contractItems;
-
         if (data.empty())
         {
             emit (this->*Signal)();
@@ -2521,7 +2579,7 @@ namespace Evernus
                 if (contract.getType() == Contract::Type::Courier)
                     continue;
 
-                ++pendingContractItemRequests;
+                ++mPendingContractItemRequests;
 
                 Q_ASSERT(mESIManager);
 
@@ -2529,29 +2587,31 @@ namespace Evernus
                 mESIManager->fetchCharacterContractItems(id, contract.getId(), [=, &itemRepo](auto &&data, const auto &error, const auto &expires) {
                     Q_UNUSED(expires);
 
-                    --pendingContractItemRequests;
+                    --mPendingContractItemRequests;
 
                     if (error.isEmpty())
                     {
-                        contractItems.reserve(contractItems.size() + data.size());
-                        contractItems.insert(std::end(contractItems),
-                                             std::make_move_iterator(std::begin(data)),
-                                             std::make_move_iterator(std::end(data)));
+                        mPendingContractItems.reserve(mPendingContractItems.size() + data.size());
+                        mPendingContractItems.insert(std::end(mPendingContractItems),
+                                                     std::make_move_iterator(std::begin(data)),
+                                                     std::make_move_iterator(std::end(data)));
                     }
 
-                    if (pendingContractItemRequests == 0)
+                    if (mPendingContractItemRequests == 0)
                     {
-                        asyncBatchStore(itemRepo, contractItems, true);
-                        contractItems.clear();
-
-                        emit (this->*Signal)();
+                        asyncBatchStore(itemRepo, std::move(mPendingContractItems), true, [=] {
+                            emit (this->*Signal)();
+                            emit taskEnded(subTask, {});
+                        });
                     }
-
-                    emit taskEnded(subTask, error);
+                    else
+                    {
+                        emit taskEnded(subTask, error);
+                    }
                 });
             }
 
-            if (pendingContractItemRequests == 0)
+            if (mPendingContractItemRequests == 0)
             {
                 emit(this->*Signal)();
                 emit taskEnded(task, QString{});
@@ -2560,22 +2620,25 @@ namespace Evernus
     }
 
     template<class T, class Data>
-    void EvernusApplication::asyncBatchStore(const T &repo, const Data &data, bool hasId)
+    QFuture<void> EvernusApplication::asyncBatchStore(const T &repo, Data data, bool hasId)
     {
-        asyncExecute(std::bind(&T::template batchStore<Data>, &repo, std::cref(data), hasId, true));
+        return asyncExecute(std::bind(&T::template batchStore<Data>, &repo, std::move(data), hasId, true));
     }
 
-    template<class Func, class... Args>
-    void EvernusApplication::asyncExecute(Func &&func, Args && ...args)
+    template<class T, class Data, class Callback>
+    void EvernusApplication::asyncBatchStore(const T &repo, Data data, bool hasId, Callback callback)
+    {
+        auto watcher = new QFutureWatcher<void>{this};
+        connect(watcher, &QFutureWatcher<void>::finished, this, callback);
+
+        watcher->setFuture(asyncBatchStore(repo, std::move(data), hasId));
+    }
+
+    template<class Func>
+    QFuture<void> EvernusApplication::asyncExecute(Func func)
     {
         qDebug() << "Starting async task...";
-
-        auto future = std::async(std::launch::async, std::forward<Func>(func), std::forward<Args>(args)...);
-        while (future.wait_for(std::chrono::seconds{0}) != std::future_status::ready)
-            processEvents(QEventLoop::ExcludeUserInputEvents);
-
-        future.get();
-        qDebug() << "Done.";
+        return QtConcurrent::run(func);
     }
 
     void EvernusApplication::fetchStationTypeIds()

@@ -22,6 +22,7 @@
 
 #include <QApplication>
 #include <QTranslator>
+#include <QFuture>
 
 #include "CharacterCorporationCombinedMarketOrderProvider.h"
 #include "CorpMarketOrderValueSnapshotRepository.h"
@@ -107,7 +108,7 @@ namespace Evernus
                            QString clientSecret,
                            const QString &forcedVersion,
                            bool dontUpdate);
-        virtual ~EvernusApplication() = default;
+        virtual ~EvernusApplication();
 
         virtual void registerImporter(const std::string &name, std::unique_ptr<ExternalOrderImporter> &&importer) override;
 
@@ -362,6 +363,9 @@ namespace Evernus
 
         std::unordered_set<EveType::IdType> mStationGroupTypeIds;
 
+        std::size_t mPendingContractItemRequests = 0;
+        std::vector<ContractItem> mPendingContractItems;
+
         void updateTranslator(const QString &lang);
 
         void createDb();
@@ -383,8 +387,8 @@ namespace Evernus
 
         void updateCharacterAssets(Character::IdType id, AssetList &list);
         void updateCharacter(Character &character);
-        void updateCharacterWalletJournal(Character::IdType id, const WalletJournal &data);
-        void updateCharacterWalletTransactions(Character::IdType id, const WalletTransactions &data);
+        void updateCharacterWalletJournal(Character::IdType id, WalletJournal data, uint task);
+        void updateCharacterWalletTransactions(Character::IdType id, WalletTransactions data, uint task);
 
         double getTotalAssetListValue(const AssetList &list) const;
         double getTotalItemSellValue(const Item &item, quint64 locationId) const;
@@ -412,10 +416,12 @@ namespace Evernus
                                      uint task);
 
         template<class T, class Data>
-        void asyncBatchStore(const T &repo, const Data &data, bool hasId);
+        QFuture<void> asyncBatchStore(const T &repo, Data data, bool hasId);
+        template<class T, class Data, class Callback>
+        void asyncBatchStore(const T &repo, Data data, bool hasId, Callback callback);
 
-        template<class Func, class... Args>
-        void asyncExecute(Func &&func, Args && ...args);
+        template<class Func>
+        QFuture<void> asyncExecute(Func func);
 
         void fetchStationTypeIds();
 
