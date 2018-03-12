@@ -137,26 +137,30 @@ namespace Evernus
 
     QModelIndex StationModel::index(int row, int column, const QModelIndex &parent) const
     {
-        if (column != 0)
+        if (column != 0 || row < 0)
             return {};
 
         if (!parent.isValid())
         {
             // https://bugreports.qt-project.org/browse/QTBUG-40624
-            if (mRegions.empty())
-                return QModelIndex{};
+            if (mRegions.empty() || row >= mRegions.size())
+                return {};
 
             return createIndex(row, column, &mRegions[row]);
         }
 
         const auto node = static_cast<const LocationNode *>(parent.internalPointer());
+        const auto safeIndex = [=](auto &collection) {
+            return (row < collection[node->mId].size()) ? (createIndex(row, column, &collection[node->mId][row])) : (QModelIndex{});
+        };
+
         switch (node->mType) {
         case LocationNode::Type::Region:
-            return createIndex(row, column, &mConstellations[node->mId][row]);
+            return safeIndex(mConstellations);
         case LocationNode::Type::Constellation:
-            return createIndex(row, column, &mSolarSystems[node->mId][row]);
+            return safeIndex(mSolarSystems);
         case LocationNode::Type::SolarSystem:
-            return createIndex(row, column, &mStations[node->mId][row]);
+            return safeIndex(mStations);
         default:
             return {};
         }
