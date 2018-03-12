@@ -795,7 +795,11 @@ namespace Evernus
                 }
                 else
                 {
-                    const auto error = getError(reply.readAll());
+                    const auto data = reply.readAll();
+                    if (mLogReplies)
+                        qDebug() << url << data;
+
+                    const auto error = getError(data);
                     if (!error.mMessage.isEmpty())
                         errorCallback(error);
                 }
@@ -841,6 +845,9 @@ namespace Evernus
                 else
                 {
                     const auto resultText = reply->readAll();
+                    if (mLogReplies)
+                        qDebug() << url << resultText;
+
                     const auto error = getError(resultText);
                     if (!error.mMessage.isEmpty())
                         errorCallback(error);

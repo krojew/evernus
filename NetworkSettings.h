@@ -29,6 +29,7 @@ namespace Evernus
         const auto ignoreSslErrorsDefault = false;
         const auto maxRetriesDefault = 3u;
         const auto maxESIThreadsDefault = std::max(8u, std::thread::hardware_concurrency());
+        const auto logESIRepliesDefault = false;
 
         const auto cryptKey = Q_UINT64_C(0x468c4a0e33a6fe01);
 

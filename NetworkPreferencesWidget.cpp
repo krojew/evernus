@@ -118,6 +118,11 @@ namespace Evernus
         mIgnoreSslErrors->setChecked(
             settings.value(NetworkSettings::ignoreSslErrorsKey, NetworkSettings::ignoreSslErrorsDefault).toBool());
 
+        mLogESIReplies = new QCheckBox{tr("Log ESI replies"), this};
+        miscGroupLayout->addRow(mLogESIReplies);
+        mLogESIReplies->setChecked(
+            settings.value(NetworkSettings::logESIRepliesKey, NetworkSettings::logESIRepliesDefault).toBool());
+
         const auto clearTokensBtn = new QPushButton{tr("Clear saved refresh tokens"), this};
         miscGroupLayout->addRow(clearTokensBtn);
         connect(clearTokensBtn, &QPushButton::clicked, this, &NetworkPreferencesWidget::clearRefreshTokens);
@@ -160,5 +165,6 @@ namespace Evernus
         settings.setValue(NetworkSettings::maxRetriesKey, mMaxRetriesEdit->value());
         settings.setValue(NetworkSettings::maxESIThreadsKey, mMaxESIThreadsEdit->value());
         settings.setValue(NetworkSettings::ignoreSslErrorsKey, mIgnoreSslErrors->isChecked());
+        settings.setValue(NetworkSettings::logESIRepliesKey, mLogESIReplies->isChecked());
     }
 }

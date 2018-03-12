@@ -54,6 +54,7 @@ namespace Evernus
         QSpinBox *mMaxReplyTimeEdit = nullptr;
         QSpinBox *mMaxRetriesEdit = nullptr;
         QCheckBox *mIgnoreSslErrors = nullptr;
+        QCheckBox *mLogESIReplies = nullptr;
         QSpinBox *mMaxESIThreadsEdit = nullptr;
     };
 }
