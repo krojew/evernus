@@ -40,7 +40,7 @@ namespace Evernus
 
     void ESIOAuth2CharacterAuthorizationCodeFlow::checkCharacter()
     {
-        const auto reply = get(ESIUrls::esiUrl + "/verify/");
+        const auto reply = get(ESIUrls::verifyUrl);
         connect(reply, &QNetworkReply::finished, this, [=] {
             reply->deleteLater();
 
