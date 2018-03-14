@@ -26,8 +26,6 @@ namespace Evernus
     {
         auto request = originalReq;
         request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
-        request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
-        request.setAttribute(QNetworkRequest::SpdyAllowedAttribute, true);
         request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
         if (!request.hasRawHeader(QByteArrayLiteral("Authorization")))
