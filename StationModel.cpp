@@ -143,7 +143,7 @@ namespace Evernus
         if (!parent.isValid())
         {
             // https://bugreports.qt-project.org/browse/QTBUG-40624
-            if (mRegions.empty() || row >= mRegions.size())
+            if (mRegions.empty() || row >= static_cast<int>(mRegions.size()))
                 return {};
 
             return createIndex(row, column, &mRegions[row]);
@@ -151,7 +151,7 @@ namespace Evernus
 
         const auto node = static_cast<const LocationNode *>(parent.internalPointer());
         const auto safeIndex = [=](auto &collection) {
-            return (row < collection[node->mId].size()) ? (createIndex(row, column, &collection[node->mId][row])) : (QModelIndex{});
+            return (row < static_cast<int>(collection[node->mId].size())) ? (createIndex(row, column, &collection[node->mId][row])) : (QModelIndex{});
         };
 
         switch (node->mType) {
