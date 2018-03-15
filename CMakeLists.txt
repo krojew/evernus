@@ -29,6 +29,7 @@ find_package(Qt5QuickWidgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5Widgets REQUIRED)
+find_package(Threads REQUIRED)
 
 if(EVERNUS_CREATE_DUMPS)
     find_package(Breakpad REQUIRED)
@@ -70,7 +71,7 @@ if(APPLE)
 elseif(UNIX)
     find_package(X11 REQUIRED)
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pthread -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
     set(ADDITIONAL_SRC qxtglobalshortcut_x11.cpp)
     set(ADDITIONAL_LIBS ${X11_LIBRARIES})
 elseif(WIN32)
@@ -855,6 +856,7 @@ target_link_libraries(
     Qt5::Sql
     Qt5::Xml
     Qt5::Widgets
+    Threads::Threads
     ${ADDITIONAL_LIBS}
 )
 
