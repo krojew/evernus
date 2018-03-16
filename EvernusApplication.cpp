@@ -733,6 +733,8 @@ namespace Evernus
                             this->handleIncomingContracts<&EvernusApplication::characterContractsChanged>(data,
                                                                                                           id,
                                                                                                           *mContractItemRepository,
+                                                                                                          mPendingCharacterContractItemRequests,
+                                                                                                          mPendingCharacterContractItems,
                                                                                                           task);
                         });
                     };
@@ -1002,6 +1004,8 @@ namespace Evernus
                         this->handleIncomingContracts<&EvernusApplication::corpContractsChanged>(data,
                                                                                                  id,
                                                                                                  *mCorpContractItemRepository,
+                                                                                                 mPendingCorpContractItemRequests,
+                                                                                                 mPendingCorpContractItems,
                                                                                                  task);
                     });
                 }
@@ -2565,6 +2569,8 @@ namespace Evernus
     void EvernusApplication::handleIncomingContracts(const Contracts &data,
                                                      Character::IdType id,
                                                      const ContractItemRepository &itemRepo,
+                                                     std::size_t &itemRequestCounter,
+                                                     std::vector<ContractItem> &itemContainer,
                                                      uint task)
     {
         if (data.empty())
@@ -2579,27 +2585,27 @@ namespace Evernus
                 if (contract.getType() == Contract::Type::Courier)
                     continue;
 
-                ++mPendingContractItemRequests;
+                ++itemRequestCounter;
 
                 Q_ASSERT(mESIManager);
 
                 const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                mESIManager->fetchCharacterContractItems(id, contract.getId(), [=, &itemRepo](auto &&data, const auto &error, const auto &expires) {
+                mESIManager->fetchCharacterContractItems(id, contract.getId(), [&, subTask](auto &&data, const auto &error, const auto &expires) {
                     Q_UNUSED(expires);
 
-                    --mPendingContractItemRequests;
+                    --itemRequestCounter;
 
                     if (error.isEmpty())
                     {
-                        mPendingContractItems.reserve(mPendingContractItems.size() + data.size());
-                        mPendingContractItems.insert(std::end(mPendingContractItems),
-                                                     std::make_move_iterator(std::begin(data)),
-                                                     std::make_move_iterator(std::end(data)));
+                        itemContainer.reserve(itemContainer.size() + data.size());
+                        itemContainer.insert(std::end(itemContainer),
+                                             std::make_move_iterator(std::begin(data)),
+                                             std::make_move_iterator(std::end(data)));
                     }
 
-                    if (mPendingContractItemRequests == 0)
+                    if (itemRequestCounter == 0)
                     {
-                        asyncBatchStore(itemRepo, std::move(mPendingContractItems), true, [=] {
+                        asyncBatchStore(itemRepo, std::move(itemContainer), true, [=] {
                             emit (this->*Signal)();
                             emit taskEnded(subTask, {});
                         });
@@ -2611,7 +2617,7 @@ namespace Evernus
                 });
             }
 
-            if (mPendingContractItemRequests == 0)
+            if (itemRequestCounter == 0)
             {
                 emit(this->*Signal)();
                 emit taskEnded(task, QString{});

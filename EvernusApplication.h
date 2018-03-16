@@ -363,8 +363,11 @@ namespace Evernus
 
         std::unordered_set<EveType::IdType> mStationGroupTypeIds;
 
-        std::size_t mPendingContractItemRequests = 0;
-        std::vector<ContractItem> mPendingContractItems;
+        std::size_t mPendingCharacterContractItemRequests = 0;
+        std::size_t mPendingCorpContractItemRequests = 0;
+
+        std::vector<ContractItem> mPendingCharacterContractItems;
+        std::vector<ContractItem> mPendingCorpContractItems;
 
         void updateTranslator(const QString &lang);
 
@@ -413,6 +416,8 @@ namespace Evernus
         void handleIncomingContracts(const Contracts &data,
                                      Character::IdType id,
                                      const ContractItemRepository &itemRepo,
+                                     std::size_t &itemRequestCounter,
+                                     std::vector<ContractItem> &itemContainer,
                                      uint task);
 
         template<class T, class Data>
