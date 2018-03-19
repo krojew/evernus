@@ -1373,7 +1373,7 @@ namespace Evernus
             emit externalOrdersChanged();
         });
 
-        watcher->setFuture(asyncExecute(std::bind(&CachingEveDataProvider::updateExternalOrders, mDataProvider.get(), std::cref(orders))));
+        watcher->setFuture(asyncExecute(std::bind(&CachingEveDataProvider::updateExternalOrders, mDataProvider.get(), orders)));
     }
 
     void EvernusApplication::handleNewPreferences()
