@@ -1404,7 +1404,7 @@ namespace Evernus
         if (path.isEmpty())
             return;
 
-        auto db = QSqlDatabase::addDatabase("QSQLITE", "mentat");
+        auto db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("mentat"));
         db.setDatabaseName(path + "/Storage/EVEMentat.dynamic.database");
         db.setConnectOptions("QSQLITE_OPEN_READONLY");
 
