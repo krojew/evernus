@@ -134,7 +134,7 @@ namespace Evernus
     void ESIOAuth::post(Character::IdType charId, QUrl url, const QVariant &data, NetworkReplyCallback callback, AuthErrorCallback errorCallback)
     {
         prepareUrl(url);
-        makeRequest(charId, url, std::move(callback), std::move(errorCallback), [=, data = std::move(data)] {
+        makeRequest(charId, url, std::move(callback), std::move(errorCallback), [=] {
             const auto &oauth = getOAuth(charId);
 
             // done manually because https://bugreports.qt.io/browse/QTBUG-65558
