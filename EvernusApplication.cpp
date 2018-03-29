@@ -2636,6 +2636,7 @@ namespace Evernus
     {
         auto watcher = new QFutureWatcher<void>{this};
         connect(watcher, &QFutureWatcher<void>::finished, this, callback);
+        connect(watcher, &QFutureWatcher<void>::finished, watcher, &QFutureWatcher<void>::deleteLater);
 
         watcher->setFuture(asyncBatchStore(repo, std::move(data), hasId));
     }
