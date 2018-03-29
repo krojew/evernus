@@ -730,12 +730,7 @@ namespace Evernus
                             setUtcCacheTimer(id, TimerType::Contracts, expires);
                             saveUpdateTimer(TimerType::Contracts, mUpdateTimes[TimerType::Contracts], id);
 
-                            this->handleIncomingContracts<&EvernusApplication::characterContractsChanged>(data,
-                                                                                                          id,
-                                                                                                          *mContractItemRepository,
-                                                                                                          mPendingCharacterContractItemRequests,
-                                                                                                          mPendingCharacterContractItems,
-                                                                                                          task);
+                            handleIncomingCharacterContracts(data, id, task);
                         });
                     };
 
@@ -1001,12 +996,7 @@ namespace Evernus
                         setUtcCacheTimer(id, TimerType::Contracts, expires);
                         saveUpdateTimer(TimerType::CorpContracts, mUpdateTimes[TimerType::CorpContracts], id);
 
-                        this->handleIncomingContracts<&EvernusApplication::corpContractsChanged>(data,
-                                                                                                 id,
-                                                                                                 *mCorpContractItemRepository,
-                                                                                                 mPendingCorpContractItemRequests,
-                                                                                                 mPendingCorpContractItems,
-                                                                                                 task);
+                        handleIncomingCorpContracts(data, id, corpId, task);
                     });
                 }
                 else
@@ -2565,18 +2555,14 @@ namespace Evernus
         mPendingImports.erase(std::make_pair(id, type));
     }
 
-    template<void (EvernusApplication::* Signal)()>
-    void EvernusApplication::handleIncomingContracts(const Contracts &data,
-                                                     Character::IdType id,
-                                                     const ContractItemRepository &itemRepo,
-                                                     std::size_t &itemRequestCounter,
-                                                     std::vector<ContractItem> &itemContainer,
-                                                     uint task)
+    void EvernusApplication::handleIncomingCharacterContracts(const Contracts &data,
+                                                              Character::IdType id,
+                                                              uint task)
     {
         if (data.empty())
         {
-            emit (this->*Signal)();
-            emit taskEnded(task, QString{});
+            emit characterContractsChanged();
+            emit taskEnded(task, {});
         }
         else
         {
@@ -2585,28 +2571,29 @@ namespace Evernus
                 if (contract.getType() == Contract::Type::Courier)
                     continue;
 
-                ++itemRequestCounter;
+                ++mPendingCharacterContractItemRequests;
 
                 Q_ASSERT(mESIManager);
+                Q_ASSERT(mContractItemRepository);
 
-                const auto subTask = startTask(task, tr("Fetching contract items for contract %1...").arg(contract.getId()));
-                mESIManager->fetchCharacterContractItems(id, contract.getId(), [&, subTask](auto &&data, const auto &error, const auto &expires) {
+                const auto subTask = startTask(task, tr("Fetching character contract items for contract %1...").arg(contract.getId()));
+                mESIManager->fetchCharacterContractItems(id, contract.getId(), [=](auto &&data, const auto &error, const auto &expires) {
                     Q_UNUSED(expires);
 
-                    --itemRequestCounter;
+                    --mPendingCharacterContractItemRequests;
 
                     if (error.isEmpty())
                     {
-                        itemContainer.reserve(itemContainer.size() + data.size());
-                        itemContainer.insert(std::end(itemContainer),
-                                             std::make_move_iterator(std::begin(data)),
-                                             std::make_move_iterator(std::end(data)));
+                        mPendingCharacterContractItems.reserve(mPendingCharacterContractItems.size() + data.size());
+                        mPendingCharacterContractItems.insert(std::end(mPendingCharacterContractItems),
+                                                              std::make_move_iterator(std::begin(data)),
+                                                              std::make_move_iterator(std::end(data)));
                     }
 
-                    if (itemRequestCounter == 0)
+                    if (mPendingCharacterContractItemRequests == 0)
                     {
-                        asyncBatchStore(itemRepo, std::move(itemContainer), true, [=] {
-                            emit (this->*Signal)();
+                        asyncBatchStore(*mContractItemRepository, std::move(mPendingCharacterContractItems), true, [=] {
+                            emit characterContractsChanged();
                             emit taskEnded(subTask, {});
                         });
                     }
@@ -2617,10 +2604,68 @@ namespace Evernus
                 });
             }
 
-            if (itemRequestCounter == 0)
+            if (mPendingCharacterContractItemRequests == 0)
             {
-                emit(this->*Signal)();
-                emit taskEnded(task, QString{});
+                emit characterContractsChanged();
+                emit taskEnded(task, {});
+            }
+        }
+    }
+
+    void EvernusApplication::handleIncomingCorpContracts(const Contracts &data,
+                                                         Character::IdType id,
+                                                         quint64 corpId,
+                                                         uint task)
+    {
+        if (data.empty())
+        {
+            emit corpContractsChanged();
+            emit taskEnded(task, {});
+        }
+        else
+        {
+            for (const auto &contract : data)
+            {
+                if (contract.getType() == Contract::Type::Courier)
+                    continue;
+
+                ++mPendingCorpContractItemRequests;
+
+                Q_ASSERT(mESIManager);
+                Q_ASSERT(mCorpContractItemRepository);
+
+                const auto subTask = startTask(task, tr("Fetching corporation contract items for contract %1...").arg(contract.getId()));
+                mESIManager->fetchCorporationContractItems(id, corpId, contract.getId(), [=](auto &&data, const auto &error, const auto &expires) {
+                    Q_UNUSED(expires);
+
+                    --mPendingCorpContractItemRequests;
+
+                    if (error.isEmpty())
+                    {
+                        mPendingCorpContractItems.reserve(mPendingCorpContractItems.size() + data.size());
+                        mPendingCorpContractItems.insert(std::end(mPendingCorpContractItems),
+                                                         std::make_move_iterator(std::begin(data)),
+                                                         std::make_move_iterator(std::end(data)));
+                    }
+
+                    if (mPendingCorpContractItemRequests == 0)
+                    {
+                        asyncBatchStore(*mCorpContractItemRepository, std::move(mPendingCorpContractItems), true, [=] {
+                            emit corpContractsChanged();
+                            emit taskEnded(subTask, {});
+                        });
+                    }
+                    else
+                    {
+                        emit taskEnded(subTask, error);
+                    }
+                });
+            }
+
+            if (mPendingCorpContractItemRequests == 0)
+            {
+                emit corpContractsChanged();
+                emit taskEnded(task, {});
             }
         }
     }

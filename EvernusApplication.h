@@ -412,13 +412,13 @@ namespace Evernus
         void markImport(Character::IdType id, TimerType type);
         void unmarkImport(Character::IdType id, TimerType type);
 
-        template<void (EvernusApplication::* Signal)()>
-        void handleIncomingContracts(const Contracts &data,
-                                     Character::IdType id,
-                                     const ContractItemRepository &itemRepo,
-                                     std::size_t &itemRequestCounter,
-                                     std::vector<ContractItem> &itemContainer,
-                                     uint task);
+        void handleIncomingCharacterContracts(const Contracts &data,
+                                              Character::IdType id,
+                                              uint task);
+        void handleIncomingCorpContracts(const Contracts &data,
+                                         Character::IdType id,
+                                         quint64 corpId,
+                                         uint task);
 
         template<class T, class Data>
         QFuture<void> asyncBatchStore(const T &repo, Data data, bool hasId);
