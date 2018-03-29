@@ -49,3 +49,4 @@ evernus_autogen.vcxproj.filters
 evernus_autogen/
 docker_build.sh
 .cache-bust
+ALL_BUILD.vcxproj.user

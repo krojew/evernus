@@ -25,7 +25,8 @@ namespace Evernus
     QNetworkReply *ESINetworkAccessManager::createRequest(Operation op, const QNetworkRequest &originalReq, QIODevice *outgoingData)
     {
         auto request = originalReq;
-        request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+//        request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+        request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
         request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
         if (!request.hasRawHeader(QByteArrayLiteral("Authorization")))
