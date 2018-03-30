@@ -722,18 +722,6 @@ namespace Evernus
 
                 if (error.isEmpty())
                 {
-                    const auto storeContracts = [=, &data] {
-                        asyncBatchStore(*mContractRepository, data, true, [=] {
-                            mCharacterContractProvider->clearForCharacter(id);
-                            mCorpContractProvider->clearForCharacter(id);
-
-                            setUtcCacheTimer(id, TimerType::Contracts, expires);
-                            saveUpdateTimer(TimerType::Contracts, mUpdateTimes[TimerType::Contracts], id);
-
-                            handleIncomingCharacterContracts(data, id, task);
-                        });
-                    };
-
                     const auto it = std::remove_if(std::begin(data), std::end(data), [](const Contract &contract) {
                         return contract.isForCorp();
                     });
@@ -752,14 +740,18 @@ namespace Evernus
                             mCorpContractProvider->clearForCorporation(issuerCorpId);
                             mCharacterContractProvider->clearForCorporation(assigneeCorpId);
                             mCorpContractProvider->clearForCorporation(assigneeCorpId);
-
-                            storeContracts();
                         });
                     }
-                    else
-                    {
-                        storeContracts();
-                    }
+
+                    asyncBatchStore(*mContractRepository, std::move(data), true, [=] {
+                        mCharacterContractProvider->clearForCharacter(id);
+                        mCorpContractProvider->clearForCharacter(id);
+
+                        setUtcCacheTimer(id, TimerType::Contracts, expires);
+                        saveUpdateTimer(TimerType::Contracts, mUpdateTimes[TimerType::Contracts], id);
+
+                        handleIncomingCharacterContracts(data, id, task);
+                    });
                 }
                 else
                 {
