@@ -740,7 +740,9 @@ namespace Evernus
 
                     if (it != std::end(data))
                     {
-                        Contracts corpContracts(it, std::end(data));
+                        Contracts corpContracts(std::make_move_iterator(it), std::make_move_iterator(std::end(data)));
+
+                        data.erase(it, std::end(data));
 
                         const auto issuerCorpId = corpContracts.front().getIssuerCorpId();
                         const auto assigneeCorpId = corpContracts.front().getAssigneeId();
