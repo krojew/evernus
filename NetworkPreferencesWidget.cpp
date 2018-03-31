@@ -123,6 +123,11 @@ namespace Evernus
         mLogESIReplies->setChecked(
             settings.value(NetworkSettings::logESIRepliesKey, NetworkSettings::logESIRepliesDefault).toBool());
 
+        mUseHTTP2 = new QCheckBox{tr("Use HTTP/2"), this};
+        miscGroupLayout->addRow(mUseHTTP2);
+        mUseHTTP2->setChecked(
+            settings.value(NetworkSettings::useHTTP2Key, NetworkSettings::useHTTP2Default).toBool());
+
         const auto clearTokensBtn = new QPushButton{tr("Clear saved refresh tokens"), this};
         miscGroupLayout->addRow(clearTokensBtn);
         connect(clearTokensBtn, &QPushButton::clicked, this, &NetworkPreferencesWidget::clearRefreshTokens);
@@ -166,5 +171,6 @@ namespace Evernus
         settings.setValue(NetworkSettings::maxESIThreadsKey, mMaxESIThreadsEdit->value());
         settings.setValue(NetworkSettings::ignoreSslErrorsKey, mIgnoreSslErrors->isChecked());
         settings.setValue(NetworkSettings::logESIRepliesKey, mLogESIReplies->isChecked());
+        settings.setValue(NetworkSettings::useHTTP2Key, mUseHTTP2->isChecked());
     }
 }

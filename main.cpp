@@ -47,6 +47,7 @@
 #include "EvernusApplication.h"
 #include "CommandLineOptions.h"
 #include "UpdaterSettings.h"
+#include "NetworkSettings.h"
 #include "ImportSettings.h"
 #include "BezierCurve.h"
 #include "MainWindow.h"
@@ -479,6 +480,22 @@ int main(int argc, char *argv[])
                 );
 
                 settings.setValue(Evernus::ImportSettings::citadelAccessCacheWarningKey, false);
+            }
+
+            if (!settings.contains(Evernus::NetworkSettings::useHTTP2Key))
+            {
+                const auto ret = QMessageBox::question(
+                    &mainWnd,
+                    QCoreApplication::translate("main", "HTTP/2 support"),
+                    QCoreApplication::translate(
+                        "main",
+                        "Would you like to use experimental HTTP/2 support? Enabling HTTP/2 improves import speed about 10x, but might cause errors sometimes."
+                    ),
+                    QMessageBox::Yes | QMessageBox::No,
+                    QMessageBox::Yes
+                );
+
+                settings.setValue(Evernus::NetworkSettings::useHTTP2Key, ret == QMessageBox::Yes);
             }
 
             if (!app.getCharacterRepository().hasCharacters())

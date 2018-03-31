@@ -12,6 +12,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QSettings>
+
+#include "NetworkSettings.h"
+
 #include "ESINetworkAccessManager.h"
 
 namespace Evernus
@@ -24,9 +28,11 @@ namespace Evernus
 
     QNetworkReply *ESINetworkAccessManager::createRequest(Operation op, const QNetworkRequest &originalReq, QIODevice *outgoingData)
     {
+        QSettings settings;
+
         auto request = originalReq;
-//        request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
         request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
+        request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, settings.value(NetworkSettings::useHTTP2Key, NetworkSettings::useHTTP2Default));
         request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
         if (!request.hasRawHeader(QByteArrayLiteral("Authorization")))

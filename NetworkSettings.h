@@ -30,6 +30,7 @@ namespace Evernus
         const auto maxRetriesDefault = 3u;
         const auto maxESIThreadsDefault = std::max(8u, std::thread::hardware_concurrency());
         const auto logESIRepliesDefault = false;
+        const auto useHTTP2Default = true;
 
         const auto cryptKey = Q_UINT64_C(0x468c4a0e33a6fe01);
 
@@ -44,5 +45,6 @@ namespace Evernus
         const auto maxRetriesKey = QStringLiteral("network/maxRetries");
         const auto maxESIThreadsKey = QStringLiteral("network/maxESIThreads");
         const auto logESIRepliesKey = QStringLiteral("network/logESIReplies");
+        const auto useHTTP2Key = QStringLiteral("network/useHTTP2");
     }
 }
