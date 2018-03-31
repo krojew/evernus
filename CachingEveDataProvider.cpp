@@ -1086,6 +1086,8 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
 
     uint CachingEveDataProvider::getSolarSystemRegionId(uint systemId) const
     {
+        std::lock_guard<std::mutex> lock{mSolarSystemRegionCacheMutex};
+
         const auto it = mSolarSystemRegionCache.find(systemId);
         if (it != std::end(mSolarSystemRegionCache))
             return it->second;

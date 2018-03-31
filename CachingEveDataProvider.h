@@ -192,6 +192,7 @@ namespace Evernus
         mutable std::mutex mLocationSolarSystemCacheMutex;
         mutable std::mutex mTypeCacheMutex;
         mutable std::mutex mExternalOrderCacheMutex;
+        mutable std::mutex mSolarSystemRegionCacheMutex;
         mutable std::recursive_mutex mGenericNameCacheMutex;
 
         mutable std::unordered_map<uint, double> mSecurityStatuses;
