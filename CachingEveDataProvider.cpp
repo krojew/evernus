@@ -254,7 +254,7 @@ namespace Evernus
 
     std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeBuyPrice(EveType::IdType id, quint64 stationId, int range) const
     {
-        std::lock_guard<std::mutex> lock{mExternalOrderCacheMutex};
+        std::lock_guard<std::recursive_mutex> lock{mExternalOrderCacheMutex};
 
         const auto key = std::make_pair(id, stationId);
         const auto it = mBuyPrices.find(key);
@@ -944,7 +944,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
 
     void CachingEveDataProvider::clearExternalOrderCaches()
     {
-        std::lock_guard<std::mutex> lock{mExternalOrderCacheMutex};
+        std::lock_guard<std::recursive_mutex> lock{mExternalOrderCacheMutex};
 
         mStationSellPrices.clear();
         mBuyPrices.clear();
@@ -973,7 +973,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
 
     std::shared_ptr<ExternalOrder> CachingEveDataProvider::getTypeSellPrice(EveType::IdType id, quint64 stationId, bool dontThrow) const
     {
-        std::lock_guard<std::mutex> lock{mExternalOrderCacheMutex};
+        std::lock_guard<std::recursive_mutex> lock{mExternalOrderCacheMutex};
 
         const auto key = std::make_pair(id, stationId);
         const auto it = mStationSellPrices.find(key);
@@ -1107,7 +1107,7 @@ SELECT m.typeID, m.materialTypeID, m.quantity, t.portionSize, t.groupID FROM inv
 
     const ExternalOrderRepository::EntityList &CachingEveDataProvider::getExternalOrders(EveType::IdType typeId, uint regionId) const
     {
-        std::lock_guard<std::mutex> lock{mExternalOrderCacheMutex};
+        std::lock_guard<std::recursive_mutex> lock{mExternalOrderCacheMutex};
 
         const auto key = std::make_pair(typeId, regionId);
         const auto it = mTypeRegionOrderCache.find(key);
