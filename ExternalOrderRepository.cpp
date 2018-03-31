@@ -299,7 +299,7 @@ namespace Evernus
         try
         {
             const auto baseQuery = QStringLiteral("DELETE FROM %1 WHERE %2").arg(getTableName());
-            const QString baseWhere{"(type_id = ? AND region_id = ?)"};
+            const auto baseWhere = QStringLiteral("(type_id = ? AND region_id = ?)");
 
             const auto batchSize = 300;
             const auto batches = set.size() / batchSize;

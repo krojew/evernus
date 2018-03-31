@@ -117,6 +117,7 @@ namespace Evernus
             1u
         );
 
+        // TODO: bring back actual threads, since everything now uses NAM form ESIOAuth
         for (auto i = 0u; i < maxInterfaces; ++i)
             mInterfaces.emplace_back(new ESIInterface{mCitadelAccessCache, mErrorLimiter, mOAuth});
     }
