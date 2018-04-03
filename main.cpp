@@ -489,7 +489,8 @@ int main(int argc, char *argv[])
                     QCoreApplication::translate("main", "HTTP/2 support"),
                     QCoreApplication::translate(
                         "main",
-                        "Would you like to use experimental HTTP/2 support? Enabling HTTP/2 improves import speed about 10x, but might cause errors sometimes."
+                        "Would you like to use experimental HTTP/2 support? Enabling HTTP/2 improves import speed about 10x, but might cause errors sometimes.\n\n"
+                        "You can change it later in the Network Preferences."
                     ),
                     QMessageBox::Yes | QMessageBox::No,
                     QMessageBox::Yes
