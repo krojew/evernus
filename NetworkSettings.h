@@ -15,7 +15,6 @@
 #pragma once
 
 #include <algorithm>
-#include <thread>
 
 #include <QString>
 
@@ -28,7 +27,6 @@ namespace Evernus
         const auto maxReplyTimeDefault = 1800u;
         const auto ignoreSslErrorsDefault = false;
         const auto maxRetriesDefault = 3u;
-        const auto maxESIThreadsDefault = std::max(8u, std::thread::hardware_concurrency());
         const auto logESIRepliesDefault = false;
         const auto useHTTP2Default = true;
 
@@ -43,7 +41,6 @@ namespace Evernus
         const auto maxReplyTimeKey = QStringLiteral("network/maxReplyTime");
         const auto ignoreSslErrorsKey = QStringLiteral("network/security/ignoreSslErrors");
         const auto maxRetriesKey = QStringLiteral("network/maxRetries");
-        const auto maxESIThreadsKey = QStringLiteral("network/maxESIThreads");
         const auto logESIRepliesKey = QStringLiteral("network/logESIReplies");
         const auto useHTTP2Key = QStringLiteral("network/useHTTP2");
     }

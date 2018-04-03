@@ -18,9 +18,7 @@
 #include <QFile>
 #include <QDir>
 
-#include "NetworkSettings.h"
 #include "ImportSettings.h"
-#include "ESIInterface.h"
 
 #include "ESIInterfaceManager.h"
 
@@ -35,11 +33,11 @@ namespace Evernus
         , mClientId{clientId}
         , mClientSecret{clientSecret}
         , mOAuth{std::move(clientId), std::move(clientSecret), characterRepo, dataProvider}
+        , mInterface{mCitadelAccessCache, mErrorLimiter, mOAuth}
     {
         connect(&mOAuth, &ESIOAuth::ssoAuthRequested, this, &ESIInterfaceManager::ssoAuthRequested);
 
         readCitadelAccessCache();
-        createInterfaces();
     }
 
     ESIInterfaceManager::~ESIInterfaceManager()
@@ -51,12 +49,6 @@ namespace Evernus
         catch (...)
         {
         }
-    }
-
-    void ESIInterfaceManager::handleNewPreferences()
-    {
-        mInterfaces.clear();
-        createInterfaces();
     }
 
     void ESIInterfaceManager::clearRefreshTokens()
@@ -79,12 +71,9 @@ namespace Evernus
         mOAuth.setTokens(id, accessToken, refreshToken);
     }
 
-    const ESIInterface &ESIInterfaceManager::selectNextInterface()
+    const ESIInterface &ESIInterfaceManager::getInterface() const
     {
-        const auto &interface = *mInterfaces[mCurrentInterface];
-        mCurrentInterface = (mCurrentInterface + 1) % mInterfaces.size();
-
-        return interface;
+        return mInterface;
     }
 
     const CitadelAccessCache &ESIInterfaceManager::getCitadelAccessCache() const noexcept
@@ -105,21 +94,6 @@ namespace Evernus
     QString ESIInterfaceManager::getClientSecret() const
     {
         return mClientSecret;
-    }
-
-    void ESIInterfaceManager::createInterfaces()
-    {
-        QSettings settings;
-
-        // IO bound
-        const auto maxInterfaces = std::max(
-            settings.value(NetworkSettings::maxESIThreadsKey, NetworkSettings::maxESIThreadsDefault).toUInt(),
-            1u
-        );
-
-        // TODO: bring back actual threads, since everything now uses NAM form ESIOAuth
-        for (auto i = 0u; i < maxInterfaces; ++i)
-            mInterfaces.emplace_back(new ESIInterface{mCitadelAccessCache, mErrorLimiter, mOAuth});
     }
 
     void ESIInterfaceManager::readCitadelAccessCache()

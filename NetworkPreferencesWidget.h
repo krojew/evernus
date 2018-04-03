@@ -56,6 +56,5 @@ namespace Evernus
         QCheckBox *mIgnoreSslErrors = nullptr;
         QCheckBox *mLogESIReplies = nullptr;
         QCheckBox *mUseHTTP2 = nullptr;
-        QSpinBox *mMaxESIThreadsEdit = nullptr;
     };
 }

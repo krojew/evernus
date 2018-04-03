@@ -107,12 +107,6 @@ namespace Evernus
         mMaxRetriesEdit->setValue(
             settings.value(NetworkSettings::maxRetriesKey, NetworkSettings::maxRetriesDefault).toUInt());
 
-        mMaxESIThreadsEdit = new QSpinBox{this};
-        miscGroupLayout->addRow(tr("Max. ESI network threads:"), mMaxESIThreadsEdit);
-        mMaxESIThreadsEdit->setMinimum(1);
-        mMaxESIThreadsEdit->setValue(
-            settings.value(NetworkSettings::maxESIThreadsKey, NetworkSettings::maxESIThreadsDefault).toUInt());
-
         mIgnoreSslErrors = new QCheckBox{tr("Ignore certificate errors"), this};
         miscGroupLayout->addRow(mIgnoreSslErrors);
         mIgnoreSslErrors->setChecked(
@@ -168,7 +162,6 @@ namespace Evernus
 
         settings.setValue(NetworkSettings::maxReplyTimeKey, mMaxReplyTimeEdit->value());
         settings.setValue(NetworkSettings::maxRetriesKey, mMaxRetriesEdit->value());
-        settings.setValue(NetworkSettings::maxESIThreadsKey, mMaxESIThreadsEdit->value());
         settings.setValue(NetworkSettings::ignoreSslErrorsKey, mIgnoreSslErrors->isChecked());
         settings.setValue(NetworkSettings::logESIRepliesKey, mLogESIReplies->isChecked());
         settings.setValue(NetworkSettings::useHTTP2Key, mUseHTTP2->isChecked());

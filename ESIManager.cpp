@@ -70,7 +70,7 @@ namespace Evernus
         Q_ASSERT(thread() == QThread::currentThread());
 
         qDebug() << "Started market order import at" << QDateTime::currentDateTime();
-        selectNextInterface().fetchMarketOrders(regionId, typeId, getMarketOrderCallback(regionId, callback));
+        getInterface().fetchMarketOrders(regionId, typeId, getMarketOrderCallback(regionId, callback));
     }
 
     void ESIManager::fetchMarketHistory(uint regionId,
@@ -82,9 +82,9 @@ namespace Evernus
         qDebug() << "Started history import at" << QDateTime::currentDateTime();
 
 #if EVERNUS_CLANG_LAMBDA_CAPTURE_BUG
-        selectNextInterface().fetchMarketHistory(regionId, typeId, [=, callback = callback](auto &&data, const auto &error, const auto &expires) {
+        getInterface().fetchMarketHistory(regionId, typeId, [=, callback = callback](auto &&data, const auto &error, const auto &expires) {
 #else
-        selectNextInterface().fetchMarketHistory(regionId, typeId, [=](auto &&data, const auto &error, const auto &expires) {
+        getInterface().fetchMarketHistory(regionId, typeId, [=](auto &&data, const auto &error, const auto &expires) {
 #endif
             if (Q_UNLIKELY(!error.isEmpty()))
             {
@@ -119,7 +119,7 @@ namespace Evernus
         Q_ASSERT(thread() == QThread::currentThread());
 
         qDebug() << "Started market order import at" << QDateTime::currentDateTime();
-        selectNextInterface().fetchMarketOrders(regionId, getMarketOrderCallback(regionId, callback));
+        getInterface().fetchMarketOrders(regionId, getMarketOrderCallback(regionId, callback));
     }
 
     void ESIManager::fetchCitadelMarketOrders(quint64 citadelId, uint regionId, Character::IdType charId, const MarketOrderCallback &callback) const
@@ -141,32 +141,32 @@ namespace Evernus
         }
 
         qDebug() << "Started citadel market order import at" << QDateTime::currentDateTime();
-        selectNextInterface().fetchCitadelMarketOrders(citadelId, charId, getMarketOrderCallback(regionId, callback));
+        getInterface().fetchCitadelMarketOrders(citadelId, charId, getMarketOrderCallback(regionId, callback));
     }
 
     void ESIManager::fetchCharacterAssets(Character::IdType charId, const AssetCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterAssets(charId, getAssetListCallback(charId, callback));
+        getInterface().fetchCharacterAssets(charId, getAssetListCallback(charId, callback));
     }
 
     void ESIManager::fetchCorporationAssets(Character::IdType charId, quint64 corpId, const AssetCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCorporationAssets(charId, corpId, getAssetListCallback(charId, callback));
+        getInterface().fetchCorporationAssets(charId, corpId, getAssetListCallback(charId, callback));
     }
 
     void ESIManager::fetchCharacter(Character::IdType charId, const Callback<Character> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacter(charId, [=](auto &&publicData, const auto &error, const auto &expires) {
+        getInterface().fetchCharacter(charId, [=](auto &&publicData, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
                 return;
             }
 
-            selectNextInterface().fetchCharacterSkills(
+            getInterface().fetchCharacterSkills(
                 charId, [=, publicData = std::move(publicData)](auto &&skillData, const auto &error, const auto &expires) {
                     if (Q_UNLIKELY(!error.isEmpty()))
                     {
@@ -176,7 +176,7 @@ namespace Evernus
 
                     const auto publicDataObj = publicData.object();
 
-                    selectNextInterface().fetchCorporation(
+                    getInterface().fetchCorporation(
                         publicDataObj.value(QStringLiteral("corporation_id")).toDouble(),
                         [=, publicDataObj = std::move(publicDataObj), skillData = std::move(skillData)](auto &&corpData, const auto &error, const auto &expires) {
                             if (Q_UNLIKELY(!error.isEmpty()))
@@ -185,7 +185,7 @@ namespace Evernus
                                 return;
                             }
 
-                            selectNextInterface().fetchCharacterWallet(
+                            getInterface().fetchCharacterWallet(
                                 charId,
                                 [=, corpData = std::move(corpData), publicDataObj = std::move(publicDataObj), skillData = std::move(skillData)](auto &&walletData, const auto &error, const auto &expires) {
                                     if (Q_UNLIKELY(!error.isEmpty()))
@@ -398,7 +398,7 @@ namespace Evernus
     void ESIManager::fetchRaces(const Callback<NameMap> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchRaces([=](auto &&data, const auto &error, const auto &expires) {
+        getInterface().fetchRaces([=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
@@ -426,7 +426,7 @@ namespace Evernus
     void ESIManager::fetchBloodlines(const Callback<NameMap> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchBloodlines([=](auto &&data, const auto &error, const auto &expires) {
+        getInterface().fetchBloodlines([=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
@@ -454,7 +454,7 @@ namespace Evernus
     void ESIManager::fetchAncestries(const Callback<NameMap> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchAncestries([=](auto &&data, const auto &error, const auto &expires) {
+        getInterface().fetchAncestries([=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
@@ -482,13 +482,13 @@ namespace Evernus
     void ESIManager::fetchCharacterMarketOrders(Character::IdType charId, const MarketOrdersCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterMarketOrders(charId, getMarketOrdersCallback(charId, callback));
+        getInterface().fetchCharacterMarketOrders(charId, getMarketOrdersCallback(charId, callback));
     }
 
     void ESIManager::fetchCorporationMarketOrders(Character::IdType charId, quint64 corpId, const MarketOrdersCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCorporationMarketOrders(charId, corpId, getMarketOrdersCallback(charId, callback));
+        getInterface().fetchCorporationMarketOrders(charId, corpId, getMarketOrdersCallback(charId, callback));
     }
 
     void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
@@ -532,7 +532,7 @@ namespace Evernus
         Q_ASSERT(thread() == QThread::currentThread());
 
         auto ledgerResult = std::make_shared<MiningLedgerList>();
-        selectNextInterface().fetchCharacterMiningLedger(charId, [=, ledgerResult = std::move(ledgerResult)]
+        getInterface().fetchCharacterMiningLedger(charId, [=, ledgerResult = std::move(ledgerResult)]
                                                                  (auto &&data, auto atEnd, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
@@ -569,7 +569,7 @@ namespace Evernus
     void ESIManager::fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchGenericName(id, [=](auto &&data, const auto &error) {
+        getInterface().fetchGenericName(id, [=](auto &&data, const auto &error) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error);
@@ -626,44 +626,44 @@ namespace Evernus
 
         for (; current < ids.size() / maxPerRequest; ++current)
         {
-            selectNextInterface().fetchGenericNames(
+            getInterface().fetchGenericNames(
                 std::vector<quint64>(std::begin(ids) + current * maxPerRequest, std::min(std::end(ids), std::begin(ids) + (current + 1) * maxPerRequest)),
                 transformCallback
             );
         }
 
         if (current < ids.size())
-            selectNextInterface().fetchGenericNames(std::vector<quint64>(std::begin(ids) + current * maxPerRequest, std::end(ids)), transformCallback);
+            getInterface().fetchGenericNames(std::vector<quint64>(std::begin(ids) + current * maxPerRequest, std::end(ids)), transformCallback);
     }
 
     void ESIManager::fetchCharacterContracts(Character::IdType charId, const ContractCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterContracts(charId, getContractCallback(callback));
+        getInterface().fetchCharacterContracts(charId, getContractCallback(callback));
     }
 
     void ESIManager::fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const ContractItemCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterContractItems(charId, contractId, getContractItemCallback(contractId, callback));
+        getInterface().fetchCharacterContractItems(charId, contractId, getContractItemCallback(contractId, callback));
     }
 
     void ESIManager::fetchCorporationContracts(Character::IdType charId, quint64 corpId, const ContractCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCorporationContracts(charId, corpId, getContractCallback(callback));
+        getInterface().fetchCorporationContracts(charId, corpId, getContractCallback(callback));
     }
 
     void ESIManager::fetchCorporationContractItems(Character::IdType charId, quint64 corpId, Contract::IdType contractId, const ContractItemCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCorporationContractItems(charId, corpId, contractId, getContractItemCallback(contractId, callback));
+        getInterface().fetchCorporationContractItems(charId, corpId, contractId, getContractItemCallback(contractId, callback));
     }
 
     void ESIManager::fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterBlueprints(charId, [=](auto &&data, const auto &error, const auto &expires) {
+        getInterface().fetchCharacterBlueprints(charId, [=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
@@ -778,7 +778,7 @@ namespace Evernus
     void ESIManager::fetchMarketPrices(const Callback<MarketPrices> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchMarketPrices([=](auto &&data, const auto &error, const auto &expires) {
+        getInterface().fetchMarketPrices([=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
@@ -806,7 +806,7 @@ namespace Evernus
     void ESIManager::fetchIndustryCostIndices(const Callback<IndustryCostIndices> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchIndustryCostIndices([=](auto &&data, const auto &error, const auto &expires) {
+        getInterface().fetchIndustryCostIndices([=](auto &&data, const auto &error, const auto &expires) {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
@@ -865,7 +865,7 @@ namespace Evernus
     void ESIManager::fetchSovereigntyStructures(const Callback<SovereigntyStructureList> &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchSovereigntyStructures([=](auto &&data, const auto &error, const auto &expires) {
+        getInterface().fetchSovereigntyStructures([=](auto &&data, const auto &error, const auto &expires) {
             Q_UNUSED(expires);
 
             if (Q_UNLIKELY(!error.isEmpty()))
@@ -897,14 +897,14 @@ namespace Evernus
 
     void ESIManager::openMarketDetails(EveType::IdType typeId, Character::IdType charId) const
     {
-        selectNextInterface().openMarketDetails(typeId, charId, [=](const auto &errorText) {
+        getInterface().openMarketDetails(typeId, charId, [=](const auto &errorText) {
             emit error(errorText);
         });
     }
 
     void ESIManager::setDestination(quint64 locationId, Character::IdType charId) const
     {
-        selectNextInterface().setDestination(locationId, charId, [=](const auto &errorText) {
+        getInterface().setDestination(locationId, charId, [=](const auto &errorText) {
             emit error(errorText);
         });
     }
@@ -916,7 +916,7 @@ namespace Evernus
                                                  const WalletJournalCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterWalletJournal(
+        getInterface().fetchCharacterWalletJournal(
             charId,
             fromId,
             getWalletJournalCallback(charId, tillId, std::move(journal), callback, [=](const auto &fromId, auto &&journal) {
@@ -934,7 +934,7 @@ namespace Evernus
                                                    const WalletJournalCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCorporationWalletJournal(
+        getInterface().fetchCorporationWalletJournal(
             charId,
             corpId,
             division,
@@ -952,7 +952,7 @@ namespace Evernus
                                                       const WalletTransactionsCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCharacterWalletTransactions(
+        getInterface().fetchCharacterWalletTransactions(
             charId,
             fromId,
             getWalletTransactionsCallback(charId, tillId, std::move(transactions), callback, [=](const auto &fromId, auto &&transactions) {
@@ -970,7 +970,7 @@ namespace Evernus
                                                         const WalletTransactionsCallback &callback) const
     {
         Q_ASSERT(thread() == QThread::currentThread());
-        selectNextInterface().fetchCorporationWalletTransactions(
+        getInterface().fetchCorporationWalletTransactions(
             charId,
             corpId,
             division,
@@ -1400,9 +1400,9 @@ namespace Evernus
         };
     }
 
-    const ESIInterface &ESIManager::selectNextInterface() const
+    const ESIInterface &ESIManager::getInterface() const
     {
-        return mInterfaceManager.selectNextInterface();
+        return mInterfaceManager.getInterface();
     }
 
     MarketOrder::State ESIManager::getStateFromString(const QString &state)

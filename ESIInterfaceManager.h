@@ -14,8 +14,6 @@
  */
 #pragma once
 
-#include <memory>
-
 #include <QDateTime>
 #include <QObject>
 #include <QString>
@@ -23,6 +21,7 @@
 #include "QObjectDeleteLaterDeleter.h"
 #include "ESIInterfaceErrorLimiter.h"
 #include "CitadelAccessCache.h"
+#include "ESIInterface.h"
 #include "Character.h"
 #include "ESIOAuth.h"
 
@@ -50,14 +49,13 @@ namespace Evernus
         ESIInterfaceManager(ESIInterfaceManager &&) = default;
         virtual ~ESIInterfaceManager();
 
-        void handleNewPreferences();
         void clearRefreshTokens();
 
         void processSSOAuthorizationCode(Character::IdType charId, const QByteArray &code);
         void cancelSsoAuth(Character::IdType charId);
         void setTokens(Character::IdType id, const QString &accessToken, const QString &refreshToken);
 
-        const ESIInterface &selectNextInterface();
+        const ESIInterface &getInterface() const;
 
         const CitadelAccessCache &getCitadelAccessCache() const noexcept;
         CitadelAccessCache &getCitadelAccessCache() noexcept;
@@ -75,14 +73,11 @@ namespace Evernus
         QString mClientId;
         QString mClientSecret;
 
-        std::vector<std::unique_ptr<ESIInterface, QObjectDeleteLaterDeleter>> mInterfaces;
-        std::size_t mCurrentInterface{0};
-
         CitadelAccessCache mCitadelAccessCache;
         ESIInterfaceErrorLimiter mErrorLimiter;
         ESIOAuth mOAuth;
 
-        void createInterfaces();
+        ESIInterface mInterface;
 
         void readCitadelAccessCache();
         void writeCitadelAccessCache();

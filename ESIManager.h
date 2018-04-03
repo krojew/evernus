@@ -200,7 +200,7 @@ namespace Evernus
                                                                  const WalletTransactionsCallback &callback,
                                                                  T nextCallback) const;
 
-        const ESIInterface &selectNextInterface() const;
+        const ESIInterface &getInterface() const;
 
         static MarketOrder::State getStateFromString(const QString &state);
         static short getMarketOrderRangeFromString(const QString &range);

@@ -125,7 +125,6 @@ namespace Evernus
 
         connect(mTrayIcon, &QSystemTrayIcon::activated, this, &MainWindow::activateTrayIcon);
         connect(&mAutoImportTimer, &QTimer::timeout, this, &MainWindow::refreshAll);
-        connect(this, &MainWindow::preferencesChanged, &interfaceManager, &ESIInterfaceManager::handleNewPreferences);
 
         setWindowIcon(QIcon{":/images/main-icon.png"});
 
