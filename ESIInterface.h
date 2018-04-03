@@ -189,5 +189,7 @@ namespace Evernus
         static ErrorInfo getError(const QString &url, const QVariantMap &parameters, QNetworkReply &reply);
         static QDateTime getExpireTime(const QNetworkReply &reply);
         static uint getPageCount(const QNetworkReply &reply);
+
+        static void showReplyDebugInfo(const QNetworkReply &reply);
     };
 }

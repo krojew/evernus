@@ -662,6 +662,8 @@ namespace Evernus
             connect(reply, &QNetworkReply::finished, this, [=] {
                 reply->deleteLater();
 
+                showReplyDebugInfo(*reply);
+
                 const auto error = reply->error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
@@ -709,6 +711,8 @@ namespace Evernus
             mOAuth.get(charId, ESIUrls::esiUrl + url, parameters, [=](auto &reply) {
                 qDebug() << "ESI request:" << url << ":" << parameters;
                 qDebug() << "Retries" << retries;
+
+                showReplyDebugInfo(reply);
 
                 const auto error = reply.error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
@@ -774,6 +778,8 @@ namespace Evernus
             mOAuth.post(charId, ESIUrls::esiUrl + url, data, [=](auto &reply) {
                 qDebug() << "ESI request:" << url << ":" << data;
 
+                showReplyDebugInfo(reply);
+
                 const auto error = reply.error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
                 {
@@ -822,6 +828,8 @@ namespace Evernus
 
             connect(reply, &QNetworkReply::finished, this, [=] {
                 reply->deleteLater();
+
+                showReplyDebugInfo(*reply);
 
                 const auto error = reply->error();
                 if (Q_UNLIKELY(error != QNetworkReply::NoError))
@@ -919,5 +927,10 @@ namespace Evernus
     uint ESIInterface::getPageCount(const QNetworkReply &reply)
     {
         return reply.rawHeader(QByteArrayLiteral("X-Pages")).toUInt();
+    }
+
+    void ESIInterface::showReplyDebugInfo(const QNetworkReply &reply)
+    {
+        qDebug() << "X-Esi-Ab-Test:" << reply.rawHeader(QByteArrayLiteral("X-Esi-Ab-Test"));
     }
 }
