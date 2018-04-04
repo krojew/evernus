@@ -320,6 +320,10 @@ namespace Evernus
                     if (Q_UNLIKELY(dstData == std::end(dstRegion.second)))
                         continue;
 
+                    // if we're buying from sell orders, we need to either have at least one, or have an average (will be strictly 0.)
+                    if (Q_UNLIKELY(srcType == PriceType::Sell && type.second.mBuyPrice == 0.))
+                        continue;
+
                     TypeData data;
                     data.mId = type.first;
                     data.mSrcBuyPrice = type.second.mBuyPrice;
