@@ -188,6 +188,7 @@ namespace Evernus
 
         template<class T>
         ESIInterface::JsonCallback getWalletJournalCallback(Character::IdType charId,
+                                                            quint64 corpId,
                                                             WalletJournalEntry::IdType tillId,
                                                             std::shared_ptr<WalletJournal> &&journal,
                                                             const WalletJournalCallback &callback,
@@ -195,6 +196,7 @@ namespace Evernus
 
         template<class T>
         ESIInterface::JsonCallback getWalletTransactionsCallback(Character::IdType charId,
+                                                                 quint64 corpId,
                                                                  WalletTransaction::IdType tillId,
                                                                  std::shared_ptr<WalletTransactions> &&transactions,
                                                                  const WalletTransactionsCallback &callback,

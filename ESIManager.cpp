@@ -471,7 +471,7 @@ namespace Evernus
                 const auto ancestryObj = ancestry.toObject();
                 names.emplace(
                     static_cast<quint64>(ancestryObj.value(QStringLiteral("id")).toDouble()),
-					ancestryObj.value(QStringLiteral("name")).toString()
+                    ancestryObj.value(QStringLiteral("name")).toString()
                 );
             }
 
@@ -919,7 +919,7 @@ namespace Evernus
         getInterface().fetchCharacterWalletJournal(
             charId,
             fromId,
-            getWalletJournalCallback(charId, tillId, std::move(journal), callback, [=](const auto &fromId, auto &&journal) {
+            getWalletJournalCallback(charId, 0, tillId, std::move(journal), callback, [=](const auto &fromId, auto &&journal) {
                 fetchCharacterWalletJournal(charId, fromId, tillId, std::move(journal), callback);
             })
         );
@@ -939,7 +939,7 @@ namespace Evernus
             corpId,
             division,
             fromId,
-            getWalletJournalCallback(charId, tillId, std::move(journal), callback, [=](const auto &fromId, auto &&journal) {
+            getWalletJournalCallback(charId, corpId, tillId, std::move(journal), callback, [=](const auto &fromId, auto &&journal) {
                 fetchCorporationWalletJournal(charId, corpId, division, fromId, tillId, std::move(journal), callback);
             })
         );
@@ -955,7 +955,7 @@ namespace Evernus
         getInterface().fetchCharacterWalletTransactions(
             charId,
             fromId,
-            getWalletTransactionsCallback(charId, tillId, std::move(transactions), callback, [=](const auto &fromId, auto &&transactions) {
+            getWalletTransactionsCallback(charId, 0, tillId, std::move(transactions), callback, [=](const auto &fromId, auto &&transactions) {
                 fetchCharacterWalletTransactions(charId, fromId, tillId, std::move(transactions), callback);
             })
         );
@@ -975,7 +975,7 @@ namespace Evernus
             corpId,
             division,
             fromId,
-            getWalletTransactionsCallback(charId, tillId, std::move(transactions), callback, [=](const auto &fromId, auto &&transactions) {
+            getWalletTransactionsCallback(charId, corpId, tillId, std::move(transactions), callback, [=](const auto &fromId, auto &&transactions) {
                 fetchCorporationWalletTransactions(charId, corpId, division, fromId, tillId, std::move(transactions), callback);
             })
         );
@@ -1231,6 +1231,7 @@ namespace Evernus
 
     template<class T>
     ESIInterface::JsonCallback ESIManager::getWalletJournalCallback(Character::IdType charId,
+                                                                    quint64 corpId,
                                                                     WalletJournalEntry::IdType tillId,
                                                                     std::shared_ptr<WalletJournal> &&journal,
                                                                     const WalletJournalCallback &callback,
@@ -1261,6 +1262,7 @@ namespace Evernus
                     if (id > tillId)
                     {
                         entry.setCharacterId(charId);
+                        entry.setCorporationId(corpId);
                         entry.setTimestamp(getDateTimeFromString(entryObj.value(QStringLiteral("date")).toString()));
                         entry.setRefType(entryObj.value(QStringLiteral("ref_type")).toString());
 
@@ -1334,6 +1336,7 @@ namespace Evernus
 
     template<class T>
     ESIInterface::JsonCallback ESIManager::getWalletTransactionsCallback(Character::IdType charId,
+                                                                         quint64 corpId,
                                                                          WalletTransaction::IdType tillId,
                                                                          std::shared_ptr<WalletTransactions> &&transactions,
                                                                          const WalletTransactionsCallback &callback,
@@ -1365,6 +1368,7 @@ namespace Evernus
                     if (id > tillId)
                     {
                         transaction.setCharacterId(charId);
+                        transaction.setCorporationId(corpId);
                         transaction.setTimestamp(getDateTimeFromString(transactionObj.value(QStringLiteral("date")).toString()));
                         transaction.setQuantity(transactionObj.value(QStringLiteral("quantity")).toDouble());
                         transaction.setTypeId(transactionObj.value(QStringLiteral("type_id")).toDouble());
