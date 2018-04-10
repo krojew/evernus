@@ -73,7 +73,7 @@ namespace Evernus
         double getMaxPrice() const noexcept;
         double getMinPrice() const noexcept;
 
-        const ExternalOrder &getOrder(size_t row) const noexcept;
+        const ExternalOrder &getOrder(std::size_t row) const noexcept;
         EveType::IdType getTypeId() const noexcept;
 
         virtual void setCharacter(Character::IdType id) = 0;
@@ -84,6 +84,7 @@ namespace Evernus
         void setStationId(quint64 id) noexcept;
         void setPriceColorMode(PriceColorMode mode) noexcept;
 
+        Grouping getGrouping() const noexcept;
         void setGrouping(Grouping grouping);
 
         virtual void reset() = 0;
@@ -125,7 +126,7 @@ namespace Evernus
 
         double mTotalPrice = 0., mMedianPrice = 0., mMinPrice = 0., mMaxPrice = 0.;
         double mTotalSize = 0.;
-        uint mTotalVolume = 0;
+        quint64 mTotalVolume = 0;
 
         std::vector<std::shared_ptr<ExternalOrder>> mOrders;
         std::vector<GroupedData> mGroupedData;

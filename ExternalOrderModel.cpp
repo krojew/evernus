@@ -97,7 +97,7 @@ namespace Evernus
         return mMinPrice;
     }
 
-    const ExternalOrder &ExternalOrderModel::getOrder(size_t row) const noexcept
+    const ExternalOrder &ExternalOrderModel::getOrder(std::size_t row) const noexcept
     {
         return *mOrders[row];
     }
@@ -130,6 +130,11 @@ namespace Evernus
     void ExternalOrderModel::setPriceColorMode(PriceColorMode mode) noexcept
     {
         mPriceColorMode = mode;
+    }
+
+    ExternalOrderModel::Grouping ExternalOrderModel::getGrouping() const noexcept
+    {
+        return mGrouping;
     }
 
     void ExternalOrderModel::setGrouping(Grouping grouping)

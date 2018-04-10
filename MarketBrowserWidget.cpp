@@ -92,17 +92,17 @@ namespace Evernus
         auto toolbarLayout = new QHBoxLayout{};
         mainLayout->addLayout(toolbarLayout);
 
-        auto importBtn = new QPushButton{QIcon{":/images/world.png"}, tr("Import prices from Web"), this};
+        auto importBtn = new QPushButton{QIcon{QStringLiteral(":/images/world.png")}, tr("Import prices from Web"), this};
         toolbarLayout->addWidget(importBtn);
         importBtn->setFlat(true);
         connect(importBtn, &QPushButton::clicked, this, &MarketBrowserWidget::prepareItemImportFromWeb);
 
-        importBtn = new QPushButton{QIcon{":/images/page_refresh.png"}, tr("Import prices from logs"), this};
+        importBtn = new QPushButton{QIcon{QStringLiteral(":/images/page_refresh.png")}, tr("Import prices from logs"), this};
         toolbarLayout->addWidget(importBtn);
         importBtn->setFlat(true);
         connect(importBtn, &QPushButton::clicked, this, &MarketBrowserWidget::prepareItemImportFromFile);
 
-        auto filterBtn = new QPushButton{QIcon{":/images/flag_blue.png"}, tr("Filter"), this};
+        auto filterBtn = new QPushButton{QIcon{QStringLiteral(":/images/flag_blue.png")}, tr("Filter"), this};
         toolbarLayout->addWidget(filterBtn);
         filterBtn->setFlat(true);
         filterBtn->setCheckable(true);
@@ -118,7 +118,7 @@ namespace Evernus
         auto deviationMenu = new QMenu{this};
         deviationMenu->addAction(deviationAction);
 
-        mDeviationBtn = new QPushButton{QIcon{":/images/tag.png"}, getDeviationButtonText(deviationWidget->getCurrentType()), this};
+        mDeviationBtn = new QPushButton{QIcon{QStringLiteral(":/images/tag.png")}, getDeviationButtonText(deviationWidget->getCurrentType()), this};
         toolbarLayout->addWidget(mDeviationBtn);
         mDeviationBtn->setFlat(true);
         mDeviationBtn->setMenu(deviationMenu);
@@ -127,7 +127,7 @@ namespace Evernus
         cleanupMenu->addAction(tr("Clean all orders"), this, &MarketBrowserWidget::cleanAllOrders);
         cleanupMenu->addAction(tr("Clean for selected type"), this, &MarketBrowserWidget::cleanCurrentType);
 
-        auto cleanupBtn = new QPushButton{QIcon{":/images/cross.png"}, tr("Cleanup  "), this};
+        auto cleanupBtn = new QPushButton{QIcon{QStringLiteral(":/images/cross.png")}, tr("Cleanup  "), this};
         toolbarLayout->addWidget(cleanupBtn);
         cleanupBtn->setFlat(true);
         cleanupBtn->setMenu(cleanupMenu);
@@ -145,13 +145,13 @@ namespace Evernus
         auto navigationLayout = new QHBoxLayout{};
         navigatorGroupLayout->addLayout(navigationLayout);
 
-        mBackBtn = new QPushButton{QIcon{":/images/arrow_left.png"}, tr("Back"), this};
+        mBackBtn = new QPushButton{QIcon{QStringLiteral(":/images/arrow_left.png")}, tr("Back"), this};
         navigationLayout->addWidget(mBackBtn);
         mBackBtn->setFlat(true);
         mBackBtn->setDisabled(true);
         connect(mBackBtn, &QPushButton::clicked, this, &MarketBrowserWidget::stepBack);
 
-        mForwardBtn = new QPushButton{QIcon{":/images/arrow_right.png"}, tr("Forward"), this};
+        mForwardBtn = new QPushButton{QIcon{QStringLiteral(":/images/arrow_right.png")}, tr("Forward"), this};
         navigationLayout->addWidget(mForwardBtn);
         mForwardBtn->setFlat(true);
         mForwardBtn->setDisabled(true);
@@ -159,7 +159,7 @@ namespace Evernus
 
         mBookmarksMenu = new QMenu{this};
 
-        auto bookmarksBtn = new QPushButton{QIcon{":/images/star.png"}, tr("Bookmarks"), this};
+        auto bookmarksBtn = new QPushButton{QIcon{QStringLiteral(":/images/star.png")}, tr("Bookmarks"), this};
         navigationLayout->addWidget(bookmarksBtn);
         bookmarksBtn->setFlat(true);
         bookmarksBtn->setMenu(mBookmarksMenu);
@@ -215,12 +215,12 @@ namespace Evernus
 
         mItemTabs->addTab(createItemNameListTab(mFavoriteNameModel, mFavoriteItemList, favoriteToolbarLayout), tr("Favorite"));
 
-        auto addFavoriteBtn = new QPushButton{QIcon{":/images/add.png"}, tr("Add..."), this};
+        auto addFavoriteBtn = new QPushButton{QIcon{QStringLiteral(":/images/add.png")}, tr("Add..."), this};
         favoriteToolbarLayout->addWidget(addFavoriteBtn);
         addFavoriteBtn->setFlat(true);
         connect(addFavoriteBtn, &QPushButton::clicked, this, &MarketBrowserWidget::addFavoriteItem);
 
-        mRemoveFavoriteItemBtn = new QPushButton{QIcon{":/images/delete.png"}, tr("Remove"), this};
+        mRemoveFavoriteItemBtn = new QPushButton{QIcon{QStringLiteral(":/images/delete.png")}, tr("Remove"), this};
         favoriteToolbarLayout->addWidget(mRemoveFavoriteItemBtn);
         mRemoveFavoriteItemBtn->setFlat(true);
         mRemoveFavoriteItemBtn->setDisabled(true);

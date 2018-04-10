@@ -12,6 +12,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <algorithm>
+
+#include <QItemSelectionModel>
 #include <QApplication>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -21,6 +24,8 @@
 #include <QAction>
 #include <QLabel>
 #include <QFont>
+
+#include <boost/range/adaptor/transformed.hpp>
 
 #include "MarketOrderVolumeItemDelegate.h"
 #include "ExternalOrderModel.h"
@@ -38,9 +43,10 @@ namespace Evernus
                                          const EveDataProvider &dataProvider,
                                          const QString &objectName,
                                          QWidget *parent)
-        : QWidget(parent)
-        , mCostProvider(costProvider)
-        , mProxy(dataProvider)
+        : QWidget{parent}
+        , mCostProvider{costProvider}
+        , mDataProvider{dataProvider}
+        , mProxy{mDataProvider}
     {
         auto mainLayout = new QVBoxLayout{this};
 
@@ -52,7 +58,7 @@ namespace Evernus
         mView->setModel(&mProxy);
         mView->setRootIsDecorated(false);
         connect(mView->selectionModel(), &QItemSelectionModel::selectionChanged,
-                this, &ExternalOrderView::selectTransaction);
+                this, &ExternalOrderView::selectOrder);
 
         mCopySuggestedPriceAct = new QAction{getDefaultCopySuggestedPriceText(), this};
         mCopySuggestedPriceAct->setEnabled(false);
@@ -162,38 +168,44 @@ namespace Evernus
 
     void ExternalOrderView::handleModelReset()
     {
-        const auto curLocale = locale();
-
-        if (mSource != nullptr)
-        {
-            mTotalPriceLabel->setText(TextUtils::currencyToString(mSource->getTotalPrice(), curLocale));
-            mTotalVolumeLabel->setText(curLocale.toString(mSource->getTotalVolume()));
-            mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(mSource->getTotalSize(), 'f', 2)));
-            mMinPriceLabel->setText(TextUtils::currencyToString(mSource->getMinPrice(), curLocale));
-            mMedianPriceLabel->setText(TextUtils::currencyToString(mSource->getMedianPrice(), curLocale));
-            mMaxPriceLabel->setText(TextUtils::currencyToString(mSource->getMaxPrice(), curLocale));
-        }
-
+        setDefaultTotals();
         mView->header()->resizeSections(QHeaderView::ResizeToContents);
     }
 
-    void ExternalOrderView::selectTransaction(const QItemSelection &selected)
+    void ExternalOrderView::selectOrder()
     {
-        if (selected.isEmpty())
+        const auto selected = mView->selectionModel()->selection();
+        if (selected.isEmpty() || mSource == nullptr || mSource->getGrouping() != ExternalOrderModel::Grouping::None)
         {
             mCurrentOrder = QModelIndex{};
 
             mCopySuggestedPriceAct->setText(getDefaultCopySuggestedPriceText());
             mCopySuggestedPriceAct->setEnabled(false);
+
+            setDefaultTotals();
         }
         else
         {
-            mCurrentOrder = mProxy.mapToSource(selected.indexes().first());
+            auto indexes = selected.indexes();
+
+            mCurrentOrder = mProxy.mapToSource(indexes.first());
 
             const auto price = getSuggestedPrice();
             mCopySuggestedPriceAct->setText(tr("Copy suggested price: %1").arg(TextUtils::currencyToString(price, locale())));
 
             mCopySuggestedPriceAct->setEnabled(true);
+
+            const auto indexEqual = [](const auto &a, const auto &b) {
+                return a.row() == b.row();
+            };
+
+            indexes.erase(std::unique(std::begin(indexes), std::end(indexes), indexEqual), std::end(indexes));
+
+            const auto getOrder = [=](const auto &index) {
+                return &mSource->getOrder(mProxy.mapToSource(index).row());
+            };
+
+            setAggregatedTotals(MathUtils::calcAggregates(indexes | boost::adaptors::transformed(getOrder), mDataProvider));
         }
     }
 
@@ -219,6 +231,21 @@ namespace Evernus
         }
     }
 
+    void ExternalOrderView::setDefaultTotals()
+    {
+        if (mSource != nullptr)
+        {
+            setAggregatedTotals({
+                mSource->getTotalPrice(),
+                mSource->getMinPrice(),
+                mSource->getMaxPrice(),
+                mSource->getMedianPrice(),
+                mSource->getTotalVolume(),
+                mSource->getTotalSize()
+            });
+        }
+    }
+
     double ExternalOrderView::getSuggestedPrice() const
     {
         const auto priceDelta = PriceUtils::getPriceDelta();
@@ -231,6 +258,17 @@ namespace Evernus
             price = order.getPrice() - priceDelta;
 
         return price;
+    }
+
+    void ExternalOrderView::setAggregatedTotals(const MathUtils::AggregateData &data)
+    {
+        const auto curLocale = locale();
+        mTotalPriceLabel->setText(TextUtils::currencyToString(data.mTotalPrice, curLocale));
+        mTotalVolumeLabel->setText(curLocale.toString(data.mTotalVolume));
+        mTotalSizeLabel->setText(QString{"%1m³"}.arg(curLocale.toString(data.mTotalSize, 'f', 2)));
+        mMinPriceLabel->setText(TextUtils::currencyToString(data.mMinPrice, curLocale));
+        mMedianPriceLabel->setText(TextUtils::currencyToString(data.mMedianPrice, curLocale));
+        mMaxPriceLabel->setText(TextUtils::currencyToString(data.mMaxPrice, curLocale));
     }
 
     QString ExternalOrderView::getDefaultCopySuggestedPriceText()

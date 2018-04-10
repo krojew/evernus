@@ -23,6 +23,7 @@
 #include "MarketOrderProvider.h"
 #include "ItemCostProvider.h"
 #include "EveDataProvider.h"
+#include "MathUtils.h"
 #include "TextUtils.h"
 
 #include "ExternalOrderSellModel.h"
@@ -158,10 +159,6 @@ namespace Evernus
     {
         beginResetModel();
 
-        mMinPrice = std::numeric_limits<double>::max();
-        mMedianPrice = mTotalPrice = mMaxPrice = mTotalSize = 0.;
-        mTotalVolume = 0;
-
         if (mStationId != 0)
             mOrders = mOrderRepo.fetchSellByTypeAndStation(mTypeId, mStationId);
         else if (mSolarSystemId != 0)
@@ -171,34 +168,14 @@ namespace Evernus
         else
             mOrders = mOrderRepo.fetchSellByType(mTypeId);
 
-        std::vector<double> prices;
-        prices.reserve(mOrders.size());
+        const auto aggrData = MathUtils::calcAggregates(mOrders, mDataProvider);
 
-        for (const auto &order : mOrders)
-        {
-            const auto price = order->getPrice();
-            if (price < mMinPrice)
-                mMinPrice = price;
-            if (price > mMaxPrice)
-                mMaxPrice = price;
-
-            prices.emplace_back(price);
-
-            const auto volume = order->getVolumeRemaining();
-
-            mTotalPrice += price * volume;
-            mTotalSize += mDataProvider.getTypeVolume(order->getTypeId()) * volume;
-            mTotalVolume += volume;
-        }
-
-        if (!prices.empty())
-        {
-            std::nth_element(std::begin(prices), std::next(std::begin(prices), prices.size() / 2), std::end(prices));
-            mMedianPrice = prices[prices.size() / 2];
-        }
-
-        if (mMinPrice == std::numeric_limits<double>::max())
-            mMinPrice = 0.;
+        mTotalPrice = aggrData.mTotalPrice;
+        mMinPrice = aggrData.mMinPrice;
+        mMaxPrice = aggrData.mMaxPrice;
+        mMedianPrice = aggrData.mMedianPrice;
+        mTotalVolume = aggrData.mTotalVolume;
+        mTotalSize = aggrData.mTotalSize;
 
         if (mGrouping != Grouping::None)
             refreshGroupedData();

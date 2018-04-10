@@ -14,63 +14,37 @@
  */
 #pragma once
 
-#include <algorithm>
-#include <cmath>
-
 #include <QtGlobal>
 
 namespace Evernus
 {
-    namespace MathUtils
-    {
-        template<class T>
-        double calcPercentile(const T &orders,
-                              quint64 maxVolume,
-                              double avgPrice,
-                              bool discardBogusOrders,
-                              double bogusOrderThreshold)
-        {
-            if (orders.empty())
-                return (std::isnan(avgPrice)) ? (0.) : (avgPrice);
-
-            if (maxVolume == 0)
-                maxVolume = 1;
-
-            const auto nullAvg = qFuzzyIsNull(avgPrice);
-
-            auto it = std::begin(orders);
-            quint64 volume = 0u;
-            auto result = 0.;
-
-            while (volume < maxVolume && it != std::end(orders))
-            {
-                const auto price = it->get().getPrice();
-                const quint64 orderVolume = it->get().getVolumeRemaining();
-                const auto add = std::min(orderVolume, maxVolume - volume);
-
-                if (!discardBogusOrders || nullAvg || fabs((price - avgPrice) / avgPrice) < bogusOrderThreshold)
-                {
-                    volume += add;
-                    result += price * add;
-                }
-                else if (!nullAvg)
-                {
-                    maxVolume -= add;
-                }
-
-                ++it;
-            }
-
-            if (maxVolume == 0) // all bogus orders?
-                return std::begin(orders)->get().getPrice();
-
-            return result / maxVolume;
-        }
-
-        template<class T>
-        size_t batchSize(T value) noexcept
-        {
-            return std::max(static_cast<size_t>(1u), std::min(static_cast<size_t>(exp(log(value) / 1.38629436112 - 1.)), static_cast<size_t>(300u)));
-        }
-    }
+    class EveDataProvider;
 }
+
+namespace Evernus::MathUtils
+{
+    struct AggregateData
+    {
+        double mTotalPrice = 0.;
+        double mMinPrice = 0.;
+        double mMaxPrice = 0.;
+        double mMedianPrice = 0.;
+        quint64 mTotalVolume = 0;
+        double mTotalSize = 0.;
+    };
+
+    template<class T>
+    double calcPercentile(const T &orders,
+                          quint64 maxVolume,
+                          double avgPrice,
+                          bool discardBogusOrders,
+                          double bogusOrderThreshold);
+
+    template<class T>
+    std::size_t batchSize(T value) noexcept;
+
+    template<class T>
+    AggregateData calcAggregates(const T &orders, const EveDataProvider &dataProvider);
+}
+
+#include "MathUtils.inl"

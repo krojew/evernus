@@ -17,6 +17,7 @@
 #include <QWidget>
 
 #include "ExternalOrderFilterProxyModel.h"
+#include "MathUtils.h"
 #include "Character.h"
 #include "EveType.h"
 
@@ -56,10 +57,11 @@ namespace Evernus
         void handleModelReset();
         void copySuggestedPrice() const;
 
-        void selectTransaction(const QItemSelection &selected);
+        void selectOrder();
 
     private:
         const ItemCostProvider &mCostProvider;
+        const EveDataProvider &mDataProvider;
 
         Character::IdType mCharacterId = Character::invalidId;
         EveType::IdType mTypeId = EveType::invalidId;
@@ -81,8 +83,11 @@ namespace Evernus
         QAction *mCopySuggestedPriceAct = nullptr;
 
         void setCustomCost();
+        void setDefaultTotals();
 
         double getSuggestedPrice() const;
+
+        void setAggregatedTotals(const MathUtils::AggregateData &data);
 
         static QString getDefaultCopySuggestedPriceText();
     };
