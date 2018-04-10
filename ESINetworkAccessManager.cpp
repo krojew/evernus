@@ -28,12 +28,16 @@ namespace Evernus
 
     QNetworkReply *ESINetworkAccessManager::createRequest(Operation op, const QNetworkRequest &originalReq, QIODevice *outgoingData)
     {
-        QSettings settings;
-
         auto request = originalReq;
         request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
-        request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, settings.value(NetworkSettings::useHTTP2Key, NetworkSettings::useHTTP2Default));
         request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+
+        // https://bugreports.qt.io/browse/QTBUG-66913
+        if (op != PostOperation)
+        {
+            QSettings settings;
+            request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, settings.value(NetworkSettings::useHTTP2Key, NetworkSettings::useHTTP2Default));
+        }
 
         if (!request.hasRawHeader(QByteArrayLiteral("Authorization")))
             request.setRawHeader(QByteArrayLiteral("Authorization"), mAutorization);
