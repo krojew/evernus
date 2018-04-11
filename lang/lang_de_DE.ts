@@ -3355,87 +3355,87 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ExternalOrderSellModel</name>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="61"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="88"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="62"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="89"/>
         <source>Station</source>
         <translation>Station</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="63"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="64"/>
         <source>Deviation</source>
         <translation>Abweichung</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="65"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="66"/>
         <source>Price</source>
         <translation>Preis</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="67"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="104"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="68"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="105"/>
         <source>Volume</source>
         <translation>Volumen</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="69"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="106"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="70"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="107"/>
         <source>Total profit</source>
         <translation>Profit gesamt</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="71"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="110"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="72"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="111"/>
         <source>Total size</source>
         <translation>Größe gesamt</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="73"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="74"/>
         <source>Issued</source>
         <translation>Erstellt</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="75"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="76"/>
         <source>Time left</source>
         <translation>Restlaufzeit</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="77"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="78"/>
         <source>Imported</source>
         <translation>Importiert</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="79"/>
-        <location filename="../ExternalOrderSellModel.cpp" line="92"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="80"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="93"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="90"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="91"/>
         <source>Solar system</source>
         <translation>Sternensystem</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="98"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="99"/>
         <source>Lowest price</source>
         <translation>Niedrigster Preis</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="100"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="101"/>
         <source>Median price</source>
         <translation>Durchschnittspreis</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="102"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="103"/>
         <source>Highest price</source>
         <translation>Höchster Preis</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="108"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="109"/>
         <source>Orders</source>
         <translation>Aufträge</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderSellModel.cpp" line="349"/>
+        <location filename="../ExternalOrderSellModel.cpp" line="326"/>
         <source>Your order</source>
         <translation>Dein Auftrag</translation>
     </message>
@@ -3443,37 +3443,37 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::ExternalOrderView</name>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="69"/>
+        <location filename="../ExternalOrderView.cpp" line="75"/>
         <source>Total cost:</source>
         <translation>Kosten gesamt:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="75"/>
+        <location filename="../ExternalOrderView.cpp" line="81"/>
         <source>Total volume:</source>
         <translation>Volumen gesamt:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="81"/>
+        <location filename="../ExternalOrderView.cpp" line="87"/>
         <source>Total size:</source>
         <translation>Größe gesamt:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="87"/>
+        <location filename="../ExternalOrderView.cpp" line="93"/>
         <source>Min. price:</source>
         <translation>Tiefstpreis:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="93"/>
+        <location filename="../ExternalOrderView.cpp" line="99"/>
         <source>Median price:</source>
         <translation>Durchschnittspreis:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="99"/>
+        <location filename="../ExternalOrderView.cpp" line="105"/>
         <source>Max. price:</source>
         <translation>Höchstpreis:</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="105"/>
+        <location filename="../ExternalOrderView.cpp" line="111"/>
         <source>Custom cost:</source>
         <translation>Benutzerdefinierte Kosten:</translation>
     </message>
@@ -3483,14 +3483,14 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation>Vorgeschlagegen Preis kopieren: %1</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="210"/>
-        <location filename="../ExternalOrderView.cpp" line="216"/>
+        <location filename="../ExternalOrderView.cpp" line="222"/>
+        <location filename="../ExternalOrderView.cpp" line="228"/>
         <source>N/A</source>
         <translatorcomment>#NOTE# Although Linguist complains about missing interpunktion, this is the equivalent German abbreviation.</translatorcomment>
         <translation>k.A.</translation>
     </message>
     <message>
-        <location filename="../ExternalOrderView.cpp" line="238"/>
+        <location filename="../ExternalOrderView.cpp" line="276"/>
         <source>Copy suggested price</source>
         <translation>Vorgeschlagegen Preis kopieren</translation>
     </message>
@@ -5245,33 +5245,33 @@ Also, please note that due to large numbers of citadels in some regions, the imp
 <context>
     <name>Evernus::MainWindow</name>
     <message>
-        <location filename="../MainWindow.cpp" line="544"/>
+        <location filename="../MainWindow.cpp" line="543"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="269"/>
-        <location filename="../MainWindow.cpp" line="505"/>
+        <location filename="../MainWindow.cpp" line="268"/>
+        <location filename="../MainWindow.cpp" line="504"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="269"/>
+        <location filename="../MainWindow.cpp" line="268"/>
         <source>You can show/hide table columns via right-click menu. Columns can also be moved around via dragging.</source>
         <translation>Spalten können via Rechtsklick angezeigt/verborgen werden. Sie können durch Ziehen auch verschoben werden.</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="284"/>
+        <location filename="../MainWindow.cpp" line="283"/>
         <source>No active tasks</source>
         <translation>Keine aktiven Aufgaben</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="289"/>
+        <location filename="../MainWindow.cpp" line="288"/>
         <source>Active tasks: %1</source>
         <translation>Aktive Aufgaben: %1</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="298"/>
+        <location filename="../MainWindow.cpp" line="297"/>
         <source>Wallet: &lt;strong&gt;%1&lt;/strong&gt;</source>
         <translation>Kontostand: &lt;strong&gt;%1&lt;/strong&gt;</translation>
     </message>
@@ -5280,73 +5280,73 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">IGB Link wurde in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="505"/>
+        <location filename="../MainWindow.cpp" line="504"/>
         <source>HTTP link was copied to the clipboard.</source>
         <translation>HTTP Link wurde in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="608"/>
+        <location filename="../MainWindow.cpp" line="607"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="609"/>
+        <location filename="../MainWindow.cpp" line="608"/>
         <source>Select character</source>
         <translation>Charakter wählen</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="610"/>
+        <location filename="../MainWindow.cpp" line="609"/>
         <source>&amp;Manage characters...</source>
         <translation>Charaktere &amp;verwalten...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="612"/>
-        <location filename="../MainWindow.cpp" line="614"/>
+        <location filename="../MainWindow.cpp" line="611"/>
+        <location filename="../MainWindow.cpp" line="613"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="617"/>
+        <location filename="../MainWindow.cpp" line="616"/>
         <source>Import EVE Mentat order history...</source>
         <translation>EVE Mentat Orderhistorie importieren...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="619"/>
+        <location filename="../MainWindow.cpp" line="618"/>
         <source>E&amp;xit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="621"/>
+        <location filename="../MainWindow.cpp" line="620"/>
         <source>&amp;Tools</source>
         <translation>&amp;Werkzeuge</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="622"/>
+        <location filename="../MainWindow.cpp" line="621"/>
         <source>Import conquerable stations</source>
         <translation>Importiere Stationen</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="623"/>
+        <location filename="../MainWindow.cpp" line="622"/>
         <source>Import citadels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="624"/>
+        <location filename="../MainWindow.cpp" line="623"/>
         <source>Citadel manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="625"/>
+        <location filename="../MainWindow.cpp" line="624"/>
         <source>Ma&amp;rgin tool...</source>
         <translation>Ma&amp;rgenrechner...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="626"/>
+        <location filename="../MainWindow.cpp" line="625"/>
         <source>Custom &amp;Fast Price Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="628"/>
+        <location filename="../MainWindow.cpp" line="627"/>
         <source>Copy HTTP link</source>
         <translation>HTTP Link kopieren</translation>
     </message>
@@ -5355,157 +5355,157 @@ Also, please note that due to large numbers of citadels in some regions, the imp
         <translation type="vanished">IGB Link kopieren</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="423"/>
+        <location filename="../MainWindow.cpp" line="422"/>
         <source>SSO authentication for unknown character: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="631"/>
+        <location filename="../MainWindow.cpp" line="630"/>
         <source>Upload data to cloud...</source>
         <translation>Daten in die Cloud hochladen...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="634"/>
+        <location filename="../MainWindow.cpp" line="633"/>
         <source>&amp;View</source>
         <translation>&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="635"/>
+        <location filename="../MainWindow.cpp" line="634"/>
         <source>Show/hide tabs</source>
         <translation>Register anzeigen/verbergen</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="636"/>
+        <location filename="../MainWindow.cpp" line="635"/>
         <source>Show/hide table columns</source>
         <translation>Spalten anzeigen/verbergen</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="638"/>
+        <location filename="../MainWindow.cpp" line="637"/>
         <source>Always on top</source>
         <translation>Immer im Vordergrund</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="662"/>
+        <location filename="../MainWindow.cpp" line="661"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="663"/>
+        <location filename="../MainWindow.cpp" line="662"/>
         <source>&amp;Online help...</source>
         <translation>&amp;Onlinehilfe...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="664"/>
+        <location filename="../MainWindow.cpp" line="663"/>
         <source>Check for &amp;updates</source>
         <translation>Auf &amp;Updates prüfen</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="666"/>
+        <location filename="../MainWindow.cpp" line="665"/>
         <source>&amp;About...</source>
         <translation>&amp;Über...</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="702"/>
+        <location filename="../MainWindow.cpp" line="701"/>
         <source>Character</source>
         <translation>Charakter</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="716"/>
+        <location filename="../MainWindow.cpp" line="715"/>
         <source>Statistics</source>
         <translation>Statistiken</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="738"/>
+        <location filename="../MainWindow.cpp" line="737"/>
         <source>Assets</source>
         <translation>Gegenstände</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="762"/>
+        <location filename="../MainWindow.cpp" line="761"/>
         <source>Character orders</source>
         <translation>Aufträge - Charakter</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="787"/>
+        <location filename="../MainWindow.cpp" line="786"/>
         <source>Character journal</source>
         <translation>Logbuch - Charakter</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="799"/>
+        <location filename="../MainWindow.cpp" line="798"/>
         <source>Character transactions</source>
         <translation>Transaktionen - Charakter</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="812"/>
+        <location filename="../MainWindow.cpp" line="811"/>
         <source>Character contracts</source>
         <translation>Verträge - Charakter</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="822"/>
+        <location filename="../MainWindow.cpp" line="821"/>
         <source>Corporation assets</source>
         <translation>Gegenstände - Corporation</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="846"/>
+        <location filename="../MainWindow.cpp" line="845"/>
         <source>Corporation orders</source>
         <translation>Aufträge - Corporation</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="870"/>
+        <location filename="../MainWindow.cpp" line="869"/>
         <source>Corporation journal</source>
         <translation>Logbuch - Corporation</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="882"/>
+        <location filename="../MainWindow.cpp" line="881"/>
         <source>Corporation transactions</source>
         <translation>Transaktionen - Corporation</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="895"/>
+        <location filename="../MainWindow.cpp" line="894"/>
         <source>Corporation contracts</source>
         <translation>Verträge - Corporation</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="906"/>
+        <location filename="../MainWindow.cpp" line="905"/>
         <source>Item history</source>
         <translation>Verlauf Gegenstand</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="924"/>
+        <location filename="../MainWindow.cpp" line="923"/>
         <source>Market browser</source>
         <translation>Marktbetrachter</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="935"/>
+        <location filename="../MainWindow.cpp" line="934"/>
         <source>Item costs</source>
         <translation>Artikelkosten</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="944"/>
+        <location filename="../MainWindow.cpp" line="943"/>
         <source>LMeve</source>
         <translation>LMeve</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="966"/>
+        <location filename="../MainWindow.cpp" line="965"/>
         <source>Market analysis</source>
         <translation>Marktanalyse</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="981"/>
+        <location filename="../MainWindow.cpp" line="980"/>
         <source>Industry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1011"/>
+        <location filename="../MainWindow.cpp" line="1010"/>
         <source>Toggle character tabs</source>
         <translation>Charakter Registerkarten</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1017"/>
+        <location filename="../MainWindow.cpp" line="1016"/>
         <source>Toggle corporation tabs</source>
         <translation>Körperschaftsteuer Registerkarten</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1151"/>
+        <location filename="../MainWindow.cpp" line="1150"/>
         <source>SSO Authentication for character: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7437,12 +7437,12 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation>Warnung: Paßwörter werden mit einer schwacher Verschlüsselung gespeichert - benutze keine sensiblen Paßwörter.</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="121"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="115"/>
         <source>Log ESI replies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="126"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="120"/>
         <source>Use HTTP/2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7459,7 +7459,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation type="vanished">Benutzerdefinierten Anbieter benutzen</translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="131"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="125"/>
         <source>Clear saved refresh tokens</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7490,12 +7490,7 @@ Bitte Preise im Register Aufträge/Gegenstände oder mit dem Margenrechner impor
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="111"/>
-        <source>Max. ESI network threads:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../NetworkPreferencesWidget.cpp" line="116"/>
+        <location filename="../NetworkPreferencesWidget.cpp" line="110"/>
         <source>Ignore certificate errors</source>
         <translation>Ignorieren Zertifikatfehler</translation>
     </message>
@@ -10316,7 +10311,7 @@ Please click on &quot;Import all&quot; after the update.</source>
     </message>
     <message>
         <location filename="../main.cpp" line="240"/>
-        <location filename="../main.cpp" line="511"/>
+        <location filename="../main.cpp" line="512"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
@@ -10352,11 +10347,13 @@ Please click on &quot;Import all&quot; after the update.</source>
     </message>
     <message>
         <location filename="../main.cpp" line="490"/>
-        <source>Would you like to use experimental HTTP/2 support? Enabling HTTP/2 improves import speed about 10x, but might cause errors sometimes.</source>
+        <source>Would you like to use experimental HTTP/2 support? Enabling HTTP/2 improves import speed about 10x, but might cause errors sometimes.
+
+You can change it later in the Network Preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="522"/>
+        <location filename="../main.cpp" line="523"/>
         <source>Initialization error</source>
         <translation>Fehler beim Initialisieren</translation>
     </message>

@@ -77,7 +77,16 @@ elseif(UNIX)
 elseif(WIN32)
     find_package(Qt5WinExtras REQUIRED)
 
-    set(ADDITIONAL_SRC evernus.rc qxtglobalshortcut_win.cpp)
+    include(generate_product_version)
+    generate_product_version(
+       VersionFilesOutputVariable
+       NAME "Evernus"
+       ICON "images/main-icon.ico"
+       VERSION_MAJOR ${MAJOR_VERSION}
+       VERSION_MINOR ${MINOR_VERSION}
+    )
+
+    set(ADDITIONAL_SRC qxtglobalshortcut_win.cpp ${VersionFilesOutputVariable})
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /MP /wd4503")
     set(ADDITIONAL_LIBS Qt5::WinExtras)
 
