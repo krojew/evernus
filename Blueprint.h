@@ -101,6 +101,8 @@ namespace Evernus
             Module
         };
 
+        static const int magicBPCQuantity = -2;
+
         Blueprint() = default;
         Blueprint(const Blueprint &) = default;
         Blueprint(Blueprint &&) = default;
@@ -129,6 +131,8 @@ namespace Evernus
 
         EveType::IdType getTypeId() const noexcept;
         void setTypeId(EveType::IdType id) noexcept;
+
+        bool isBPC() const noexcept;
 
         Blueprint &operator =(const Blueprint &) = default;
         Blueprint &operator =(Blueprint &&) = default;

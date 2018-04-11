@@ -95,4 +95,9 @@ namespace Evernus
     {
         mTypeId = id;
     }
+
+    bool Blueprint::isBPC() const noexcept
+    {
+        return mQuantity == magicBPCQuantity;
+    }
 }
