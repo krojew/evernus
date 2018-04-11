@@ -90,9 +90,9 @@ elseif(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /MP /wd4503")
     set(ADDITIONAL_LIBS Qt5::WinExtras)
 
-    if(MSVC_VERSION LESS 1900) # < VS2015
-        message(FATAL_ERROR "Compiler too old, VS 2015 or newer required.")
-    endif() # > VS2015
+    if(MSVC_VERSION LESS 1910)
+        message(FATAL_ERROR "Compiler too old, VS 2017 or newer required.")
+    endif()
 endif()
 
 set(TRANSLATIONS lang/lang_pl_PL.ts lang/lang_de_DE.ts)
