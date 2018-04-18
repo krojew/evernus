@@ -27,7 +27,6 @@ find_package(Qt5PrintSupport REQUIRED)
 find_package(Qt5Qml REQUIRED)
 find_package(Qt5QuickWidgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
-find_package(Qt5Xml REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Threads REQUIRED)
 
@@ -863,7 +862,6 @@ target_link_libraries(
     Qt5::Qml
     Qt5::QuickWidgets
     Qt5::Sql
-    Qt5::Xml
     Qt5::Widgets
     Threads::Threads
     ${ADDITIONAL_LIBS}
