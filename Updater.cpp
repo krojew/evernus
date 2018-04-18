@@ -22,8 +22,10 @@
 #include <QDesktopServices>
 #include <QCoreApplication>
 #include <QNetworkRequest>
+#include <QJsonParseError>
 #include <QNetworkReply>
-#include <QDomDocument>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMessageBox>
 #include <QSettings>
 #include <QProcess>
@@ -255,8 +257,8 @@ namespace Evernus
 
         mCheckingForUpdates = true;
 
-        auto reply = mAccessManager.get(QNetworkRequest{QUrl{QStringLiteral("http://evernus.com/latest_version.xml")}});
-        connect(reply, &QNetworkReply::finished, this, [quiet, this] {
+        auto reply = mAccessManager.get(QNetworkRequest{QUrl{QStringLiteral("https://evernus.com/latest_version.json")}});
+        connect(reply, &QNetworkReply::finished, this, [=] {
             finishCheck(quiet);
         });
     }
@@ -277,20 +279,19 @@ namespace Evernus
             return;
         }
 
-        QString docError;
+        QJsonParseError docError;
 
-        QDomDocument doc;
-        if (!doc.setContent(reply, false, &docError))
+        const auto doc = QJsonDocument::fromJson(reply->readAll(), &docError);
+        if (doc.isNull())
         {
             if (!quiet)
-                QMessageBox::warning(nullptr, tr("Error"), tr("Error parsing response from the update server: %1").arg(docError));
+                QMessageBox::warning(nullptr, tr("Error"), tr("Error parsing response from the update server: %1").arg(docError.errorString()));
 
             return;
         }
 
-        const auto nextVersionString = doc.documentElement().attribute(QStringLiteral("id"));
-        const auto nextVersion = nextVersionString.split('.');
-        if (nextVersion.count() != 2)
+        const auto nextVersion = QVersionNumber::fromString(doc.object().value(QStringLiteral("appVersion")).toString());
+        if (nextVersion.isNull())
         {
             if (!quiet)
                 QMessageBox::warning(nullptr, tr("Error"), tr("Missing update version information!"));
@@ -298,12 +299,8 @@ namespace Evernus
             return;
         }
 
-        const auto curVersion = QCoreApplication::applicationVersion().split('.');
-
-        const auto nextMajor = nextVersion[0].toUInt();
-        const auto curMajor = curVersion[0].toUInt();
-
-        if ((nextMajor < curMajor) || (nextMajor == curMajor && nextVersion[1].toUInt() <= curVersion[1].toUInt()))
+        const auto curVersion = QVersionNumber::fromString(QCoreApplication::applicationVersion());
+        if (curVersion >= nextVersion)
         {
             if (!quiet)
                 QMessageBox::information(nullptr, tr("No update found"), tr("Your current version is up-to-date."));
@@ -311,16 +308,16 @@ namespace Evernus
             return;
         }
 
-        const QUrl downloadUrl{QStringLiteral("http://evernus.com/download")};
+        const QUrl downloadUrl{QStringLiteral("https://evernus.com/download")};
 
 #ifndef Q_OS_WIN
         const auto ret = QMessageBox::question(
-            nullptr, tr("Update found"), tr("A new version is available: %1\nDo you wish to download it now?").arg(nextVersionString));
+            nullptr, tr("Update found"), tr("A new version is available: %1\nDo you wish to download it now?").arg(nextVersion.toString()));
         if (ret == QMessageBox::Yes)
             QDesktopServices::openUrl(downloadUrl);
 #else
         const auto ret = QMessageBox::question(
-            nullptr, tr("Update found"), tr("A new version is available: %1\nDo you wish to launch the updater?").arg(nextVersionString));
+            nullptr, tr("Update found"), tr("A new version is available: %1\nDo you wish to launch the updater?").arg(nextVersion.toString()));
         if (ret == QMessageBox::Yes)
         {
             qInfo() << "Starting maintenance tool...";
