@@ -991,10 +991,12 @@ namespace Evernus
         order.setType((object.value(QStringLiteral("is_buy_order")).toBool()) ? (ExternalOrder::Type::Buy) : (ExternalOrder::Type::Sell));
         order.setTypeId(object.value(QStringLiteral("type_id")).toDouble());
         order.setStationId(object.value(QStringLiteral("location_id")).toDouble());
-
-        //TODO: replace when available
-        order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
         order.setRegionId(regionId);
+
+        if (object.contains(QStringLiteral("system_id")))
+            order.setSolarSystemId(object.value(QStringLiteral("system_id")).toDouble());
+        else
+            order.setSolarSystemId(mDataProvider.getStationSolarSystemId(order.getStationId()));
 
         if (range == "station")
             order.setRange(ExternalOrder::rangeStation);
