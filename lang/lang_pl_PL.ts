@@ -3218,20 +3218,31 @@ Z powodu dużej ilości cytadel w niektórych regionach, import może zająć du
 <context>
     <name>Evernus::EveDatabaseUpdater</name>
     <message>
-        <location filename="../EveDatabaseUpdater.cpp" line="76"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="42"/>
+        <source>Downloading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveDatabaseUpdater.cpp" line="64"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="86"/>
         <location filename="../EveDatabaseUpdater.cpp" line="109"/>
         <source>SDE update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EveDatabaseUpdater.cpp" line="77"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="86"/>
+        <source>Error downloading Eve database!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EveDatabaseUpdater.cpp" line="110"/>
         <source>Error retrieving latest SDE information: %1
 
 Do you want to try to continue? The application may not launch.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EveDatabaseUpdater.cpp" line="110"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="65"/>
         <source>Do you wish to update the Eve Static Data Export database? Evernus needs to have an up-to-date database to function properly.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10437,7 +10448,7 @@ Czy chcesz ściągnąć ją teraz?</translation>
 <context>
     <name>MainDatabaseConnectionProvider</name>
     <message>
-        <location filename="../EveDatabaseConnectionProvider.cpp" line="53"/>
+        <location filename="../EveDatabaseConnectionProvider.cpp" line="54"/>
         <location filename="../MainDatabaseConnectionProvider.cpp" line="47"/>
         <source>Error opening DB!</source>
         <translation type="unfinished">Błąd przy otwieraniu bazy danych!</translation>
