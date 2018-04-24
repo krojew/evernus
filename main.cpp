@@ -46,6 +46,7 @@
 #include "ExternalOrderModel.h"
 #include "EvernusApplication.h"
 #include "CommandLineOptions.h"
+#include "EveDatabaseUpdater.h"
 #include "UpdaterSettings.h"
 #include "ImportSettings.h"
 #include "BezierCurve.h"
@@ -272,6 +273,10 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::MarketAnalysisDataFetcher::HistoryResultType>("HistoryResultType");
         qRegisterMetaType<Evernus::VolumeType>("VolumeType");
         qRegisterMetaType<Evernus::IndustryManufacturingSetup::InventorySource>("IndustryManufacturingSetup::InventorySource");
+
+        // Eve database must be fetched before the main application starts
+        if (Evernus::EveDatabaseUpdater::performUpdate(argc, argv) == Evernus::EveDatabaseUpdater::Status::Error)
+            return 1;
 
         Evernus::EvernusApplication app{argc,
                                         argv,

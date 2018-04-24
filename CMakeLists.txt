@@ -313,6 +313,8 @@ add_executable(
     ESIWholeExternalOrderImporter.h
     EveDatabaseConnectionProvider.cpp
     EveDatabaseConnectionProvider.h
+    EveDatabaseUpdater.cpp
+    EveDatabaseUpdater.h
     EveDataManagerProvider.h
     EveDataProvider.cpp
     EveDataProvider.h

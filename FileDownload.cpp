@@ -20,16 +20,20 @@
 #include <QFileInfo>
 #include <QDir>
 
+#include <QtDebug>
+
 #include "FileDownload.h"
 
 namespace Evernus
 {
     FileDownload::FileDownload(const QUrl &addr, const QString &dest, QObject *parent)
-        : QObject(parent)
-        , mOutput(dest)
+        : QObject{parent}
+        , mOutput{dest}
     {
         QFileInfo info{dest};
         QDir{}.mkpath(info.dir().path());
+
+        qDebug() << "Downloading" << addr << "to" << dest;
 
         if (!mOutput.open(QIODevice::WriteOnly | QIODevice::Truncate))
             BOOST_THROW_EXCEPTION(std::runtime_error(tr("Error creating file: %1").arg(dest).toStdString()));
@@ -37,19 +41,26 @@ namespace Evernus
         auto reply = mNetworkManager.get(QNetworkRequest{addr});
         connect(reply, &QNetworkReply::readyRead, this, &FileDownload::process);
         connect(reply, &QNetworkReply::finished, this, &FileDownload::finish);
+        connect(reply, &QNetworkReply::downloadProgress, this, &FileDownload::downloadProgress);
+        connect(reply, &QNetworkReply::finished, reply, &QNetworkReply::deleteLater);
     }
 
     void FileDownload::process()
     {
-        auto reply = static_cast<QNetworkReply *>(sender());
+        const auto reply = static_cast<QNetworkReply *>(sender());
         mOutput.write(reply->readAll());
     }
 
     void FileDownload::finish()
     {
-        sender()->deleteLater();
-        mOutput.commit();
+        const auto reply = static_cast<QNetworkReply *>(sender());
+        auto success = reply->error() == QNetworkReply::NoError;
 
-        emit finished();
+        qDebug() << "Download success:" << success;
+
+        if (success)
+            success = mOutput.commit();
+
+        emit finished(success);
     }
 }

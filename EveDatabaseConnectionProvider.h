@@ -31,5 +31,7 @@ namespace Evernus
 
         EveDatabaseConnectionProvider &operator =(const EveDatabaseConnectionProvider &) = default;
         EveDatabaseConnectionProvider &operator =(EveDatabaseConnectionProvider &&) = default;
+
+        static QString getDatabasePath();
     };
 }

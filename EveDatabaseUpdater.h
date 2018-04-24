@@ -15,29 +15,42 @@
 #pragma once
 
 #include <QNetworkAccessManager>
-#include <QSaveFile>
+#include <QProgressBar>
+#include <QObject>
+
+class QNetworkReply;
 
 namespace Evernus
 {
-    class FileDownload
+    class EveDatabaseUpdater final
         : public QObject
     {
         Q_OBJECT
 
     public:
-        FileDownload(const QUrl &addr, const QString &dest, QObject *parent = nullptr);
-        virtual ~FileDownload() = default;
+        enum class Status
+        {
+            Success,
+            Error,
+        };
 
-    signals:
-        void finished(bool success);
-        void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+        EveDatabaseUpdater(const EveDatabaseUpdater &) = delete;
+        EveDatabaseUpdater(EveDatabaseUpdater &&) = delete;
 
-    private slots:
-        void process();
-        void finish();
+        EveDatabaseUpdater &operator =(const EveDatabaseUpdater &) = delete;
+        EveDatabaseUpdater &operator =(EveDatabaseUpdater &&) = delete;
+
+        static Status performUpdate(int argc, char **argv);
 
     private:
-        QNetworkAccessManager mNetworkManager;
-        QSaveFile mOutput;
+        QNetworkAccessManager mNetworkAccessManager;
+
+        QProgressBar mProgress;
+
+        EveDatabaseUpdater();
+        virtual ~EveDatabaseUpdater() = default;
+
+        void doUpdate(const QString &latestVersion);
+        void checkUpdate(QNetworkReply &reply);
     };
 }

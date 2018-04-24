@@ -41,17 +41,11 @@ namespace Evernus
         {
             db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), connName);
 
-            auto eveDbPath = QCoreApplication::applicationDirPath() + "/resources/eve.db";
+            auto eveDbPath = getDatabasePath();
             qDebug() << "Eve DB path:" << eveDbPath;
 
             if (!QFile::exists(eveDbPath))
-            {
-                eveDbPath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QCoreApplication::applicationName() + "/resources/eve.db");
-                qDebug() << "Eve DB path:" << eveDbPath;
-
-                if (!QFile::exists(eveDbPath))
-                    BOOST_THROW_EXCEPTION(std::runtime_error{"Cannot find Eve DB!"});
-            }
+                BOOST_THROW_EXCEPTION(std::runtime_error{"Cannot find Eve DB!"});
 
             db.setDatabaseName(eveDbPath);
             db.setConnectOptions(QStringLiteral("QSQLITE_OPEN_READONLY"));
@@ -61,5 +55,10 @@ namespace Evernus
         }
 
         return db;
+    }
+
+    QString EveDatabaseConnectionProvider::getDatabasePath()
+    {
+        return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/resources/eve.db";
     }
 }
