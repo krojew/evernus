@@ -48,7 +48,7 @@ namespace Evernus
                 BOOST_THROW_EXCEPTION(std::runtime_error{"Cannot find Eve DB!"});
 
             db.setDatabaseName(eveDbPath);
-            db.setConnectOptions(QStringLiteral("QSQLITE_OPEN_READONLY"));
+            db.setConnectOptions(QStringLiteral("QSQLITE_OPEN_READONLY;QSQLITE_BUSY_TIMEOUT=0"));
 
             if (!db.open())
                 BOOST_THROW_EXCEPTION(std::runtime_error{QCoreApplication::translate("MainDatabaseConnectionProvider", "Error opening DB!").toStdString()});
