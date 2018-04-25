@@ -30,71 +30,68 @@
 
 using namespace std::literals;
 
-namespace Evernus
+namespace Evernus::DatabaseUtils
 {
-    namespace DatabaseUtils
+    QString getDbPath()
     {
-        QString getDbPath()
-        {
-            return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/db/";
-        }
+        return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/db/";
+    }
 
-        QString getDbFilePath(const QString &dbName)
-        {
-            return getDbPath() + dbName;
-        }
+    QString getDbFilePath(const QString &dbName)
+    {
+        return getDbPath() + dbName;
+    }
 
-        void execQuery(QSqlQuery &query)
+    void execQuery(QSqlQuery &query)
+    {
+        qDebug() << "SQL:" << query.lastQuery();
+        if (!query.exec())
         {
-            qDebug() << "SQL:" << query.lastQuery();
-            if (!query.exec())
+            auto error = query.lastError();
+
+            qCritical() << error;
+
+            // special case for SQLITE_LOCKED - it happens, but according to official docs, it shouldn't (we have a connection per thread and no shared cache)
+            // this means the docs are incomplete, so we just do the most awful thing imaginable - retry until dead (no access to underlying sqlite api to make it work)
+
+            const auto SQLITE_LOCKED = QStringLiteral("6");
+            if (error.nativeErrorCode() == SQLITE_LOCKED)
             {
-                auto error = query.lastError();
+                qInfo() << "Engaging Horrible SQLITE_LOCKED Hack!";
 
-                qCritical() << error;
+                auto counter = 100;
+                do {
+                    std::this_thread::sleep_for(100ms);
 
-                // special case for SQLITE_LOCKED - it happens, but according to official docs, it shouldn't (we have a connection per thread and no shared cache)
-                // this means the docs are incomplete, so we just do the most awful thing imaginable - retry until dead (no access to underlying sqlite api to make it work)
+                    if (query.exec())
+                        return;
 
-                const auto SQLITE_LOCKED = QStringLiteral("6");
-                if (error.nativeErrorCode() == SQLITE_LOCKED)
-                {
-                    qInfo() << "Engaging Horrible SQLITE_LOCKED Hack!";
+                    error = query.lastError();
+                    qCritical() << error;
 
-                    auto counter = 100;
-                    do {
-                        std::this_thread::sleep_for(100ms);
+                    if (error.nativeErrorCode() != SQLITE_LOCKED)
+                        break;
 
-                        if (query.exec())
-                            return;
-
-                        error = query.lastError();
-                        qCritical() << error;
-
-                        if (error.nativeErrorCode() != SQLITE_LOCKED)
-                            break;
-
-                        --counter;
-                    } while (counter > 0);
-                }
-
-                BOOST_THROW_EXCEPTION(std::runtime_error{error.text().toStdString()});
+                    --counter;
+                } while (counter > 0);
             }
+
+            BOOST_THROW_EXCEPTION(std::runtime_error{error.text().toStdString()});
         }
+    }
 
-        QString backupDatabase(const QSqlDatabase &db)
-        {
-            return backupDatabase(db.databaseName());
-        }
+    QString backupDatabase(const QSqlDatabase &db)
+    {
+        return backupDatabase(db.databaseName());
+    }
 
-        QString backupDatabase(const QString &dbPath)
-        {
-            const auto dbBak = dbPath + QStringLiteral(".bak");
+    QString backupDatabase(const QString &dbPath)
+    {
+        const auto dbBak = dbPath + QStringLiteral(".bak");
 
-            QFile::remove(dbBak);
-            QFile::copy(dbPath, dbBak);
+        QFile::remove(dbBak);
+        QFile::copy(dbPath, dbBak);
 
-            return dbBak;
-        }
+        return dbBak;
     }
 }

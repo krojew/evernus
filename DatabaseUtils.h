@@ -22,21 +22,18 @@ class QByteArray;
 class QSqlQuery;
 class QString;
 
-namespace Evernus
+namespace Evernus::DatabaseUtils
 {
-    namespace DatabaseUtils
-    {
-        QString getDbPath();
-        QString getDbFilePath(const QString &dbName);
-        void execQuery(QSqlQuery &query);
-        QString backupDatabase(const QSqlDatabase &db);
-        QString backupDatabase(const QString &dbPath);
+    QString getDbPath();
+    QString getDbFilePath(const QString &dbName);
+    void execQuery(QSqlQuery &query);
+    QString backupDatabase(const QSqlDatabase &db);
+    QString backupDatabase(const QString &dbPath);
 
-        template<class T>
-        std::unordered_set<T> decodeRawSet(const QSqlRecord &record, const QString &name);
-        template<class T>
-        QByteArray encodeRawSet(const std::unordered_set<T> &values);
-    }
+    template<class T>
+    std::unordered_set<T> decodeRawSet(const QSqlRecord &record, const QString &name);
+    template<class T>
+    QByteArray encodeRawSet(const std::unordered_set<T> &values);
 }
 
 #include "DatabaseUtils.inl"

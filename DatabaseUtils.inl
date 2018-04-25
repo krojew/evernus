@@ -18,39 +18,36 @@
 #include <QSqlRecord>
 #include <QVariant>
 
-namespace Evernus
+namespace Evernus::DatabaseUtils
 {
-    namespace DatabaseUtils
+    template<class T>
+    std::unordered_set<T> decodeRawSet(const QSqlRecord &record, const QString &name)
     {
-        template<class T>
-        std::unordered_set<T> decodeRawSet(const QSqlRecord &record, const QString &name)
-        {
-            QDataStream stream{record.value(name).toByteArray()};
+        QDataStream stream{record.value(name).toByteArray()};
 
-            QVariantList list;
-            stream >> list;
+        QVariantList list;
+        stream >> list;
 
-            std::unordered_set<T> result;
-            result.reserve(list.size());
+        std::unordered_set<T> result;
+        result.reserve(list.size());
 
-            for (const auto &value : list)
-                result.emplace(value.template value<T>());
+        for (const auto &value : list)
+            result.emplace(value.template value<T>());
 
-            return result;
-        }
+        return result;
+    }
 
-        template<class T>
-        QByteArray encodeRawSet(const std::unordered_set<T> &values)
-        {
-            QVariantList list;
-            std::copy(std::begin(values), std::end(values), std::back_inserter(list));
+    template<class T>
+    QByteArray encodeRawSet(const std::unordered_set<T> &values)
+    {
+        QVariantList list;
+        std::copy(std::begin(values), std::end(values), std::back_inserter(list));
 
-            QByteArray data;
+        QByteArray data;
 
-            QDataStream stream{&data, QIODevice::WriteOnly};
-            stream << list;
+        QDataStream stream{&data, QIODevice::WriteOnly};
+        stream << list;
 
-            return data;
-        }
+        return data;
     }
 }
