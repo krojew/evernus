@@ -41,7 +41,7 @@ namespace Evernus
         if (!db.isValid())
         {
             db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), connName);
-            db.setConnectOptions(QStringLiteral("QSQLITE_BUSY_TIMEOUT=0"));
+            db.setConnectOptions(QStringLiteral("QSQLITE_BUSY_TIMEOUT=10000000"));
             db.setDatabaseName(DatabaseUtils::getDbFilePath(QStringLiteral("main.db")));
 
             if (!db.open())
