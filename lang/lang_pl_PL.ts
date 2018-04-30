@@ -3158,12 +3158,12 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Nieudana autoryzacja SSO.</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="135"/>
+        <location filename="../ESIManager.cpp" line="127"/>
         <source>Citadel order import</source>
         <translation>Import cytadel</translation>
     </message>
     <message>
-        <location filename="../ESIManager.cpp" line="135"/>
+        <location filename="../ESIManager.cpp" line="127"/>
         <source>Seems like you are importing citadel orders for the first time. CCP only allows importing orders from citadels you have access to. This means you need to authenticate yourself with Eve SSO, if you haven&apos;t done that already (please wait for the SSO window to open).
 
 Also, please note that due to large numbers of citadels in some regions, the import might take much longer. Remember you can toggle citadel import in the Preferences.</source>
@@ -3218,31 +3218,31 @@ Z powodu dużej ilości cytadel w niektórych regionach, import może zająć du
 <context>
     <name>Evernus::EveDatabaseUpdater</name>
     <message>
-        <location filename="../EveDatabaseUpdater.cpp" line="42"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="43"/>
         <source>Downloading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EveDatabaseUpdater.cpp" line="64"/>
-        <location filename="../EveDatabaseUpdater.cpp" line="86"/>
-        <location filename="../EveDatabaseUpdater.cpp" line="109"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="67"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="90"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="113"/>
         <source>SDE update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EveDatabaseUpdater.cpp" line="86"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="90"/>
         <source>Error downloading Eve database!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EveDatabaseUpdater.cpp" line="110"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="114"/>
         <source>Error retrieving latest SDE information: %1
 
 Do you want to try to continue? The application may not launch.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EveDatabaseUpdater.cpp" line="65"/>
+        <location filename="../EveDatabaseUpdater.cpp" line="68"/>
         <source>Do you wish to update the Eve Static Data Export database? Evernus needs to have an up-to-date database to function properly.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10449,7 +10449,7 @@ Czy chcesz ściągnąć ją teraz?</translation>
     <name>MainDatabaseConnectionProvider</name>
     <message>
         <location filename="../EveDatabaseConnectionProvider.cpp" line="54"/>
-        <location filename="../MainDatabaseConnectionProvider.cpp" line="47"/>
+        <location filename="../MainDatabaseConnectionProvider.cpp" line="48"/>
         <source>Error opening DB!</source>
         <translation type="unfinished">Błąd przy otwieraniu bazy danych!</translation>
     </message>
@@ -11143,49 +11143,54 @@ Kliknij na &quot;Importuj wszystko&quot; po akutalizacji.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="216"/>
-        <location filename="../main.cpp" line="231"/>
+        <location filename="../main.cpp" line="185"/>
+        <source>Force Eve database update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="217"/>
+        <location filename="../main.cpp" line="232"/>
         <source>Already running</source>
         <translation>Już włączono</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="216"/>
+        <location filename="../main.cpp" line="217"/>
         <source>Evernus seems to be already running. If this is not the case, please remove &apos;%1&apos;.</source>
         <translation>Evernus zdaje się już być włączony. Jeśli tak nie jest, usuń &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="231"/>
+        <location filename="../main.cpp" line="232"/>
         <source>Evernus probably didn&apos;t close cleanly the last time. Do you want to try to perform a cleanup?</source>
         <translation>Evernus prawdopodobnie nie został czysto zamknięty. Czy chcesz przeprowadzić próbę wyczyszczenia?</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="240"/>
-        <location filename="../main.cpp" line="499"/>
+        <location filename="../main.cpp" line="241"/>
+        <location filename="../main.cpp" line="500"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="241"/>
+        <location filename="../main.cpp" line="242"/>
         <source>Couldn&apos;t remove &apos;%1&apos;!</source>
         <translation>Nie udało się usunać &apos;%1&apos;!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="462"/>
+        <location filename="../main.cpp" line="463"/>
         <source>New version</source>
         <translation>Nowa wersja</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="463"/>
+        <location filename="../main.cpp" line="464"/>
         <source>Would you like to see what&apos;s new in this version?</source>
         <translation>Czy chcesz zobaczyć co się zmieniło w tej wersji?</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="476"/>
+        <location filename="../main.cpp" line="477"/>
         <source>Citadel data import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="477"/>
+        <location filename="../main.cpp" line="478"/>
         <source>EVE doesn&apos;t provide any information about your access rights to citadels. This means, in order to fetch data from citadels, Evernus needs to ask EVE for data for all possible citadels in given regions. This usually takes a lot of time. After doing the first citadel import, the next imports will be much, much faster. From time to time, Evernus needs to refresh its citadel data and ask for all of it again - you can change the refresh period in the preferences.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11214,7 +11219,7 @@ Możesz zawsze zmienić swój wybór w Ustawieniach importu.</translation>
         <translation type="vanished">Użyj tylko XML</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="510"/>
+        <location filename="../main.cpp" line="511"/>
         <source>Initialization error</source>
         <translation>Błąd inicjalizacji</translation>
     </message>
