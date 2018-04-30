@@ -40,14 +40,16 @@ namespace Evernus
         EveDatabaseUpdater &operator =(const EveDatabaseUpdater &) = delete;
         EveDatabaseUpdater &operator =(EveDatabaseUpdater &&) = delete;
 
-        static Status performUpdate(int argc, char **argv);
+        static Status performUpdate(int argc, char **argv, bool force);
 
     private:
+        bool mForce = false;
+
         QNetworkAccessManager mNetworkAccessManager;
 
         QProgressBar mProgress;
 
-        EveDatabaseUpdater();
+        explicit EveDatabaseUpdater(bool force);
         virtual ~EveDatabaseUpdater() = default;
 
         void doUpdate(const QString &latestVersion);

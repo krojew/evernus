@@ -182,6 +182,7 @@ int main(int argc, char *argv[])
             { Evernus::CommandLineOptions::clientSecretArg, QCoreApplication::translate("main", "SSO client secret"), QStringLiteral("secret"), EVERNUS_CLIENT_SECRET_TEXT },
             { Evernus::CommandLineOptions::maxLogFileSizeArg, QCoreApplication::translate("main", "Max. log file size"), QStringLiteral("size"), QStringLiteral("%1").arg(10 * 1014 * 1024) },
             { Evernus::CommandLineOptions::maxLogFilesArg, QCoreApplication::translate("main", "Max. log files"), QStringLiteral("n"), QStringLiteral("3") },
+            { Evernus::CommandLineOptions::forceSDEUpdateArg, QCoreApplication::translate("main", "Force Eve database update") },
         });
 
         // NOTE: don't use process here or it will exit on additional args in OSX
@@ -275,7 +276,7 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::IndustryManufacturingSetup::InventorySource>("IndustryManufacturingSetup::InventorySource");
 
         // Eve database must be fetched before the main application starts
-        if (Evernus::EveDatabaseUpdater::performUpdate(argc, argv) == Evernus::EveDatabaseUpdater::Status::Error)
+        if (Evernus::EveDatabaseUpdater::performUpdate(argc, argv, parser.isSet(Evernus::CommandLineOptions::forceSDEUpdateArg)) == Evernus::EveDatabaseUpdater::Status::Error)
             return 1;
 
         Evernus::EvernusApplication app{argc,

@@ -16,15 +16,13 @@
 
 #include <QString>
 
-namespace Evernus
+namespace Evernus::CommandLineOptions
 {
-    namespace CommandLineOptions
-    {
-        const auto forceVersionArg = QStringLiteral("force-version");
-        const auto noUpdateArg = QStringLiteral("no-update");
-        const auto clientIdArg = QStringLiteral("client-id");
-        const auto clientSecretArg = QStringLiteral("client-secret");
-        const auto maxLogFileSizeArg = QStringLiteral("max-log-file-size");
-        const auto maxLogFilesArg = QStringLiteral("max-log-files");
-    }
+    const auto forceVersionArg = QStringLiteral("force-version");
+    const auto noUpdateArg = QStringLiteral("no-update");
+    const auto clientIdArg = QStringLiteral("client-id");
+    const auto clientSecretArg = QStringLiteral("client-secret");
+    const auto maxLogFileSizeArg = QStringLiteral("max-log-file-size");
+    const auto maxLogFilesArg = QStringLiteral("max-log-files");
+    const auto forceSDEUpdateArg = QStringLiteral("force-sde-update");
 }

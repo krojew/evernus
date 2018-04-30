@@ -33,8 +33,9 @@
 
 namespace Evernus
 {
-    EveDatabaseUpdater::EveDatabaseUpdater()
+    EveDatabaseUpdater::EveDatabaseUpdater(bool force)
         : QObject{}
+        , mForce{force}
     {
         qInfo() << "Checking for SDE updates...";
 
@@ -49,26 +50,29 @@ namespace Evernus
         new ReplyTimeout{*reply};
     }
 
-    EveDatabaseUpdater::Status EveDatabaseUpdater::performUpdate(int argc, char **argv)
+    EveDatabaseUpdater::Status EveDatabaseUpdater::performUpdate(int argc, char **argv, bool force)
     {
         QApplication app{argc, argv};
-        EveDatabaseUpdater updater;
+        EveDatabaseUpdater updater{force};
 
         return (app.exec() == 0) ? (Status::Success) : (Status::Error);
     }
 
     void EveDatabaseUpdater::doUpdate(const QString &latestVersion)
     {
-        const auto ret = QMessageBox::question(
-            nullptr,
-            tr("SDE update"),
-            tr("Do you wish to update the Eve Static Data Export database? Evernus needs to have an up-to-date database to function properly.")
-        );
-
-        if (ret == QMessageBox::No)
+        if (!mForce)
         {
-            QCoreApplication::exit();
-            return;
+            const auto ret = QMessageBox::question(
+                nullptr,
+                tr("SDE update"),
+                tr("Do you wish to update the Eve Static Data Export database? Evernus needs to have an up-to-date database to function properly.")
+            );
+
+            if (ret == QMessageBox::No)
+            {
+                QCoreApplication::exit();
+                return;
+            }
         }
 
         mProgress.move(qApp->desktop()->availableGeometry(&mProgress).center() - mProgress.rect().center());
@@ -124,7 +128,7 @@ namespace Evernus
 
         qDebug() << "SDE versions:" << currentVersion << latestVersion;
 
-        if (latestVersion > currentVersion || !QFile::exists(EveDatabaseConnectionProvider::getDatabasePath()))
+        if (latestVersion > currentVersion || !QFile::exists(EveDatabaseConnectionProvider::getDatabasePath()) || mForce)
             doUpdate(latestVersion);
         else
             QCoreApplication::exit();
