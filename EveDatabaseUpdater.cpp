@@ -124,7 +124,7 @@ namespace Evernus
 
         qDebug() << "SDE versions:" << currentVersion << latestVersion;
 
-        if (latestVersion > currentVersion)
+        if (latestVersion > currentVersion || !QFile::exists(EveDatabaseConnectionProvider::getDatabasePath()))
             doUpdate(latestVersion);
         else
             QCoreApplication::exit();
