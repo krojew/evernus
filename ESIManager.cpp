@@ -1295,7 +1295,7 @@ namespace Evernus
             if (reachedEnd)
                 callback(std::move(*journal), {}, expires);
             else
-                nextCallback(nextFromId, std::move(journal));
+                nextCallback(nextFromId + 1, std::move(journal));
         };
     }
 
@@ -1366,7 +1366,7 @@ namespace Evernus
             if (reachedEnd)
                 callback(std::move(*transactions), {}, expires);
             else
-                nextCallback(nextFromId, std::move(transactions));
+                nextCallback(nextFromId + 1, std::move(transactions));
         };
     }
 
