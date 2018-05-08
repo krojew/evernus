@@ -35,6 +35,7 @@
 
 #include "MarketLogExternalOrderImporterThread.h"
 #include "IndustryManufacturingSetupController.h"
+#include "StandardExceptionQtWrapperException.h"
 #include "MarketLogExternalOrderImporter.h"
 #include "ProxyWebExternalOrderImporter.h"
 #include "MarketOrderFilterProxyModel.h"
@@ -491,6 +492,21 @@ int main(int argc, char *argv[])
                 QMetaObject::invokeMethod(&mainWnd, "showCharacterManagement", Qt::QueuedConnection);
 
             return app.exec();
+        }
+        catch (const Evernus::StandardExceptionQtWrapperException &e)
+        {
+            try
+            {
+                e.rethrow();
+            }
+            catch (...)
+            {
+                const auto info = boost::current_exception_diagnostic_information();
+
+                qCritical() << info.c_str();
+                QMessageBox::critical(nullptr, QCoreApplication::translate("main", "Error"), QString::fromStdString(info));
+                return 1;
+            }
         }
         catch (...)
         {

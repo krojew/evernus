@@ -475,11 +475,12 @@ namespace Evernus
         getInterface().fetchCorporationMarketOrders(charId, corpId, getMarketOrdersCallback(charId, callback));
     }
 
-    void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
-                                                 WalletJournalEntry::IdType tillId,
-                                                 const WalletJournalCallback &callback) const
+    void ESIManager::fetchCharacterWalletJournal(Character::IdType charId, WalletJournalEntry::IdType tillId, const WalletJournalCallback &callback) const
     {
-        fetchCharacterWalletJournal(charId, std::nullopt, tillId, std::make_shared<WalletJournal>(), callback);
+        getInterface().fetchCharacterWalletJournal(
+            charId,
+            getWalletJournalCallback(charId, 0, tillId, callback)
+        );
     }
 
     void ESIManager::fetchCorporationWalletJournal(Character::IdType charId,
@@ -488,7 +489,12 @@ namespace Evernus
                                                    WalletJournalEntry::IdType tillId,
                                                    const WalletJournalCallback &callback) const
     {
-        fetchCorporationWalletJournal(charId, corpId, division, std::nullopt, tillId, std::make_shared<WalletJournal>(), callback);
+        getInterface().fetchCorporationWalletJournal(
+            charId,
+            corpId,
+            division,
+            getWalletJournalCallback(charId, corpId, tillId, callback)
+        );
     }
 
     void ESIManager::fetchCharacterWalletTransactions(Character::IdType charId,
@@ -876,40 +882,6 @@ namespace Evernus
         });
     }
 
-    void ESIManager::fetchCharacterWalletJournal(Character::IdType charId,
-                                                 const std::optional<WalletJournalEntry::IdType> &fromId,
-                                                 WalletJournalEntry::IdType tillId,
-                                                 std::shared_ptr<WalletJournal> &&journal,
-                                                 const WalletJournalCallback &callback) const
-    {
-        getInterface().fetchCharacterWalletJournal(
-            charId,
-            fromId,
-            getWalletJournalCallback(charId, 0, tillId, std::move(journal), callback, [=](const auto &fromId, auto &&journal) {
-                fetchCharacterWalletJournal(charId, fromId, tillId, std::move(journal), callback);
-            })
-        );
-    }
-
-    void ESIManager::fetchCorporationWalletJournal(Character::IdType charId,
-                                                   quint64 corpId,
-                                                   int division,
-                                                   const std::optional<WalletJournalEntry::IdType> &fromId,
-                                                   WalletJournalEntry::IdType tillId,
-                                                   std::shared_ptr<WalletJournal> &&journal,
-                                                   const WalletJournalCallback &callback) const
-    {
-        getInterface().fetchCorporationWalletJournal(
-            charId,
-            corpId,
-            division,
-            fromId,
-            getWalletJournalCallback(charId, corpId, tillId, std::move(journal), callback, [=](const auto &fromId, auto &&journal) {
-                fetchCorporationWalletJournal(charId, corpId, division, fromId, tillId, std::move(journal), callback);
-            })
-        );
-    }
-
     void ESIManager::fetchCharacterWalletTransactions(Character::IdType charId,
                                                       const std::optional<WalletTransaction::IdType> &fromId,
                                                       WalletTransaction::IdType tillId,
@@ -1194,34 +1166,28 @@ namespace Evernus
         };
     }
 
-    template<class T>
-    ESIInterface::JsonCallback ESIManager::getWalletJournalCallback(Character::IdType charId,
-                                                                    quint64 corpId,
-                                                                    WalletJournalEntry::IdType tillId,
-                                                                    std::shared_ptr<WalletJournal> &&journal,
-                                                                    const WalletJournalCallback &callback,
-                                                                    T nextCallback) const
+    ESIInterface::PaginatedCallback ESIManager::getWalletJournalCallback(Character::IdType charId,
+                                                                         quint64 corpId,
+                                                                         WalletJournalEntry::IdType tillId,
+                                                                         const WalletJournalCallback &callback) const
     {
-        return [=, journal = std::move(journal), nextCallback = std::move(nextCallback)](auto &&data, const auto &error, const auto &expires) mutable {
+        auto journal = std::make_shared<WalletJournal>();
+        return [=](auto &&data, auto atEnd, const auto &error, const auto &expires) mutable {
             if (Q_UNLIKELY(!error.isEmpty()))
             {
                 callback({}, error, expires);
                 return;
             }
 
-            auto nextFromId = std::numeric_limits<WalletJournalEntry::IdType>::max();
-
-            std::mutex resultMutex;
-
             const auto array = data.array();
-            std::atomic_bool reachedEnd{array.isEmpty()};
+            std::mutex resultMutex;
 
             QtConcurrent::blockingMap(
                 array,
                 [&](const auto &value) {
                     const auto entryObj = value.toObject();
 
-                    WalletJournalEntry entry{static_cast<WalletJournalEntry::IdType>(entryObj.value(QStringLiteral("ref_id")).toDouble())};
+                    WalletJournalEntry entry{static_cast<WalletJournalEntry::IdType>(entryObj.value(QStringLiteral("id")).toDouble())};
 
                     const auto id = entry.getId();
                     if (id > tillId)
@@ -1236,36 +1202,6 @@ namespace Evernus
                         if (entryObj.contains(QStringLiteral("second_party_id")))
                             entry.setSecondPartyId(entryObj.value(QStringLiteral("second_party_id")).toDouble());
 
-                        entry.setFirstPartyType(entryObj.value(QStringLiteral("first_party_type")).toString());
-                        entry.setSecondPartyType(entryObj.value(QStringLiteral("second_party_type")).toString());
-
-                        if (entryObj.contains(QStringLiteral("extra_info")))
-                        {
-                            const auto extraInfo = entryObj.value(QStringLiteral("extra_info")).toObject();
-                            const auto checkAndSetExtraInfo = [&](const auto &key) {
-                                if (extraInfo.contains(key))
-                                {
-                                    entry.setExtraInfoId(extraInfo.value(key).toDouble());
-                                    entry.setExtraInfoType(key);
-                                    return true;
-                                }
-
-                                return false;
-                            };
-
-                            checkAndSetExtraInfo(QStringLiteral("alliance_id")) ||
-                            checkAndSetExtraInfo(QStringLiteral("character_id")) ||
-                            checkAndSetExtraInfo(QStringLiteral("contract_id")) ||
-                            checkAndSetExtraInfo(QStringLiteral("corporation_id")) ||
-                            checkAndSetExtraInfo(QStringLiteral("destroyed_ship_type_id")) ||
-                            checkAndSetExtraInfo(QStringLiteral("job_id")) ||
-                            checkAndSetExtraInfo(QStringLiteral("location_id")) ||
-                            checkAndSetExtraInfo(QStringLiteral("npc_id")) ||
-                            checkAndSetExtraInfo(QStringLiteral("planet_id")) ||
-                            checkAndSetExtraInfo(QStringLiteral("system_id")) ||
-                            checkAndSetExtraInfo(QStringLiteral("transaction_id"));
-                        }
-
                         entry.setReason(entryObj.value(QStringLiteral("reason")).toString());
 
                         if (entryObj.contains(QStringLiteral("amount")))
@@ -1276,26 +1212,19 @@ namespace Evernus
                             entry.setTaxReceiverId(entryObj.value(QStringLiteral("tax_reciever_id")).toDouble());
                         if (entryObj.contains(QStringLiteral("tax")))
                             entry.setTaxAmount(entryObj.value(QStringLiteral("tax")).toDouble());
+                        if (entryObj.contains(QStringLiteral("context_id")))
+                            entry.setContextId(entryObj.value(QStringLiteral("context_id")).toDouble());
+                        if (entryObj.contains(QStringLiteral("context_id_type")))
+                            entry.setContextIdType(entryObj.value(QStringLiteral("context_id_type")).toString());
 
-                        {
-                            std::lock_guard<std::mutex> lock{resultMutex};
-
-                            journal->emplace(std::move(entry));
-                            if (nextFromId > id)
-                                nextFromId = id;
-                        }
-                    }
-                    else
-                    {
-                        reachedEnd = true;
+                        std::lock_guard<std::mutex> lock{resultMutex};
+                        journal->emplace(std::move(entry));
                     }
                 }
             );
 
-            if (reachedEnd)
+            if (atEnd)
                 callback(std::move(*journal), {}, expires);
-            else
-                nextCallback(nextFromId + 1, std::move(journal));
         };
     }
 

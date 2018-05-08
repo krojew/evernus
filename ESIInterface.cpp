@@ -282,43 +282,33 @@ namespace Evernus
     }
 
     void ESIInterface::fetchCharacterWalletJournal(Character::IdType charId,
-                                                   const std::optional<WalletJournalEntry::IdType> &fromId,
-                                                   const JsonCallback &callback) const
+                                                   const PaginatedCallback &callback) const
     {
         qDebug() << "Fetching character wallet journal for" << charId;
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, tr("Cannot fetch character wallet journal with no character selected."), {});
+            callback({}, true, tr("Cannot fetch character wallet journal with no character selected."), {});
             return;
         }
 
-        QVariantMap paramteres;
-        if (fromId)
-            paramteres[QStringLiteral("from_id")] = *fromId;
-
-        get(charId, QStringLiteral("/v3/characters/%1/wallet/journal/").arg(charId), paramteres, callback, getNumRetries());
+        fetchPaginatedData(charId, QStringLiteral("/v4/characters/%1/wallet/journal/").arg(charId), 1, callback, std::make_shared<PaginatedContext>());
     }
 
     void ESIInterface::fetchCorporationWalletJournal(Character::IdType charId,
                                                      quint64 corpId,
                                                      int division,
-                                                     const std::optional<WalletJournalEntry::IdType> &fromId,
-                                                     const JsonCallback &callback) const
+                                                     const PaginatedCallback &callback) const
     {
         qDebug() << "Fetching corporation wallet journal for" << charId;
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, tr("Cannot fetch corporation wallet journal with no character selected."), {});
+            callback({}, true, tr("Cannot fetch corporation wallet journal with no character selected."), {});
             return;
         }
 
-        QVariantMap paramteres;
-        if (fromId)
-            paramteres[QStringLiteral("from_id")] = *fromId;
-
-        get(charId, QStringLiteral("/v2/corporations/%1/wallets/%2/journal/").arg(corpId).arg(division), paramteres, callback, getNumRetries());
+        fetchPaginatedData(charId, QStringLiteral("/v3/corporations/%1/wallets/%2/journal/").arg(corpId).arg(division), 1, callback, std::make_shared<PaginatedContext>());
     }
 
     void ESIInterface::fetchCharacterWalletTransactions(Character::IdType charId,

@@ -120,6 +120,8 @@ namespace Evernus
                                          const WalletTransactionRepository &corpWalletTransactionRepo,
                                          const Repository<Character> &characterRepo);
         static void migrateDatabaseTo216(const Repository<Character> &characterRepo);
+        static void migrateDatabaseTo34(const WalletJournalEntryRepository &walletJournalRepo,
+                                        const WalletJournalEntryRepository &corpWalletJournalRepo);
 
         static void migrateCoreTo03();
         static void migrateCoreTo113();

@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(PROJECT_NAME "evernus")
 set(MAJOR_VERSION "3")
-set(MINOR_VERSION "3")
+set(MINOR_VERSION "4")
 
 option(EVERNUS_CREATE_DUMPS "create crash dumps using Google Breakpad" ON)
 
@@ -726,6 +726,7 @@ add_executable(
     SSOSettings.h
     SSOUtils.cpp
     SSOUtils.h
+    StandardExceptionQtWrapperException.h
     StandardModelProxyWidget.cpp
     StandardModelProxyWidget.h
     StationModel.cpp

@@ -154,18 +154,6 @@ namespace Evernus
 
         ESIInterfaceManager &mInterfaceManager;
 
-        void fetchCharacterWalletJournal(Character::IdType charId,
-                                         const std::optional<WalletJournalEntry::IdType> &fromId,
-                                         WalletJournalEntry::IdType tillId,
-                                         std::shared_ptr<WalletJournal> &&journal,
-                                         const WalletJournalCallback &callback) const;
-        void fetchCorporationWalletJournal(Character::IdType charId,
-                                           quint64 corpId,
-                                           int division,
-                                           const std::optional<WalletJournalEntry::IdType> &fromId,
-                                           WalletJournalEntry::IdType tillId,
-                                           std::shared_ptr<WalletJournal> &&journal,
-                                           const WalletJournalCallback &callback) const;
         void fetchCharacterWalletTransactions(Character::IdType charId,
                                               const std::optional<WalletTransaction::IdType> &fromId,
                                               WalletTransaction::IdType tillId,
@@ -186,13 +174,10 @@ namespace Evernus
         ESIInterface::JsonCallback getContractCallback(const ContractCallback &callback) const;
         ESIInterface::JsonCallback getContractItemCallback(Contract::IdType contractId, const ContractItemCallback &callback) const;
 
-        template<class T>
-        ESIInterface::JsonCallback getWalletJournalCallback(Character::IdType charId,
-                                                            quint64 corpId,
-                                                            WalletJournalEntry::IdType tillId,
-                                                            std::shared_ptr<WalletJournal> &&journal,
-                                                            const WalletJournalCallback &callback,
-                                                            T nextCallback) const;
+        ESIInterface::PaginatedCallback getWalletJournalCallback(Character::IdType charId,
+                                                                 quint64 corpId,
+                                                                 WalletJournalEntry::IdType tillId,
+                                                                 const WalletJournalCallback &callback) const;
 
         template<class T>
         ESIInterface::JsonCallback getWalletTransactionsCallback(Character::IdType charId,

@@ -44,6 +44,7 @@ namespace Evernus
         const auto taxAmount = record.value(QStringLiteral("tax_amount"));
         const auto balance = record.value(QStringLiteral("balance"));
         const auto amount = record.value(QStringLiteral("amount"));
+        const auto contextId = record.value(QStringLiteral("context_id"));
 
         auto timestamp = record.value(QStringLiteral("timestamp")).toDateTime();
         timestamp.setTimeSpec(Qt::UTC);
@@ -53,9 +54,6 @@ namespace Evernus
         walletJournalEntry->setTimestamp(timestamp);
         walletJournalEntry->setFirstPartyId((firstPartyId.isNull()) ? (WalletJournalEntry::PartyIdType{}) : (firstPartyId.toULongLong()));
         walletJournalEntry->setSecondPartyId((secondPartyId.isNull()) ? (WalletJournalEntry::PartyIdType{}) : (secondPartyId.toULongLong()));
-        walletJournalEntry->setExtraInfoId((extraInfoId.isNull()) ? (WalletJournalEntry::ExtraInfoIdType{}) : (extraInfoId.toULongLong()));
-        walletJournalEntry->setFirstPartyType(record.value(QStringLiteral("first_party_type")).toString());
-        walletJournalEntry->setSecondPartyType(record.value(QStringLiteral("second_party_type")).toString());
         walletJournalEntry->setAmount((amount.isNull()) ? (WalletJournalEntry::ISKType{}) : (amount.toDouble()));
         walletJournalEntry->setBalance((balance.isNull()) ? (WalletJournalEntry::ISKType{}) : (balance.toDouble()));
         walletJournalEntry->setReason(record.value(QStringLiteral("reason")).toString());
@@ -63,8 +61,9 @@ namespace Evernus
         walletJournalEntry->setTaxAmount((taxAmount.isNull()) ? (WalletJournalEntry::ISKType{}) : (taxAmount.toDouble()));
         walletJournalEntry->setCorporationId(record.value(QStringLiteral("corporation_id")).toULongLong());
         walletJournalEntry->setIgnored(record.value(QStringLiteral("ignored")).toBool());
-        walletJournalEntry->setExtraInfoType(record.value(QStringLiteral("extra_info_type")).toString());
         walletJournalEntry->setRefType(record.value(QStringLiteral("ref_type")).toString());
+        walletJournalEntry->setContextId((contextId.isNull()) ? (WalletJournalEntry::ContextIdType{}) : (contextId.toULongLong()));
+        walletJournalEntry->setContextIdType(record.value(QStringLiteral("context_id_type")).toString());
         walletJournalEntry->setNew(false);
 
         return walletJournalEntry;
@@ -78,17 +77,15 @@ namespace Evernus
             "timestamp DATETIME NOT NULL,"
             "first_party_id BIGINT NULL,"
             "second_party_id BIGINT NULL,"
-            "first_party_type TEXT NULL,"
-            "second_party_type TEXT NULL,"
-            "extra_info_id BIGINT NULL,"
             "amount NUMERIC NULL,"
             "balance NUMERIC NULL,"
             "reason TEXT NULL,"
             "tax_receiver_id BIGINT NULL,"
             "tax_amount NUMERIC NULL,"
             "corporation_id BIGINT NOT NULL,"
+            "context_id BIGINT NULL,"
+            "context_id_type TEXT NULL,"
             "ignored TINYINT NOT NULL,"
-            "extra_info_type TEXT NULL,"
             "ref_type TEXT NULL"
         ")").arg(getTableName()).arg(
             (mCorp) ? (QString{}) : (QStringLiteral("REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE").arg(characterRepo.getTableName()).arg(characterRepo.getIdColumn()))));
@@ -196,9 +193,6 @@ namespace Evernus
             QStringLiteral("timestamp"),
             QStringLiteral("first_party_id"),
             QStringLiteral("second_party_id"),
-            QStringLiteral("first_party_type"),
-            QStringLiteral("second_party_type"),
-            QStringLiteral("extra_info_id"),
             QStringLiteral("amount"),
             QStringLiteral("balance"),
             QStringLiteral("reason"),
@@ -206,20 +200,21 @@ namespace Evernus
             QStringLiteral("tax_amount"),
             QStringLiteral("corporation_id"),
             QStringLiteral("ignored"),
-            QStringLiteral("extra_info_type"),
             QStringLiteral("ref_type"),
+            QStringLiteral("context_id"),
+            QStringLiteral("context_id_type"),
         };
     }
 
     void WalletJournalEntryRepository::bindValues(const WalletJournalEntry &entity, QSqlQuery &query) const
     {
         const auto taxReceiverId = entity.getTaxReceiverId();
-        const auto extraInfoId = entity.getExtraInfoId();
         const auto firstPartyId = entity.getFirstPartyId();
         const auto secondPartyId = entity.getSecondPartyId();
         const auto taxAmount = entity.getTaxAmount();
         const auto amount = entity.getAmount();
         const auto balance = entity.getBalance();
+        const auto contextId = entity.getContextId();
 
         if (entity.getId() != WalletJournalEntry::invalidId)
             query.bindValue(QStringLiteral(":id"), entity.getId());
@@ -228,9 +223,6 @@ namespace Evernus
         query.bindValue(QStringLiteral(":timestamp"), entity.getTimestamp());
         query.bindValue(QStringLiteral(":first_party_id"), (firstPartyId) ? (*firstPartyId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(QStringLiteral(":second_party_id"), (secondPartyId) ? (*secondPartyId) : (QVariant{QVariant::ULongLong}));
-        query.bindValue(QStringLiteral(":first_party_type"), entity.getFirstPartyType());
-        query.bindValue(QStringLiteral(":second_party_type"), entity.getSecondPartyType());
-        query.bindValue(QStringLiteral(":extra_info_id"), (extraInfoId) ? (*extraInfoId) : (QVariant{QVariant::ULongLong}));
         query.bindValue(QStringLiteral(":amount"), (amount) ? (*amount) : (QVariant{QVariant::Double}));
         query.bindValue(QStringLiteral(":balance"), (balance) ? (*balance) : (QVariant{QVariant::Double}));
         query.bindValue(QStringLiteral(":reason"), entity.getReason());
@@ -238,19 +230,20 @@ namespace Evernus
         query.bindValue(QStringLiteral(":tax_amount"), (taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
         query.bindValue(QStringLiteral(":corporation_id"), entity.getCorporationId());
         query.bindValue(QStringLiteral(":ignored"), entity.isIgnored());
-        query.bindValue(QStringLiteral(":extra_info_type"), entity.getExtraInfoType());
         query.bindValue(QStringLiteral(":ref_type"), entity.getRefType());
+        query.bindValue(QStringLiteral(":context_id"), (contextId) ? (*contextId) : (QVariant{QVariant::ULongLong}));
+        query.bindValue(QStringLiteral(":context_id_type"), entity.getContextIdType());
     }
 
     void WalletJournalEntryRepository::bindPositionalValues(const WalletJournalEntry &entity, QSqlQuery &query) const
     {
         const auto taxReceiverId = entity.getTaxReceiverId();
-        const auto extraInfoId = entity.getExtraInfoId();
         const auto firstPartyId = entity.getFirstPartyId();
         const auto secondPartyId = entity.getSecondPartyId();
         const auto taxAmount = entity.getTaxAmount();
         const auto amount = entity.getAmount();
         const auto balance = entity.getBalance();
+        const auto contextId = entity.getContextId();
 
         if (entity.getId() != WalletJournalEntry::invalidId)
             query.addBindValue(entity.getId());
@@ -259,9 +252,6 @@ namespace Evernus
         query.addBindValue(entity.getTimestamp());
         query.addBindValue((firstPartyId) ? (*firstPartyId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue((secondPartyId) ? (*secondPartyId) : (QVariant{QVariant::ULongLong}));
-        query.addBindValue(entity.getFirstPartyType());
-        query.addBindValue(entity.getSecondPartyType());
-        query.addBindValue((extraInfoId) ? (*extraInfoId) : (QVariant{QVariant::ULongLong}));
         query.addBindValue((amount) ? (*amount) : (QVariant{QVariant::Double}));
         query.addBindValue((balance) ? (*balance) : (QVariant{QVariant::Double}));
         query.addBindValue(entity.getReason());
@@ -269,8 +259,9 @@ namespace Evernus
         query.addBindValue((taxAmount) ? (*taxAmount) : (QVariant{QVariant::Double}));
         query.addBindValue(entity.getCorporationId());
         query.addBindValue(entity.isIgnored());
-        query.addBindValue(entity.getExtraInfoType());
         query.addBindValue(entity.getRefType());
+        query.addBindValue((contextId) ? (*contextId) : (QVariant{QVariant::ULongLong}));
+        query.addBindValue(entity.getContextIdType());
     }
 
     template<class T>

@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QRegularExpression>
+#include <QTextDocument>
 #include <QLocale>
 #include <QColor>
 #include <QHash>
@@ -89,7 +90,7 @@ namespace Evernus
             switch (column) {
             case firstPartyColumn:
             case secondPartyColumn:
-            case extraInfoColumn:
+            case contextColumn:
                 if (!mData[row][column].isNull())
                     return mDataProvider.getGenericName(mData[row][column].toULongLong());
             }
@@ -102,7 +103,6 @@ namespace Evernus
                 return TextUtils::dateTimeToString(mData[row][timestampColumn].toDateTime().toLocalTime(), QLocale{});
             case firstPartyColumn:
             case secondPartyColumn:
-            case extraInfoColumn:
                 if (!mData[row][column].isNull())
                     return mDataProvider.getGenericName(mData[row][column].toULongLong());
                 break;
@@ -251,7 +251,7 @@ namespace Evernus
 
     void WalletJournalModel::updateNames()
     {
-        emit dataChanged(index(0, firstPartyColumn), index(rowCount() - 1, extraInfoColumn), { Qt::UserRole, Qt::DisplayRole });
+        emit dataChanged(index(0, firstPartyColumn), index(rowCount() - 1, contextColumn), { Qt::UserRole, Qt::DisplayRole });
     }
 
     void WalletJournalModel::processData(const WalletJournalEntryRepository::EntityList &entries)
@@ -262,7 +262,7 @@ namespace Evernus
 
         for (const auto &entry : entries)
         {
-            const auto extraInfoId = entry->getExtraInfoId();
+            const auto contextId = entry->getContextId();
             const auto firstPartyId = entry->getFirstPartyId();
             const auto secondPartyId = entry->getSecondPartyId();
             const auto amount = entry->getAmount();
@@ -271,16 +271,19 @@ namespace Evernus
             mData.emplace_back();
             auto &data = mData.back();
 
+            QTextDocument reasonDoc;
+            reasonDoc.setHtml(entry->getReason().remove(re));
+
             data
                 << entry->isIgnored()
                 << entry->getTimestamp()
                 << translateRefType(entry->getRefType())
                 << ((firstPartyId) ? (*firstPartyId) : (QVariant{}))
                 << ((secondPartyId) ? (*secondPartyId) : (QVariant{}))
-                << ((extraInfoId) ? (*extraInfoId) : (QVariant{}))
+                << ((contextId) ? (QStringLiteral("%1: %2").arg(entry->getContextIdType()).arg(*contextId)) : (QVariant{}))
                 << ((amount) ? (QVariant{*amount}) : (QVariant{}))
                 << ((balance) ? (QVariant{*balance}) : (QVariant{}))
-                << entry->getReason().remove(re)
+                << reasonDoc.toPlainText()
                 << entry->getId();
         }
     }

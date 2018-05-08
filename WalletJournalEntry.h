@@ -27,7 +27,7 @@ namespace Evernus
     {
     public:
         using TaxReceiverType = std::optional<quint64>;
-        using ExtraInfoIdType = std::optional<quint64>;
+        using ContextIdType = std::optional<quint64>;
         using PartyIdType = std::optional<quint64>;
         using ISKType = std::optional<double>;
 
@@ -55,24 +55,6 @@ namespace Evernus
         PartyIdType getSecondPartyId() const noexcept;
         void setSecondPartyId(PartyIdType id) noexcept;
 
-        QString getFirstPartyType() const &;
-        QString &&getFirstPartyType() && noexcept;
-        void setFirstPartyType(const QString &type);
-        void setFirstPartyType(QString &&type) noexcept;
-
-        QString getSecondPartyType() const &;
-        QString &&getSecondPartyType() && noexcept;
-        void setSecondPartyType(const QString &type);
-        void setSecondPartyType(QString &&type) noexcept;
-
-        ExtraInfoIdType getExtraInfoId() const noexcept;
-        void setExtraInfoId(ExtraInfoIdType id) noexcept;
-
-        QString getExtraInfoType() const &;
-        QString &&getExtraInfoType() && noexcept;
-        void setExtraInfoType(const QString &type);
-        void setExtraInfoType(QString &&type) noexcept;
-
         ISKType getAmount() const noexcept;
         void setAmount(ISKType value) noexcept;
 
@@ -93,6 +75,14 @@ namespace Evernus
         quint64 getCorporationId() const noexcept;
         void setCorporationId(quint64 id) noexcept;
 
+        ContextIdType getContextId() const noexcept;
+        void setContextId(ContextIdType id) noexcept;
+
+        QString getContextIdType() const &;
+        QString &&getContextIdType() && noexcept;
+        void setContextIdType(const QString &type);
+        void setContextIdType(QString &&type) noexcept;
+
         bool isIgnored() const noexcept;
         void setIgnored(bool flag) noexcept;
 
@@ -105,16 +95,14 @@ namespace Evernus
         QString mRefType;
         PartyIdType mFirstPartyId;
         PartyIdType mSecondPartyId;
-        QString mFirstPartyType;
-        QString mSecondPartyType;
-        ExtraInfoIdType mExtraInfoId;
-        QString mExtraInfoType;
         ISKType mAmount;
         ISKType mBalance;
         QString mReason;
         TaxReceiverType mTaxReceiverId;
         ISKType mTaxAmount;
         quint64 mCorporationId = 0;
+        ContextIdType mContextId;
+        QString mContextIdType;
         bool mIgnored = false;
     };
 

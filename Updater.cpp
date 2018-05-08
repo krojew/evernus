@@ -179,6 +179,9 @@ namespace Evernus
             { {2, 16}, [](const auto &provider) {
                 migrateDatabaseTo216(provider.getCharacterRepository());
             } },
+            { {3, 4}, [](const auto &provider) {
+                migrateDatabaseTo34(provider.getWalletJournalEntryRepository(), provider.getCorpWalletJournalEntryRepository());
+            } },
         }
     {
     }
@@ -650,6 +653,18 @@ namespace Evernus
     void Updater::migrateDatabaseTo216(const Repository<Character> &characterRepo)
     {
         safelyExecQuery(characterRepo, QStringLiteral("ALTER TABLE %1 ADD COLUMN alpha_clone TINYINT NOT NULL DEFAULT 0").arg(characterRepo.getTableName()));
+    }
+
+    void Updater::migrateDatabaseTo34(const WalletJournalEntryRepository &walletJournalRepo,
+                                      const WalletJournalEntryRepository &corpWalletJournalRepo)
+    {
+        const auto addColumns = [](const auto &repo) {
+            safelyExecQuery(repo, QStringLiteral("ALTER TABLE %1 ADD COLUMN context_id BIGINT NULL DEFAULT NULL") .arg(repo.getTableName()));
+            safelyExecQuery(repo, QStringLiteral("ALTER TABLE %1 ADD COLUMN context_id_type TEXT NULL DEFAULT NULL") .arg(repo.getTableName()));
+        };
+
+        addColumns(walletJournalRepo);
+        addColumns(corpWalletJournalRepo);
     }
 
     void Updater::migrateCoreTo130()

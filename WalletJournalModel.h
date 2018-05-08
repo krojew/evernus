@@ -67,7 +67,7 @@ namespace Evernus
             typeColumn,
             firstPartyColumn,
             secondPartyColumn,
-            extraInfoColumn,
+            contextColumn,
             amountColumn,
             balanceColumn,
             reasonColumn,

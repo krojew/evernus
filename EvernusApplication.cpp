@@ -45,6 +45,7 @@
 
 #include <QtDebug>
 
+#include "StandardExceptionQtWrapperException.h"
 #include "ExternalOrderImporterNames.h"
 #include "LanguageSelectDialog.h"
 #include "SovereigntyStructure.h"
@@ -2676,6 +2677,9 @@ namespace Evernus
         auto watcher = new QFutureWatcher<void>{this};
         connect(watcher, &QFutureWatcher<void>::finished, this, callback);
         connect(watcher, &QFutureWatcher<void>::finished, watcher, &QFutureWatcher<void>::deleteLater);
+        connect(watcher, &QFutureWatcher<void>::canceled, this, [=] {
+            watcher->waitForFinished(); // rethrow exception, if present
+        });
 
         watcher->setFuture(asyncBatchStore(repo, std::move(data), hasId));
     }
@@ -2684,7 +2688,17 @@ namespace Evernus
     QFuture<void> EvernusApplication::asyncExecute(Func func)
     {
         qDebug() << "Starting async task...";
-        return QtConcurrent::run(func);
+        return QtConcurrent::run([=] {
+            // Qt is not smart enough to handle standard exceptions
+            try
+            {
+                func();
+            }
+            catch (...)
+            {
+                throw StandardExceptionQtWrapperException{std::current_exception()};
+            }
+        });
     }
 
     void EvernusApplication::fetchStationTypeIds()

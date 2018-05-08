@@ -76,76 +76,6 @@ namespace Evernus
         mSecondPartyId = std::move(id);
     }
 
-    QString WalletJournalEntry::getFirstPartyType() const &
-    {
-        return mFirstPartyType;
-    }
-
-    QString &&WalletJournalEntry::getFirstPartyType() && noexcept
-    {
-        return std::move(mFirstPartyType);
-    }
-
-    void WalletJournalEntry::setFirstPartyType(const QString &type)
-    {
-        mFirstPartyType = type;
-    }
-
-    void WalletJournalEntry::setFirstPartyType(QString &&type) noexcept
-    {
-        mFirstPartyType = std::move(type);
-    }
-
-    QString WalletJournalEntry::getSecondPartyType() const &
-    {
-        return mSecondPartyType;
-    }
-
-    QString &&WalletJournalEntry::getSecondPartyType() && noexcept
-    {
-        return std::move(mSecondPartyType);
-    }
-
-    void WalletJournalEntry::setSecondPartyType(const QString &type)
-    {
-        mSecondPartyType = type;
-    }
-
-    void WalletJournalEntry::setSecondPartyType(QString &&type) noexcept
-    {
-        mSecondPartyType = std::move(type);
-    }
-
-    WalletJournalEntry::ExtraInfoIdType WalletJournalEntry::getExtraInfoId() const noexcept
-    {
-        return mExtraInfoId;
-    }
-
-    void WalletJournalEntry::setExtraInfoId(ExtraInfoIdType id) noexcept
-    {
-        mExtraInfoId = id;
-    }
-
-    QString WalletJournalEntry::getExtraInfoType() const &
-    {
-        return mExtraInfoType;
-    }
-
-    QString &&WalletJournalEntry::getExtraInfoType() && noexcept
-    {
-        return std::move(mExtraInfoType);
-    }
-
-    void WalletJournalEntry::setExtraInfoType(const QString &type)
-    {
-        mExtraInfoType = type;
-    }
-
-    void WalletJournalEntry::setExtraInfoType(QString &&type) noexcept
-    {
-        mExtraInfoType = std::move(type);
-    }
-
     WalletJournalEntry::ISKType WalletJournalEntry::getAmount() const noexcept
     {
         return mAmount;
@@ -214,6 +144,36 @@ namespace Evernus
     void WalletJournalEntry::setCorporationId(quint64 id) noexcept
     {
         mCorporationId = id;
+    }
+
+    WalletJournalEntry::ContextIdType WalletJournalEntry::getContextId() const noexcept
+    {
+        return mContextId;
+    }
+
+    void WalletJournalEntry::setContextId(ContextIdType id) noexcept
+    {
+        mContextId = id;
+    }
+
+    QString WalletJournalEntry::getContextIdType() const &
+    {
+        return mContextIdType;
+    }
+
+    QString &&WalletJournalEntry::getContextIdType() && noexcept
+    {
+        return std::move(mContextIdType);
+    }
+
+    void WalletJournalEntry::setContextIdType(const QString &type)
+    {
+        mContextIdType = type;
+    }
+
+    void WalletJournalEntry::setContextIdType(QString &&type) noexcept
+    {
+        mContextIdType = std::move(type);
     }
 
     bool WalletJournalEntry::isIgnored() const noexcept
