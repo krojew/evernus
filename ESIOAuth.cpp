@@ -258,7 +258,10 @@ namespace Evernus
 
                 if (error == QNetworkReply::AuthenticationRequiredError || error == QNetworkReply::ContentAccessDenied)
                 {
-                    if (QDateTime::currentDateTime() > auth.expirationAt())
+                    const auto expiration = auth.expirationAt();
+                    qDebug() << "Token expiration:" << expiration;
+
+                    if (QDateTime::currentDateTime() > expiration)
                     {
                         queueRequest(charId, url, std::move(callback), std::move(errorCallback), std::move(replyCreator));
                         if (mPendingRequests[charId].size() == 1)

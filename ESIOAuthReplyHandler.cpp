@@ -70,6 +70,8 @@ namespace Evernus
         if (!params.contains(QStringLiteral("scope")))
             params[QStringLiteral("scope")] = mScope;
 
+        qDebug() << "ESI reply handler params:" << params;
+
         emit tokensReceived(params);
     }
 
