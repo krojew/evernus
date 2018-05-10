@@ -261,7 +261,7 @@ namespace Evernus
                     const auto expiration = auth.expirationAt();
                     qDebug() << "Token expiration:" << expiration;
 
-                    if (QDateTime::currentDateTime() > expiration)
+                    if (QDateTime::currentDateTime().secsTo(expiration) < 5)    // allow 5s window threshold for updating the token
                     {
                         queueRequest(charId, url, std::move(callback), std::move(errorCallback), std::move(replyCreator));
                         if (mPendingRequests[charId].size() == 1)
