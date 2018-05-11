@@ -1295,7 +1295,7 @@ namespace Evernus
             if (reachedEnd)
                 callback(std::move(*transactions), {}, expires);
             else
-                nextCallback(nextFromId + 1, std::move(transactions));
+                nextCallback(nextFromId - 1, std::move(transactions));
         };
     }
 
