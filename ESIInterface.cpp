@@ -662,7 +662,7 @@ namespace Evernus
 
                     qWarning() << "Error for request" << reply << ":" << url << parameters << ":" << httpStatus << errorInfo;
 
-                    if (httpStatus == errorLimitCode)  // error limit reached?
+                    if (shouldThrottle(httpStatus))  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
                             get<T, ResultTag>(url, parameters, continuation, retries);
@@ -712,7 +712,7 @@ namespace Evernus
 
                     qWarning() << "Error for request:" << httpStatus << parsedError;
 
-                    if (httpStatus == errorLimitCode)  // error limit reached?
+                    if (shouldThrottle(httpStatus))  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
                             get<T, ResultTag>(charId, url, parameters, continuation, retries, importingCitadels, citadelId);
@@ -778,7 +778,7 @@ namespace Evernus
 
                     qWarning() << "Error for request:" << httpStatus << parsedError;
 
-                    if (httpStatus == errorLimitCode)  // error limit reached?
+                    if (shouldThrottle(httpStatus))  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
                             post(charId, url, data, std::move(errorCallback));
@@ -829,7 +829,7 @@ namespace Evernus
 
                     qWarning() << "Error for request" << reply << ":" << url << ":" << httpStatus << parsedError;
 
-                    if (httpStatus == errorLimitCode)  // error limit reached?
+                    if (shouldThrottle(httpStatus))  // error limit reached?
                     {
                         schedulePostErrorLimitRequest([=] {
                             post(url, data, errorCallback, resultCallback);
@@ -859,7 +859,24 @@ namespace Evernus
     template<class T>
     void ESIInterface::schedulePostErrorLimitRequest(T &&callback, const QNetworkReply &reply) const
     {
-        const auto errorTimeout = reply.rawHeader(QByteArrayLiteral("X-Esi-Error-Limit-Reset")).toUInt();
+        const auto esiLimitHeader = QByteArrayLiteral("X-Esi-Error-Limit-Reset");
+
+        auto errorTimeout = 10u;
+
+        if (reply.hasRawHeader(esiLimitHeader))
+        {
+            errorTimeout = reply.rawHeader(esiLimitHeader).toUInt();
+        }
+        else
+        {
+            const auto retryAfter = reply.rawHeader(QByteArrayLiteral("Retry-After"));
+            const auto targetDate = QDateTime::fromString(retryAfter, Qt::RFC2822Date);
+            if (targetDate.isValid())
+                errorTimeout = QDateTime::currentDateTime().secsTo(targetDate);
+            else
+                errorTimeout = retryAfter.toUInt();
+        }
+
         mErrorLimiter.addCallback(std::move(callback), std::chrono::seconds{errorTimeout});
     }
 
@@ -922,5 +939,10 @@ namespace Evernus
     void ESIInterface::showReplyDebugInfo(const QNetworkReply &reply)
     {
         qDebug() << "X-Esi-Ab-Test:" << reply.rawHeader(QByteArrayLiteral("X-Esi-Ab-Test"));
+    }
+
+    bool ESIInterface::shouldThrottle(int httpStatus)
+    {
+        return httpStatus == errorLimitCode || httpStatus == requestThrottledCode;
     }
 }

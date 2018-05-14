@@ -133,6 +133,7 @@ namespace Evernus
         struct PaginatedContext;
 
         static const int errorLimitCode = 420;
+        static const int requestThrottledCode = 429;
 
         CitadelAccessCache &mCitadelAccessCache;
         ESIInterfaceErrorLimiter &mErrorLimiter;
@@ -188,5 +189,7 @@ namespace Evernus
         static uint getPageCount(const QNetworkReply &reply);
 
         static void showReplyDebugInfo(const QNetworkReply &reply);
+
+        static bool shouldThrottle(int httpStatus);
     };
 }
