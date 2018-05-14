@@ -84,7 +84,7 @@ namespace Evernus
     {
         mRemoveCharacterBtn->setEnabled(false);
 
-        mCharacterModel.removeRow(mCharacterModelProxy.mapToSource(mCharacterView->currentIndex()).row());
+        mCharacterModelProxy.removeRow(mCharacterView->currentIndex().row());
         mCharacterModelProxy.invalidate();
 
         emit charactersChanged();

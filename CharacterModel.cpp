@@ -12,6 +12,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QtDebug>
+
 #include "Repository.h"
 
 #include "CharacterModel.h"
@@ -93,6 +95,9 @@ namespace Evernus
 
     bool CharacterModel::removeRows(int row, int count, const QModelIndex &parent)
     {
+		if (row < 0 || row + count > mData.size())
+			return false;
+
         beginRemoveRows(parent, row, row + count);
 
         for (auto i = row; i < row + count; ++i)
