@@ -110,6 +110,7 @@ namespace Evernus
         , mClientSecret{interfaceManager.getClientSecret()}
     {
         readSettings();
+        createStatusBar();
         createMenu();
         createMainView(charOrderProvider,
                        corpOrderProvider,
@@ -121,7 +122,6 @@ namespace Evernus
                        cacheTimerProvider,
                        interfaceManager,
                        taskManager);
-        createStatusBar();
 
         connect(mTrayIcon, &QSystemTrayIcon::activated, this, &MainWindow::activateTrayIcon);
         connect(&mAutoImportTimer, &QTimer::timeout, this, &MainWindow::refreshAll);
