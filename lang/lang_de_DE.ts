@@ -81,12 +81,12 @@
 <context>
     <name>CharacterModel</name>
     <message>
-        <location filename="../CharacterModel.cpp" line="43"/>
+        <location filename="../CharacterModel.cpp" line="45"/>
         <source>Id</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../CharacterModel.cpp" line="45"/>
+        <location filename="../CharacterModel.cpp" line="47"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
@@ -9385,47 +9385,47 @@ Please click on &quot;Import all&quot; after the update.</source>
 <context>
     <name>Evernus::WalletJournalModel</name>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="41"/>
+        <location filename="../WalletJournalModel.cpp" line="42"/>
         <source>Ignored</source>
         <translation>Ignoriert</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="42"/>
+        <location filename="../WalletJournalModel.cpp" line="43"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="43"/>
+        <location filename="../WalletJournalModel.cpp" line="44"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="44"/>
+        <location filename="../WalletJournalModel.cpp" line="45"/>
         <source>First party</source>
         <translation>Erster Partei</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="45"/>
+        <location filename="../WalletJournalModel.cpp" line="46"/>
         <source>Second party</source>
         <translation>Zweite Partei</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="46"/>
+        <location filename="../WalletJournalModel.cpp" line="47"/>
         <source>Additional data</source>
         <translation>Weitere Daten</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="47"/>
+        <location filename="../WalletJournalModel.cpp" line="48"/>
         <source>Amount</source>
         <translation>Betrag</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="48"/>
+        <location filename="../WalletJournalModel.cpp" line="49"/>
         <source>Balance after</source>
         <translation>Kontostand danach</translation>
     </message>
     <message>
-        <location filename="../WalletJournalModel.cpp" line="49"/>
+        <location filename="../WalletJournalModel.cpp" line="50"/>
         <source>Reason</source>
         <translation>Grund</translation>
     </message>

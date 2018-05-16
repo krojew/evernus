@@ -2289,6 +2289,7 @@ namespace Evernus
         try
         {
             const auto prevData = mCharacterRepository->find(charId);
+            Q_ASSERT(prevData);
 
             if (!settings.value(ImportSettings::importSkillsKey, ImportSettings::importSkillsDefault).toBool())
             {
@@ -2301,6 +2302,8 @@ namespace Evernus
             character.setCorpStanding(prevData->getCorpStanding());
             character.setFactionStanding(prevData->getFactionStanding());
             character.setEnabled(prevData->isEnabled());
+            character.setBuyBrokersFee(prevData->getBuyBrokersFee());
+            character.setSellBrokersFee(prevData->getSellBrokersFee());
         }
         catch (const CharacterRepository::NotFoundException &)
         {
