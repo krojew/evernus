@@ -13,6 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QVBoxLayout>
+#include <QPushButton>
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QSettings>
@@ -46,6 +47,13 @@ namespace Evernus
         mEnabledOnShutdownBtn->setChecked(settings.value(SyncSettings::enabledOnShutdownKey, SyncSettings::enabledOnShutdownDefault).toBool());
         mEnabledOnShutdownBtn->setEnabled(mEnabledOnStartupBtn->isChecked());
         connect(mEnabledOnStartupBtn, &QCheckBox::toggled, mEnabledOnShutdownBtn, &QCheckBox::setEnabled);
+
+        const auto clearBtn = new QPushButton{tr("Clear saved tokens"), this};
+        dropboxGroupLayout->addWidget(clearBtn);
+        connect(clearBtn, &QPushButton::clicked, this, [=] {
+            QSettings settings;
+            settings.remove(SyncSettings::dbTokenKey);
+        });
 #else
         auto info = new QLabel{tr(
             "Evernus was compiled without Dropbox app key and secret values. In order to enable Dropbox support, register "
