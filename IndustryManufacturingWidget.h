@@ -31,6 +31,7 @@
 
 class QQuickWidget;
 class QProgressBar;
+class QPushButton;
 class QByteArray;
 class QComboBox;
 class QLabel;
@@ -105,10 +106,12 @@ namespace Evernus
         void showBoM();
         void updateSummary();
         void importCharacterBlueprints();
+        void importCorporationBlueprints();
 
     private:
         const EveDataProvider &mDataProvider;
         TaskManager &mTaskManager;
+        const CharacterRepository &mCharacterRepo;
         const IndustryManufacturingSetupRepository &mSetupRepo;
 
         RegionComboBox *mSrcRegionCombo = nullptr;
@@ -131,6 +134,8 @@ namespace Evernus
 
         TradeableTypesTreeView *mTypeView = nullptr;
 
+        QPushButton *mImportCorpBlueprintsBtn = nullptr;
+
         QLabel *mTotalCostLabel = nullptr;
         QLabel *mTotalProfitLabel = nullptr;
         QLabel *mMinTimeLabel = nullptr;
@@ -141,6 +146,7 @@ namespace Evernus
         quint64 mDstStation = 0;
 
         Character::IdType mCharacterId = Character::invalidId;
+        quint64 mCorpId = 0;
 
         IndustryManufacturingSetup mSetup{mDataProvider};
         IndustryManufacturingSetupModel mSetupModel;
@@ -164,5 +170,10 @@ namespace Evernus
         void setQmlSettings();
 
         void connectToSetupRefresh(QWidget &widget);
+
+        void toggleCorpImportButton();
+
+        template<class Fetcher>
+        void importBlueprints(Fetcher fetcher);
     };
 }

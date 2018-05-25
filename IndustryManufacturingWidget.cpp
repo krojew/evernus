@@ -45,6 +45,7 @@
 #include "FavoriteLocationsButton.h"
 #include "TradeableTypesTreeView.h"
 #include "StationSelectButton.h"
+#include "CharacterRepository.h"
 #include "TypeLocationPairs.h"
 #include "PriceTypeComboBox.h"
 #include "IndustrySettings.h"
@@ -76,8 +77,9 @@ namespace Evernus
         : QWidget{parent}
         , mDataProvider{dataProvider}
         , mTaskManager{taskManager}
+        , mCharacterRepo{characterRepo}
         , mSetupRepo{setupRepo}
-        , mSetupModel{mSetup, mDataProvider, assetProvider, costProvider, characterRepo}
+        , mSetupModel{mSetup, mDataProvider, assetProvider, costProvider, mCharacterRepo}
         , mDataFetcher{mDataProvider, interfaceManager}
         , mESIManager{mDataProvider, interfaceManager}
     {
@@ -374,11 +376,19 @@ namespace Evernus
 
         mTypeView->selectTypes(types);
 
+        const auto importLayout = new QHBoxLayout{};
+        rightPaneLayout->addLayout(importLayout);
+
         const auto importBlueprintsBtn = new QPushButton{tr("Import character blueprints"), this};
-        rightPaneLayout->addWidget(importBlueprintsBtn);
+        importLayout->addWidget(importBlueprintsBtn);
         connect(importBlueprintsBtn, &QPushButton::clicked,
                 this, &IndustryManufacturingWidget::importCharacterBlueprints);
         connectToSetupRefresh(*importBlueprintsBtn);
+
+        mImportCorpBlueprintsBtn = new QPushButton{tr("Import corp. blueprints"), this};
+        importLayout->addWidget(mImportCorpBlueprintsBtn);
+        connect(mImportCorpBlueprintsBtn, &QPushButton::clicked,
+                this, &IndustryManufacturingWidget::importCorporationBlueprints);
 
         const auto summaryGroup = new QGroupBox{tr("Summary"), this};
         rightPaneLayout->addWidget(summaryGroup);
@@ -425,7 +435,14 @@ namespace Evernus
 
         connect(this, &IndustryManufacturingWidget::setupRefreshChanged, this, [=](auto started) {
             if (!started)
+            {
+                toggleCorpImportButton();
                 mSetupModel.blockInteractions(false);
+            }
+            else
+            {
+                mImportCorpBlueprintsBtn->setDisabled(true);
+            }
         });
 
         connect(&mSetupController, &IndustryManufacturingSetupController::showInEve,
@@ -447,6 +464,17 @@ namespace Evernus
     void IndustryManufacturingWidget::setCharacter(Character::IdType id)
     {
         mCharacterId = id;
+
+        try
+        {
+            mCorpId = mCharacterRepo.getCorporationId(mCharacterId);
+        }
+        catch (const CharacterRepository::NotFoundException &)
+        {
+            mCorpId = 0;
+        }
+
+        toggleCorpImportButton();
 
         mSetup.clear();
         mSetupModel.setCharacter(mCharacterId);
@@ -734,51 +762,15 @@ namespace Evernus
 
     void IndustryManufacturingWidget::importCharacterBlueprints()
     {
-        if (mBlueprintImportSubtask != TaskConstants::invalidTask)
-            return;
+        importBlueprints([=](const auto &callback) {
+            mESIManager.fetchCharacterBlueprints(mCharacterId, callback);
+        });
+    }
 
-        const auto ret = QMessageBox::question(this,
-                                               tr("Blueprint import"),
-                                               tr("Importing large number of blueprints can take long time. Are you sure you want to proceed?"));
-        if (ret == QMessageBox::No)
-            return;
-
-        mBlueprintImportSubtask = mTaskManager.startTask(tr("Importing character blueprints..."));
-
-        mESIManager.fetchCharacterBlueprints(mCharacterId, [=](auto &&data, const auto &error, const auto &expires) {
-            Q_UNUSED(expires);
-
-            if (Q_LIKELY(error.isEmpty()))
-            {
-                std::unordered_map<EveType::IdType, uint> me, te;
-
-                TradeableTypesTreeView::TypeSet types;
-                for (const auto &blueprint : data)
-                {
-                    const auto output = mDataProvider.getBlueprintOutputType(blueprint.getTypeId());
-
-                    types.insert(output);
-                    me[output] = std::max(me[output], blueprint.getMaterialEfficiency());
-                    te[output] = std::max(te[output], blueprint.getTimeEfficiency());
-                }
-
-                mTypeView->selectTypes(types);
-                refreshTypes();
-
-                for (const auto &efficiency : me)
-                {
-                    mSetup.setMaterialEfficiency(efficiency.first, efficiency.second);
-                    mSetupModel.signalMaterialEfficiencyExternallyChanged(efficiency.first);
-                }
-                for (const auto &efficiency : te)
-                {
-                    mSetup.setTimeEfficiency(efficiency.first, efficiency.second);
-                    mSetupModel.signalTimeEfficiencyExternallyChanged(efficiency.first);
-                }
-            }
-
-            mTaskManager.endTask(mBlueprintImportSubtask, error);
-            mBlueprintImportSubtask = TaskConstants::invalidTask;
+    void IndustryManufacturingWidget::importCorporationBlueprints()
+    {
+        importBlueprints([=](const auto &callback) {
+            mESIManager.fetchCorporationBlueprints(mCharacterId, mCorpId, callback);
         });
     }
 
@@ -818,5 +810,61 @@ namespace Evernus
     void IndustryManufacturingWidget::connectToSetupRefresh(QWidget &widget)
     {
         connect(this, &IndustryManufacturingWidget::setupRefreshChanged, &widget, &QWidget::setDisabled);
+    }
+
+    void IndustryManufacturingWidget::toggleCorpImportButton()
+    {
+        mImportCorpBlueprintsBtn->setDisabled(mCorpId == 0);
+    }
+
+    template<class Fetcher>
+    void IndustryManufacturingWidget::importBlueprints(Fetcher fetcher)
+    {
+        if (mBlueprintImportSubtask != TaskConstants::invalidTask)
+            return;
+
+        const auto ret = QMessageBox::question(this,
+                                               tr("Blueprint import"),
+                                               tr("Importing large number of blueprints can take long time. Are you sure you want to proceed?"));
+        if (ret == QMessageBox::No)
+            return;
+
+        mBlueprintImportSubtask = mTaskManager.startTask(tr("Importing blueprints..."));
+
+        fetcher([=](auto &&data, const auto &error, const auto &expires) {
+            Q_UNUSED(expires);
+
+            if (Q_LIKELY(error.isEmpty()))
+            {
+                std::unordered_map<EveType::IdType, uint> me, te;
+
+                TradeableTypesTreeView::TypeSet types;
+                for (const auto &blueprint : data)
+                {
+                    const auto output = mDataProvider.getBlueprintOutputType(blueprint.getTypeId());
+
+                    types.insert(output);
+                    me[output] = std::max(me[output], blueprint.getMaterialEfficiency());
+                    te[output] = std::max(te[output], blueprint.getTimeEfficiency());
+                }
+
+                mTypeView->selectTypes(types);
+                refreshTypes();
+
+                for (const auto &efficiency : me)
+                {
+                    mSetup.setMaterialEfficiency(efficiency.first, efficiency.second);
+                    mSetupModel.signalMaterialEfficiencyExternallyChanged(efficiency.first);
+                }
+                for (const auto &efficiency : te)
+                {
+                    mSetup.setTimeEfficiency(efficiency.first, efficiency.second);
+                    mSetupModel.signalTimeEfficiencyExternallyChanged(efficiency.first);
+                }
+            }
+
+            mTaskManager.endTask(mBlueprintImportSubtask, error);
+            mBlueprintImportSubtask = TaskConstants::invalidTask;
+        });
     }
 }
