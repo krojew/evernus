@@ -14,6 +14,7 @@
  */
 #include <unordered_map>
 #include <functional>
+#include <algorithm>
 
 #include <QStringList>
 #include <QSqlRecord>
@@ -33,28 +34,30 @@ namespace Evernus
 
     QString ItemRepository::getTableName() const
     {
-        return (mCorp) ? ("corp_items") : ("items");
+        return (mCorp) ? (QStringLiteral("corp_items")) : (QStringLiteral("items"));
     }
 
     QString ItemRepository::getIdColumn() const
     {
-        return "id";
+        return QStringLiteral("id");
     }
 
     ItemRepository::EntityPtr ItemRepository::populate(const QSqlRecord &record) const
     {
-        const auto locationId = record.value("location_id");
-        const auto parentId = record.value("parent_id");
-        const auto customValue = record.value("custom_value");
+        const auto locationId = record.value(QStringLiteral("location_id"));
+        const auto parentId = record.value(QStringLiteral("parent_id"));
+        const auto customValue = record.value(QStringLiteral("custom_value"));
+        const auto bpc = record.value(QStringLiteral("bpc"));
 
-        auto item = std::make_shared<Item>(record.value("id").value<Item::IdType>());
-        item->setListId(record.value("asset_list_id").value<AssetList::IdType>());
+        auto item = std::make_shared<Item>(record.value(QStringLiteral("id")).value<Item::IdType>());
+        item->setListId(record.value(QStringLiteral("asset_list_id")).value<AssetList::IdType>());
         item->setParentId((parentId.isNull()) ? (Item::ParentIdType{}) : (parentId.value<Item::IdType>()));
-        item->setTypeId(record.value("type_id").toUInt());
+        item->setTypeId(record.value(QStringLiteral("type_id")).toUInt());
         item->setLocationId((locationId.isNull()) ? (ItemData::LocationIdType{}) : (locationId.value<ItemData::LocationIdType::value_type>()));
-        item->setQuantity(record.value("quantity").toUInt());
-        item->setRawQuantity(record.value("raw_quantity").toInt());
+        item->setQuantity(record.value(QStringLiteral("quantity")).toUInt());
+        item->setRawQuantity(record.value(QStringLiteral("raw_quantity")).toInt());
         item->setCustomValue((customValue.isNull()) ? (Item::CustomValueType{}) : (customValue.value<Item::CustomValueType::value_type>()));
+        item->setBPCFlag((bpc.isNull()) ? (Item::BPCType{}) : (bpc.value<Item::BPCType::value_type>()));
         item->setNew(false);
 
         return item;
@@ -62,7 +65,7 @@ namespace Evernus
 
     void ItemRepository::create(const Repository<AssetList> &assetRepo) const
     {
-        exec(QString{"CREATE TABLE IF NOT EXISTS %1 ("
+        exec(QStringLiteral("CREATE TABLE IF NOT EXISTS %1 ("
             "id INTEGER PRIMARY KEY,"
             "asset_list_id INTEGER NOT NULL REFERENCES %2(%3) ON UPDATE CASCADE ON DELETE CASCADE,"
             "parent_id BIGINT NULL REFERENCES %1(id) ON UPDATE CASCADE ON DELETE CASCADE,"
@@ -70,10 +73,11 @@ namespace Evernus
             "location_id BIGINT NULL,"
             "quantity INTEGER NOT NULL,"
             "raw_quantity INTEGER NOT NULL,"
-            "custom_value NUMERIC NULL"
-        ")"}.arg(getTableName()).arg(assetRepo.getTableName()).arg(assetRepo.getIdColumn()));
+            "custom_value NUMERIC NULL,"
+            "bpc TINYINT NULL"
+        ")").arg(getTableName()).arg(assetRepo.getTableName()).arg(assetRepo.getIdColumn()));
 
-        exec(QString{"CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(asset_list_id)"}.arg(getTableName()).arg(assetRepo.getTableName()));
+        exec(QStringLiteral("CREATE INDEX IF NOT EXISTS %1_%2_index ON %1(asset_list_id)").arg(getTableName()).arg(assetRepo.getTableName()));
     }
 
     void ItemRepository::batchStore(const PropertyMap &map) const
@@ -86,19 +90,19 @@ namespace Evernus
         const auto batches = totalRows / maxRowsPerInsert;
 
         const auto columns = getColumns();
-        const auto baseQueryStr = QString{"REPLACE INTO %1 (%2) VALUES %3"}.arg(getTableName()).arg(columns.join(", "));
+        const auto baseQueryStr = QStringLiteral("REPLACE INTO %1 (%2) VALUES %3").arg(getTableName()).arg(columns.join(QStringLiteral(", ")));
 
         QStringList columnBindings;
         for (auto i = 0; i < columns.count(); ++i)
-            columnBindings << "?";
+            columnBindings << QStringLiteral("?");
 
-        const auto bindings = QString{"(%1)"}.arg(columnBindings.join(", "));
+        const auto bindings = QStringLiteral("(%1)").arg(columnBindings.join(QStringLiteral(", ")));
 
         QStringList batchBindings;
         for (auto i = 0; i < maxRowsPerInsert; ++i)
             batchBindings << bindings;
 
-        const auto batchQueryStr = baseQueryStr.arg(batchBindings.join(", "));
+        const auto batchQueryStr = baseQueryStr.arg(batchBindings.join(QStringLiteral(", ")));
 
         for (auto batch = 0; batch < batches; ++batch)
         {
@@ -119,7 +123,7 @@ namespace Evernus
             for (auto i = 0; i < totalRows % maxRowsPerInsert; ++i)
                 restBindings << bindings;
 
-            const auto restQueryStr = baseQueryStr.arg(restBindings.join(", "));
+            const auto restQueryStr = baseQueryStr.arg(restBindings.join(QStringLiteral(", ")));
             auto query = prepare(restQueryStr);
 
             for (auto row = batches * maxRowsPerInsert; row < totalRows; ++row)
@@ -177,6 +181,27 @@ namespace Evernus
         DatabaseUtils::execQuery(query);
     }
 
+    void ItemRepository::setBPC(const std::vector<Item::IdType> &ids, bool value) const
+    {
+        if (ids.empty())
+            return;
+
+        QStringList placeholders;
+        std::fill_n(std::back_inserter(placeholders), ids.size(), QStringLiteral("?"));
+
+        auto query = prepare(QStringLiteral("UPDATE %1 SET bpc = ? WHERE %2 IN (%3)")
+             .arg(getTableName())
+             .arg(getIdColumn())
+             .arg(placeholders.join(QStringLiteral(", ")))
+         );
+        query.addBindValue(value);
+
+        for (const auto id : ids)
+            query.addBindValue(id);
+
+        DatabaseUtils::execQuery(query);
+    }
+
     void ItemRepository::clearCustomValue(Item::IdType id) const
     {
         auto query = prepare(QStringLiteral("UPDATE %1 SET custom_value = NULL WHERE %2 = ?")
@@ -193,15 +218,17 @@ namespace Evernus
         const auto locationId = entity.getLocationId();
         const auto parentId = entity.getParentId();
         const auto customValue = entity.getCustomValue();
+        const auto bpc = entity.getBPCFlag();
 
-        map["id"] << entity.getId();
-        map["asset_list_id"] << entity.getListId();
-        map["parent_id"] << ((parentId) ? (*parentId) : (QVariant{QVariant::ULongLong}));
-        map["type_id"] << entity.getTypeId();
-        map["location_id"] << ((locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
-        map["quantity"] << entity.getQuantity();
-        map["raw_quantity"] << entity.getRawQuantity();
-        map["custom_value"] << ((customValue) ? (*customValue) : (QVariant{QVariant::Double}));
+        map[QStringLiteral("id")] << entity.getId();
+        map[QStringLiteral("asset_list_id")] << entity.getListId();
+        map[QStringLiteral("parent_id")] << ((parentId) ? (*parentId) : (QVariant{QVariant::ULongLong}));
+        map[QStringLiteral("type_id")] << entity.getTypeId();
+        map[QStringLiteral("location_id")] << ((locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
+        map[QStringLiteral("quantity")] << entity.getQuantity();
+        map[QStringLiteral("raw_quantity")] << entity.getRawQuantity();
+        map[QStringLiteral("custom_value")] << ((customValue) ? (*customValue) : (QVariant{QVariant::Double}));
+        map[QStringLiteral("bpc")] << ((bpc) ? (*bpc) : (QVariant{QVariant::Bool}));
 
         for (const auto &item : entity)
             fillProperties(*item, map);
@@ -209,15 +236,17 @@ namespace Evernus
 
     QStringList ItemRepository::getColumns() const
     {
-        return QStringList{}
-            << "id"
-            << "asset_list_id"
-            << "parent_id"
-            << "type_id"
-            << "location_id"
-            << "quantity"
-            << "raw_quantity"
-            << "custom_value";
+        return {
+            QStringLiteral("id"),
+            QStringLiteral("asset_list_id"),
+            QStringLiteral("parent_id"),
+            QStringLiteral("type_id"),
+            QStringLiteral("location_id"),
+            QStringLiteral("quantity"),
+            QStringLiteral("raw_quantity"),
+            QStringLiteral("custom_value"),
+            QStringLiteral("bpc"),
+        };
     }
 
     void ItemRepository::bindValues(const Item &entity, QSqlQuery &query) const
@@ -225,17 +254,19 @@ namespace Evernus
         const auto locationId = entity.getLocationId();
         const auto parentId = entity.getParentId();
         const auto customValue = entity.getCustomValue();
+        const auto bpc = entity.getBPCFlag();
 
         if (entity.getId() != Item::invalidId)
-            query.bindValue(":id", entity.getId());
+            query.bindValue(QStringLiteral(":id"), entity.getId());
 
-        query.bindValue(":asset_list_id", entity.getListId());
-        query.bindValue(":parent_id", (parentId) ? (*parentId) : (QVariant{QVariant::ULongLong}));
-        query.bindValue(":type_id", entity.getTypeId());
-        query.bindValue(":location_id", (locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
-        query.bindValue(":quantity", entity.getQuantity());
-        query.bindValue(":raw_quantity", entity.getRawQuantity());
-        query.bindValue(":custom_value", (customValue) ? (*customValue) : (QVariant{QVariant::Double}));
+        query.bindValue(QStringLiteral(":asset_list_id"), entity.getListId());
+        query.bindValue(QStringLiteral(":parent_id"), (parentId) ? (*parentId) : (QVariant{QVariant::ULongLong}));
+        query.bindValue(QStringLiteral(":type_id"), entity.getTypeId());
+        query.bindValue(QStringLiteral(":location_id"), (locationId) ? (*locationId) : (QVariant{QVariant::ULongLong}));
+        query.bindValue(QStringLiteral(":quantity"), entity.getQuantity());
+        query.bindValue(QStringLiteral(":raw_quantity"), entity.getRawQuantity());
+        query.bindValue(QStringLiteral(":custom_value"), (customValue) ? (*customValue) : (QVariant{QVariant::Double}));
+        query.bindValue(QStringLiteral(":bpc"), (bpc) ? (*bpc) : (QVariant{QVariant::Bool}));
     }
 
     void ItemRepository::bindPositionalValues(const Item &entity, QSqlQuery &query) const
@@ -243,6 +274,7 @@ namespace Evernus
         const auto locationId = entity.getLocationId();
         const auto parentId = entity.getParentId();
         const auto customValue = entity.getCustomValue();
+        const auto bpc = entity.getBPCFlag();
 
         if (entity.getId() != Item::invalidId)
             query.addBindValue(entity.getId());
@@ -254,5 +286,6 @@ namespace Evernus
         query.addBindValue(entity.getQuantity());
         query.addBindValue(entity.getRawQuantity());
         query.addBindValue((customValue) ? (*customValue) : (QVariant{QVariant::Double}));
+        query.addBindValue((bpc) ? (*bpc) : (QVariant{QVariant::Bool}));
     }
 }

@@ -12,8 +12,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "EveDataProvider.h"
-
 #include "Item.h"
 
 namespace Evernus
@@ -24,6 +22,7 @@ namespace Evernus
         , mListId{other.mListId}
         , mData{other.mData}
         , mCustomValue{other.mCustomValue}
+        , mIsBPC{other.mIsBPC}
     {
         for (const auto &item : other)
             addItem(std::make_unique<Item>(*item));
@@ -142,6 +141,16 @@ namespace Evernus
         mCustomValue = std::move(value);
     }
 
+    Item::BPCType Item::getBPCFlag() const noexcept
+    {
+        return mIsBPC;
+    }
+
+    void Item::setBPCFlag(BPCType value) noexcept
+    {
+        mIsBPC = std::move(value);
+    }
+
     size_t Item::getChildCount() const noexcept
     {
         return mContents.size();
@@ -156,10 +165,9 @@ namespace Evernus
         mContents.emplace_back(std::move(item));
     }
 
-    bool Item::isBPC(const EveDataProvider &dataProvider) const noexcept
+    bool Item::isBPC() const noexcept
     {
-        return mData.mRawQuantity == magicBPCQuantity &&
-               dataProvider.getTypeName(mData.mTypeId).endsWith(QStringLiteral("Blueprint"));
+        return mIsBPC && *mIsBPC;
     }
 
     Item &Item::operator =(const Item &other)

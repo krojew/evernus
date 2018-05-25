@@ -456,7 +456,7 @@ namespace Evernus
         const auto typeId = item.getTypeId();
         const auto volume = mDataProvider.getTypeVolume(typeId);
         const auto quantity = item.getQuantity();
-        const auto sellPrice = (item.isBPC(mDataProvider)) ? (ExternalOrder::nullOrder()) : (mDataProvider.getTypeStationSellPrice(typeId, locationId));
+        const auto sellPrice = (item.isBPC()) ? (ExternalOrder::nullOrder()) : (mDataProvider.getTypeStationSellPrice(typeId, locationId));
         const auto metaIcon = IconUtils::getIconForMetaGroup(mDataProvider.getTypeMetaGroupName(typeId));
         const auto customValue = item.getCustomValue();
         const auto price = (customValue) ? (*customValue) : (sellPrice->getPrice());

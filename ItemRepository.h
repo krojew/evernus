@@ -14,6 +14,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <QHash>
 
 #include "Repository.h"
@@ -44,6 +46,8 @@ namespace Evernus
 
         void setCustomValue(Item::IdType id, double value) const;
         void clearCustomValue(Item::IdType id) const;
+
+        void setBPC(const std::vector<Item::IdType> &ids, bool value) const;
 
         static void fillProperties(const Item &entity, PropertyMap &map);
 

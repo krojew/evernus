@@ -76,6 +76,7 @@ namespace Evernus
         using WalletJournalCallback = Callback<WalletJournal>;
         using WalletTransactionsCallback = Callback<WalletTransactions>;
         using MarketOrdersCallback = Callback<MarketOrders>;
+        using BlueprintCallback = Callback<BlueprintList>;
         using HistoryMap = std::map<QDate, MarketHistoryEntry>;
         using NameMap = std::unordered_map<quint64, QString>;
 
@@ -127,7 +128,8 @@ namespace Evernus
         void fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const ContractItemCallback &callback) const;
         void fetchCorporationContracts(Character::IdType charId, quint64 corpId, const ContractCallback &callback) const;
         void fetchCorporationContractItems(Character::IdType charId, quint64 corpId, Contract::IdType contractId, const ContractItemCallback &callback) const;
-        void fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const;
+        void fetchCharacterBlueprints(Character::IdType charId, const BlueprintCallback &callback) const;
+        void fetchCorporationBlueprints(Character::IdType charId, quint64 corpId, const BlueprintCallback &callback) const;
         void fetchCharacterMiningLedger(Character::IdType charId, const Callback<MiningLedgerList> &callback) const;
         void fetchGenericName(quint64 id, const PesistentDataCallback<QString> &callback) const;
         void fetchGenericNames(const std::vector<quint64> &ids, const PesistentDataCallback<std::unordered_map<quint64, QString>> &callback) const;
@@ -186,6 +188,8 @@ namespace Evernus
                                                                  std::shared_ptr<WalletTransactions> &&transactions,
                                                                  const WalletTransactionsCallback &callback,
                                                                  T nextCallback) const;
+
+        ESIInterface::PaginatedCallback getBlueprintCallback(const BlueprintCallback &callback) const;
 
         const ESIInterface &getInterface() const;
 

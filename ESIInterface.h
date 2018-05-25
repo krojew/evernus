@@ -96,7 +96,8 @@ namespace Evernus
         void fetchCharacterContractItems(Character::IdType charId, Contract::IdType contractId, const JsonCallback &callback) const;
         void fetchCorporationContracts(Character::IdType charId, quint64 corpId, const JsonCallback &callback) const;
         void fetchCorporationContractItems(Character::IdType charId, quint64 corpId, Contract::IdType contractId, const JsonCallback &callback) const;
-        void fetchCharacterBlueprints(Character::IdType charId, const JsonCallback &callback) const;
+        void fetchCharacterBlueprints(Character::IdType charId, const PaginatedCallback &callback) const;
+        void fetchCorporationBlueprints(Character::IdType charId, quint64 corpId, const PaginatedCallback &callback) const;
         void fetchCharacterMiningLedger(Character::IdType charId, const PaginatedCallback &callback) const;
         void fetchGenericName(quint64 id, const PersistentStringCallback &callback) const;
         void fetchGenericNames(const std::vector<quint64> &ids, const PersistentJsonCallback &callback) const;

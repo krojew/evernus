@@ -182,6 +182,9 @@ namespace Evernus
             { {3, 4}, [](const auto &provider) {
                 migrateDatabaseTo34(provider.getWalletJournalEntryRepository(), provider.getCorpWalletJournalEntryRepository());
             } },
+            { {3, 6}, [](const auto &provider) {
+                migrateDatabaseTo36(provider.getItemRepository(), provider.getCorpItemRepository());
+            } },
         }
     {
     }
@@ -665,6 +668,16 @@ namespace Evernus
 
         addColumns(walletJournalRepo);
         addColumns(corpWalletJournalRepo);
+    }
+
+    void Updater::migrateDatabaseTo36(const ItemRepository &itemRepo, const ItemRepository &corpItemRepo)
+    {
+        const auto addColumns = [](const auto &repo) {
+            safelyExecQuery(repo, QStringLiteral("ALTER TABLE %1 ADD COLUMN bpc TINYINT NULL DEFAULT NULL").arg(repo.getTableName()));
+        };
+
+        addColumns(itemRepo);
+        addColumns(corpItemRepo);
     }
 
     void Updater::migrateCoreTo130()

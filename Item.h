@@ -24,8 +24,6 @@
 
 namespace Evernus
 {
-    class EveDataProvider;
-
     class Item
         : public Entity<ItemData::IdType>
     {
@@ -36,9 +34,7 @@ namespace Evernus
 
         using ParentIdType = std::optional<ItemData::IdType>;
         using CustomValueType = std::optional<double>;
-
-        static const int magicBPOQuantity = -1;
-        static const int magicBPCQuantity = -2;
+        using BPCType = std::optional<bool>;
 
         using Entity::Entity;
 
@@ -78,11 +74,14 @@ namespace Evernus
         CustomValueType getCustomValue() const;
         void setCustomValue(CustomValueType value);
 
+        BPCType getBPCFlag() const noexcept;
+        void setBPCFlag(BPCType value) noexcept;
+
         size_t getChildCount() const noexcept;
 
         void addItem(std::unique_ptr<Item> &&item);
 
-        bool isBPC(const EveDataProvider &dataProvider) const noexcept;
+        bool isBPC() const noexcept;
 
         Item &operator =(const Item &other);
         Item &operator =(Item &&) = default;
@@ -93,5 +92,6 @@ namespace Evernus
         ItemData mData;
         ItemList mContents;
         CustomValueType mCustomValue;
+        BPCType mIsBPC;
     };
 }

@@ -171,7 +171,7 @@ namespace Evernus
     void AggregatedAssetModel::buildItemMap(const Item &item, ItemMap &map, quint64 locationId) const
     {
         const auto typeId = item.getTypeId();
-        const auto sellPrice = (item.isBPC(mDataProvider)) ? (ExternalOrder::nullOrder()) : (mDataProvider.getTypeStationSellPrice(typeId, locationId));
+        const auto sellPrice = (item.isBPC()) ? (ExternalOrder::nullOrder()) : (mDataProvider.getTypeStationSellPrice(typeId, locationId));
         const auto quantity = item.getQuantity();
         const auto customValue = item.getCustomValue();
         const auto price = (customValue) ? (*customValue) : (sellPrice->getPrice());

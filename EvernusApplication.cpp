@@ -64,6 +64,7 @@
 #include "SyncDialog.h"
 #include "UISettings.h"
 #include "DbSettings.h"
+#include "Blueprint.h"
 #include "PathUtils.h"
 #include "SSOUtils.h"
 #include "Updater.h"
@@ -691,15 +692,28 @@ namespace Evernus
 
         markImport(id, TimerType::AssetList);
         mESIManager->fetchCharacterAssets(id, [=](auto &&assets, const auto &error, const auto &expires) {
-            unmarkImport(id, TimerType::AssetList);
-
-            if (error.isEmpty())
+            if (!error.isEmpty())
             {
-                setUtcCacheTimer(id, TimerType::AssetList, expires);
-                updateCharacterAssets(id, assets);
+                emit taskEnded(assetSubtask, error);
+                return;
             }
 
-            emit taskEnded(assetSubtask, error);
+            mESIManager->fetchCharacterBlueprints(id, [=, assets = std::move(assets)](auto &&blueprints, const auto &error, const auto &expires) mutable {
+                Q_UNUSED(expires);
+
+                unmarkImport(id, TimerType::AssetList);
+
+                if (error.isEmpty())
+                {
+                    setUtcCacheTimer(id, TimerType::AssetList, expires);
+                    updateCharacterAssets(id, assets);
+
+                    Q_ASSERT(mItemRepository);
+                    setBPCFlags(*mItemRepository, blueprints);
+                }
+
+                emit taskEnded(assetSubtask, error);
+            });
         });
     }
 
@@ -929,29 +943,40 @@ namespace Evernus
 
             markImport(id, TimerType::CorpAssetList);
             mESIManager->fetchCorporationAssets(id, corpId, [=](auto &&data, const auto &error, const auto &expires) {
-                unmarkImport(id, TimerType::CorpAssetList);
-
-                if (error.isEmpty())
+                if (!error.isEmpty())
                 {
-                    mCorpAssetListRepository->deleteForCharacter(id);
-                    mCorpAssetProvider->setForCharacter(id, data);
-                    mCorpAssetListRepository->store(data);
-
-                    QSettings settings;
-
-                    if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool() &&
-                        settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsKey).toBool())
-                    {
-                        computeCorpAssetListSellValueSnapshot(data);
-                    }
-
-                    setUtcCacheTimer(id, TimerType::CorpAssetList, expires);
-                    saveUpdateTimer(Evernus::TimerType::CorpAssetList, mUpdateTimes[Evernus::TimerType::CorpAssetList], id);
-
-                    emit corpAssetsChanged();
+                    emit taskEnded(assetSubtask, error);
+                    return;
                 }
 
-                emit taskEnded(assetSubtask, error);
+                mESIManager->fetchCorporationBlueprints(id, corpId, [=, data = std::move(data)](auto &&blueprints, const auto &error, const auto &expires) mutable {
+                    unmarkImport(id, TimerType::CorpAssetList);
+
+                    if (error.isEmpty())
+                    {
+                        mCorpAssetListRepository->deleteForCharacter(id);
+                        mCorpAssetProvider->setForCharacter(id, data);
+                        mCorpAssetListRepository->store(data);
+
+                        QSettings settings;
+
+                        if (settings.value(ImportSettings::autoUpdateAssetValueKey, ImportSettings::autoUpdateAssetValueDefault).toBool() &&
+                            settings.value(StatisticsSettings::automaticSnapshotsKey, StatisticsSettings::automaticSnapshotsKey).toBool())
+                        {
+                            computeCorpAssetListSellValueSnapshot(data);
+                        }
+
+                        setUtcCacheTimer(id, TimerType::CorpAssetList, expires);
+                        saveUpdateTimer(Evernus::TimerType::CorpAssetList, mUpdateTimes[Evernus::TimerType::CorpAssetList], id);
+
+                        Q_ASSERT(mCorpItemRepository);
+                        setBPCFlags(*mCorpItemRepository, blueprints);
+
+                        emit corpAssetsChanged();
+                    }
+
+                    emit taskEnded(assetSubtask, error);
+                });
             });
         }
         catch (const CharacterRepository::NotFoundException &)
@@ -2424,7 +2449,7 @@ namespace Evernus
     double EvernusApplication::getTotalItemSellValue(const Item &item, quint64 locationId) const
     {
         // return 0 for BPC
-        if (item.isBPC(*mDataProvider))
+        if (item.isBPC())
             return 0.;
 
         const auto customValue = item.getCustomValue();
@@ -2710,6 +2735,22 @@ namespace Evernus
         QSqlQuery query{QStringLiteral("SELECT typeID FROM invTypes WHERE groupID = 15"), mEveDatabaseConnectionProvider.getConnection()};
         while (query.next())
             mStationGroupTypeIds.emplace(query.value(0).value<EveType::IdType>());
+    }
+
+    void EvernusApplication::setBPCFlags(const ItemRepository &repo, const ESIManager::BlueprintList &blueprints)
+    {
+        std::vector<Item::IdType> bpcIds, bpoIds;
+
+        for (const auto &blueprint : blueprints)
+        {
+            if (blueprint.getRuns() == -1)
+                bpoIds.emplace_back(blueprint.getId());
+            else
+                bpcIds.emplace_back(blueprint.getId());
+        }
+
+        repo.setBPC(bpcIds, true);
+        repo.setBPC(bpcIds, false);
     }
 
     void EvernusApplication::showSplashMessage(const QString &message, QSplashScreen &splash)

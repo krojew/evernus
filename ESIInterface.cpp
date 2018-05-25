@@ -403,17 +403,30 @@ namespace Evernus
         get(charId, QStringLiteral("/v1/corporations/%1/contracts/%2/items/").arg(corpId).arg(contractId), {}, callback, getNumRetries());
     }
 
-    void ESIInterface::fetchCharacterBlueprints(Character::IdType charId, const JsonCallback &callback) const
+    void ESIInterface::fetchCharacterBlueprints(Character::IdType charId, const PaginatedCallback &callback) const
     {
         qDebug() << "Fetching character blueprints for" << charId;
 
         if (Q_UNLIKELY(charId == Character::invalidId))
         {
-            callback({}, tr("Cannot fetch character blueprints with no character selected."), {});
+            callback({}, true, tr("Cannot fetch character blueprints with no character selected."), {});
             return;
         }
 
-        get(charId, QStringLiteral("/v2/characters/%1/blueprints/").arg(charId), {}, callback, getNumRetries());
+        fetchPaginatedData(charId, QStringLiteral("/v2/characters/%1/blueprints/").arg(charId), 1, callback, std::make_shared<PaginatedContext>());
+    }
+
+    void ESIInterface::fetchCorporationBlueprints(Character::IdType charId, quint64 corpId, const PaginatedCallback &callback) const
+    {
+        qDebug() << "Fetching corporation blueprints for" << charId;
+
+        if (Q_UNLIKELY(charId == Character::invalidId))
+        {
+            callback({}, true, tr("Cannot fetch corporation blueprints with no character selected."), {});
+            return;
+        }
+
+        fetchPaginatedData(charId, QStringLiteral("/v2/corporations/%1/blueprints/").arg(corpId), 1, callback, std::make_shared<PaginatedContext>());
     }
 
     void ESIInterface::fetchCharacterMiningLedger(Character::IdType charId, const PaginatedCallback &callback) const

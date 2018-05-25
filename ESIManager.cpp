@@ -637,118 +637,14 @@ namespace Evernus
         getInterface().fetchCorporationContractItems(charId, corpId, contractId, getContractItemCallback(contractId, callback));
     }
 
-    void ESIManager::fetchCharacterBlueprints(Character::IdType charId, const Callback<BlueprintList> &callback) const
+    void ESIManager::fetchCharacterBlueprints(Character::IdType charId, const BlueprintCallback &callback) const
     {
-        getInterface().fetchCharacterBlueprints(charId, [=](auto &&data, const auto &error, const auto &expires) {
-            if (Q_UNLIKELY(!error.isEmpty()))
-            {
-                callback({}, error, expires);
-                return;
-            }
+        getInterface().fetchCharacterBlueprints(charId, getBlueprintCallback(callback));
+    }
 
-            const auto blueprintList = data.array();
-
-            BlueprintList result(blueprintList.size());
-            std::atomic_size_t currentIndex{0};
-
-            const QHash<QString, Blueprint::Location> locationNameMap = {
-                { QStringLiteral("AutoFit"), Blueprint::Location::AutoFit },
-                { QStringLiteral("Cargo"), Blueprint::Location::Cargo },
-                { QStringLiteral("CorpseBay"), Blueprint::Location::CorpseBay },
-                { QStringLiteral("DroneBay"), Blueprint::Location::DroneBay },
-                { QStringLiteral("FleetHangar"), Blueprint::Location::FleetHangar },
-                { QStringLiteral("Deliveries"), Blueprint::Location::Deliveries },
-                { QStringLiteral("HiddenModifiers"), Blueprint::Location::HiddenModifiers },
-                { QStringLiteral("Hangar"), Blueprint::Location::Hangar },
-                { QStringLiteral("HangarAll"), Blueprint::Location::HangarAll },
-                { QStringLiteral("LoSlot0"), Blueprint::Location::LoSlot0 },
-                { QStringLiteral("LoSlot1"), Blueprint::Location::LoSlot1 },
-                { QStringLiteral("LoSlot2"), Blueprint::Location::LoSlot2 },
-                { QStringLiteral("LoSlot3"), Blueprint::Location::LoSlot3 },
-                { QStringLiteral("LoSlot4"), Blueprint::Location::LoSlot4 },
-                { QStringLiteral("LoSlot5"), Blueprint::Location::LoSlot5 },
-                { QStringLiteral("LoSlot6"), Blueprint::Location::LoSlot6 },
-                { QStringLiteral("LoSlot7"), Blueprint::Location::LoSlot7 },
-                { QStringLiteral("MedSlot0"), Blueprint::Location::MedSlot0 },
-                { QStringLiteral("MedSlot1"), Blueprint::Location::MedSlot1 },
-                { QStringLiteral("MedSlot2"), Blueprint::Location::MedSlot2 },
-                { QStringLiteral("MedSlot3"), Blueprint::Location::MedSlot3 },
-                { QStringLiteral("MedSlot4"), Blueprint::Location::MedSlot4 },
-                { QStringLiteral("MedSlot5"), Blueprint::Location::MedSlot5 },
-                { QStringLiteral("MedSlot6"), Blueprint::Location::MedSlot6 },
-                { QStringLiteral("MedSlot7"), Blueprint::Location::MedSlot7 },
-                { QStringLiteral("HiSlot0"), Blueprint::Location::HiSlot0 },
-                { QStringLiteral("HiSlot1"), Blueprint::Location::HiSlot1 },
-                { QStringLiteral("HiSlot2"), Blueprint::Location::HiSlot2 },
-                { QStringLiteral("HiSlot3"), Blueprint::Location::HiSlot3 },
-                { QStringLiteral("HiSlot4"), Blueprint::Location::HiSlot4 },
-                { QStringLiteral("HiSlot5"), Blueprint::Location::HiSlot5 },
-                { QStringLiteral("HiSlot6"), Blueprint::Location::HiSlot6 },
-                { QStringLiteral("HiSlot7"), Blueprint::Location::HiSlot7 },
-                { QStringLiteral("AssetSafety"), Blueprint::Location::AssetSafety },
-                { QStringLiteral("Locked"), Blueprint::Location::Locked },
-                { QStringLiteral("Unlocked"), Blueprint::Location::Unlocked },
-                { QStringLiteral("Implant"), Blueprint::Location::Implant },
-                { QStringLiteral("QuafeBay"), Blueprint::Location::QuafeBay },
-                { QStringLiteral("RigSlot0"), Blueprint::Location::RigSlot0 },
-                { QStringLiteral("RigSlot1"), Blueprint::Location::RigSlot1 },
-                { QStringLiteral("RigSlot2"), Blueprint::Location::RigSlot2 },
-                { QStringLiteral("RigSlot3"), Blueprint::Location::RigSlot3 },
-                { QStringLiteral("RigSlot4"), Blueprint::Location::RigSlot4 },
-                { QStringLiteral("RigSlot5"), Blueprint::Location::RigSlot5 },
-                { QStringLiteral("RigSlot6"), Blueprint::Location::RigSlot6 },
-                { QStringLiteral("RigSlot7"), Blueprint::Location::RigSlot7 },
-                { QStringLiteral("ShipHangar"), Blueprint::Location::ShipHangar },
-                { QStringLiteral("SpecializedFuelBay"), Blueprint::Location::SpecializedFuelBay },
-                { QStringLiteral("SpecializedOreHold"), Blueprint::Location::SpecializedOreHold },
-                { QStringLiteral("SpecializedGasHold"), Blueprint::Location::SpecializedGasHold },
-                { QStringLiteral("SpecializedMineralHold"), Blueprint::Location::SpecializedMineralHold },
-                { QStringLiteral("SpecializedSalvageHold"), Blueprint::Location::SpecializedSalvageHold },
-                { QStringLiteral("SpecializedShipHold"), Blueprint::Location::SpecializedShipHold },
-                { QStringLiteral("SpecializedSmallShipHold"), Blueprint::Location::SpecializedSmallShipHold },
-                { QStringLiteral("SpecializedMediumShipHold"), Blueprint::Location::SpecializedMediumShipHold },
-                { QStringLiteral("SpecializedLargeShipHold"), Blueprint::Location::SpecializedLargeShipHold },
-                { QStringLiteral("SpecializedIndustrialShipHold"), Blueprint::Location::SpecializedIndustrialShipHold },
-                { QStringLiteral("SpecializedAmmoHold"), Blueprint::Location::SpecializedAmmoHold },
-                { QStringLiteral("SpecializedCommandCenterHold"), Blueprint::Location::SpecializedCommandCenterHold },
-                { QStringLiteral("SpecializedPlanetaryCommoditiesHold"), Blueprint::Location::SpecializedPlanetaryCommoditiesHold },
-                { QStringLiteral("SpecializedMaterialBay"), Blueprint::Location::SpecializedMaterialBay },
-                { QStringLiteral("SubSystemSlot0"), Blueprint::Location::SubSystemSlot0 },
-                { QStringLiteral("SubSystemSlot1"), Blueprint::Location::SubSystemSlot1 },
-                { QStringLiteral("SubSystemSlot2"), Blueprint::Location::SubSystemSlot2 },
-                { QStringLiteral("SubSystemSlot3"), Blueprint::Location::SubSystemSlot3 },
-                { QStringLiteral("SubSystemSlot4"), Blueprint::Location::SubSystemSlot4 },
-                { QStringLiteral("SubSystemSlot5"), Blueprint::Location::SubSystemSlot5 },
-                { QStringLiteral("SubSystemSlot6"), Blueprint::Location::SubSystemSlot6 },
-                { QStringLiteral("SubSystemSlot7"), Blueprint::Location::SubSystemSlot7 },
-                { QStringLiteral("FighterBay"), Blueprint::Location::FighterBay },
-                { QStringLiteral("FighterTube0"), Blueprint::Location::FighterTube0 },
-                { QStringLiteral("FighterTube1"), Blueprint::Location::FighterTube1 },
-                { QStringLiteral("FighterTube2"), Blueprint::Location::FighterTube2 },
-                { QStringLiteral("FighterTube3"), Blueprint::Location::FighterTube3 },
-                { QStringLiteral("FighterTube4"), Blueprint::Location::FighterTube4 },
-                { QStringLiteral("Module"), Blueprint::Location::Module },
-            };
-
-            QtConcurrent::blockingMap(blueprintList, [&](const auto &blueprint) {
-                const auto blueprintObj = blueprint.toObject();
-
-                auto &curResult = result[currentIndex++];
-                curResult.setId(blueprintObj.value(QStringLiteral("item_id")).toDouble());
-                curResult.setLocationId(blueprintObj.value(QStringLiteral("location_id")).toDouble());
-                curResult.setMaterialEfficiency(blueprintObj.value(QStringLiteral("material_efficiency")).toDouble());
-                curResult.setTimeEfficiency(blueprintObj.value(QStringLiteral("time_efficiency")).toDouble());
-                curResult.setQuantity(blueprintObj.value(QStringLiteral("quantity")).toInt());
-                curResult.setRuns(blueprintObj.value(QStringLiteral("runs")).toInt());
-                curResult.setTypeId(blueprintObj.value(QStringLiteral("type_id")).toDouble());
-
-                const auto location = blueprintObj.value(QStringLiteral("location_flag")).toString();
-                if (locationNameMap.contains(location))
-                    curResult.setLocation(locationNameMap[location]);
-            });
-
-            callback(std::move(result), error, expires);
-        });
+    void ESIManager::fetchCorporationBlueprints(Character::IdType charId, quint64 corpId, const BlueprintCallback &callback) const
+    {
+        getInterface().fetchCorporationBlueprints(charId, corpId, getBlueprintCallback(callback));
     }
 
     void ESIManager::fetchMarketPrices(const Callback<MarketPrices> &callback) const
@@ -1296,6 +1192,122 @@ namespace Evernus
                 callback(std::move(*transactions), {}, expires);
             else
                 nextCallback(nextFromId - 1, std::move(transactions));
+        };
+    }
+
+    ESIInterface::PaginatedCallback ESIManager::getBlueprintCallback(const BlueprintCallback &callback) const
+    {
+        auto blueprints = std::make_shared<BlueprintList>();
+        return [=, blueprints = std::move(blueprints)](auto &&data, auto atEnd, const auto &error, const auto &expires) {
+            if (Q_UNLIKELY(!error.isEmpty()))
+            {
+                callback({}, error, expires);
+                return;
+            }
+
+            const auto blueprintList = data.array();
+
+            blueprints->resize(blueprints->size() + blueprintList.size());
+            std::atomic_size_t currentIndex{0};
+
+            const QHash<QString, Blueprint::Location> locationNameMap = {
+                { QStringLiteral("AutoFit"), Blueprint::Location::AutoFit },
+                { QStringLiteral("Cargo"), Blueprint::Location::Cargo },
+                { QStringLiteral("CorpseBay"), Blueprint::Location::CorpseBay },
+                { QStringLiteral("DroneBay"), Blueprint::Location::DroneBay },
+                { QStringLiteral("FleetHangar"), Blueprint::Location::FleetHangar },
+                { QStringLiteral("Deliveries"), Blueprint::Location::Deliveries },
+                { QStringLiteral("HiddenModifiers"), Blueprint::Location::HiddenModifiers },
+                { QStringLiteral("Hangar"), Blueprint::Location::Hangar },
+                { QStringLiteral("HangarAll"), Blueprint::Location::HangarAll },
+                { QStringLiteral("LoSlot0"), Blueprint::Location::LoSlot0 },
+                { QStringLiteral("LoSlot1"), Blueprint::Location::LoSlot1 },
+                { QStringLiteral("LoSlot2"), Blueprint::Location::LoSlot2 },
+                { QStringLiteral("LoSlot3"), Blueprint::Location::LoSlot3 },
+                { QStringLiteral("LoSlot4"), Blueprint::Location::LoSlot4 },
+                { QStringLiteral("LoSlot5"), Blueprint::Location::LoSlot5 },
+                { QStringLiteral("LoSlot6"), Blueprint::Location::LoSlot6 },
+                { QStringLiteral("LoSlot7"), Blueprint::Location::LoSlot7 },
+                { QStringLiteral("MedSlot0"), Blueprint::Location::MedSlot0 },
+                { QStringLiteral("MedSlot1"), Blueprint::Location::MedSlot1 },
+                { QStringLiteral("MedSlot2"), Blueprint::Location::MedSlot2 },
+                { QStringLiteral("MedSlot3"), Blueprint::Location::MedSlot3 },
+                { QStringLiteral("MedSlot4"), Blueprint::Location::MedSlot4 },
+                { QStringLiteral("MedSlot5"), Blueprint::Location::MedSlot5 },
+                { QStringLiteral("MedSlot6"), Blueprint::Location::MedSlot6 },
+                { QStringLiteral("MedSlot7"), Blueprint::Location::MedSlot7 },
+                { QStringLiteral("HiSlot0"), Blueprint::Location::HiSlot0 },
+                { QStringLiteral("HiSlot1"), Blueprint::Location::HiSlot1 },
+                { QStringLiteral("HiSlot2"), Blueprint::Location::HiSlot2 },
+                { QStringLiteral("HiSlot3"), Blueprint::Location::HiSlot3 },
+                { QStringLiteral("HiSlot4"), Blueprint::Location::HiSlot4 },
+                { QStringLiteral("HiSlot5"), Blueprint::Location::HiSlot5 },
+                { QStringLiteral("HiSlot6"), Blueprint::Location::HiSlot6 },
+                { QStringLiteral("HiSlot7"), Blueprint::Location::HiSlot7 },
+                { QStringLiteral("AssetSafety"), Blueprint::Location::AssetSafety },
+                { QStringLiteral("Locked"), Blueprint::Location::Locked },
+                { QStringLiteral("Unlocked"), Blueprint::Location::Unlocked },
+                { QStringLiteral("Implant"), Blueprint::Location::Implant },
+                { QStringLiteral("QuafeBay"), Blueprint::Location::QuafeBay },
+                { QStringLiteral("RigSlot0"), Blueprint::Location::RigSlot0 },
+                { QStringLiteral("RigSlot1"), Blueprint::Location::RigSlot1 },
+                { QStringLiteral("RigSlot2"), Blueprint::Location::RigSlot2 },
+                { QStringLiteral("RigSlot3"), Blueprint::Location::RigSlot3 },
+                { QStringLiteral("RigSlot4"), Blueprint::Location::RigSlot4 },
+                { QStringLiteral("RigSlot5"), Blueprint::Location::RigSlot5 },
+                { QStringLiteral("RigSlot6"), Blueprint::Location::RigSlot6 },
+                { QStringLiteral("RigSlot7"), Blueprint::Location::RigSlot7 },
+                { QStringLiteral("ShipHangar"), Blueprint::Location::ShipHangar },
+                { QStringLiteral("SpecializedFuelBay"), Blueprint::Location::SpecializedFuelBay },
+                { QStringLiteral("SpecializedOreHold"), Blueprint::Location::SpecializedOreHold },
+                { QStringLiteral("SpecializedGasHold"), Blueprint::Location::SpecializedGasHold },
+                { QStringLiteral("SpecializedMineralHold"), Blueprint::Location::SpecializedMineralHold },
+                { QStringLiteral("SpecializedSalvageHold"), Blueprint::Location::SpecializedSalvageHold },
+                { QStringLiteral("SpecializedShipHold"), Blueprint::Location::SpecializedShipHold },
+                { QStringLiteral("SpecializedSmallShipHold"), Blueprint::Location::SpecializedSmallShipHold },
+                { QStringLiteral("SpecializedMediumShipHold"), Blueprint::Location::SpecializedMediumShipHold },
+                { QStringLiteral("SpecializedLargeShipHold"), Blueprint::Location::SpecializedLargeShipHold },
+                { QStringLiteral("SpecializedIndustrialShipHold"), Blueprint::Location::SpecializedIndustrialShipHold },
+                { QStringLiteral("SpecializedAmmoHold"), Blueprint::Location::SpecializedAmmoHold },
+                { QStringLiteral("SpecializedCommandCenterHold"), Blueprint::Location::SpecializedCommandCenterHold },
+                { QStringLiteral("SpecializedPlanetaryCommoditiesHold"), Blueprint::Location::SpecializedPlanetaryCommoditiesHold },
+                { QStringLiteral("SpecializedMaterialBay"), Blueprint::Location::SpecializedMaterialBay },
+                { QStringLiteral("SubSystemSlot0"), Blueprint::Location::SubSystemSlot0 },
+                { QStringLiteral("SubSystemSlot1"), Blueprint::Location::SubSystemSlot1 },
+                { QStringLiteral("SubSystemSlot2"), Blueprint::Location::SubSystemSlot2 },
+                { QStringLiteral("SubSystemSlot3"), Blueprint::Location::SubSystemSlot3 },
+                { QStringLiteral("SubSystemSlot4"), Blueprint::Location::SubSystemSlot4 },
+                { QStringLiteral("SubSystemSlot5"), Blueprint::Location::SubSystemSlot5 },
+                { QStringLiteral("SubSystemSlot6"), Blueprint::Location::SubSystemSlot6 },
+                { QStringLiteral("SubSystemSlot7"), Blueprint::Location::SubSystemSlot7 },
+                { QStringLiteral("FighterBay"), Blueprint::Location::FighterBay },
+                { QStringLiteral("FighterTube0"), Blueprint::Location::FighterTube0 },
+                { QStringLiteral("FighterTube1"), Blueprint::Location::FighterTube1 },
+                { QStringLiteral("FighterTube2"), Blueprint::Location::FighterTube2 },
+                { QStringLiteral("FighterTube3"), Blueprint::Location::FighterTube3 },
+                { QStringLiteral("FighterTube4"), Blueprint::Location::FighterTube4 },
+                { QStringLiteral("Module"), Blueprint::Location::Module },
+            };
+
+            QtConcurrent::blockingMap(blueprintList, [&](const auto &blueprint) {
+                const auto blueprintObj = blueprint.toObject();
+
+                auto &curResult = (*blueprints)[currentIndex++];
+                curResult.setId(blueprintObj.value(QStringLiteral("item_id")).toDouble());
+                curResult.setLocationId(blueprintObj.value(QStringLiteral("location_id")).toDouble());
+                curResult.setMaterialEfficiency(blueprintObj.value(QStringLiteral("material_efficiency")).toDouble());
+                curResult.setTimeEfficiency(blueprintObj.value(QStringLiteral("time_efficiency")).toDouble());
+                curResult.setQuantity(blueprintObj.value(QStringLiteral("quantity")).toInt());
+                curResult.setRuns(blueprintObj.value(QStringLiteral("runs")).toInt());
+                curResult.setTypeId(blueprintObj.value(QStringLiteral("type_id")).toDouble());
+
+                const auto location = blueprintObj.value(QStringLiteral("location_flag")).toString();
+                if (locationNameMap.contains(location))
+                    curResult.setLocation(locationNameMap[location]);
+            });
+
+            if (atEnd)
+                callback(std::move(*blueprints), {}, expires);
         };
     }
 
