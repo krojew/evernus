@@ -50,11 +50,6 @@ namespace Evernus
 
             qWarning() << "OAuth error:" << replyError << errorStr << data;
 
-            // part 2 of the hack for https://bugreports.qt.io/browse/QTBUG-65778
-            // TODO: remove
-            if (replyError == QNetworkReply::ProtocolUnknownError && reply->url().path() == QStringLiteral("dummy"))
-                return;
-
             emit error(errorStr);
             emit tokensReceived({{ QStringLiteral("error"), errorStr }});
             return;

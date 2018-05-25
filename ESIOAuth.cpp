@@ -191,22 +191,6 @@ namespace Evernus
                 processPendingRequests(charId, error);
                 resetOAuthStatus(charId);
             });
-
-            // we need a hack, because of https://bugreports.qt.io/browse/QTBUG-65778
-            // TODO: remove
-            if (!it->second->refreshToken().isEmpty())
-            {
-                it->second->blockSignals(true);
-                it->second->setAccessTokenUrl(QStringLiteral("dummy"));
-                it->second->grant();
-                it->second->blockSignals(false);
-                it->second->authorizationCallbackReceived({
-                    { QStringLiteral("code"), QStringLiteral("dummy") },
-                    { QStringLiteral("state"), it->second->state() }
-                });
-                it->second->setAccessTokenUrl(QStringLiteral("https://login.eveonline.com/oauth/token"));
-                it->second->refreshAccessToken();
-            }
         }
 
         return *it->second;
