@@ -168,7 +168,6 @@ namespace Evernus
                                                                  *mExternalOrderRepository,
                                                                  *mMarketOrderRepository,
                                                                  *mCorpMarketOrderRepository,
-                                                                 *mConquerableStationRepository,
                                                                  *mMarketGroupRepository,
                                                                  *mCitadelRepository,
                                                                  *this,
@@ -1227,67 +1226,6 @@ namespace Evernus
         emit taskEnded(task, QString{});
     }
 
-    void EvernusApplication::refreshConquerableStations()
-    {
-        qDebug() << "Refreshing conquerable stations...";
-
-        const auto task = startTask(tr("Fetching conquerable stations..."));
-        processEvents(QEventLoop::ExcludeUserInputEvents);
-
-        Q_ASSERT(mESIManager);
-        mESIManager->fetchSovereigntyStructures([=](auto &&list, const auto &error, const auto &expires) {
-            Q_UNUSED(expires);
-
-            if (error.isEmpty())
-            {
-                mDataProvider->clearStationCache();
-
-                if (mStationGroupTypeIds.empty())
-                    fetchStationTypeIds();
-
-                std::vector<ConquerableStation> stations;
-                std::vector<quint64> stationNames;
-
-                boost::transform(
-                    list | boost::adaptors::filtered([=](const auto &structure) {
-                        return mStationGroupTypeIds.find(structure.mTypeId) != std::end(mStationGroupTypeIds);
-                    }),
-                    std::back_inserter(stations),
-                    [&](const auto &structure) {
-                        stationNames.emplace_back(structure.mStructureId);
-
-                        ConquerableStation station{static_cast<uint>(structure.mStructureId)};
-                        station.setSolarSystemId(structure.mSolarSystemId);
-
-                        return station;
-                    }
-                );
-
-                mESIManager->fetchGenericNames(stationNames, [=, stations = std::move(stations)](auto &&data, const auto &error) mutable {
-                    if (error.isEmpty())
-                    {
-                        for (auto &station : stations)
-                            station.setName(data[station.getId()]);
-
-                        mConquerableStationRepository->deleteAll();
-                        asyncBatchStore(*mConquerableStationRepository, std::move(stations), true, [=] {
-                            emit conquerableStationsChanged();
-                            emit taskEnded(task, {});
-                        });
-                    }
-                    else
-                    {
-                        emit taskEnded(task, error);
-                    }
-                });
-            }
-            else
-            {
-                emit taskEnded(task, error);
-            }
-        });
-    }
-
     void EvernusApplication::refreshCitadels()
     {
         qDebug() << "Refreshing citadels...";
@@ -1723,7 +1661,6 @@ namespace Evernus
         mCorpItemRepository.reset(new ItemRepository{true, mMainDatabaseConnectionProvider});
         mAssetListRepository.reset(new AssetListRepository{false, mMainDatabaseConnectionProvider, *mItemRepository});
         mCorpAssetListRepository.reset(new AssetListRepository{true, mMainDatabaseConnectionProvider, *mCorpItemRepository});
-        mConquerableStationRepository.reset(new ConquerableStationRepository{mMainDatabaseConnectionProvider});
         mWalletSnapshotRepository.reset(new WalletSnapshotRepository{mMainDatabaseConnectionProvider});
         mCorpWalletSnapshotRepository.reset(new CorpWalletSnapshotRepository{mMainDatabaseConnectionProvider});
         mExternalOrderRepository.reset(new ExternalOrderRepository{mMainDatabaseConnectionProvider});
@@ -1766,7 +1703,6 @@ namespace Evernus
         mCorpAssetListRepository->create(*mCharacterRepository);
         mItemRepository->create(*mAssetListRepository);
         mCorpItemRepository->create(*mCorpAssetListRepository);
-        mConquerableStationRepository->create();
         mWalletSnapshotRepository->create(*mCharacterRepository);
         mCorpWalletSnapshotRepository->create();
         mAssetValueSnapshotRepository->create(*mCharacterRepository);

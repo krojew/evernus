@@ -24,7 +24,6 @@
 #include <QFile>
 #include <QDir>
 
-#include "ConquerableStationRepository.h"
 #include "DatabaseConnectionProvider.h"
 #include "EveDataManagerProvider.h"
 #include "MarketOrderRepository.h"
@@ -66,7 +65,6 @@ namespace Evernus
                                                    const ExternalOrderRepository &externalOrderRepository,
                                                    const MarketOrderRepository &marketOrderRepository,
                                                    const MarketOrderRepository &corpMarketOrderRepository,
-                                                   const ConquerableStationRepository &conquerableStationRepository,
                                                    const MarketGroupRepository &marketGroupRepository,
                                                    const CitadelRepository &citadelRepository,
                                                    const EveDataManagerProvider &dataManagerProvider,
@@ -78,7 +76,6 @@ namespace Evernus
         , mExternalOrderRepository{externalOrderRepository}
         , mMarketOrderRepository{marketOrderRepository}
         , mCorpMarketOrderRepository{corpMarketOrderRepository}
-        , mConquerableStationRepository{conquerableStationRepository}
         , mMarketGroupRepository{marketGroupRepository}
         , mCitadelRepository{citadelRepository}
         , mDataManagerProvider{dataManagerProvider}
@@ -350,28 +347,6 @@ namespace Evernus
             if (query.next())
                 result = query.value(0).toString();
         }
-        else if (id >= 66014934 && id <= 67999999)
-        {
-            try
-            {
-                auto station = mConquerableStationRepository.find(id - 6000000);
-                result = station->getName();
-            }
-            catch (const ConquerableStationRepository::NotFoundException &)
-            {
-            }
-        }
-        else if (id >= 60014861 && id <= 60014928)
-        {
-            try
-            {
-                auto station = mConquerableStationRepository.find(id);
-                result = station->getName();
-            }
-            catch (const ConquerableStationRepository::NotFoundException &)
-            {
-            }
-        }
         else if (id > 60000000 && id <= 61000000)
         {
             QSqlQuery query{mConnectionProvider.getConnection()};
@@ -381,17 +356,6 @@ namespace Evernus
             DatabaseUtils::execQuery(query);
             if (query.next())
                 result = query.value(0).toString();
-        }
-        else if (id > 61000000)
-        {
-            try
-            {
-                auto station = mConquerableStationRepository.find(id);
-                result = station->getName();
-            }
-            catch (const ConquerableStationRepository::NotFoundException &)
-            {
-            }
         }
         else
         {
@@ -611,10 +575,6 @@ namespace Evernus
             while (query.next())
                 stations.emplace_back(std::make_pair(query.value(0).toUInt(), query.value(1).toString()));
 
-            const auto conqStations = mConquerableStationRepository.fetchForSolarSystem(solarSystemId);
-            for (const auto &station : conqStations)
-                stations.emplace_back(std::make_pair(station->getId(), station->getName()));
-
             const auto citadels = mCitadelRepository.fetchForSolarSystem(solarSystemId);
             for (const auto &citadel : citadels)
                 stations.emplace_back(std::make_pair(citadel->getId(), citadel->getName()));
@@ -736,28 +696,6 @@ namespace Evernus
             if (query.next())
                 systemId = query.value(0).toUInt();
         }
-        else if (stationId >= 66014934 && stationId <= 67999999)
-        {
-            try
-            {
-                auto station = mConquerableStationRepository.find(stationId - 6000000);
-                systemId = station->getSolarSystemId();
-            }
-            catch (const ConquerableStationRepository::NotFoundException &)
-            {
-            }
-        }
-        else if (stationId >= 60014861 && stationId <= 60014928)
-        {
-            try
-            {
-                auto station = mConquerableStationRepository.find(stationId);
-                systemId = station->getSolarSystemId();
-            }
-            catch (const ConquerableStationRepository::NotFoundException &)
-            {
-            }
-        }
         else if (stationId > 60000000 && stationId <= 61000000)
         {
             QSqlQuery query{mConnectionProvider.getConnection()};
@@ -767,17 +705,6 @@ namespace Evernus
             DatabaseUtils::execQuery(query);
             if (query.next())
                 systemId = query.value(0).toUInt();
-        }
-        else if (stationId > 61000000)
-        {
-            try
-            {
-                auto station = mConquerableStationRepository.find(stationId);
-                systemId = station->getSolarSystemId();
-            }
-            catch (const ConquerableStationRepository::NotFoundException &)
-            {
-            }
         }
         else
         {

@@ -33,7 +33,6 @@
 #include "ExternalOrderImporterRegistry.h"
 #include "RegionStationPresetRepository.h"
 #include "EveDatabaseConnectionProvider.h"
-#include "ConquerableStationRepository.h"
 #include "AssetValueSnapshotRepository.h"
 #include "WalletJournalEntryRepository.h"
 #include "CorpWalletSnapshotRepository.h"
@@ -185,7 +184,6 @@ namespace Evernus
         void taskInfoChanged(uint taskId, const QString &text);
         void taskEnded(uint taskId, const QString &error);
 
-        void conquerableStationsChanged();
         void citadelsChanged();
         void charactersChanged();
         void characterAssetsChanged();
@@ -229,7 +227,6 @@ namespace Evernus
         void refreshCorpWalletTransactions(Character::IdType id, uint parentTask = TaskConstants::invalidTask, bool force = false);
         void refreshCorpMarketOrdersFromAPI(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
         void refreshCorpMarketOrdersFromLogs(Character::IdType id, uint parentTask = TaskConstants::invalidTask);
-        void refreshConquerableStations();
         void refreshCitadels();
         void refreshAllExternalOrders(Character::IdType id);
         void refreshExternalOrdersFromWeb(Character::IdType id, const TypeLocationPairs &target);
@@ -286,7 +283,6 @@ namespace Evernus
         std::unique_ptr<CharacterRepository> mCharacterRepository;
         std::unique_ptr<ItemRepository> mItemRepository, mCorpItemRepository;
         std::unique_ptr<AssetListRepository> mAssetListRepository, mCorpAssetListRepository;
-        std::unique_ptr<ConquerableStationRepository> mConquerableStationRepository;
         std::unique_ptr<WalletSnapshotRepository> mWalletSnapshotRepository;
         std::unique_ptr<CorpWalletSnapshotRepository> mCorpWalletSnapshotRepository;
         std::unique_ptr<ExternalOrderRepository> mExternalOrderRepository;

@@ -221,11 +221,6 @@ add_executable(
     CommandLineOptions.h
     CommonScriptAPI.cpp
     CommonScriptAPI.h
-    ConquerableStation.cpp
-    ConquerableStation.h
-    ConquerableStationList.h
-    ConquerableStationRepository.cpp
-    ConquerableStationRepository.h
     Contract.cpp
     Contract.h
     ContractFilterProxyModel.cpp

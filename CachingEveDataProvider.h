@@ -34,7 +34,6 @@ class QDir;
 
 namespace Evernus
 {
-    class ConquerableStationRepository;
     class DatabaseConnectionProvider;
     class EveDataManagerProvider;
     class MarketOrderRepository;
@@ -52,7 +51,6 @@ namespace Evernus
                                const ExternalOrderRepository &externalOrderRepository,
                                const MarketOrderRepository &marketOrderRepository,
                                const MarketOrderRepository &corpMarketOrderRepository,
-                               const ConquerableStationRepository &conquerableStationRepository,
                                const MarketGroupRepository &marketGroupRepository,
                                const CitadelRepository &citadelRepository,
                                const EveDataManagerProvider &dataManagerProvider,
@@ -152,7 +150,6 @@ namespace Evernus
         const MetaGroupRepository &mMetaGroupRepository;
         const ExternalOrderRepository &mExternalOrderRepository;
         const MarketOrderRepository &mMarketOrderRepository, &mCorpMarketOrderRepository;
-        const ConquerableStationRepository &mConquerableStationRepository;
         const MarketGroupRepository &mMarketGroupRepository;
         const CitadelRepository &mCitadelRepository;
 

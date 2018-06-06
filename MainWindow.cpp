@@ -364,7 +364,6 @@ namespace Evernus
     void MainWindow::refreshAll()
     {
         emit refreshCharacters();
-        emit refreshConquerableStations();
         emit refreshCitadels();
 
         refreshWalletJournal();
@@ -618,7 +617,6 @@ namespace Evernus
         fileMenu->addAction(tr("E&xit"), this, &MainWindow::close, QKeySequence::Quit)->setMenuRole(QAction::QuitRole);
 
         auto toolsMenu = bar->addMenu(tr("&Tools"));
-        toolsMenu->addAction(tr("Import conquerable stations"), this, &MainWindow::refreshConquerableStations);
         toolsMenu->addAction(tr("Import citadels"), this, &MainWindow::refreshCitadels);
         toolsMenu->addAction(tr("Citadel manager"), this, &MainWindow::showCitadelManager);
         toolsMenu->addAction(QIcon{":/images/report.png"}, tr("Ma&rgin tool..."), this, &MainWindow::showMarginTool, Qt::CTRL + Qt::Key_M);
@@ -740,7 +738,6 @@ namespace Evernus
         connect(assetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(assetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setWaypoint);
         connect(assetsTab, &AssetsWidget::showInEve, this, &MainWindow::showInEve);
-        connect(this, &MainWindow::conquerableStationsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::citadelsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::characterAssetsChanged, assetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, assetsTab, &AssetsWidget::updateData);
@@ -771,7 +768,6 @@ namespace Evernus
         connect(this, &MainWindow::characterMarketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::corpMarketOrdersChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, orderTab, &MarketOrderWidget::updateData);
-        connect(this, &MainWindow::conquerableStationsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::citadelsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, orderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::charactersChanged, orderTab, &MarketOrderWidget::updateCharacters);
@@ -824,7 +820,6 @@ namespace Evernus
         connect(corpAssetsTab, &AssetsWidget::importPricesFromFile, this, &MainWindow::importExternalOrdersFromFile);
         connect(corpAssetsTab, &AssetsWidget::setDestinationInEve, this, &MainWindow::setWaypoint);
         connect(corpAssetsTab, &AssetsWidget::showInEve, this, &MainWindow::showInEve);
-        connect(this, &MainWindow::conquerableStationsChanged, corpAssetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::citadelsChanged, corpAssetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::corpAssetsChanged, corpAssetsTab, &AssetsWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, corpAssetsTab, &AssetsWidget::updateData);
@@ -854,7 +849,6 @@ namespace Evernus
         connect(corpOrderTab, &MarketOrderWidget::fpcExecutorChanged, &mFPCController, &FPCController::changeExecutor);
         connect(this, &MainWindow::corpMarketOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::externalOrdersChanged, corpOrderTab, &MarketOrderWidget::updateData);
-        connect(this, &MainWindow::conquerableStationsChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::citadelsChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::itemCostsChanged, corpOrderTab, &MarketOrderWidget::updateData);
         connect(this, &MainWindow::charactersChanged, corpOrderTab, &MarketOrderWidget::updateCharacters);
