@@ -40,7 +40,7 @@ namespace Evernus
 
         void create() const;
         void deleteAll() const;
-        void replace(CitadelList citadels) const;
+        void replace(CitadelList citadels, bool deleteExisting) const;
 
         EntityList fetchForSolarSystem(uint solarSystemId) const;
         EntityList fetchForRegion(uint regionId) const;

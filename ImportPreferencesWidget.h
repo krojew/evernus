@@ -43,6 +43,7 @@ namespace Evernus
 
         QCheckBox *mIgnoreCachedBtn = nullptr;
         QCheckBox *mAllCharactersBtn = nullptr;
+        QCheckBox *mClearExistingCitadelsBtn = nullptr;
 
         QSpinBox *mCharacterTimerEdit = nullptr;
         QSpinBox *mAssetListTimerEdit = nullptr;

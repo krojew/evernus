@@ -15,13 +15,16 @@
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QCheckBox>
 #include <QGroupBox>
+#include <QSettings>
 #include <QLabel>
 #include <QIcon>
 
 #include "CitadelManagementWidget.h"
 #include "CitadelAccessCache.h"
 #include "CitadelRepository.h"
+#include "ImportSettings.h"
 
 #include "CitadelManagerDialog.h"
 
@@ -51,6 +54,12 @@ namespace Evernus
 
         ignoredBoxLayout->addWidget(new QLabel{tr("<s>Citadel Name</s> - citadel unavailable for current character"), this});
 
+        QSettings settings;
+
+        mClearExistingCitadelsBtn = new QCheckBox{tr("Clear existing citadels on import"), this};
+        mainLayout->addWidget(mClearExistingCitadelsBtn);
+        mClearExistingCitadelsBtn->setChecked(settings.value(ImportSettings::clearExistingCitadelsKey, ImportSettings::clearExistingCitadelsDefault).toBool());
+
         const auto refreshAccessCacheBtn = new QPushButton{QIcon{QStringLiteral(":/images/arrow_refresh.png")}, tr("Refresh access cache"), this};
         mainLayout->addWidget(refreshAccessCacheBtn);
         refreshAccessCacheBtn->setToolTip(tr("Clear citadel access cache to check if your characters have access to various citadels."));
@@ -66,6 +75,9 @@ namespace Evernus
 
     void CitadelManagerDialog::applyChanges()
     {
+        QSettings settings;
+        settings.setValue(ImportSettings::clearExistingCitadelsKey, mClearExistingCitadelsBtn->isChecked());
+
         mCitadelRepo.setIgnored(mIgnoredCitadelsWidget->getSelectedCitadels());
         accept();
     }

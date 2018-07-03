@@ -87,7 +87,7 @@ namespace Evernus
         exec(QStringLiteral("DELETE FROM %1").arg(getTableName()));
     }
 
-    void CitadelRepository::replace(CitadelList citadels) const
+    void CitadelRepository::replace(CitadelList citadels, bool deleteExisting) const
     {
         auto start = std::begin(citadels);
         const auto end = std::end(citadels);
@@ -126,7 +126,9 @@ namespace Evernus
 
         try
         {
-            deleteAll();
+            if (deleteExisting)
+                deleteAll();
+
             batchStore(citadels, true, false);
         }
         catch (...)

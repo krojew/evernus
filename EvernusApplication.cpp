@@ -1239,7 +1239,9 @@ namespace Evernus
                 mDataProvider->clearCitadelCache();
 
                 asyncExecute([=, citadels = std::move(citadels)] {
-                    mCitadelRepository->replace(std::move(citadels));
+                    QSettings settings;
+
+                    mCitadelRepository->replace(std::move(citadels), settings.value(ImportSettings::clearExistingCitadelsKey, ImportSettings::clearExistingCitadelsDefault).toBool());
                     mExternalOrderRepository->fixMissingData(*mCitadelRepository);
                     emit citadelsChanged();
                 });

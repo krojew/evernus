@@ -18,6 +18,8 @@
 
 #include "Character.h"
 
+class QCheckBox;
+
 namespace Evernus
 {
     class CitadelManagementWidget;
@@ -55,5 +57,6 @@ namespace Evernus
         CitadelAccessCache &mCitadelAccessCache;
 
         CitadelManagementWidget *mIgnoredCitadelsWidget = nullptr;
+        QCheckBox *mClearExistingCitadelsBtn = nullptr;
     };
 }

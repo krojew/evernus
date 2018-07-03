@@ -24,9 +24,9 @@
 namespace Evernus
 {
     CitadelManagementWidget::CitadelManagementWidget(const EveDataProvider &dataProvider,
-                                                 const CitadelAccessCache &citadelAccessCache,
-                                                 Character::IdType charId,
-                                                 QWidget *parent)
+                                                     const CitadelAccessCache &citadelAccessCache,
+                                                     Character::IdType charId,
+                                                     QWidget *parent)
         : QWidget{parent}
         , mModel{dataProvider, citadelAccessCache, charId}
     {
