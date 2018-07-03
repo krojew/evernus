@@ -48,11 +48,16 @@ namespace Evernus
     signals:
         void citadelsChanged();
 
+    public slots:
+        void refreshCitadels();
+
     private slots:
         void applyChanges();
         void refreshAccessCache();
+        void addCitadel();
 
     private:
+        const EveDataProvider &mDataProvider;
         const CitadelRepository &mCitadelRepo;
         CitadelAccessCache &mCitadelAccessCache;
 

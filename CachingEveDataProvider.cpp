@@ -151,6 +151,15 @@ namespace Evernus
         return mTradeableTypeCache;
     }
 
+    const CachingEveDataProvider::TypeList &CachingEveDataProvider::getCitadelTypeIds() const
+    {
+        if (!mCitadelTypeCache.empty())
+            return mCitadelTypeCache;
+
+        mCitadelTypeCache = mEveTypeRepository.fetchCitadelIds();
+        return mCitadelTypeCache;
+    }
+
     QString CachingEveDataProvider::getTypeMetaGroupName(EveType::IdType id) const
     {
         const auto it = mTypeMetaGroupCache.find(id);

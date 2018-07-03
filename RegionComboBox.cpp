@@ -27,9 +27,12 @@ namespace Evernus
         RegionList saved;
         QSettings settings;
 
-        const auto savedList = settings.value(settingsKey).toList();
-        for (const auto &value : savedList)
-            saved.emplace(value.toUInt());
+        if (!settingsKey.isEmpty())
+        {
+            const auto savedList = settings.value(settingsKey).toList();
+            for (const auto &value : savedList)
+                saved.emplace(value.toUInt());
+        }
 
         addData(dataProvider, saved);
 
@@ -53,7 +56,7 @@ namespace Evernus
     RegionComboBox::RegionComboBox(const EveDataProvider &dataProvider, QWidget *parent)
         : QComboBox{parent}
     {
-        addData(dataProvider, RegionList{});
+        addData(dataProvider, {});
 
         const auto itemModel = static_cast<const QStandardItemModel *>(model());
         connect(itemModel, &QStandardItemModel::itemChanged, this, &RegionComboBox::setRegionText, Qt::QueuedConnection);

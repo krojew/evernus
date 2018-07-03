@@ -204,6 +204,8 @@ add_executable(
     Citadel.h
     CitadelAccessCache.cpp
     CitadelAccessCache.h
+    CitadelEditDialog.cpp
+    CitadelEditDialog.h
     CitadelManagementModel.cpp
     CitadelManagementModel.h
     CitadelManagementWidget.cpp
@@ -707,8 +709,12 @@ add_executable(
     SellMarketOrdersInfoWidget.h
     SimpleCrypt.cpp
     SimpleCrypt.h
+    SingleRegionComboBox.cpp
+    SingleRegionComboBox.h
     SizeRememberingWidget.cpp
     SizeRememberingWidget.h
+    SolarSystemComboBox.cpp
+    SolarSystemComboBox.h
     SoundPreferencesWidget.cpp
     SoundPreferencesWidget.h
     SoundSettings.h

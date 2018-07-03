@@ -70,12 +70,24 @@ namespace Evernus
         return result;
     }
 
-    std::unordered_set<EveType::IdType> EveTypeRepository::fetchAllTradeableIds() const
+    EveTypeRepository::TypeList EveTypeRepository::fetchAllTradeableIds() const
     {
         auto query = exec(QStringLiteral("SELECT %1 FROM %2 WHERE published = 1 AND marketGroupID IS NOT NULL")
             .arg(getIdColumn()).arg(getTableName()));
 
-        std::unordered_set<EveType::IdType> result;
+        TypeList result;
+        while (query.next())
+            result.emplace(query.value(0).toUInt());
+
+        return result;
+    }
+
+    EveTypeRepository::TypeList EveTypeRepository::fetchCitadelIds() const
+    {
+        auto query = exec(QStringLiteral("SELECT %1 FROM %2 WHERE groupID = 1657")  // hardcoded citadel group, because why not
+            .arg(getIdColumn()).arg(getTableName()));
+
+        TypeList result;
         while (query.next())
             result.emplace(query.value(0).toUInt());
 

@@ -168,7 +168,7 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
         <translation type="vanished">Błąd tworzenia obiektu bazy danych!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1657"/>
+        <location filename="../EvernusApplication.cpp" line="1659"/>
         <source>Error creating DB path!</source>
         <translation>Błąd tworzenia katalogu bazy danych!</translation>
     </message>
@@ -2287,6 +2287,54 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
     </message>
 </context>
 <context>
+    <name>Evernus::CitadelEditDialog</name>
+    <message>
+        <location filename="../CitadelEditDialog.cpp" line="37"/>
+        <source>Id:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CitadelEditDialog.cpp" line="41"/>
+        <source>Name:</source>
+        <translation type="unfinished">Nazwa:</translation>
+    </message>
+    <message>
+        <location filename="../CitadelEditDialog.cpp" line="44"/>
+        <source>Region:</source>
+        <translation type="unfinished">Region:</translation>
+    </message>
+    <message>
+        <location filename="../CitadelEditDialog.cpp" line="47"/>
+        <source>Solar system:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CitadelEditDialog.cpp" line="50"/>
+        <source>Advanced</source>
+        <translation type="unfinished">Zaawansowane</translation>
+    </message>
+    <message>
+        <location filename="../CitadelEditDialog.cpp" line="58"/>
+        <source>X:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CitadelEditDialog.cpp" line="62"/>
+        <source>Y:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CitadelEditDialog.cpp" line="66"/>
+        <source>Z:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CitadelEditDialog.cpp" line="74"/>
+        <source>Citadel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Evernus::CitadelLocationWidget</name>
     <message>
         <source>Expand all</source>
@@ -2313,32 +2361,42 @@ Czy na pewno chcesz kontynuować (może to spowodować wyciek danych logowania)?
 <context>
     <name>Evernus::CitadelManagerDialog</name>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="41"/>
+        <location filename="../CitadelManagerDialog.cpp" line="47"/>
         <source>Ignored citadels</source>
         <translation>Ignorowane cytadele</translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="46"/>
+        <location filename="../CitadelManagerDialog.cpp" line="52"/>
         <source>Ignored citadels will not have their data imported.</source>
         <translation>Ignorowane cytadele będą wykluczone z importu danych.</translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="52"/>
+        <location filename="../CitadelManagerDialog.cpp" line="58"/>
         <source>&lt;s&gt;Citadel Name&lt;/s&gt; - citadel unavailable for current character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="54"/>
+        <location filename="../CitadelManagerDialog.cpp" line="62"/>
+        <source>Clear existing citadels on import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CitadelManagerDialog.cpp" line="69"/>
         <source>Refresh access cache</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="56"/>
+        <location filename="../CitadelManagerDialog.cpp" line="71"/>
         <source>Clear citadel access cache to check if your characters have access to various citadels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CitadelManagerDialog.cpp" line="64"/>
+        <location filename="../CitadelManagerDialog.cpp" line="74"/>
+        <source>Add citadel...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CitadelManagerDialog.cpp" line="83"/>
         <source>Citadel manager</source>
         <translation>Menadżer cytadel</translation>
     </message>
@@ -3333,8 +3391,8 @@ Do you want to try to continue? The application may not launch.</source>
         <translation type="vanished">Pobieranie postaci dla klucza %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2137"/>
-        <location filename="../EvernusApplication.cpp" line="2177"/>
+        <location filename="../EvernusApplication.cpp" line="2139"/>
+        <location filename="../EvernusApplication.cpp" line="2179"/>
         <source>Evernus</source>
         <translation>Evernus</translation>
     </message>
@@ -3390,7 +3448,7 @@ Do you want to try to continue? The application may not launch.</source>
         <translation>Pobieranie cytadel...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1440"/>
+        <location filename="../EvernusApplication.cpp" line="1442"/>
         <source>Synchronizing with LMeve...</source>
         <translation>Synchronizowanie z LMeve...</translation>
     </message>
@@ -3462,48 +3520,48 @@ Czy chcesz kontynuować?
 Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialność za jakąkolwiek karę CPP może na Ciebie nałożyć, jeśli zmienią swoją politykę.</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1298"/>
+        <location filename="../EvernusApplication.cpp" line="1300"/>
         <source>Saving %1 imported orders...</source>
         <translation>Zapisywanie %1 zaimportowanych zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1622"/>
+        <location filename="../EvernusApplication.cpp" line="1624"/>
         <source>SMTP Error</source>
         <translation>Błąd SMTP</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1622"/>
-        <location filename="../EvernusApplication.cpp" line="1630"/>
+        <location filename="../EvernusApplication.cpp" line="1624"/>
+        <location filename="../EvernusApplication.cpp" line="1632"/>
         <source>Error sending email: %1</source>
         <translation>Błąd wysyłania maila: %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1630"/>
+        <location filename="../EvernusApplication.cpp" line="1632"/>
         <source>Mail Error</source>
         <translation>Błąd maila</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1821"/>
+        <location filename="../EvernusApplication.cpp" line="1823"/>
         <source>Cannot determine market logs path!</source>
         <translation>Nie udało się znaleźć ścieżki logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1835"/>
+        <location filename="../EvernusApplication.cpp" line="1837"/>
         <source>No market logs found!</source>
         <translation>Nie znaleizono logów handlu!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1846"/>
+        <location filename="../EvernusApplication.cpp" line="1848"/>
         <source>Could not open market log file!</source>
         <translation>Nie udało się otworzyć pliku z logami!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2138"/>
+        <location filename="../EvernusApplication.cpp" line="2140"/>
         <source>[Evernus] Market orders fulfilled</source>
         <translation>[Evernus] Zakończone zlecenia</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2142"/>
+        <location filename="../EvernusApplication.cpp" line="2144"/>
         <source>The following orders have changed their status:
 
 </source>
@@ -3512,24 +3570,24 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2145"/>
+        <location filename="../EvernusApplication.cpp" line="2147"/>
         <source>    %1 x%2 [%3]
 </source>
         <translation>    %1 x%2 [%3]
 </translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2177"/>
+        <location filename="../EvernusApplication.cpp" line="2179"/>
         <source>Couldn&apos;t find character for order import!</source>
         <translation>Nie znaleziono postaci podczas importowania zleceń!</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2538"/>
+        <location filename="../EvernusApplication.cpp" line="2540"/>
         <source>Fetching character contract items for contract %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="2596"/>
+        <location filename="../EvernusApplication.cpp" line="2598"/>
         <source>Fetching corporation contract items for contract %1...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3564,43 +3622,43 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished">Pobieranie stacji graczy...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1351"/>
+        <location filename="../EvernusApplication.cpp" line="1353"/>
         <source>Select Mentat directory</source>
         <translation>Wybierz katalog Mentat</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1361"/>
+        <location filename="../EvernusApplication.cpp" line="1363"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1361"/>
+        <location filename="../EvernusApplication.cpp" line="1363"/>
         <source>Error opening %1</source>
         <translation>Błąd otwierania %1</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1365"/>
+        <location filename="../EvernusApplication.cpp" line="1367"/>
         <source>Importing order history...</source>
         <translation>Importowanie historii zleceń...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1411"/>
+        <location filename="../EvernusApplication.cpp" line="1413"/>
         <source>Importing order history: %1 processed</source>
         <translation>Importowanie historii zleceń: %1 przetworzonych</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1416"/>
+        <location filename="../EvernusApplication.cpp" line="1418"/>
         <source>Importing order history: storing %1 orders (this may take a while)</source>
         <translation>Importowanie historii zleceń: zapisywanie %1 zleceń (to może chwilę potrwać)</translation>
     </message>
     <message>
         <location filename="../EvernusApplication.cpp" line="661"/>
-        <location filename="../EvernusApplication.cpp" line="2700"/>
+        <location filename="../EvernusApplication.cpp" line="2702"/>
         <source>Fetching character %1...</source>
         <translation>Pobieranie postaci %1...</translation>
     </message>
     <message>
-        <location filename="../EvernusApplication.cpp" line="1810"/>
+        <location filename="../EvernusApplication.cpp" line="1812"/>
         <source>Importing item prices...</source>
         <translation>Importowanie cen...</translation>
     </message>
@@ -4333,67 +4391,72 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation>Importuj dane dla wszystkich postaci jednym kliknięciem</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="54"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="53"/>
+        <source>Clear existing citadels on import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ImportPreferencesWidget.cpp" line="58"/>
         <source>CSV separator:</source>
         <translation>Separator CSV:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="57"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="61"/>
         <source>Data age</source>
         <translation>Wiek danych</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="63"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="67"/>
         <source>Max. character update age:</source>
         <translation>Maks. czas aktualizacji postaci:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="66"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="70"/>
         <source>Max. asset list update age:</source>
         <translation>Maks. czas aktualizacji aktywów:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="69"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="73"/>
         <source>Max. wallet update age:</source>
         <translation>Maks. czas akutalizacji portfela:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="72"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="76"/>
         <source>Max. market orders update age:</source>
         <translation>Maks. czas aktualizacji zleceń:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="75"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="79"/>
         <source>Max. contracts update age:</source>
         <translation>Maks. czas aktualizacji kontraktów:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="81"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="85"/>
         <source>Max. citadel access cache age:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="83"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="87"/>
         <source>Auto-import</source>
         <translation>Automatyczny import</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="88"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="92"/>
         <source>Enabled</source>
         <translation>Włączony</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="93"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="97"/>
         <source>Auto-import time:</source>
         <translation>Czas między importami:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="148"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="152"/>
         <source>Email notifications</source>
         <translation>Powiadomienia email</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="148"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="152"/>
         <source>Email notifications will be disabled since destination address or SMTP host is empty.</source>
         <translation>Powiadomienia email zostaną wyłączone, gdyż adres docelowy lub adres SMTP jest pusty.</translation>
     </message>
@@ -4402,68 +4465,68 @@ Jeśli wybierzesz &apos;Tak&apos; przyjmujesz na siebie pełną odpowiedzialnoś
         <translation type="vanished"> min</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="79"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="83"/>
         <source> days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="99"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="103"/>
         <source>Enable email notifications</source>
         <translation>Włącz powiadomienia mailem</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="105"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="109"/>
         <source>Destination address:</source>
         <translation>Adres docelowy:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="111"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="115"/>
         <source>SMTP security:</source>
         <translation>Bezpieczeństwo SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="112"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="116"/>
         <source>None</source>
         <translation>Brak</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="113"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="117"/>
         <source>STARTTLS</source>
         <translation>STARTTLS</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="114"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="118"/>
         <source>SSL/TLS</source>
         <translation>SSL/TLS</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="117"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="121"/>
         <source>SMTP host:</source>
         <translation>Serwer SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="120"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="124"/>
         <source>SMTP port:</source>
         <translation>Port SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="126"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="130"/>
         <source>SMTP user:</source>
         <translation>Użytkownik SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="129"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="133"/>
         <source>SMTP password:</source>
         <translation>Hasło SMTP:</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="132"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="136"/>
         <source>Warning: password store uses weak encryption - do not use sensitive passwords.</source>
         <translation>Uwaga: hasło jest zapisywane ze słabym szyfrowaniem - nie zaleca się zapisywania wrażliwego hasła.</translation>
     </message>
     <message>
-        <location filename="../ImportPreferencesWidget.cpp" line="96"/>
-        <location filename="../ImportPreferencesWidget.cpp" line="181"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="100"/>
+        <location filename="../ImportPreferencesWidget.cpp" line="186"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -8582,18 +8645,18 @@ Zapimportuj dane z zakładki zleceń/aktywów lub przy użyciu narzędzia marży
 <context>
     <name>Evernus::RegionComboBox</name>
     <message>
-        <location filename="../RegionComboBox.cpp" line="105"/>
-        <location filename="../RegionComboBox.cpp" line="150"/>
+        <location filename="../RegionComboBox.cpp" line="108"/>
+        <location filename="../RegionComboBox.cpp" line="153"/>
         <source>- all -</source>
         <translation>- wszystkie -</translation>
     </message>
     <message>
-        <location filename="../RegionComboBox.cpp" line="117"/>
+        <location filename="../RegionComboBox.cpp" line="120"/>
         <source>- multiple -</source>
         <translation>- wiele -</translation>
     </message>
     <message>
-        <location filename="../RegionComboBox.cpp" line="127"/>
+        <location filename="../RegionComboBox.cpp" line="130"/>
         <source>- none -</source>
         <translation>- brak -</translation>
     </message>

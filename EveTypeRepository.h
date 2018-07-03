@@ -26,6 +26,8 @@ namespace Evernus
         : public Repository<EveType>
     {
     public:
+        using TypeList = std::unordered_set<EveType::IdType>;
+
         using Repository::Repository;
         virtual ~EveTypeRepository() = default;
 
@@ -35,7 +37,8 @@ namespace Evernus
         virtual EntityPtr populate(const QSqlRecord &record) const override;
 
         std::unordered_map<EveType::IdType, QString> fetchAllTradeableNames() const;
-        std::unordered_set<EveType::IdType> fetchAllTradeableIds() const;
+        TypeList fetchAllTradeableIds() const;
+        TypeList fetchCitadelIds() const;
         EntityList fetchAllTradeable() const;
 
     private:

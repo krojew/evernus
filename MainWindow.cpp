@@ -241,7 +241,8 @@ namespace Evernus
                                  mCitadelAccessCache,
                                  mCurrentCharacterId,
                                  this};
-        connect(this, &MainWindow::citadelsChanged, &dlg, &CitadelManagerDialog::citadelsChanged);
+        connect(this, &MainWindow::citadelsChanged, &dlg, &CitadelManagerDialog::refreshCitadels);
+        connect(&dlg, &CitadelManagerDialog::citadelsChanged, this, &MainWindow::citadelsEdited);
 
         if (dlg.exec() == QDialog::Accepted)
             emit citadelsEdited();
