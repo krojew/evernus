@@ -10,13 +10,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(PROJECT_NAME "evernus")
 set(MAJOR_VERSION "3")
-set(MINOR_VERSION "6")
+set(MINOR_VERSION "7")
 
 option(EVERNUS_CREATE_DUMPS "create crash dumps using Google Breakpad" ON)
 
 find_package(Boost REQUIRED)
 find_package(Qt5Concurrent REQUIRED)
-find_package(Qt5Core 5.10 REQUIRED)
+find_package(Qt5Core 5.11 REQUIRED)
 find_package(Qt5DataVisualization REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
