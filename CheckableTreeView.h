@@ -24,7 +24,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        explicit CheckableTreeView(QWidget *parent = nullptr);
+        using QTreeView::QTreeView;
         CheckableTreeView(const CheckableTreeView &) = default;
         CheckableTreeView(CheckableTreeView &&) = default;
         virtual ~CheckableTreeView() = default;

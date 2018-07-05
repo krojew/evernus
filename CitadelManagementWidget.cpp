@@ -12,9 +12,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QItemSelectionModel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QModelIndex>
 #include <QIcon>
 
 #include "CheckableTreeView.h"
@@ -40,6 +42,7 @@ namespace Evernus
         mainLayout->addWidget(mainView);
         mainView->setModel(&mModel);
         mainView->setHeaderHidden(true);
+        connect(mainView->selectionModel(), &QItemSelectionModel::currentChanged, this, &CitadelManagementWidget::toggleActions);
 
         auto btn = new QPushButton{this};
         buttonLayout->addWidget(btn);
@@ -62,5 +65,10 @@ namespace Evernus
     void CitadelManagementWidget::refresh()
     {
         mModel.refresh();
+    }
+
+    void CitadelManagementWidget::toggleActions(const QModelIndex &selection)
+    {
+        emit citadelSelected(mModel.getCitadel(selection));
     }
 }

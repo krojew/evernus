@@ -18,6 +18,9 @@
 
 #include "CitadelManagementModel.h"
 #include "Character.h"
+#include "Citadel.h"
+
+class QModelIndex;
 
 namespace Evernus
 {
@@ -45,8 +48,14 @@ namespace Evernus
         CitadelManagementWidget &operator =(const CitadelManagementWidget &) = default;
         CitadelManagementWidget &operator =(CitadelManagementWidget &&) = default;
 
+    signals:
+        void citadelSelected(Citadel::IdType id);
+
     public slots:
         void refresh();
+
+    private slots:
+        void toggleActions(const QModelIndex &selection);
 
     private:
         CitadelManagementModel mModel;

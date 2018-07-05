@@ -12,8 +12,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "CitadelManagementModel.h"
-
 #include <boost/scope_exit.hpp>
 
 #include <QFont>
@@ -21,6 +19,7 @@
 #include "CitadelAccessCache.h"
 #include "EveDataProvider.h"
 
+#include "CitadelManagementModel.h"
 
 namespace Evernus
 {
@@ -208,6 +207,17 @@ namespace Evernus
         }
 
         return result;
+    }
+
+    Citadel::IdType CitadelManagementModel::getCitadel(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+            return Citadel::invalidId;
+
+        const auto location = static_cast<const LocationNode *>(index.internalPointer());
+        Q_ASSERT(location != nullptr);
+
+        return (location->mType == LocationNode::Type::Citadel) ? (location->mId) : (Citadel::invalidId);
     }
 
     void CitadelManagementModel::fillStaticData()

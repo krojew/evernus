@@ -35,6 +35,7 @@ namespace Evernus
 
     public:
         explicit CitadelEditDialog(const EveDataProvider &dataProvider, QWidget *parent = nullptr);
+        CitadelEditDialog(const EveDataProvider &dataProvider, const Citadel &citadel, QWidget *parent = nullptr);
         CitadelEditDialog(const CitadelEditDialog &) = default;
         CitadelEditDialog(CitadelEditDialog &&) = default;
 

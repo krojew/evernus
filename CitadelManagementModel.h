@@ -22,6 +22,7 @@
 #include <QAbstractItemModel>
 
 #include "Character.h"
+#include "Citadel.h"
 
 namespace Evernus
 {
@@ -34,7 +35,7 @@ namespace Evernus
         Q_OBJECT
 
     public:
-        using CitadelList = std::unordered_set<quint64>;
+        using CitadelList = std::unordered_set<Citadel::IdType>;
 
         CitadelManagementModel(const EveDataProvider &dataProvider,
                                const CitadelAccessCache &citadelAccessCache,
@@ -55,6 +56,7 @@ namespace Evernus
         void refresh();
 
         CitadelList getSelectedCitadels() const;
+        Citadel::IdType getCitadel(const QModelIndex &index) const;
 
         CitadelManagementModel &operator =(const CitadelManagementModel &) = default;
         CitadelManagementModel &operator =(CitadelManagementModel &&) = default;

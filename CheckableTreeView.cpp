@@ -19,11 +19,6 @@
 
 namespace Evernus
 {
-    CheckableTreeView::CheckableTreeView(QWidget *parent)
-        : QTreeView{parent}
-    {
-    }
-
     void CheckableTreeView::contextMenuEvent(QContextMenuEvent *event)
     {
         Q_ASSERT(event != nullptr);
@@ -41,6 +36,7 @@ namespace Evernus
             menu.addAction(tr("Uncheck"), this, [=] {
                 curModel->setData(index, Qt::Unchecked, Qt::CheckStateRole);
             });
+            menu.addActions(actions());
             menu.exec(event->globalPos());
 
             event->accept();

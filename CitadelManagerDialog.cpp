@@ -22,9 +22,10 @@
 #include <QLabel>
 #include <QIcon>
 
+#include <QtDebug>
+
 #include "CitadelManagementWidget.h"
 #include "CitadelAccessCache.h"
-#include "CitadelRepository.h"
 #include "CitadelEditDialog.h"
 #include "ImportSettings.h"
 
@@ -53,6 +54,7 @@ namespace Evernus
 
         mIgnoredCitadelsWidget = new CitadelManagementWidget{mDataProvider, mCitadelAccessCache, charId, this};
         ignoredBoxLayout->addWidget(mIgnoredCitadelsWidget);
+        connect(mIgnoredCitadelsWidget, &CitadelManagementWidget::citadelSelected, this, &CitadelManagerDialog::selectCitadel);
 
         ignoredBoxLayout->addWidget(new QLabel{tr("<s>Citadel Name</s> - citadel unavailable for current character"), this});
 
@@ -73,6 +75,16 @@ namespace Evernus
         const auto addCitadelBtn = new QPushButton{QIcon{QStringLiteral(":/images/add.png")}, tr("Add citadel..."), this};
         btnLayout->addWidget(addCitadelBtn);
         connect(addCitadelBtn, &QPushButton::clicked, this, &CitadelManagerDialog::addCitadel);
+
+        mEditBtn = new QPushButton{QIcon{QStringLiteral(":/images/pencil.png")}, tr("Edit selected..."), this};
+        btnLayout->addWidget(mEditBtn);
+        mEditBtn->setEnabled(false);
+        connect(mEditBtn, &QPushButton::clicked, this, &CitadelManagerDialog::editCitadel);
+
+        mRemoveBtn = new QPushButton{QIcon{QStringLiteral(":/images/delete.png")}, tr("Remove selected"), this};
+        btnLayout->addWidget(mRemoveBtn);
+        mRemoveBtn->setEnabled(false);
+        connect(mRemoveBtn, &QPushButton::clicked, this, &CitadelManagerDialog::removeCitadel);
 
         const auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
@@ -104,7 +116,41 @@ namespace Evernus
 
     void CitadelManagerDialog::addCitadel()
     {
-        CitadelEditDialog editDlg{mDataProvider, this};
+        showCitadelEdit({});
+    }
+
+    void CitadelManagerDialog::editCitadel()
+    {
+        try
+        {
+            showCitadelEdit(mCitadelRepo.find(mCurrentCitadel));
+        }
+        catch (const CitadelRepository::NotFoundException &)
+        {
+            qWarning() << "Trying to edit inexistent citadel:" << mCurrentCitadel;
+        }
+    }
+
+    void CitadelManagerDialog::removeCitadel()
+    {
+        mCitadelRepo.remove(mCurrentCitadel);
+        emit citadelsChanged();
+
+        mIgnoredCitadelsWidget->refresh();
+    }
+
+    void CitadelManagerDialog::selectCitadel(Citadel::IdType id)
+    {
+        mCurrentCitadel = id;
+
+        const auto enabled = mCurrentCitadel != Citadel::invalidId;
+        mEditBtn->setEnabled(enabled);
+        mRemoveBtn->setEnabled(enabled);
+    }
+
+    void CitadelManagerDialog::showCitadelEdit(const CitadelRepository::EntityPtr &citadel)
+    {
+        CitadelEditDialog editDlg{mDataProvider, (citadel) ? (*citadel) : (Citadel{}), this};
         if (editDlg.exec() == QDialog::Accepted)
         {
             mCitadelRepo.store(editDlg.getCitadel());

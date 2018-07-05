@@ -55,6 +55,7 @@
 #include "VolumeType.h"
 #include "Version.h"
 #include "Defines.h"
+#include "Citadel.h"
 
 #if EVERNUS_CREATE_DUMPS
 #   include <iostream>
@@ -275,6 +276,7 @@ int main(int argc, char *argv[])
         qRegisterMetaType<Evernus::MarketAnalysisDataFetcher::HistoryResultType>("HistoryResultType");
         qRegisterMetaType<Evernus::VolumeType>("VolumeType");
         qRegisterMetaType<Evernus::IndustryManufacturingSetup::InventorySource>("IndustryManufacturingSetup::InventorySource");
+        qRegisterMetaType<Evernus::Citadel::IdType>("Citadel::IdType");
 
         // Eve database must be fetched before the main application starts
         if (Evernus::EveDatabaseUpdater::performUpdate(argc, argv, parser.isSet(Evernus::CommandLineOptions::forceSDEUpdateArg)) == Evernus::EveDatabaseUpdater::Status::Error)

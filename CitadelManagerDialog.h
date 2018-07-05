@@ -16,15 +16,17 @@
 
 #include <QDialog>
 
+#include "CitadelRepository.h"
 #include "Character.h"
+#include "Citadel.h"
 
+class QPushButton;
 class QCheckBox;
 
 namespace Evernus
 {
     class CitadelManagementWidget;
     class CitadelAccessCache;
-    class CitadelRepository;
     class EveDataProvider;
 
     class CitadelManagerDialog
@@ -54,7 +56,12 @@ namespace Evernus
     private slots:
         void applyChanges();
         void refreshAccessCache();
+
         void addCitadel();
+        void editCitadel();
+        void removeCitadel();
+
+        void selectCitadel(Citadel::IdType id);
 
     private:
         const EveDataProvider &mDataProvider;
@@ -62,6 +69,12 @@ namespace Evernus
         CitadelAccessCache &mCitadelAccessCache;
 
         CitadelManagementWidget *mIgnoredCitadelsWidget = nullptr;
+        QPushButton *mEditBtn = nullptr;
+        QPushButton *mRemoveBtn = nullptr;
         QCheckBox *mClearExistingCitadelsBtn = nullptr;
+
+        Citadel::IdType mCurrentCitadel = Citadel::invalidId;
+
+        void showCitadelEdit(const CitadelRepository::EntityPtr &citadel);
     };
 }

@@ -34,15 +34,21 @@
 namespace Evernus
 {
     CitadelEditDialog::CitadelEditDialog(const EveDataProvider &dataProvider, QWidget *parent)
+        : CitadelEditDialog{dataProvider, {}, parent}
+    {
+    }
+
+    CitadelEditDialog::CitadelEditDialog(const EveDataProvider &dataProvider, const Citadel &citadel, QWidget *parent)
         : QDialog{parent}
+        , mCitadel{citadel}
     {
         const auto mainLayout = new QFormLayout{this};
 
-        mIdEdit = new QLineEdit{this};
+        mIdEdit = new QLineEdit{QString::number(mCitadel.getId()), this};
         mainLayout->addRow(tr("Id:"), mIdEdit);
         mIdEdit->setValidator(new QDoubleValidator{0., static_cast<double>(std::numeric_limits<Citadel::IdType>::max()), 0, this});
 
-        mNameEdit = new QLineEdit{this};
+        mNameEdit = new QLineEdit{mCitadel.getName(), this};
         mainLayout->addRow(tr("Name:"), mNameEdit);
 
         mTypeCombo = new QComboBox{this};
@@ -54,6 +60,9 @@ namespace Evernus
 
         mTypeCombo->model()->sort(0);
 
+        if (!mCitadel.isNew())
+            mTypeCombo->setCurrentIndex(mTypeCombo->findData(mCitadel.getTypeId()));
+
         mRegionCombo = new SingleRegionComboBox{dataProvider, this};
         mainLayout->addRow(tr("Region:"), mRegionCombo);
 
@@ -63,6 +72,9 @@ namespace Evernus
 
         filterSolarSystems();
 
+        if (!mCitadel.isNew())
+            mRegionCombo->setCurrentIndex(mRegionCombo->findData(mCitadel.getRegionId()));
+
         const auto advancedGroup = new QGroupBox{tr("Advanced"), this};
         mainLayout->addRow(advancedGroup);
         advancedGroup->setCheckable(true);
@@ -70,23 +82,25 @@ namespace Evernus
 
         const auto advancedGroupLayout = new QFormLayout{advancedGroup};
 
-        mXEdit = new QLineEdit{QStringLiteral("0"), this};
+        mXEdit = new QLineEdit{QString::number(mCitadel.getX()), this};
         advancedGroupLayout->addRow(tr("X:"), mXEdit);
         mXEdit->setValidator(new QDoubleValidator{this});
 
-        mYEdit = new QLineEdit{QStringLiteral("0"), this};
+        mYEdit = new QLineEdit{QString::number(mCitadel.getY()), this};
         advancedGroupLayout->addRow(tr("Y:"), mYEdit);
         mYEdit->setValidator(new QDoubleValidator{this});
 
-        mZEdit = new QLineEdit{QStringLiteral("0"), this};
+        mZEdit = new QLineEdit{QString::number(mCitadel.getZ()), this};
         advancedGroupLayout->addRow(tr("Z:"), mZEdit);
         mZEdit->setValidator(new QDoubleValidator{this});
 
         mIgnoredBtn = new QCheckBox{tr("Ignored"), this};
         advancedGroupLayout->addRow(mIgnoredBtn);
+        mIgnoredBtn->setChecked(mCitadel.isIgnored());
 
         mPublicBtn = new QCheckBox{tr("Public"), this};
         advancedGroupLayout->addRow(mPublicBtn);
+        mPublicBtn->setChecked(mCitadel.isPublic());
 
         const auto buttons = new QDialogButtonBox{QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this};
         mainLayout->addWidget(buttons);
@@ -125,8 +139,10 @@ namespace Evernus
         mCitadel.setZ(mZEdit->text().toDouble());
         mCitadel.setIgnored(mIgnoredBtn->isChecked());
         mCitadel.setPublic(mPublicBtn->isChecked());
-        mCitadel.setFirstSeen(QDateTime::currentDateTimeUtc());
-        mCitadel.setLastSeen(mCitadel.getFirstSeen());
+        mCitadel.setLastSeen(QDateTime::currentDateTimeUtc());
+
+        if (!mCitadel.getFirstSeen().isValid())
+            mCitadel.setFirstSeen(mCitadel.getLastSeen());
 
         accept();
     }
