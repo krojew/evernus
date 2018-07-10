@@ -691,28 +691,18 @@ namespace Evernus
 
         markImport(id, TimerType::AssetList);
         mESIManager->fetchCharacterAssets(id, [=](auto &&assets, const auto &error, const auto &expires) {
+            unmarkImport(id, TimerType::AssetList);
+
             if (!error.isEmpty())
             {
                 emit taskEnded(assetSubtask, error);
                 return;
             }
 
-            mESIManager->fetchCharacterBlueprints(id, [=, assets = std::move(assets)](auto &&blueprints, const auto &error, const auto &expires) mutable {
-                Q_UNUSED(expires);
+            setUtcCacheTimer(id, TimerType::AssetList, expires);
+            updateCharacterAssets(id, assets);
 
-                unmarkImport(id, TimerType::AssetList);
-
-                if (error.isEmpty())
-                {
-                    setUtcCacheTimer(id, TimerType::AssetList, expires);
-                    updateCharacterAssets(id, assets);
-
-                    Q_ASSERT(mItemRepository);
-                    setBPCFlags(*mItemRepository, blueprints);
-                }
-
-                emit taskEnded(assetSubtask, error);
-            });
+            emit taskEnded(assetSubtask, error);
         });
     }
 

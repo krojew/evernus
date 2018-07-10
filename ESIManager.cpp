@@ -948,6 +948,7 @@ namespace Evernus
                 newItem->setLocationId(item.value(QStringLiteral("location_id")).toDouble());
                 newItem->setTypeId(item.value(QStringLiteral("type_id")).toDouble());
                 newItem->setRawQuantity(rawQuantity);
+                newItem->setBPCFlag(item.value(QStringLiteral("is_blueprint_copy")).toBool());
                 // https://forums.eveonline.com/t/esi-assets-blueprints-and-quantities/19345/4
                 newItem->setQuantity((rawQuantity < 0) ? (1) : (rawQuantity));
 

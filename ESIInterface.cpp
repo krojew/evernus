@@ -189,7 +189,7 @@ namespace Evernus
             return;
         }
 
-        fetchPaginatedData(charId, QStringLiteral("/v2/corporations/%1/assets/").arg(corpId), 1, callback, std::make_shared<PaginatedContext>());
+        fetchPaginatedData(charId, QStringLiteral("/v3/corporations/%1/assets/").arg(corpId), 1, callback, std::make_shared<PaginatedContext>());
     }
 
     void ESIInterface::fetchCharacter(Character::IdType charId, const JsonCallback &callback) const
