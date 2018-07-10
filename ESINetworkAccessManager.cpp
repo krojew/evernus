@@ -15,6 +15,7 @@
 #include <QSettings>
 
 #include "NetworkSettings.h"
+#include "ReplyTimeout.h"
 
 #include "ESINetworkAccessManager.h"
 
@@ -38,6 +39,9 @@ namespace Evernus
         if (!request.hasRawHeader(QByteArrayLiteral("Authorization")))
             request.setRawHeader(QByteArrayLiteral("Authorization"), mAutorization);
 
-        return QNetworkAccessManager::createRequest(op, request, outgoingData);
+        const auto reply = QNetworkAccessManager::createRequest(op, request, outgoingData);
+        new ReplyTimeout{*reply};
+
+        return reply;
     }
 }

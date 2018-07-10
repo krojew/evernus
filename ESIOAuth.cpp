@@ -25,7 +25,6 @@
 #include "ESIOAuth2CharacterAuthorizationCodeFlow.h"
 #include "ESIOAuthReplyHandler.h"
 #include "SecurityHelper.h"
-#include "ReplyTimeout.h"
 #include "SSOSettings.h"
 #include "SSOUtils.h"
 
@@ -82,8 +81,6 @@ namespace Evernus
         const auto reply = mUnauthNetworkAccessManager.get(prepareRequest(url));
         connect(reply, &QNetworkReply::sslErrors, this, &ESIOAuth::processSslErrors);
 
-        new ReplyTimeout{*reply};
-
         return reply;
     }
 
@@ -96,8 +93,6 @@ namespace Evernus
 
         const auto reply = mUnauthNetworkAccessManager.post(request, QJsonDocument::fromVariant(data).toJson(QJsonDocument::Compact));
         connect(reply, &QNetworkReply::sslErrors, this, &ESIOAuth::processSslErrors);
-
-        new ReplyTimeout{*reply};
 
         return reply;
     }
@@ -229,8 +224,6 @@ namespace Evernus
         {
             const auto reply = replyCreator();
             Q_ASSERT(reply != nullptr);
-
-            new ReplyTimeout{*reply};
 
             connect(reply, &QNetworkReply::sslErrors, this, &ESIOAuth::processSslErrors);
             connect(reply, &QNetworkReply::finished, this, [=, &auth, callback = std::move(callback), errorCallback = std::move(errorCallback)] {
