@@ -903,7 +903,7 @@ namespace Evernus
                 curOrder.setVolumeEntered(orderObj.value(QStringLiteral("volume_total")).toDouble());
                 curOrder.setVolumeRemaining(orderObj.value(QStringLiteral("volume_remain")).toDouble());
                 curOrder.setMinVolume(orderObj.value(QStringLiteral("min_volume")).toDouble());
-                curOrder.setState(getStateFromString(orderObj.value(QStringLiteral("state")).toString()));
+                curOrder.setState(MarketOrder::State::Active);  // ESI returns only open orders
                 curOrder.setTypeId(orderObj.value(QStringLiteral("type_id")).toDouble());
                 curOrder.setRange(getMarketOrderRangeFromString(orderObj.value(QStringLiteral("range")).toString()));
                 curOrder.setDuration(orderObj.value(QStringLiteral("duration")).toInt());
@@ -1315,21 +1315,6 @@ namespace Evernus
     const ESIInterface &ESIManager::getInterface() const
     {
         return mInterfaceManager.getInterface();
-    }
-
-    MarketOrder::State ESIManager::getStateFromString(const QString &state)
-    {
-        static const QHash<QString, MarketOrder::State> states = {
-            { QStringLiteral("open"), MarketOrder::State::Active },
-            { QStringLiteral("closed"), MarketOrder::State::Closed },
-            { QStringLiteral("expired"), MarketOrder::State::Fulfilled },
-            { QStringLiteral("cancelled"), MarketOrder::State::Cancelled },
-            { QStringLiteral("pending"), MarketOrder::State::Pending },
-            { QStringLiteral("character_deleted"), MarketOrder::State::CharacterDeleted },
-        };
-
-        // assume unknown is active, since there shouldn't be non-open orders returned anyway
-        return (states.contains(state)) ? (states[state]) : (MarketOrder::State::Active);
     }
 
     short ESIManager::getMarketOrderRangeFromString(const QString &range)

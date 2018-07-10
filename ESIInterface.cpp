@@ -265,7 +265,7 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v1/characters/%1/orders/").arg(charId), {}, callback, getNumRetries());
+        get(charId, QStringLiteral("/v2/characters/%1/orders/").arg(charId), {}, callback, getNumRetries());
     }
 
     void ESIInterface::fetchCorporationMarketOrders(Character::IdType charId, quint64 corpId, const JsonCallback &callback) const
@@ -278,7 +278,7 @@ namespace Evernus
             return;
         }
 
-        get(charId, QStringLiteral("/v1/corporations/%1/orders/").arg(corpId), {}, callback, getNumRetries());
+        get(charId, QStringLiteral("/v3/corporations/%1/orders/").arg(corpId), {}, callback, getNumRetries());
     }
 
     void ESIInterface::fetchCharacterWalletJournal(Character::IdType charId,

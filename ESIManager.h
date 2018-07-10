@@ -193,7 +193,6 @@ namespace Evernus
 
         const ESIInterface &getInterface() const;
 
-        static MarketOrder::State getStateFromString(const QString &state);
         static short getMarketOrderRangeFromString(const QString &range);
         static QDateTime getDateTimeFromString(const QString &value);
 
