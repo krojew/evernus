@@ -426,8 +426,6 @@ namespace Evernus
 
         void fetchStationTypeIds();
 
-        static void setBPCFlags(const ItemRepository &repo, const ESIManager::BlueprintList &blueprints);
-
         static void showSplashMessage(const QString &message, QSplashScreen &splash);
         static QString getCharacterImportMessage(Character::IdType id);
 
